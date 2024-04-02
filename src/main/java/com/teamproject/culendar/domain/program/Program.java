@@ -1,5 +1,6 @@
 package com.teamproject.culendar.domain.program;
 
+import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +23,9 @@ public class Program {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    // TODO 분류 ENUM 만들어서 추가
+    // 작품 분류
+    @Column(nullable = false)
+    private ProgramType programType;
 
     // TODO 작품 썸네일 이미지 추가
     // private String thumbnail;
@@ -31,6 +34,6 @@ public class Program {
     private String description;
 
     // 작품 위치 x,y
-     private int x;
-     private int y;
+     private Integer locationX;
+     private Integer locationY;
 }

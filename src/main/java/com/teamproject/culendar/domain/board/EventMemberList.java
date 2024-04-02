@@ -1,7 +1,7 @@
 package com.teamproject.culendar.domain.board;
 
 import com.teamproject.culendar.domain.baseEntity.BaseEntityCreatedDate;
-import com.teamproject.culendar.domain.enumfiles.EventMemberStatus;
+import com.teamproject.culendar.domain.enumFiles.EventMemberStatus;
 import com.teamproject.culendar.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;

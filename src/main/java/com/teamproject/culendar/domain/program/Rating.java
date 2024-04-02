@@ -1,7 +1,7 @@
 package com.teamproject.culendar.domain.program;
 
 import com.teamproject.culendar.domain.baseEntity.BaseEntityLastModifiedDate;
-import com.teamproject.culendar.domain.enumfiles.RatingType;
+import com.teamproject.culendar.domain.enumFiles.RatingType;
 import com.teamproject.culendar.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -22,7 +22,7 @@ public class Comment extends BaseEntityLastModifiedDate {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(length = 1000)
+    @Column(length = 1000, nullable = false)
     private String comment;
 
     // 댓글의 댓글

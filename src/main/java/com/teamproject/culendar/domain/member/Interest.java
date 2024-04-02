@@ -1,6 +1,7 @@
 package com.teamproject.culendar.domain.member;
 
 import com.teamproject.culendar.domain.baseEntity.BaseEntityCreatedDate;
+import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,7 @@ public class Interest extends BaseEntityCreatedDate {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    //TODO 관심사 예정 (ENUM 작품 분류와 동일)
-    //@Column(nullable = false)
-    //private ProgramType interest;
+    //관심사
+    @Column(nullable = false)
+    private ProgramType interest;
 }

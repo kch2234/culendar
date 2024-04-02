@@ -1,6 +1,6 @@
 package com.teamproject.culendar.domain.member;
 
-import com.teamproject.culendar.domain.enumfiles.ReasonList;
+import com.teamproject.culendar.domain.enumFiles.ReasonType;
 import com.teamproject.culendar.domain.baseEntity.BaseEntityCreatedDate;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class Reason extends BaseEntityCreatedDate {
 
     // 탈퇴사유 라디오값
     @Column(nullable = false)
-    private ReasonList reasonList;
+    private ReasonType reasonType;
 
     // 탈퇴 사유 상세
     @Column(length = 4000)

@@ -1,4 +1,4 @@
-package com.teamproject.culendar.domain.enumfiles;
+package com.teamproject.culendar.domain.enumFiles;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

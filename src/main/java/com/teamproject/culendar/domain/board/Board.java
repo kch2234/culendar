@@ -1,7 +1,7 @@
 package com.teamproject.culendar.domain.board;
 
 import com.teamproject.culendar.domain.baseEntity.BaseEntityLastModifiedDate;
-import com.teamproject.culendar.domain.enumfiles.BoardType;
+import com.teamproject.culendar.domain.enumFiles.BoardType;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.domain.program.Program;
 import jakarta.persistence.*;

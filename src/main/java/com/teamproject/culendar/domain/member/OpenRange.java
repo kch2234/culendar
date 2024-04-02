@@ -1,6 +1,6 @@
 package com.teamproject.culendar.domain.member;
 
-import com.teamproject.culendar.domain.enumfiles.OpenRangeType;
+import com.teamproject.culendar.domain.enumFiles.OpenRangeType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,9 +25,9 @@ public class OpenRange {
     // 관람 작품 공개범위
     private OpenRangeType watchedOpenRange = OpenRangeType.ALL;
     // 신청한 모임 일정 공개범위
-    private OpenRangeType scheduleOpenRange = OpenRangeType.ALL;
+    private OpenRangeType eventOpenRange = OpenRangeType.ALL;
     // 북마크한 작품 공개범위
-    private OpenRangeType bookmarkOpenRange = OpenRangeType.ALL;
+    private OpenRangeType bkmarkOpenRange = OpenRangeType.ALL;
 
 
 
