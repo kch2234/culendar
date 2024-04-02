@@ -1,16 +1,16 @@
 package com.teamproject.culendar.domain.board;
 
 import com.teamproject.culendar.domain.baseEntity.BaseEntityCreatedDate;
-import com.teamproject.culendar.domain.enumfiles.EventMemberStatus;
 import com.teamproject.culendar.domain.member.Member;
+import com.teamproject.culendar.domain.program.Program;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class EventMemberList extends BaseEntityCreatedDate {
-    // *****    모임 일정 참가자 목록    *****
+public class EventBoardBkmark extends BaseEntityCreatedDate {
+    // *****    모임 일정 북마크    *****
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,6 +23,11 @@ public class EventMemberList extends BaseEntityCreatedDate {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    // 확정 여부
-    private EventMemberStatus status = EventMemberStatus.WAIT;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "program_id")
+    private Program program;
+
+    //TODO 지역 추가
+    //private Location location;
+
 }

@@ -11,6 +11,7 @@ import lombok.Setter;
 @Entity
 @Getter @Setter
 public class Board extends BaseEntityLastModifiedDate {
+    // *****    게시글    *****
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +27,7 @@ public class Board extends BaseEntityLastModifiedDate {
     @JoinColumn(name = "program_id")
     private Program program;
 
+    @Column(nullable = false)
     private String title;
 
     @Column(length = 4000)
@@ -34,6 +36,7 @@ public class Board extends BaseEntityLastModifiedDate {
     private Long viewCount = 0L;
 
     // TODO 이미지 추가
+    // private String image;
 
 
 }

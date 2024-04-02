@@ -13,13 +13,16 @@ import java.time.LocalDateTime;
 @Entity
 @Getter @Setter
 public class Member extends BaseEntityCreatedDate {
+    // *****    회원    *****
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 아이디
     @Column(nullable = false, unique = true)
     private String userid;
 
+    // 닉네임
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -33,6 +36,7 @@ public class Member extends BaseEntityCreatedDate {
     //private Location location;
 
     // 생년 월일
+    @Column(nullable = false)
     private LocalDateTime birth;
 
     // 성향 ENUM값 수정 예정
@@ -42,6 +46,7 @@ public class Member extends BaseEntityCreatedDate {
     private Gender gender;
 
     //TODO 프로필 사진 예정
+    //private String profileImage;
 
     // 한줄 소개
     @Column(length = 1000)

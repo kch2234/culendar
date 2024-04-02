@@ -9,6 +9,7 @@ import lombok.Setter;
 @Entity
 @Getter @Setter
 public class Reason extends BaseEntityCreatedDate {
+    // *****    탈퇴 사유    *****
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,6 +19,7 @@ public class Reason extends BaseEntityCreatedDate {
     private Member member;
 
     // 탈퇴사유 라디오값
+    @Column(nullable = false)
     private ReasonList reasonList;
 
     // 탈퇴 사유 상세

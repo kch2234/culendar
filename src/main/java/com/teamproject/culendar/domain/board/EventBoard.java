@@ -13,11 +13,13 @@ import java.time.LocalDateTime;
 @Entity
 @Getter @Setter
 public class EventBoard extends BaseEntityLastModifiedDate {
+    // *****    모임 일정 게시글    *****
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // TODO 썸네일 추가
+    // private String thumbnail;
 
     private String title;
 
@@ -25,6 +27,7 @@ public class EventBoard extends BaseEntityLastModifiedDate {
     private String content;
 
     // TODO 이미지 추가
+    // private String image;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -48,7 +51,7 @@ public class EventBoard extends BaseEntityLastModifiedDate {
     private Integer filterMinAge;
     private Integer filterMaxAge;
     // TODO 필터 지역 추가
-//    private Location filterLocation;
+    // private Location filterLocation;
 
     // 모임 인원 모집 마감 날짜
     private LocalDateTime deadlineDate;

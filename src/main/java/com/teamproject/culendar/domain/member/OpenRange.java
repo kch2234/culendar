@@ -8,6 +8,7 @@ import lombok.Setter;
 @Entity
 @Getter @Setter
 public class OpenRange {
+    // *****    공개 범위    *****
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,15 +19,15 @@ public class OpenRange {
 
     // 전체공개, 회원, 친구공개, 비공개
     // 팔로우 목록 공개범위
-    private OpenRangeType followOpenRange;
+    private OpenRangeType followOpenRange = OpenRangeType.ALL;
     // 후기 공개범위
-    private OpenRangeType reviewOpenRange;
+    private OpenRangeType reviewOpenRange = OpenRangeType.ALL;
     // 관람 작품 공개범위
-    private OpenRangeType watchedOpenRange;
+    private OpenRangeType watchedOpenRange = OpenRangeType.ALL;
     // 신청한 모임 일정 공개범위
-    private OpenRangeType scheduleOpenRange;
+    private OpenRangeType scheduleOpenRange = OpenRangeType.ALL;
     // 북마크한 작품 공개범위
-    private OpenRangeType bookmarkOpenRange;
+    private OpenRangeType bookmarkOpenRange = OpenRangeType.ALL;
 
 
 

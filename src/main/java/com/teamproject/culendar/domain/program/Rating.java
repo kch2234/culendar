@@ -1,6 +1,7 @@
-package com.teamproject.culendar.domain.board;
+package com.teamproject.culendar.domain.program;
 
 import com.teamproject.culendar.domain.baseEntity.BaseEntityLastModifiedDate;
+import com.teamproject.culendar.domain.enumfiles.RatingType;
 import com.teamproject.culendar.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,25 +9,21 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class Comment extends BaseEntityLastModifiedDate {
-    // *****     댓글     *****
+public class Rating extends BaseEntityLastModifiedDate {
+    // *****    문장형 평가    *****
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
-    private Board board;
+    @JoinColumn(name = "program_id")
+    private Program program;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(length = 1000)
-    private String comment;
-
-    // 댓글의 댓글
-    private Long refId = 0L;
-    private Integer step = 0;
-    private Integer level = 0;
+    // 문장형 평가 내용
+    @Column(nullable = false)
+    private RatingType rating;
 }

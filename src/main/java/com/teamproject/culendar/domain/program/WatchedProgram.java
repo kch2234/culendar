@@ -1,14 +1,15 @@
-package com.teamproject.culendar.domain.member;
+package com.teamproject.culendar.domain.program;
 
 import com.teamproject.culendar.domain.baseEntity.BaseEntityCreatedDate;
+import com.teamproject.culendar.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class Interest extends BaseEntityCreatedDate {
-    // *****    관심사 리스트   *****
+public class WatchedProgram extends BaseEntityCreatedDate {
+    // *****    관람한 작품    *****
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +18,7 @@ public class Interest extends BaseEntityCreatedDate {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    //TODO 관심사 예정 (ENUM 작품 분류와 동일)
-    //@Column(nullable = false)
-    //private ProgramType interest;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "program_id")
+    private Program program;
 }
