@@ -28,11 +28,3 @@ server:
       hibernate:
         format_sql: true
         highlight_sql: true
-
-# MyBatis settings
-mybatis:
-# XML 에서 Domain 의 클래스를 클래스명으로만 사용 가능하도록 설정 (미설정 시 패키지명까지 모두 작성 필수)
-# type-aliases-package: com.mybatis.board.domain
-
-file:
-  # imgs: C:/gangsa/imgs/
