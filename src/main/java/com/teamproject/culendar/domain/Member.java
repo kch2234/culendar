@@ -26,10 +26,16 @@ public class Member extends BaseEntityCreatedDate {
     private String email = "";
 
     // 지역 ENUM 예정
+
     // 생년 월일
     private LocalDateTime birth;
-    // 성향 ENUM 예정
-    // 성별 ENUM 예정
+
+    // 성향 ENUM값 수정 예정
+    private MemberType memberType;
+
+    @Column(nullable = false, updatable = false)
+    private Gender gender;
+
     // 프로필 사진 예정
 
     // 한줄 소개
