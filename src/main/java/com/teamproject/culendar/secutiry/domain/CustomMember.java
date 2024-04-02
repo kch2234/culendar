@@ -8,15 +8,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 @Getter
 public class CustomMember implements UserDetails {
 
     private Member member;
 
-    public CustomMember(Member member) {
-        this.member = member;
-    }
 
     // 권한
     @Override
@@ -33,7 +31,7 @@ public class CustomMember implements UserDetails {
     // 아이디
     @Override
     public String getUsername() {
-        return member.getUserid();
+        return member.getUserId();
     }
 
     // 계정 만료 여부

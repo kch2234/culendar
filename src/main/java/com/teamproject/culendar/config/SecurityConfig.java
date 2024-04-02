@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,21 +26,10 @@ import java.util.Collection;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Secured("ROLE_ADMIN")
-    public void testSecured() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
-        for (GrantedAuthority authority : authorities) {
-            System.out.println(authority.getAuthority());
-        }
-    }
-
     // 시큐리티 필터 처리 설정 메서드 빈
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.authorizeHttpRequests(request -> request.anyRequest().permitAll()
-                        .requestMatchers("/").hasRole("ROLE_ADMIN"))
+        http.authorizeHttpRequests(request -> request.anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable())
                 .formLogin(login -> // 로그인 설정
                         login.loginPage("/login")

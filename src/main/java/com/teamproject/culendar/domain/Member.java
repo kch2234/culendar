@@ -16,13 +16,12 @@ public class Member {
 
     // 아이디
     @Column(nullable = false, unique = true)
-    private String userid;
-
-    // 닉네임
-    @Column(nullable = false, unique = true)
-    private String username;
+    private String userId;
 
     @Column(nullable = false, length = 500)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 }
