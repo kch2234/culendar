@@ -4,23 +4,20 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter @Setter
 public class Member {
-    // *****    회원    *****
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
     private Long id;
-
-    // 아이디
+    // 회원 아이디
     @Column(nullable = false, unique = true)
-    private String userId;
-
+    private String username;
+    // 회원 비밀번호
     @Column(nullable = false, length = 500)
     private String password;
-
+    // 권한
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
