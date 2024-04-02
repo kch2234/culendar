@@ -1,46 +1,49 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<div id="programCard">
-    <div class="thumbnail"></div>
-    <div class="card-header">
-        <span class="genre"></span>
-        <span class="icon-verticalLine"></span>
-        <span class="location"></span>
-        <span class="button">
-            <span class="add-button"></span>
-            <span class="bookmark-button"></span>
+<div name="programCard">  <!--  작품 카드  -->
+    <h1>작품 카드 영역</h1>
+    <div name="thumbnail"></div>
+    <div name="card-header">
+        <span name="genre"></span>  <!--  작품 장르  -->
+        <span name="icon-verticalLine"></span>  <!--  |  -->
+        <span name="location"></span>  <!--  지역  -->
+        <span name="button">
+            <span name="add-button"></span>  <!--  내 캘린더에 추가  -->
+            <span name="bookmark-button"></span>
         </span>
     </div>
-    <div class="title"></div>
-    <div class="period"></div>
-</div>
+    <div name="title"></div>
+    <div name="period"></div>  <!--  프로그램 기간  -->
+</div>  <!--  작품 카드  -->
 
-<div id="meetingCard">
-    <div class="thumbnail"></div>
-    <div class="card-header">
-        <span class="genre"></span>
-        <span class="icon-location"></span>
-        <span class="location"></span>
-        <span class="icon-person"></span>
-        <span class="personnel">present/maximum</span>
-        <span class="button">
-            <span class="add-button"></span>
-            <span class="bookmark-button"></span>
+<div name="meetingCard">  <!--  모임 카드  -->
+    <h1>모임 카드 영역</h1>
+    <div name="thumbnail"></div>
+    <div name="card-header">
+        <span name="genre"></span>  <!--  작품 장르  -->
+        <span name="icon-location"></span>
+        <span name="location"></span>  <!--  지역  -->
+        <span name="icon-person"></span>
+        <span name="personnel">present/maximum</span>  <!--  현재인원/정원  -->
+        <span name="button">
+            <span name="add-button"></span>  <!--  내 캘린더에 추가  -->
+            <span name="bookmark-button"></span>
         </span>
     </div>
-    <div class="title"></div>
-    <div class="period"></div>
-</div>
+    <div name="title"></div>
+    <div name="period"></div>  <!--  프로그램 기간  -->
+</div>  <!--  모임 카드  -->
 
-<div id="boardCard">
-    <div class="thumbnail"></div>
-    <div class="card-header">
-        <span class="title"></span>
-        <span class="bookmark-button"></span>
+<div name="boardCard">  <!--  게시글 카드  -->
+    <h1>게시글 카드 영역</h1>
+    <div name="thumbnail"></div>
+    <div name="card-header">
+        <span name="title"></span>
+        <span name="bookmark-button"></span>
     </div>
-    <div class="pre-content"></div>
-</div>
+    <div name="pre-content"></div>  <!--  내용 프리뷰 2줄 정도  -->
+</div>  <!--  게시글 카드  -->
 
 
 </html>

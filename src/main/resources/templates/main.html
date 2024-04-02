@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}">  // 헤더 네브 푸터
+    <h1>메인 페이지 영역</h1>
 
-</body>
+    <th:block th:fragment="content">
+        <div name="calendar">캘린더 영역</div>
+        <div name="favProgram">  <!-- 인기 작품 영역 -->
+            <div>
+                <div name="heading">인기 작품</div>  <!--  제목  -->
+                <div name="icon-horizon"></div>
+            </div>
+            <div name="cards">
+                <h1>카드 영역</h1>
+                <span name="programCard"></span>  <!--  작품 카드  -->
+                <span name="programCard"></span>
+                <span name="programCard"></span>
+                <span name="programCard"></span>
+            </div>
+        </div>  <!--  인기 작품 영역  -->
+        <div name="favMeeting">  <!-- 인기 모임 영역 -->
+            <div>
+                <div name="heading">인기 모임</div>  <!--  제목  -->
+                <div name="icon-horizon"></div>
+            </div>
+            <div name="cards">
+                <h1>카드 영역</h1>
+                <span name="meetingCard"></span>  <!--  작품 카드  -->
+                <span name="meetingCard"></span>
+                <span name="meetingCard"></span>
+                <span name="meetingCard"></span>
+            </div>
+        </div> <!--  인기 모임 영역  -->
+</th:block>
 </html>
