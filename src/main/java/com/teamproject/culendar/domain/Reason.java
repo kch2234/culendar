@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class Interest extends BaseEntityCreatedDate {
+public class Reason extends BaseEntityCreatedDate{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,5 +14,11 @@ public class Interest extends BaseEntityCreatedDate {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-    //TODO 관심사 예정 (ENUM 작품 분류와 동일)
+
+    // 탈퇴사유 라디오값
+    private ReasonList reasonList;
+
+    // 탈퇴 사유 상세
+    @Column(length = 4000)
+    private String description;
 }

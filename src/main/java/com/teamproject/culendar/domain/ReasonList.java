@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum MemberType {
-    //TODO: 회원 성향 추가
-    A("A"), B("B"), C("C"), D("D"), E("E"), F("F");
+public enum ReasonList {
+    //TODO: 탈퇴 사유 리스트 추가
+    A("A"), B("B"), C("C");
     private final String value;
 }

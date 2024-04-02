@@ -25,7 +25,7 @@ public class Member extends BaseEntityCreatedDate {
     private int phone = 0;
     private String email = "";
 
-    // 지역 ENUM 예정
+    //TODO 지역 ENUM 예정
 
     // 생년 월일
     private LocalDateTime birth;
@@ -36,7 +36,7 @@ public class Member extends BaseEntityCreatedDate {
     @Column(nullable = false, updatable = false)
     private Gender gender;
 
-    // 프로필 사진 예정
+    //TODO 프로필 사진 예정
 
     // 한줄 소개
     private String introduction="";
