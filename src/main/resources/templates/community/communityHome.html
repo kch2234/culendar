@@ -1,10 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+    <h1>커뮤니티 페이지 영역</h1>
+    <div name="favBoard">  <!-- 인기글 카드 영역 -->
+        <div>
+            <div name="heading">인기글</div>  <!--  제목  -->
+            <div name="icon-horizon"></div>
+        </div>
+        <div name="cards">  <!--  카드 영역  -->
+            <h1>카드 영역</h1>
+            <span name="boardCard"></span>  <!--  당일 가준 관람일이 지난 작품 카드 (관람한 작품)  -->
+            <span name="boardCard"></span>
+            <span name="boardCard"></span>
+            <span name="boardCard"></span>
+        </div>
+    </div> <!--  인기글 카드 영역  -->
+    <div name="board">  <!--  게시글 영역  -->
+        <div name="boardCategory">  <!--  게시글 카테고리 영역  -->
+            <span name="favBoard-category">인기글</span>
+            <span name="infoBoard-category">정보</span>
+            <span name="reviewBoard-category">후기</span>
+            <span name="add-button">글 작성</span>
+        </div>
+        <div name="boardList">  <!--  게시글 리스트 영역  -->
+            <div name="boardListHeader">  <!--  게시글 리스트 헤더 영역  -->
+                <span name="category">카테고리</span>
+                <span name="title">제목</span>
+                <span name="writer">작성자</span>
+            </div>
+            <div name="boardListContents">  <!--  게시글 컨텐츠 영역  -->
+                <span name="category">ex정보</span>
+                <span name="title">ex헤드윅할인</span>
+                <span name="writer">ex홍길동</span>
+            </div>
+        </div>
+        <div name="boardFooter">  <!--  게시글 리스트 푸터 영역  -->
+            <span name="searchCategory">검색카테고리</span>
+            <span name="searchBar">검색창</span>
+            <span name="prev-button">이전</span>
+            <span name="pagingNum">페이징번호</span>
+            <span name="next-button">다음</span>
+        </div>
+    </div>  <!--  게시글 영역  -->
+</th:block>
 </html>

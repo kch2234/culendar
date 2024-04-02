@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+    <h1>회원 페이지 영역</h1>
 
-</body>
+
+
+</th:block>
 </html>

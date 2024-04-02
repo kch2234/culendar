@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+    <h1>클럽 페이지 영역</h1>
+    <div name="meetingList">  <!-- 모임 카드 영역 -->
+        <span  name="dropdown-category"></span>  <!--  전시, 공연  -->
+        <span  name="dropdown-sort"></span>  <!--  인기순, 최신순  -->
+        <span  name="add-button">글 작성</span>
+        <div name="cards">  <!--  카드 영역  -->
+            <h1>카드 영역</h1>
+            <span name="meetingCard"></span>  <!--  당일 가준 관람일이 지난 작품 카드 (관람한 작품)  -->
+            <span name="meetingCard"></span>
+            <span name="meetingCard"></span>
+            <span name="meetingCard"></span>
+        </div>
+        <div name="cards">  <!--  카드 영역  -->
+            <h1>카드 영역</h1>
+            <span name="meetingCard"></span>  <!--  당일 가준 관람일이 지난 작품 카드 (관람한 작품)  -->
+            <span name="meetingCard"></span>
+            <span name="meetingCard"></span>
+            <span name="meetingCard"></span>
+        </div>
+        <div name="meetingFooter">  <!--  모임 카드 푸터 영역  -->
+            <span name="searchCategory">검색카테고리</span>
+            <span name="searchBar">검색창</span>
+            <span name="prev-button">이전</span>
+            <span name="pagingNum">페이징번호</span>
+            <span name="next-button">다음</span>
+        </div>
+    </div> <!--  모임 카드 영역  -->
+</th:block>
 </html>
