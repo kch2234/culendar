@@ -1,12 +1,12 @@
-package com.teamproject.culendar.domain;
+package com.teamproject.culendar.domain.enumfiles;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum Gender {
+public enum BoardType {
 
-    MALE("남"),FEMALE("여");
+    INFO("정보"),REVIEW("리뷰");
     private final String value;
 }

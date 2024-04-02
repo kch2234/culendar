@@ -1,12 +1,13 @@
-package com.teamproject.culendar.domain;
+package com.teamproject.culendar.domain.member;
 
+import com.teamproject.culendar.domain.baseEntity.BaseEntityCreatedDate;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class Follow  extends BaseEntityCreatedDate{
+public class Interest extends BaseEntityCreatedDate {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,8 +15,6 @@ public class Follow  extends BaseEntityCreatedDate{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "follow_id")
-    private Member follow;
+    //TODO 관심사 예정 (ENUM 작품 분류와 동일)
+    //private ProgramType interest;
 }

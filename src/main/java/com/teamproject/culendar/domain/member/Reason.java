@@ -1,12 +1,14 @@
-package com.teamproject.culendar.domain;
+package com.teamproject.culendar.domain.member;
 
+import com.teamproject.culendar.domain.enumfiles.ReasonList;
+import com.teamproject.culendar.domain.baseEntity.BaseEntityCreatedDate;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class Reason extends BaseEntityCreatedDate{
+public class Reason extends BaseEntityCreatedDate {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
