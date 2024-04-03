@@ -4,6 +4,7 @@ package com.teamproject.culendar.domain.member;
 import com.teamproject.culendar.domain.enumFiles.Gender;
 import com.teamproject.culendar.domain.enumFiles.MemberType;
 import com.teamproject.culendar.domain.baseEntity.BaseEntityCreatedDate;
+import com.teamproject.culendar.domain.enumFiles.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -58,5 +59,8 @@ public class Member extends BaseEntityCreatedDate {
 
     // 탈퇴 여부
     private boolean disabled = false;
+
+    // 권한
+    private Role role;
 
 }
