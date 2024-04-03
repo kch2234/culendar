@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+    <h1>게시글 작성 페이지 영역</h1>
+
+    <!--  TODO 텍스트 에디터 API  -->
+    <div name="title">제목</div>
+    <div name="program">작품 선택</div>  <!--  전시, 콘서트  -->
+    <div name="category-dropdown">글 분류</div>  <!--  후기, 정보  -->
+    <div name="image">이미지 첨부</div>
+    <div name="content-textbox">내용</div>
+    <div name="button">
+        <span name="cancel-button">취소</span>
+        <span name="submit-button">등록</span>
+    </div>
+
+</th:block>
+</html>

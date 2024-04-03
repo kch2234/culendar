@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <h1>커뮤니티 페이지 영역</h1>
+
     <div name="favBoard">  <!-- 인기글 카드 영역 -->
         <div>
             <div name="heading">인기글</div>  <!--  제목  -->
@@ -41,6 +42,7 @@
             <span name="pagingNum">페이징번호</span>
             <span name="next-button">다음</span>
         </div>
-    </div>  <!--  게시글 영역  -->
+    </div>  <!--  게시글 영역 END  -->
+
 </th:block>
 </html>

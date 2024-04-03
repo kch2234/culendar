@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+    <h1>게시글 상세 페이지 영역</h1>
+
+    <div name="boardDetailHeader">  <!--  게시글 영역 헤더  -->
+        <span name="title"></span>  <!--  제목  -->
+        <span name="button">  <!--  버튼 영역  -->
+            <span name="editBoard-button"></span>  <!--  수정 버튼  -->
+            <span name="deleteBoard-button"></span>  <!--  삭제 버튼  -->
+            <span name="bookmark-button"></span>  <!--  북마크 버튼  -->
+        </span>
+    </div>  <!--  게시글 영역 헤더 END  -->
+    <div name="programInfoCard"></div>  <!--  작품 정보 영역 카드  -->
+    <div name="content"></div>  <!--  내용  -->
+    <div name="writerCard"></div>  <!--  작성자 영역 카드  -->
+    <div name="reply">  <!--  댓글 영역  -->
+        <div name="replyHeader">  <!--  댓글 영역 헤더  -->
+            <div name="heading">댓글</div>
+            <div name="horizon-line"></div>
+        </div>
+        <div name="replyApply">  <!--  댓글 작성 영역  -->
+            <span name="writer">작성자</span>
+            <span name="content">내용</span>
+            <span name="submit-button">등록</span>
+        </div>
+        <div name="replyList">  <!--  댓글 리스트 영역  -->
+            <span name="writer">작성자</span>
+            <span name="content">내용</span>
+            <span name="createDate">등록일시</span>
+        </div>
+    </div>
+
+</th:block>
+</html>
