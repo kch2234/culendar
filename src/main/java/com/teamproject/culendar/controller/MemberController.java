@@ -21,6 +21,7 @@ public class MemberController {
 
     private MemberService memberService;
 
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin")
     public String admin() {
@@ -32,5 +33,6 @@ public class MemberController {
     public String member() {
         return "member/member";
     }
+
 
 }

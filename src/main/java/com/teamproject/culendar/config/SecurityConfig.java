@@ -1,8 +1,6 @@
 package com.teamproject.culendar.config;
 
-import com.teamproject.culendar.domain.Role;
 import com.teamproject.culendar.security.CustomUserDetailsService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,16 +41,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/login", "/signup").permitAll() // 비회원도 접근 가능
-                        .requestMatchers("/members/**").hasAnyRole("MEMBER", "ADMIN") // /회원만 접근 가능
-                        .requestMatchers("/cancels/**").hasAnyRole("CANCEL", "ADMIN") // 회원 탈퇴
                         .requestMatchers("/admin/**").hasRole("ADMIN") // 관리자만 접근 가능
-                        .anyRequest().authenticated()) // 그 외 요청은 인증된 사용자만 접근 가능
+                        .anyRequest().permitAll())
                 .csrf(csrf -> csrf.disable()) // CSRF 보안 기능 비활성화
                 .formLogin(login -> // 로그인 설정
                         login.loginPage("/login")
                                 .defaultSuccessUrl("/", true) // 로그인 성공 후 이동할 페이지
-                                .failureUrl("/login?error=true")) // 로그인 실패 시 이동할 페이지
+                                .failureUrl("/")
+                )
                 .rememberMe(remember -> // 로그인 유지 설정
                         remember.userDetailsService(userDetailsService)
                                 .tokenRepository(tokenRepository())
@@ -63,7 +59,9 @@ public class SecurityConfig {
                                 .logoutSuccessUrl("/")
                                 .invalidateHttpSession(true)) // 로그아웃 시 세션 무효화
                 .exceptionHandling(exception -> exception
-                        .accessDeniedPage("/access-denied")); // 접근 거부 페이지
+                                .accessDeniedHandler((request, response, accessDeniedException) ->
+                                        response.sendRedirect("/") // 권한 없음 에러 처리
+                                )); // 권한 없음 에러 처리
                 //TODO: 세션 관리 설정
         return http.build();
     }

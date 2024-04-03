@@ -21,4 +21,5 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("해당 사용자가 존재하지 않습니다 : " + username));
         return new CustomMember(findMember);
     }
+
 }
