@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-    <div name="heading">로그인</div>
-    <div name="userId">아이디</div>
-    <div name="password">비밀번호</div>
-    <div name="rememberMe">
-        <span name="rememberMe-checkbox"></span>
-        <span name="text">자동로그인</span>
-    </div>
-    <div name="login-button">로그인</div>
-    <div name="signup-button">회원가입</div>
-    <div name="findPassword">비밀번호 찾기</div>
+
+    <body>
+<h1>Please sign in</h1>
+<form class="user" action="" th:action th:object="${memberForm}" method="post">
+    <input type="text" th:field="*{username}" placeholder="Username">
+    <input type="password" th:field="*{password}" placeholder="Password">
+    <button type="submit">
+        Login
+    </button>
+</form>
 
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">  // 헤더 네브 푸터
     <h1>메인 페이지 영역</h1>
 
@@ -31,5 +32,14 @@
                 <span name="meetingCard"></span>
             </div>
         </div> <!--  인기 모임 영역  -->
+      <!--TODO nav로 이동 예정
+            <li><a href="/">Home</a></li>
+    <li><a th:href="@{/signup}">Signup</a></li>
+    <li><a th:href="@{/login}">Login</a></li>
+    <li><a th:href="@{/members/admin}">adminPage</a></li>
+    <li><a th:href="@{/members/member}">memberPage</a></li>
+
+      -->
 </th:block>
+
 </html>

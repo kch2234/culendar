@@ -5,7 +5,6 @@ spring:
     username: root
     password: 1234
 
-
   jpa:
     database: mysql
     hibernate:
@@ -26,3 +25,4 @@ server:
   servlet:
     session:
       tracking-modes: cookie
+
