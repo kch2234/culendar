@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+    <h1>회원설정 페이지 영역</h1>
+
+    <div name="heading">회원설정</div>
+    <div name="memberInfo">
+        <div name="userId-box">
+            <span name="heading">아이디</span>
+            <span name="userId" readonly></span>
+        </div>
+        <div name="gender-radio">
+            <span name="male-gender-radio">남성</span>
+            <span name="female-gender-radio">여성</span>
+        </div>
+        <div name="phone-box">
+            <span name="heading">전화번호</span>
+            <span name="phone-textbox"></span>
+        </div>
+        <div name="password-box">
+            <span name="heading">비밀번호</span>
+            <span name="password-textbox">비밀번호를 입력하세요</span>
+        </div>
+        <div name="birth-box">
+            <span name="heading">생년월일</span>
+            <span name="birthYear-dropdown">년</span>
+            <span name="birthMonth-dropdown">월</span>
+            <span name="birthDay-dropdown">일</span>
+        </div>
+    </div>
+    <div name="openRange">
+        <span name="followingRange">
+            <div name="heading">팔로잉 목록</div>
+            <div name="range-dropdown">
+                <div name="public">전체 공개</div>
+                <div name="memberOnly"></div>
+                <div name="mutualFollow"></div>
+                <div name="private"></div>
+            </div>
+        </span>
+        <span name="reviewRange">
+            <div name="heading">작성 후기</div>
+            <div name="range-dropdown">
+                <div name="public">전체 공개</div>
+                <div name="memberOnly">회원 공개</div>
+                <div name="mutualFollow">맞팔로우 공개</div>
+                <div name="private">비공개</div>
+            </div>
+        </span>
+        <span name="programRange">
+            <div name="heading">관람 작품</div>
+            <div name="range-dropdown">
+                <div name="public">전체 공개</div>
+                <div name="memberOnly">회원 공개</div>
+                <div name="mutualFollow">맞팔로우 공개</div>
+                <div name="private">비공개</div>
+            </div>
+        </span>
+        <span name="meetingApplyRange">
+            <div name="heading">참여 모임</div>
+            <div name="range-dropdown">
+                <div name="public">전체 공개</div>
+                <div name="memberOnly">회원 공개</div>
+                <div name="mutualFollow">맞팔로우 공개</div>
+                <div name="private">비공개</div>
+            </div>
+        </span>
+        <span name="bookmarkRange">
+            <div name="heading">북마크</div>
+            <div name="range-dropdown">
+                <div name="public">전체 공개</div>
+                <div name="memberOnly">회원 공개</div>
+                <div name="mutualFollow">맞팔로우 공개</div>
+                <div name="private">비공개</div>
+            </div>
+        </span>
+    </div>
+    <div name="button">
+        <span name="cancel-button">취소</span>
+        <span name="withdrawal-button">회원 탈퇴</span>
+    </div>
+
+</th:block>
+</html>

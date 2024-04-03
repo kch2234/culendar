@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+    <h1>프로필 수정 페이지 영역</h1>
+
+    <div name="profile">  <!--  회원 프로필 영역  -->
+        <span name="imageInfo">  <!--  회원 프로필 사진 영역  -->
+            <div name="memberImage"></div>  <!--  회원 프로필 사진  -->
+            <div name="button">  <!--  버튼 영역  -->
+                <span name="delete-button"></span>
+                <span name="edit-button"></span>
+            </div>
+        </span>
+        <span name="memberInfo">  <!--  회원 정보 영역  -->
+            <div name="username">  <!--  닉네임 영역  -->
+                <span name="username-textbox">닉네임</span>
+                <span name="submit-button">중복확인</span>
+            </div>
+            <div name="location">  <!--  위치 영역  -->
+                <span name="location-dropdown"></span>
+                <span name="location-checkbox"></span>
+            </div>
+            <div name="introduce">자기소개</div>
+        </span>
+    </div>
+    <div name="genre">  <!-- 관심사 영역 -->
+        <div name="heading">관심사</div>  <!--  제목  -->
+        <div name="cards">  <!--  관심사 카드 영역 상단  -->
+            <h1>카드 영역</h1>
+            <span name="card">
+                <div name="image"></div>
+                <div name="title"></div>
+            </span>
+            <span name="card">
+                <div name="image"></div>
+                <div name="title"></div>
+            </span><span name="card">
+                <div name="image"></div>
+                <div name="title"></div>
+            </span><span name="card">
+                <div name="image"></div>
+                <div name="title"></div>
+            </span>
+        </div>
+        <div name="cards">  <!--  관심사 카드 영역 하단  -->
+            <h1>카드 영역</h1>
+            <span name="card">
+                <div name="image"></div>
+                <div name="title"></div>
+            </span>
+            <span name="card">
+                <div name="image"></div>
+                <div name="title"></div>
+            </span><span name="card">
+                <div name="image"></div>
+                <div name="title"></div>
+            </span><span name="card">
+                <div name="image"></div>
+                <div name="title"></div>
+            </span>
+        </div>
+    <div name="submit-button">저장</div>
+
+</th:block>
+</html>
