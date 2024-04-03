@@ -3,6 +3,8 @@ package com.teamproject.culendar.controller;
 import com.teamproject.culendar.domain.Role;
 import com.teamproject.culendar.dto.MemberForm;
 import com.teamproject.culendar.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -10,13 +12,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
 public class LoginController {
 
-private final MemberService memberService;
+    private final MemberService memberService;
 
     @GetMapping("/signup")
     public String signupForm(@ModelAttribute MemberForm memberForm, Model model) {
@@ -29,12 +32,12 @@ private final MemberService memberService;
     public String signupPro(MemberForm memberForm) {
         log.info("********** HomeController POST /signup - memberForm : {}", memberForm);
         Long savedId = memberService.saveMember(memberForm);
-        // savedId 활용 -> 홈에서 모달이나 alert 띄울때 필요하면 사용
+        // TODO: savedId 활용 -> 홈에서 모달이나 alert 띄울때 필요하면 사용
         return "redirect:/";
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(@ModelAttribute MemberForm memberForm) {
         log.info("********** HomeController GET /login ");
         return "member/login";
     }

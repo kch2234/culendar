@@ -9,8 +9,9 @@
 <form class="user" action="" th:action th:object="${memberForm}" method="post">
     <input type="text" th:field="*{username}" placeholder="아이디">
     <input type="password" th:field="*{password}" placeholder="비밀번호">
-    <input type="radio" th:field="*{role}" th:value="USER">USER
+    <input type="radio" th:field="*{role}" th:value="MEMBER">MEMBER
     <input type="radio" th:field="*{role}" th:value="ADMIN">ADMIN
+    <input type="radio" th:field="*{role}" th:value="CANCEL">CANCEL
     <input type="submit" value="회원가입">
 </form>
 </body>
