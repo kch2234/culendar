@@ -60,7 +60,7 @@ public class SecurityConfig {
                                 .invalidateHttpSession(true)) // 로그아웃 시 세션 무효화
                 .exceptionHandling(exception -> exception
                                 .accessDeniedHandler((request, response, accessDeniedException) ->
-                                        response.sendRedirect("/") // 권한 없음 에러 처리
+                                        response.sendRedirect("/access-denied")
                                 )); // 권한 없음 에러 처리
                 //TODO: 세션 관리 설정
         return http.build();
