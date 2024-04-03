@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="navFrg">
+
+    <!--  네브 시작  -->
+    <div name="nav">
+        <span name="title">CULENDAR</span>  <!--  사이트 이름 영역  -->
+        <span name="menu">
+            <span name="myCalendar">myCalendar</span>
+            <span name="search">search</span>
+            <span name="community">community</span>
+            <span name="club">club</span>
+        </span>
+        <span name="profile">
+            <!--  회원(로그인)  -->
+            <div name="dropdown-edit">edit</div>
+            <div name="dropdown-setting">setting</div>
+            <div name="dropdown-logout">logout</div>
+            <!--  비회원  -->
+            <span name="login-button"></span>
+            <span name="signup-button"></span>
+        </span>
+    </div>
+    <!--  네브 끝  -->
+
+</th:block>
