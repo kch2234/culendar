@@ -1,7 +1,6 @@
 package com.teamproject.culendar.dto;
 
 import com.teamproject.culendar.domain.Member;
-import com.teamproject.culendar.domain.Role;
 import lombok.Data;
 
 @Data

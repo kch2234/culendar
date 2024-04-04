@@ -1,7 +1,6 @@
 package com.teamproject.culendar.dto;
 
 import com.teamproject.culendar.domain.Member;
-import com.teamproject.culendar.domain.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

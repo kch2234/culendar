@@ -2,7 +2,6 @@ package com.teamproject.culendar.dto;
 
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.domain.board.Board;
-import com.teamproject.culendar.domain.program.Program;
 import com.teamproject.culendar.domain.enumFiles.BoardType;
 import com.teamproject.culendar.domain.program.Program;
 import lombok.Data;
@@ -10,17 +9,15 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class ClubDTO {
+public class BoardDTO {
   private Long id;
-  private String title;
+  private BoardType boardType;
   private Member member;
   private Program program;
-  private LocalDateTime eventDate;
-  private Integer maxPeople;
-  private Location location; // TODO import 위치
+  private String title;
   private String content;
   private Long viewCount;
-  // TODO 썸네일, 이미지 추가
+//  private String image;  TODO 이미지 추가
 
   private LocalDateTime createDate;
   private LocalDateTime lastModifiedDate;
@@ -36,5 +33,3 @@ public class ClubDTO {
   }
 
 }
-
-
