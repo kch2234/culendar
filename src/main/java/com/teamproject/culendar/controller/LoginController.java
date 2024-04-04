@@ -23,12 +23,14 @@ public class LoginController {
     public String signupForm(@ModelAttribute MemberForm memberForm, Model model) {
         log.info("********** HomeController GET /signup ");
         // 회원가입 페이지에서 사용할 Role enum 값 전달
+        model.addAttribute("roleType", Role.values());
         model.addAttribute("genderType", Gender.values());
         return "member/signup";
     }
     @PostMapping("/signup")
     public String signupPro(MemberForm memberForm) {
         log.info("********** HomeController POST /signup - memberForm : {}", memberForm);
+        log.info("********** HomeController POST /signup - memberForm : {}", memberForm.getRole());
         log.info("********** HomeController POST /signup - memberForm : {}", memberForm.getGender());
         Long savedId = memberService.saveMember(memberForm);
         // TODO: savedId 활용 -> 홈에서 모달이나 alert 띄울때 필요하면 사용

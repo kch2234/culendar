@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true) // TODO:추가 @PreAuthorize 어노테이션을 사용하기 위해 필요한 설정
 @RequiredArgsConstructor
 public class SecurityConfig {
 

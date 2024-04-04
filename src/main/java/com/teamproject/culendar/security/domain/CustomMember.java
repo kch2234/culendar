@@ -25,7 +25,7 @@ public class CustomMember extends User {
 
     public CustomMember(Member member) {
         super(member.getUsername(), member.getPassword(),
-                Arrays.asList(new SimpleGrantedAuthority(member.getRole().getValue())));
+                Arrays.asList(new SimpleGrantedAuthority("ROLE_" + member.getRole().name())));
         this.member = new MemberDTO(member);
     }
 
