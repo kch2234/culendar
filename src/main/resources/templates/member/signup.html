@@ -1,45 +1,86 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+
+    <th:block th:fragment="content">
 
     <h1>회원가입 페이지 영역</h1>
 
     <div name="profile">  <!--  회원 프로필 영역 START  -->
+        <form action="" th:action th:object="${memberForm}" method="post">
         <span name="memberInfo">  <!--  회원 프로필 사진 영역 START  -->
-            <div name="memberImage"></div>  <!--  회원 프로필 사진  -->
+            <div name="memberImage">  <!--  회원 프로필 사진  -->
+                <!-- TODO: 추가예정
+                <input type="file" th:field="*{profileImage}" name="profileImage">
+                -->
+            </div>
             <div name="gernder-radio">  <!--  버튼 영역  -->
+                <input type="radio" th:field="*{gender}" th:value="MALE">
                 <span name="male-gender-radio">남성</span>
+                <input type="radio" th:field="*{gender}" th:value="FEMALE">
                 <span name="female-gender-radio">여성</span>
             </div>
             <div name="location">  <!--  위치 영역  -->
-                <span name="location-dropdown"></span>
-                <span name="location-checkbox"></span>
+                <span name="location-dropdown">
+                    <!--TODO: 추가예정
+                        <select name="location">
+                            <option value="seoul">서울</option>
+                            <option value="capital-region">수도권</option>
+                            <option value="busan">부산</option>
+                        </select>
+                    -->
+                </span>
+                <span name="location-checkbox">
+                    <!-- TODO: 추가예정
+                    -->
+                </span>
             </div>
         </span>  <!--  회원 프로필 사진 영역 END  -->
         <span name="memberInfo-textbox">  <!--  회원 정보 영역 START  -->
             <div name="userId">
-                <span name="userId-textbox">아이디</span>
-                <span name="submit-button">중복확인</span>
+                <span name="userId-textbox">
+                    <input type="text" th:field="*{userid}" placeholder="아이디">
+                </span>
+                <span name="submit-button">중복확인
+                </span>
             </div>
             <div name="username">
-                <span name="username-textbox">닉네임</span>
-                <span name="submit-button">중복확인</span>
+                <span name="username-textbox"></span>
+                    <input type="text" th:field="*{username}" placeholder="닉네임">
+                <span name="submit-button">중복확인
+                </span>
             </div>
             <div name="email">
-                <span name="email-textbox">이메일</span>
-                <span name="submit-button">중복확인</span>
+                <span name="email-textbox"></span>
+                    <input type="email" th:field="*{email}" placeholder="이메일">
+                <span name="submit-button">중복확인
+                </span>
             </div>
             <div name="password">
-                <span name="password-textbox">비밀번호</span>
-                <span name="password-textbox">비밀번호 재입력</span>
+                <span name="password-textbox"></span>
+                    <input type="password" th:field="*{password}" placeholder="비밀번호">
+                <span name="password-textbox">
+                    <input type="password" id="repeatPassword" placeholder="비밀번호 재입력">
+                </span>
             </div>
             <div name="phone">
-                <span name="phone-textbox">전화번호</span>
+                <span name="phone-textbox"></span>
+                    <input type="text" th:field="*{phone}" placeholder="전화번호">
                 <span name="username-textbox">인증번호 입력</span>
-                <span name="submit-button">인증번호 확인</span>
+                    <input type="text" placeholder="인증번호 입력">
+                <span name="submit-button">인증번호 확인
+                </span>
             </div>
-            <div name="birth">중복확인</div>
+            <div name="birth">
+                <span name="birth-textbox"></span>
+                    <input type="date" th:field="*{birth}" placeholder="생년월일">
+                <span name="submit-button">중복확인</span>
+            </div>
         </span>  <!--  회원 정보 영역 END  -->
-        <div name="introduce">자기소개</div>
+        <div name="introduce">
+            <input type="text" th:field="*{introduction}" placeholder="자기소개">
+        </div>
+
     </div>  <!--  회원 프로필 영역 END  -->
     <div name="genre">  <!-- 관심사 영역 START -->
         <div name="heading">관심사</div>  <!--  제목  -->
@@ -78,8 +119,10 @@
             </span>
         </div>  <!--  관심사 카드 영역 하단 END  -->
     </div>  <!-- 관심사 영역 START -->
-    <div name="submit-button">회원가입</div>
-
+    <div name="submit-button">
+        <button type="submit">회원가입</button>
+    </div>
+    </form>
     <!--TODO secu test용 form 수정 필요
 <form class="user" action="" th:action th:object="${memberForm}" method="post">
     <input type="text" th:field="*{username}" placeholder="아이디">
@@ -90,5 +133,6 @@
     <input type="submit" value="회원가입">
 </form>
 -->
-
+    </th:block>
+</th:block>
 </html>

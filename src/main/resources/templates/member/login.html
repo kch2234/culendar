@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
 
+    <th:block th:fragment="content">
 
-    <body>
 <h1>Please sign in</h1>
 <form class="user" action="" th:action th:object="${memberForm}" method="post">
-    <input type="text" th:field="*{username}" placeholder="Username">
-    <input type="password" th:field="*{password}" placeholder="Password">
+    <input type="text" th:field="*{userid}" placeholder="아이디">
+    <input type="password" th:field="*{password}" placeholder="비밀번호">
     <button type="submit">
         Login
     </button>
 </form>
-
+    </th:block>
+</th:block>
 </html>

@@ -8,11 +8,14 @@ import com.teamproject.culendar.domain.enumFiles.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
+@DynamicInsert
 public class Member extends BaseEntityCreatedDate {
     // *****    회원    *****
 
@@ -61,6 +64,8 @@ public class Member extends BaseEntityCreatedDate {
     private boolean disabled = false;
 
     // 권한
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'MEMBER'")
     private Role role;
 
 }

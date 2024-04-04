@@ -7,19 +7,19 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @Slf4j
 public class HomeController {
 
     @GetMapping("/")
-    public String home(@AuthenticationPrincipal CustomMember customMember) {
+    public String home(@AuthenticationPrincipal CustomMember customMember, Model model) {
         log.info("***** HomeController GET Home!! - customMember : {}", customMember);
-        if (customMember == null) {
+        if (customMember == null) { // 로그인 안한 경우
             return "main";
         }
-        return "loginHome";
+        model.addAttribute("member", customMember); // 로그인한 회원 정보를 Model에 담아서 전달
+        return "loginmain";
     }
 
     @GetMapping("/access-denied")

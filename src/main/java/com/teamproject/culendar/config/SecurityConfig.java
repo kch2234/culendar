@@ -47,7 +47,6 @@ public class SecurityConfig {
                 .formLogin(login -> // 로그인 설정
                         login.loginPage("/login")
                                 .defaultSuccessUrl("/", true) // 로그인 성공 후 이동할 페이지
-                                .failureUrl("/")
                 )
                 .rememberMe(remember -> // 로그인 유지 설정
                         remember.userDetailsService(userDetailsService)
