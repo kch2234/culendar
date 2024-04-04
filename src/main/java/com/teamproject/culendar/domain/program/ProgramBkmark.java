@@ -1,6 +1,7 @@
 package com.teamproject.culendar.domain.program;
 
 import com.teamproject.culendar.domain.baseEntity.BaseEntityCreatedDate;
+import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -23,6 +24,6 @@ public class ProgramBkmark extends BaseEntityCreatedDate {
     private Program program;
 
     //TODO 지역 추가
-    //@Column(nullable = false)
-    //private Location location;
+    @Column(nullable = false)
+    private Location location;
 }

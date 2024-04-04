@@ -8,6 +8,6 @@ import lombok.RequiredArgsConstructor;
 public enum ProgramType {
     // *****    작품 종류   *****
 
-    MOVIE("영화"), MUSICAL("뮤지컬"), CONCERT("콘서트"), EXHIBITION("전시회"), ETC("기타");
+    DRAMA("연극"), CONCERT("음악/콘서트"), EXHIBITION("전시"), MUSICAL("뮤지컬/오페라"), ETC("기타");
     private final String value;
 }

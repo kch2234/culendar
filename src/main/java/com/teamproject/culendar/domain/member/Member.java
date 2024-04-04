@@ -2,12 +2,14 @@ package com.teamproject.culendar.domain.member;
 
 
 import com.teamproject.culendar.domain.enumFiles.Gender;
+import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.MemberType;
 import com.teamproject.culendar.domain.baseEntity.BaseEntityCreatedDate;
 import com.teamproject.culendar.domain.enumFiles.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -34,8 +36,8 @@ public class Member extends BaseEntityCreatedDate {
     private String email = "";
 
     //TODO 지역 ENUM 예정
-    //@Column(nullable = false)
-    //private Location location;
+    @Column(nullable = false)
+    private Location location;
 
     // 생년 월일
     @Column(nullable = false)
@@ -61,6 +63,8 @@ public class Member extends BaseEntityCreatedDate {
     private boolean disabled = false;
 
     // 권한
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'MEMBER'")
     private Role role;
 
 }
