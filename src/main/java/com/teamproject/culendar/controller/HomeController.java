@@ -13,13 +13,12 @@ import org.springframework.web.bind.annotation.*;
 public class HomeController {
 
     @GetMapping("/")
-    public String home(@AuthenticationPrincipal CustomMember customMember, Model model) {
+    public String home(@AuthenticationPrincipal CustomMember customMember) {
         log.info("***** HomeController GET Home!! - customMember : {}", customMember);
         if (customMember == null) { // 로그인 안한 경우
             return "main";
         }
-        model.addAttribute("member", customMember); // 로그인한 회원 정보를 Model에 담아서 전달
-        return "loginmain";
+        return "loginHome";
     }
 
     @GetMapping("/access-denied")
