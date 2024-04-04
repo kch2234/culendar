@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
     <h1>회원가입 페이지 영역</h1>
 
     <div name="profile">  <!--  회원 프로필 영역 START  -->
@@ -79,16 +78,5 @@
         </div>  <!--  관심사 카드 영역 하단 END  -->
     </div>  <!-- 관심사 영역 START -->
     <div name="submit-button">회원가입</div>
-
-    <!--TODO secu test용 form 수정 필요
-<form class="user" action="" th:action th:object="${memberForm}" method="post">
-    <input type="text" th:field="*{username}" placeholder="아이디">
-    <input type="password" th:field="*{password}" placeholder="비밀번호">
-    <input type="radio" th:field="*{role}" th:value="MEMBER">MEMBER
-    <input type="radio" th:field="*{role}" th:value="ADMIN">ADMIN
-    <input type="radio" th:field="*{role}" th:value="CANCEL">CANCEL
-    <input type="submit" value="회원가입">
-</form>
--->
 
 </html>
