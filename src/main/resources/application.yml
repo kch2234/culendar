@@ -3,7 +3,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/culendar?useUnicode=true&characterEncoding=UTF-8&characterSetResult=UTF-8&useSSL=true
     username: root
-    password: 1234
+    password: ncc-1701
 
 
   jpa:

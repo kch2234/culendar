@@ -2,12 +2,17 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
-        <h1>게시글 작성 페이지 영역</h1>
+        <h1>모임 작성 페이지 영역</h1>
 
         <!--  TODO 텍스트 에디터 API  -->
         <div name="title">제목</div>
         <div name="program">작품 선택</div>  <!--  전시, 콘서트  -->
-        <div name="category-dropdown">글 분류</div>  <!--  후기, 정보  -->
+        <div name="date">모임 날짜</div>
+        <div name="personnel">인원</div>
+        <div name="age">연령</div>
+        <div name="place">장소</div>
+        <div name="gender">성별</div>
+        <div name="thumbnail">썸네일</div>
         <div name="image">이미지 첨부</div>
         <div name="content-textbox">내용</div>
         <div name="button">
