@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
-    <h1>마이캘린더 페이지 영역</h1>
-    <div>  <!--  캘린더+사이드정보창 영역  -->
-        <span>  <!--  마이캘린더 영역  -->
+    <th:block th:fragment="content">
+        <h1>마이캘린더 페이지 영역</h1>
+        <div>  <!--  캘린더+사이드정보창 영역  -->
+            <span>  <!--  마이캘린더 영역  -->
             <spna>캘린더 API 영역</spna>
-            <span  name="dropdown-memberClendar"></span>  <!--  마이캘린더 종류  -->
+            <span name="dropdown-memberClendar"></span>  <!--  마이캘린더 종류  -->
         </span>  <!--  마이캘린더 영역  -->
-        <span>  <!--  사이드 정보창 영역  -->
+            <span>  <!--  사이드 정보창 영역  -->
             <span>사이드 정보창 영역</span>
             <div name="myCalendarResult">  <!--  마이캘린더 내 작품 검색  -->
                 <div name="searchBar"></div>  <!--  검색창  -->
@@ -28,20 +29,20 @@
                 <div name="meetingCard"></div>  <!--  모임 카드  -->
             </div>
         </span>  <!--  사이드 정보창 영역  -->
-    </div>  <!--  캘린더+사이드정보창 영역 END  -->
-    <div name="favMeeting">  <!-- 후기 작성 영역 -->
-        <div>
-            <div name="heading">후기 작성</div>  <!--  제목  -->
-            <div name="icon-horizon"></div>
-        </div>
-        <div name="cards">  <!--  카드 영역  -->
-            <h1>카드 영역</h1>
-            <span name="meetingCard"></span>  <!--  당일 가준 관람일이 지난 작품 카드 (관람한 작품)  -->
-            <span name="meetingCard"></span>
-            <span name="meetingCard"></span>
-            <span name="meetingCard"></span>
-        </div>
-    </div> <!--  후기 작성 영역  -->
-
+        </div>  <!--  캘린더+사이드정보창 영역 END  -->
+        <div name="favMeeting">  <!-- 후기 작성 영역 -->
+            <div>
+                <div name="heading">후기 작성</div>  <!--  제목  -->
+                <div name="icon-horizon"></div>
+            </div>
+            <div name="cards">  <!--  카드 영역  -->
+                <h1>카드 영역</h1>
+                <span name="meetingCard"></span>  <!--  당일 가준 관람일이 지난 작품 카드 (관람한 작품)  -->
+                <span name="meetingCard"></span>
+                <span name="meetingCard"></span>
+                <span name="meetingCard"></span>
+            </div>
+        </div> <!--  후기 작성 영역  -->
+    </th:block>
 </th:block>
 </html>
