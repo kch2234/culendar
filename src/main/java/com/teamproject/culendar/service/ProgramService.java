@@ -34,7 +34,7 @@ public class ProgramService {
     }
 
     // 작품 하나 크롤링
-    public ProgramDTO getProgram(Long num){
+    public ProgramDTO getProgram(Long num) {
 
         String mainURL = "https://www.culture.go.kr/oneeye/oneEyeView.do?seq=";
         Long seq = num;
@@ -52,7 +52,7 @@ public class ProgramService {
 
         // 제목 크롤링
         Element title = doucment.select("#content > div > section.section-view > div > div > div.info-view > div.wrap-info > p").first();
-        if (title == null) {
+        if (title == null || title.text().equals("")) {
             return null;
         }
         String titleText = title.text();
@@ -64,6 +64,10 @@ public class ProgramService {
             return null;
         }
         String programTypeText = programType.text();
+        ProgramType compareProgramType = compareProgramType(programTypeText);
+        if (compareProgramType == null) {
+            return null;
+        }
         log.info(programTypeText);
 
         // 기간 크롤링
@@ -75,14 +79,47 @@ public class ProgramService {
         log.info(periodText);
 
         // String to LocalDateTime
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String[] dateInString = periodText.split("~");
-        String[] lastDate = dateInString[1].split(" ");
+        DateTimeFormatter formatterDash = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatterDot = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+        String[] dateInString = new String[2];
+        String[] lastDate = new String[2];
+        try {
+            if (periodText.contains(" ~ ")) {
+                dateInString = periodText.split(" ~ ");
+            } else if (periodText.contains("~")) {
+                dateInString = periodText.split("~");
+            }
+            lastDate = dateInString[1].split(" ");
+        } catch (Exception e) {
+            return null;
+        }
         log.info(lastDate[0]);
-        dateInString[0]+=" 00:00:00";
-        lastDate[0]+=" 23:59:59";
-        LocalDateTime startDate = LocalDateTime.parse(dateInString[0], formatter);
-        LocalDateTime endDate = LocalDateTime.parse(lastDate[0], formatter);
+        dateInString[0] += " 00:00:00";
+        lastDate[0] += " 23:59:59";
+        LocalDateTime startDate;
+        try {
+            if (dateInString[0].contains(".")) {
+                startDate = LocalDateTime.parse(dateInString[0], formatterDot);
+            } else {
+                startDate = LocalDateTime.parse(dateInString[0], formatterDash);
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        LocalDateTime endDate;
+        try {
+            if (lastDate[0].contains(".")) {
+                endDate = LocalDateTime.parse(lastDate[0], formatterDot);
+            } else {
+                endDate = LocalDateTime.parse(lastDate[0], formatterDash);
+            }
+        } catch (Exception e) {
+            return null;
+        }
+
+        if (startDate == null || endDate == null) {
+            return null;
+        }
         log.info(startDate.toString());
         log.info(endDate.toString());
 
@@ -101,12 +138,21 @@ public class ProgramService {
         if (location == null || location.text().equals("")) {
             return null;
         }
+
+//        Element location = doucment.select("#areaTabInfo_01 > div.txt-wrap > div:nth-child(1) > dl:nth-child(2) > dd").first();
         String locationText = location.text();
+//        locationText.substring(0,2);
+
+        Location compareLocation = compareLocation(locationText);
+        if (compareLocation == null) {
+            return null;
+        }
+
         log.info(locationText);
 
         // x 좌표 크롤링
         Element locationX = doucment.select("#cul_gps_x").first();
-        if (locationX == null || locationX.val().equals("")){
+        if (locationX == null || locationX.val().equals("")) {
             return null;
         }
         String locationXText = locationX.val();
@@ -135,11 +181,11 @@ public class ProgramService {
 
         programDTO.setTitle(titleText);
         programDTO.setSeq(seq);
-        programDTO.setProgramType(compareProgramType(programTypeText));
+        programDTO.setProgramType(compareProgramType);
         programDTO.setStartDate(startDate);
         programDTO.setEndDate(endDate);
         programDTO.setProgramTime(timeText);
-        programDTO.setLocation(compareLocation(locationText));
+        programDTO.setLocation(compareLocation);
         programDTO.setLocationX(Double.parseDouble(locationXText));
         programDTO.setLocationY(Double.parseDouble(locationYText));
         programDTO.setThumbnail(imageUrl);
@@ -147,15 +193,15 @@ public class ProgramService {
         return programDTO;
     }
 
-    // 크롤링한 지역 Strin값 ENUM으로 변환
+    // 크롤링한 지역 String값 ENUM으로 변환
     public Location compareLocation(String locationText) {
 
         for (Location location : Location.values()) {
-            if (locationText.contains(location.getValue())) {
+            if (locationText.substring(0,2).contains(location.getValue())) {
                 return location;
             }
         }
-        return Location.ETC;
+        return null;
     }
 
     // 크롤링한 분류 String값 ENUM으로 변환
@@ -166,8 +212,9 @@ public class ProgramService {
                 return programType;
             }
         }
-        return ProgramType.ETC;
+        return null;
     }
+
 
     public Long FindBySeq(Long seq) {
         Program findProgram = programRepository.findBySeq(seq).orElse(null);
@@ -178,19 +225,17 @@ public class ProgramService {
     }
 
     public void saveProgram(ProgramDTO programDTO) {
-        if(FindBySeq(programDTO.getSeq()) != null) {
+        if (FindBySeq(programDTO.getSeq()) != null) {
             log.info("******** ProgramController POST /program/add - 중복된 seq 값입니다.");
             return;
         }
         ProgramDTO program = getProgram(programDTO.getSeq());
         if (program == null) {
-            log.info("******** ProgramController POST /program/add - 서버에 존재하지 않는 seq 값입니다.");
+//            log.info("******** ProgramController POST /program/add - 서버에 존재하지 않는 seq 값입니다. : " + programDTO.getSeq());
             return;
         }
         save(program);
     }
-
-
 
 
 }
