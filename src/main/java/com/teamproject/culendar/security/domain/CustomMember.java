@@ -1,6 +1,6 @@
 package com.teamproject.culendar.security.domain;
 
-import com.teamproject.culendar.domain.Member;
+import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.MemberDTO;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

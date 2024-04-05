@@ -64,4 +64,7 @@ public class EventBoard extends BaseEntityLastModifiedDate {
     // 자동 수락 여부
     private Boolean autoAccept = true;
 
+    // NOTE add 조회수
+    private Long viewCount = 0L;
+
 }

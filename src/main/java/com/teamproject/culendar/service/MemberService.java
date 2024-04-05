@@ -1,6 +1,6 @@
 package com.teamproject.culendar.service;
 
-import com.teamproject.culendar.domain.Member;
+import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.MemberDTO;
 import com.teamproject.culendar.dto.MemberForm;
 import com.teamproject.culendar.repository.MemberRepository;

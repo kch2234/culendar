@@ -3,7 +3,7 @@ package com.teamproject.culendar.service;
 import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.EventBoard;
 import com.teamproject.culendar.dto.BoardDTO;
-import com.teamproject.culendar.dto.BoardForm;
+import com.teamproject.culendar.dto.EventBoardDTO;
 import com.teamproject.culendar.dto.EventBoardForm;
 import com.teamproject.culendar.dto.PageRequestDTO;
 import com.teamproject.culendar.repository.EventBoardRepository;
@@ -24,15 +24,15 @@ public class EventBoardService {
   private final EventBoardRepository eventBoardRepository;
   private final MemberRepository memberRepository;
 
-  // 게시글 등록
-  public Long save(BoardForm boardForm) {
-    Board entity = EventBoardForm.toEntity();
-    Board savedBoard = eventBoardRepository.save(entity);
+  // 모임 등록
+  public Long save(EventBoardForm eventBoardForm) {
+    EventBoard entity = eventBoardForm.toEntity();
+    EventBoard savedBoard = eventBoardRepository.save(entity);
 
     return savedBoard.getId();
   }
 
-//  // 게시글 목록 불러오기 (페이징 X)
+//  // 모임 목록 불러오기 (페이징 X)
 //  public List<BoardDTO> getList() {
 //    List<Board> all = eventBoardRepository.findAll();
 //    List<BoardDTO> list = all.stream()
@@ -42,35 +42,36 @@ public class EventBoardService {
 //    return list;
 //  }
 
-  // 게시글 목록 불러오기
+  // 모임 목록 불러오기
   public Page<EventBoard> getListWithPaging(PageRequestDTO pageRequestDTO) {
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
         pageRequestDTO.getSize(),
         Sort.by("id").descending());
 
-    Page<EventBoard> result = eventeventBoardRepository.findAll(pageable);
+    Page<EventBoard> result = eventBoardRepository.findAll(pageable);
 
     return result;
   }
 
-  // 게시글 조회
-  public BoardDTO getOneBoard(Long id) {
+  // 모임 조회
+  public EventBoardDTO getOneBoard(Long id) {
     EventBoard board = eventBoardRepository.findById(id).orElse(null);
-    board.setViewCount(board.getViewCount() + 1);
+//    board.setViewCount(board.getViewCount() + 1);  TODO 수정
 
-    return new BoardDTO(board);
+    return new EventBoardDTO(board);
   }
 
-  // 게시글 삭제
+  // 모임 삭제
   public void deleteOneBoard(Long id) {
     eventBoardRepository.deleteById(id);
   }
 
-  public void updateOneBoard(BoardForm boardForm) {
-    Board findBoard = memberRepository.findById(boardForm.getId()).orElse(null);
-    findBoard.setTitle(boardForm.getTitle());
-    findBoard.setContent(boardForm.getContent());
+  // 모임 수정
+  public void updateOneBoard(EventBoardForm eventBoardForm) {
+    EventBoard findBoard = eventBoardRepository.findById(eventBoardForm.getId()).orElse(null);
+    findBoard.setTitle(eventBoardForm.getTitle());
+    findBoard.setContent(eventBoardForm.getContent());
   }
 
 

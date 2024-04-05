@@ -1,6 +1,5 @@
 package com.teamproject.culendar.dto;
 
-import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.enumFiles.Gender;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.domain.board.EventBoard;
@@ -10,7 +9,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class EventDTO {
+public class EventBoardDTO {
   private Long id;
 //  private String thumbnail; TODO 썸네일 추가
   private String title;
@@ -30,7 +29,7 @@ public class EventDTO {
   private LocalDateTime createDate;
   private LocalDateTime lastModifiedDate;
 
-  public EventDTO(EventBoard eventBoard) {
+  public EventBoardDTO(EventBoard eventBoard) {
     this.id = eventBoard.getId();
     this.title = eventBoard.getTitle();
     this.content = eventBoard.getContent();

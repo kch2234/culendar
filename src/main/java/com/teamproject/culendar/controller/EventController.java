@@ -2,6 +2,7 @@ package com.teamproject.culendar.controller;
 
 import com.teamproject.culendar.domain.board.EventBoard;
 import com.teamproject.culendar.dto.*;
+import com.teamproject.culendar.dto.EventBoardDTO;
 import com.teamproject.culendar.security.domain.CustomMember;
 import com.teamproject.culendar.service.EventBoardService;
 import lombok.RequiredArgsConstructor;
@@ -29,10 +30,10 @@ public class EventController {
     log.info("**** EventController GET /clubs/list");
     Page<EventBoard> result = eventBoardService.getListWithPaging(pageRequestDTO);
     List<EventBoard> contents = result.getContent();
-    List<EventDTO> list = new ArrayList<>();
+    List<EventBoardDTO> list = new ArrayList<>();
     for(int i = 0; i < contents.size(); i++) {
       EventBoard board = contents.get(i);
-      EventDTO dto = new EventDTO(board);
+      EventBoardDTO dto = new EventBoardDTO(board);
       list.add(dto);
     }
     PageResponseDTO pageResponseDTO = new PageResponseDTO(pageRequestDTO, result.getTotalElements());
@@ -52,8 +53,7 @@ public class EventController {
   }
   @PostMapping("/add")
   public String addPRo(EventBoardForm eventBoardForm, @AuthenticationPrincipal CustomMember customMember) {
-    log.info("**** EventController POST /clubs/add - boardForm : {}", eventBoardForm);
-    eventBoardForm.setWriter(customMember.getUsername());
+    log.info("**** EventController POST /clubs/add - eventBoardForm : {}", eventBoardForm);
     Long saveId = eventBoardService.save(eventBoardForm);
 
     return "redirect:/club/clubHome";
@@ -62,8 +62,8 @@ public class EventController {
   // 모임 상세
   @GetMapping("/{id}")
   public String detail(@PathVariable("id") Long id, Model model) {
-    log.info("***** EventController GET /club/eventDetail - bid : {}", id);
-    EventBoardDTO board = EventboardService.getOneBoard(id);
+    log.info("***** EventController GET /club/eventDetail - id : {}", id);
+    EventBoardDTO board = eventBoardService.getOneBoard(id);
     log.info("***** EventController GET /clubs/detail - event : {}", board);
     model.addAttribute("board", board);
 
@@ -75,7 +75,7 @@ public class EventController {
   @PostMapping("/{id}/delete")
   public String delete(@PathVariable("id") Long id, String writer) {
     log.info("**** EventController POST /clubs/:id/delete - id : {}", id);
-    EventBoardService.deleteOneBoard(id);
+    eventBoardService.deleteOneBoard(id);
     return "redirect:clubs/list";
   }
 
@@ -83,15 +83,15 @@ public class EventController {
   @GetMapping("/{id}/modify")
   public String modifyForm(@PathVariable("id") Long id, Model model) {
     log.info("**** EventController GET /clubs/:id/modify - id : {}", id);
-    EventBoardDTO board = EventBoardService.getOneBoard(id);
+    EventBoardDTO board = eventBoardService.getOneBoard(id);
     model.addAttribute("board", board);
     return "club/eventModify";
   }
   @PostMapping("/{id}/modify")
-  public String modifyPro(@PathVariable("id") Long id, BoardForm boardForm) {
+  public String modifyPro(@PathVariable("id") Long id, EventBoardForm eventBoardForm) {
     log.info("**** EventController GET /clubs/:id/modify - id : {}", id);
     log.info("**** EventController GET /clubs/:id/modify - eventBoardForm : {}", eventBoardForm);
-    eventboardService.updateOneBoard(boardForm);
+    eventBoardService.updateOneBoard(eventBoardForm);
     return "redirect:/clubs/{id}";
   }
 

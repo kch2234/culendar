@@ -8,10 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface EventBoardRepository extends JpaRepository<Board, Long> {
+public interface EventBoardRepository extends JpaRepository<EventBoard, Long> {
 
   Page<EventBoard> findByTitle(String title, Pageable pageable);
-  List<EventBoard> findByWriter(String writer, Pageable pageable);
+  List<EventBoard> findByMember(String member, Pageable pageable);
 
 
 }

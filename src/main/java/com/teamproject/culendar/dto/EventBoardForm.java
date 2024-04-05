@@ -19,8 +19,6 @@ public class EventBoardForm {
   private Member member;
   private String title;
   private String content;
-
-
   //  private String image;  TODO 이미지 추가
   private Program program;
   private LocalDateTime eventDate;  // 일정 날짜
