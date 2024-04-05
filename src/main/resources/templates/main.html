@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:replace="~{/layouts/base :: base(~{this::content})}">  // 헤더 네브 푸터
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}"> // 헤더 네브 푸터
     <h1>메인 페이지 영역</h1>
 
     <th:block th:fragment="content">
         <li><a th:href="@{/signup}">Signup</a></li>
         <li><a th:href="@{/login}">Login</a></li>
-        <div name="calendar">캘린더 영역</div>
+        <div id='calendar' class="w-75 m-auto mt-2"></div>
         <div name="favProgram">  <!-- 인기 작품 영역 -->
             <div>
                 <div name="heading">인기 작품</div>  <!--  제목  -->
@@ -34,12 +34,45 @@
                 <span name="meetingCard"></span>
             </div>
         </div> <!--  인기 모임 영역  -->
-      <!--TODO nav로 이동 예정
-            <li><a href="/">Home</a></li>
-    <li><a th:href="@{/signup}">Signup</a></li>
-    <li><a th:href="@{/login}">Login</a></li>
-    <li><a th:href="@{/members/admin}">adminPage</a></li>
-    <li><a th:href="@{/members/member}">memberPage</a></li>
+
+        <script>
+
+            // 달력
+            $(document).ready(function () {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    headerToolbar: {
+                        left: 'prev',
+                        center: 'title',
+                        right: 'next'
+                    },
+                    initialView: 'dayGridMonth',
+                    locale: 'ko',
+                    navLinks: false,
+                    showNonCurrentDates: false,
+                    editable: false,
+                    dayMaxEvents: true,
+
+                    // 달력 날짜에 "일"을 제거
+                    dayCellContent: function (info) {
+                        var number = document.createElement("a");
+                        number.classList.add("fc-daygrid-day-number");
+                        number.innerHTML = info.dayNumberText.replace("일", " ");
+                        if (info.view.type === "dayGridMonth") {
+                            return {
+                                html: number.outerHTML
+                            };
+                        }
+                        return {
+                            domNodes: []
+                        };
+                    },
+                    datesSet: (info) => {
+                        // 현재 달력에 표시된 월 가져오기
+                        console.log(info);
+                        console.log(info.startStr);
+                    },
+
 
       -->
 </th:block>
