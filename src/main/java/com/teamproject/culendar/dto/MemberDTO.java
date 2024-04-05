@@ -1,6 +1,7 @@
 package com.teamproject.culendar.dto;
 
 import com.teamproject.culendar.domain.enumFiles.Gender;
+import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.MemberType;
 import com.teamproject.culendar.domain.enumFiles.Role;
 import com.teamproject.culendar.domain.member.Member;
@@ -20,8 +21,8 @@ public class MemberDTO {
     private String password;
     private int phone;
     private String email;
-    //TODO 지역 ENUM 예정
-    //private Location location;
+    //지역 ENUM
+    private Location location;
     private LocalDateTime birth;
     private MemberType memberType;
     private Gender gender;

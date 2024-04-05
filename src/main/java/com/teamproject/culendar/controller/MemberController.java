@@ -1,12 +1,8 @@
 package com.teamproject.culendar.controller;
 
 
-import com.teamproject.culendar.domain.enumFiles.Role;
-import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.MemberDTO;
 
-import com.teamproject.culendar.dto.MemberForm;
-import com.teamproject.culendar.repository.MemberRepository;
 
 import com.teamproject.culendar.service.MemberService;
 import lombok.RequiredArgsConstructor;
