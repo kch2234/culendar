@@ -1,6 +1,6 @@
 package com.teamproject.culendar.security;
 
-import com.teamproject.culendar.domain.Member;
+import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.repository.MemberRepository;
 import com.teamproject.culendar.security.domain.CustomMember;
 import lombok.RequiredArgsConstructor;
