@@ -28,8 +28,8 @@ import javax.sql.DataSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomUserDetailsService userDetailsService; // remember-me에 필요 (로그인처리시사용)
-    private final DataSource dataSource; // yml DB 접속정보 설정 remember-me에 필요
+  private final CustomUserDetailsService userDetailsService; // remember-me에 필요 (로그인처리시사용)
+  private final DataSource dataSource; // yml DB 접속정보 설정 remember-me에 필요
 
     // 시큐리티 필터를 무시할 요청 경로 지정
     @Bean

@@ -51,4 +51,13 @@ public class MemberDTO {
         this.role = member.getRole();
         this.createDate = member.getCreateDate();
     }
+
+    public Member toEntity() {
+        Member member = new Member();
+        member.setId(this.id);
+        member.setUsername(this.username);
+        member.setPassword(this.password);
+        member.setRole(this.role);
+        return member;
+    }
 }

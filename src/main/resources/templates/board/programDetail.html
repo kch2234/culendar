@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
-    <h1>작품 상세 페이지 영역</h1>
+    <th:block th:fragment="content">
+        <h1>작품 상세 페이지 영역</h1>
 
-    <div name="programInfoCard"></div>
-    <div name="title"></div>
-    <div name="content"></div>
-    <div name="favReview">  <!-- 인기 후기 영역 -->
-        <div>
-            <div name="heading">인기 후기</div>  <!--  제목  -->
-            <div name="icon-horizon"></div>
-        </div>
-        <div name="cards">
-            <h1>카드 영역</h1>
-            <span name="reviewCard"></span>  <!--  작품 카드  -->
-            <span name="reviewCard"></span>
-            <span name="reviewCard"></span>
-            <span name="reviewCard"></span>
-        </div>
-    </div>  <!--  인기 후기 영역 END  -->
-    <div name="favMeeting">  <!-- 인기 모임 영역 -->
-        <div>
-            <div name="heading">인기 모임</div>  <!--  제목  -->
-            <div name="icon-horizon"></div>
-        </div>
-        <div name="cards">
-            <h1>카드 영역</h1>
-            <span name="meetingCard"></span>  <!--  작품 카드  -->
-            <span name="meetingCard"></span>
-            <span name="meetingCard"></span>
-            <span name="meetingCard"></span>
-        </div>
-    </div> <!--  인기 모임 영역  -->
+        <div name="programInfoCard"></div>
+        <div name="title"></div>
+        <div name="content"></div>
+        <div name="favReview">  <!-- 인기 후기 영역 -->
+            <div>
+                <div name="heading">인기 후기</div>  <!--  제목  -->
+                <div name="icon-horizon"></div>
+            </div>
+            <div name="cards">
+                <h1>카드 영역</h1>
+                <span name="reviewCard"></span>  <!--  작품 카드  -->
+                <span name="reviewCard"></span>
+                <span name="reviewCard"></span>
+                <span name="reviewCard"></span>
+            </div>
+        </div>  <!--  인기 후기 영역 END  -->
+        <div name="favMeeting">  <!-- 인기 모임 영역 -->
+            <div>
+                <div name="heading">인기 모임</div>  <!--  제목  -->
+                <div name="icon-horizon"></div>
+            </div>
+            <div name="cards">
+                <h1>카드 영역</h1>
+                <span name="meetingCard"></span>  <!--  작품 카드  -->
+                <span name="meetingCard"></span>
+                <span name="meetingCard"></span>
+                <span name="meetingCard"></span>
+            </div>
+        </div> <!--  인기 모임 영역  -->
+    </th:block>
 </th:block>
 </html>

@@ -31,6 +31,5 @@ public class HomeController {
         log.info("권한이 없는 사용자가 접근했습니다. : {}", customMember);
         return "access-denied";
     }
-
-
 }
+

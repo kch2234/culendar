@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
-
-    <th:block th:fragment="content">
 
     <h1>회원가입 페이지 영역</h1>
 
     <div name="profile">  <!--  회원 프로필 영역 START  -->
-        <form action="" th:action th:object="${memberForm}" method="post">
         <span name="memberInfo">  <!--  회원 프로필 사진 영역 START  -->
             <div name="memberImage">  <!--  회원 프로필 사진  -->
                 <!-- TODO: 추가예정
