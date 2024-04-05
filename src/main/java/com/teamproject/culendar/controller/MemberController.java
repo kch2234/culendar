@@ -2,13 +2,18 @@ package com.teamproject.culendar.controller;
 
 import com.teamproject.culendar.domain.enumFiles.Role;
 import com.teamproject.culendar.domain.member.Member;
+import com.teamproject.culendar.dto.MemberDTO;
+import com.teamproject.culendar.dto.MemberForm;
+import com.teamproject.culendar.repository.MemberRepository;
 import com.teamproject.culendar.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -17,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private MemberService memberService;
+    private final MemberService memberService;
 
     // 관리자 접근 허용
     @PreAuthorize("hasRole('ADMIN')")

@@ -5,6 +5,8 @@
     <h1>메인 페이지 영역</h1>
 
     <th:block th:fragment="content">
+        <li><a th:href="@{/signup}">Signup</a></li>
+        <li><a th:href="@{/login}">Login</a></li>
         <div name="calendar">캘린더 영역</div>
         <div name="favProgram">  <!-- 인기 작품 영역 -->
             <div>
@@ -41,5 +43,5 @@
 
       -->
 </th:block>
-
+</th:block>
 </html>
