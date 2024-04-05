@@ -2,6 +2,7 @@ package com.teamproject.culendar.domain.board;
 
 import com.teamproject.culendar.domain.baseEntity.BaseEntityLastModifiedDate;
 import com.teamproject.culendar.domain.enumFiles.Gender;
+import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.domain.program.Program;
 import jakarta.persistence.*;
@@ -48,8 +49,8 @@ public class EventBoard extends BaseEntityLastModifiedDate {
     private Integer maxPeople;
 
     // TODO 지역 추가
-//    @Column(nullable = false)
-    // private Location location;
+    @Column(nullable = false)
+     private Location location;
 
     // 필터링 항목
     private Gender filterGender = Gender.ALL;
