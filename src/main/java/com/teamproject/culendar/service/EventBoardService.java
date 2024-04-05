@@ -1,8 +1,6 @@
 package com.teamproject.culendar.service;
 
-import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.EventBoard;
-import com.teamproject.culendar.dto.BoardDTO;
 import com.teamproject.culendar.dto.EventBoardDTO;
 import com.teamproject.culendar.dto.EventBoardForm;
 import com.teamproject.culendar.dto.PageRequestDTO;
@@ -56,22 +54,20 @@ public class EventBoardService {
 
   // 모임 조회
   public EventBoardDTO getOneBoard(Long id) {
-    EventBoard board = eventBoardRepository.findById(id).orElse(null);
-//    board.setViewCount(board.getViewCount() + 1);  TODO 수정
+    EventBoard eventBoard = eventBoardRepository.findById(id).orElse(null);
+    eventBoard.setViewCount(eventBoard.getViewCount() + 1);
 
-    return new EventBoardDTO(board);
+    return new EventBoardDTO(eventBoard);
   }
 
   // 모임 삭제
-  public void deleteOneBoard(Long id) {
-    eventBoardRepository.deleteById(id);
-  }
+  public void deleteOneBoard(Long id) { eventBoardRepository.deleteById(id); }
 
   // 모임 수정
   public void updateOneBoard(EventBoardForm eventBoardForm) {
-    EventBoard findBoard = eventBoardRepository.findById(eventBoardForm.getId()).orElse(null);
-    findBoard.setTitle(eventBoardForm.getTitle());
-    findBoard.setContent(eventBoardForm.getContent());
+    EventBoard findEventBoard = eventBoardRepository.findById(eventBoardForm.getId()).orElse(null);
+    findEventBoard.setTitle(eventBoardForm.getTitle());
+    findEventBoard.setContent(eventBoardForm.getContent());
   }
 
 

@@ -1,6 +1,5 @@
 package com.teamproject.culendar.dto;
 
-import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.EventBoard;
 import com.teamproject.culendar.domain.enumFiles.BoardType;
 import com.teamproject.culendar.domain.enumFiles.Gender;
@@ -34,8 +33,8 @@ public class EventBoardForm {
     EventBoard eventBoard = new EventBoard();
     eventBoard.setTitle(title);
     eventBoard.setContent(content);
-    eventBoard.setProgram(program);
-    eventBoard.setEventDate(eventDate);
+//    eventBoard.setProgram(program);
+//    eventBoard.setEventDate(eventDate);  NOTE 모임 날짜 수정 불가능
     eventBoard.setMaxPeople(maxPeople);
     eventBoard.setFilterGender(filterGender);
     eventBoard.setFilterMinAge(filterMinAge);

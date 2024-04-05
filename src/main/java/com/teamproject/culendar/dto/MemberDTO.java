@@ -21,4 +21,13 @@ public class MemberDTO {
         this.password = member.getPassword();
         this.role = member.getRole();
     }
+
+    public Member toEntity() {
+        Member member = new Member();
+        member.setId(this.id);
+        member.setUsername(this.username);
+        member.setPassword(this.password);
+        member.setRole(this.role);
+        return member;
+    }
 }

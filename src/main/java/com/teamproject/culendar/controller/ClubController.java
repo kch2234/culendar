@@ -1,12 +1,9 @@
 package com.teamproject.culendar.controller;
 
-import com.teamproject.culendar.domain.board.Board;
-import com.teamproject.culendar.dto.BoardDTO;
-import com.teamproject.culendar.dto.BoardForm;
-import com.teamproject.culendar.dto.PageRequestDTO;
-import com.teamproject.culendar.dto.PageResponseDTO;
+import com.teamproject.culendar.domain.board.EventBoard;
+import com.teamproject.culendar.dto.*;
 import com.teamproject.culendar.security.domain.CustomMember;
-import com.teamproject.culendar.service.BoardService;
+import com.teamproject.culendar.service.EventBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,18 +21,18 @@ import java.util.List;
 @RequestMapping("/clubs")
 public class ClubController {
 
-  private final BoardService boardService;
+  private final EventBoardService eventBoardService;
 
   // 모임 목록 (클럽)
   @GetMapping("/list")
   public String list(Model model, PageRequestDTO pageRequestDTO) {
-    log.info("**** BoardController GET /boards/list");
-    Page<Board> result = boardService.getListWithPaging(pageRequestDTO);
-    List<Board> contents = result.getContent();
-    List<BoardDTO> list = new ArrayList<>();
+    log.info("**** ClubController GET /boards/list");
+    Page<EventBoard> result = eventBoardService.getListWithPaging(pageRequestDTO);
+    List<EventBoard> contents = result.getContent();
+    List<EventBoardDTO> list = new ArrayList<>();
     for(int i = 0; i < contents.size(); i++) {
-      Board board = contents.get(i);
-      BoardDTO dto = new BoardDTO(board);
+      EventBoard eventBoard = contents.get(i);
+      EventBoardDTO dto = new EventBoardDTO(eventBoard);
       list.add(dto);
     }
     PageResponseDTO pageResponseDTO = new PageResponseDTO(pageRequestDTO, result.getTotalElements());
@@ -48,16 +45,17 @@ public class ClubController {
 
   // 모임 작성
   @GetMapping("/add")
-  public String addForm(@ModelAttribute BoardForm boardForm) {
-    log.info("***** BoardController GET /boards/add");
+  public String addForm(@ModelAttribute BoardForm eventBoardForm, @AuthenticationPrincipal CustomMember customMember) {
+    log.info("***** ClubController GET /boards/add");
 
     return "club/eventAdd";
   }
   @PostMapping("/add")
-  public String addPRo(BoardForm boardForm, @AuthenticationPrincipal CustomMember customMember) {
-    log.info("**** BoardController POST /boards/add - boardForm : {}", boardForm);
-    boardForm.setWriter(customMember.getUsername());
-    Long saveId = boardService.save(boardForm);
+  public String addPRo(EventBoardForm eventBoardForm, @AuthenticationPrincipal CustomMember customMember) {
+    log.info("**** ClubController POST /boards/add - eventBoardForm : {}", eventBoardForm);
+    MemberDTO member = customMember.getMember();
+    eventBoardForm.setMember(member.toEntity());
+    Long save = eventBoardService.save(eventBoardForm);
 
     return "redirect:/club/clubHome";
   }
@@ -65,10 +63,10 @@ public class ClubController {
   // 모임 상세
   @GetMapping("/{id}")
   public String detail(@PathVariable("id") Long id, Model model) {
-    log.info("***** BoardController GET /community/boardDetail - bid : {}", id);
-    BoardDTO board = boardService.getOneBoard(id);
-    log.info("***** BoardController GET /community/boardDetail - board : {}", board);
-    model.addAttribute("board", board);
+    log.info("***** ClubController GET /community/boardDetail - bid : {}", id);
+    EventBoardDTO eventBoard = eventBoardService.getOneBoard(id);
+    log.info("***** ClubController GET /community/boardDetail - eventBoard : {}", eventBoard);
+    model.addAttribute("eventBoard", eventBoard);
 
     return "club/eventDetail";
 
@@ -77,24 +75,24 @@ public class ClubController {
   // 모임 삭제
   @PostMapping("/{id}/delete")
   public String delete(@PathVariable("id") Long id, String writer) {
-    log.info("**** BoardController POST /boards/:id/delete - id : {}", id);
-    boardService.deleteOneBoard(id);
+    log.info("**** ClubController POST /boards/:id/delete - id : {}", id);
+    eventBoardService.deleteOneBoard(id);
     return "redirect:clubs/list";
   }
 
   // 모임 수정
   @GetMapping("/{id}/modify")
   public String modifyForm(@PathVariable("id") Long id, Model model) {
-    log.info("**** BoardController GET /boards/:id/modify - id : {}", id);
-    BoardDTO board = boardService.getOneBoard(id);
-    model.addAttribute("board", board);
+    log.info("**** ClubController GET /boards/:id/modify - id : {}", id);
+    EventBoardDTO eventBoard = eventBoardService.getOneBoard(id);
+    model.addAttribute("eventBoard", eventBoard);
     return "club/eventModify";
   }
   @PostMapping("/{id}/modify")
-  public String modifyPro(@PathVariable("id") Long id, BoardForm boardForm) {
-    log.info("**** BoardController GET /boards/:id/modify - id : {}", id);
-    log.info("**** BoardController GET /boards/:id/modify - boardForm : {}", boardForm);
-    boardService.updateOneBoard(boardForm);
+  public String modifyPro(@PathVariable("id") Long id, EventBoardForm eventBoardForm) {
+    log.info("**** ClubController GET /boards/:id/modify - id : {}", id);
+    log.info("**** ClubController GET /boards/:id/modify - eventBoardForm : {}", eventBoardForm);
+    eventBoardService.updateOneBoard(eventBoardForm);
     return "redirect:/clubs/{id}";
   }
 
