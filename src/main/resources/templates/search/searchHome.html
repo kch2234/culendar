@@ -1,10 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+    <th:block th:fragment="content">
+        <h1>탐색 페이지 영역</h1>
 
-</body>
-</html>
+        <div name="search-box">
+            <span name="mapWithModal">  <!--  지도+검색결과 작품  -->
+                <span name="map"></span>
+                <span name="searchResult-box">  <!--  검색결과 작품  -->
+                    <div name="programCard"></div>
+                    <div name="programDetail-button">자세히</div>  <!--  TODO programDetail에 개요가 없다면 페이지 넘겨도 더 보여줄 게 없을 듯..  -->
+                </span>
+            </span>  <!--  mapWithModal  -->
+            <span name="sideInfo-box">
+                <div>
+                    <div name="heading">인기 작품</div>
+                    <div name="programCard"></div>  <!--  NOTE 검색 전) 현재 위치의 인기작품 노출 / 검색 후) 검색 결과 작품 노출  -->
+                </div>
+                <hr />  <!--  horizonBar  -->
+                <div>
+                    <div name="heading">인기 모임</div>
+                    <div name="eventCard"></div>  <!--  NOTE 검색 전) 현재 위치의 인기모임 노출 / 검색 후) 검색 결과 모임 노출  -->
+                </div>
+            </span>  <!--  sideInfo-box  -->
+        </div>  <!--  search-box  -->
+        <div name="favLocationProgram">
+            <div name="favLocaionProgramHeader">
+                <div>
+                    <span name="heading">지역별 인기작품</span>
+                    <span name="genre-dropdown"></span>
+                    <span name="location-dropdown"></span>
+                </div>
+                <hr />
+            </div>  <!--  favLocaionProgramHeader  -->
+            <div name="favLocaionProgram">  <!--  좌우 스크롤  -->
+                <span name="programCard"></span>
+                <span name="programCard"></span>
+                <span name="programCard"></span>
+                <span name="programCard"></span>
+            </div>
+        </div>  <!--  favLocationProgram  -->
+        <div name="favLocationEvent">
+            <div name="favLocaionEventHeader">
+                <div>
+                    <span name="heading">지역별 인기모임</span>
+                    <span name="genre-dropdown"></span>
+                    <span name="location-dropdown"></span>
+                </div>
+                <hr />
+            </div>  <!--  favLocaionProgramHeader  -->
+            <div name="favLocaionEvent">  <!--  좌우 스크롤  -->
+                <span name="eventCard"></span>
+                <span name="eventCard"></span>
+                <span name="eventCard"></span>
+                <span name="eventCard"></span>
+            </div>
+        </div>  <!--  favLocationEvent  -->
+    </th:block>
+</th:block>

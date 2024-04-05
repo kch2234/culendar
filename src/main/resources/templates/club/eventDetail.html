@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+    <h1>모임 상세 페이지 영역</h1>
+
+    <div name="thumnailHeader"></div>  <!--  썸네일 이미지  -->
+    <div name="eventDetailHeader">  <!--  모임 영역 헤더  -->
+        <div name="eventDetailTitle">  <!-- 모임 상세 제목 영역   -->
+            <div name="eventDetailTitleTop">  <!--  모임 상세 제목 영역 상단  -->
+                <span name="eventTitle"></span>  <!--  모임 제목  -->
+                <span name="button">  <!--  버튼 영역  -->
+                    <span name="editBoard-button"></span>  <!--  수정 버튼  -->
+                    <span name="deleteBoard-button"></span>  <!--  삭제 버튼  -->
+                    <span name="bookmark-button"></span>  <!--  북마크 버튼  -->
+                </span>
+            </div>  <!--  eventDetailTitleTop 모임 상세 제목 영역 상단 END  -->
+            <div name="programTitle"></div>  <!--  작품 제목 (모임 상세 제목 하단)  -->
+        </div>  <!--  eventDetailTitle 모임 상세 제목 영역 END   -->
+        <div name="eventDetailInfo">  <!--  모임 상세 정보 영역  -->
+            <div name="eventDetailInfoTop">  <!--  모임 상세 정보 영역 상단  -->
+                <span name="date"></span>  <!--  모임 날짜  -->
+                <span name="place"></span>  <!--  모임 장소  -->
+                <span name="personnel">present/maximum</span>  <!--  현재인원/정원  -->
+                <span name="apply-button"></span>  <!--  신청자용 신청 버튼  -->
+                <span name="applyManage-button"></span>  <!--  모임 리더용 신청자 관리 버튼  -->
+            </div>
+            <div name="eventDetailInfoBottom">  <!-- 모임 상세 정보 영역 하단   -->
+                <span name="ageFilter"></span>  <!--  연령대 필터  -->
+                <span name="locationFilter"></span>  <!--  지역 필터  -->
+                <span name="genderFilter"></span>  <!--  성별 필터  -->
+            </div>
+        </div>  <!--  eventDetailInfo 모임 상세 정보 영역 END  -->
+    </div>  <!--  eventDetailHeader 모임 영역 헤더 END  -->
+
+    <div name="content"></div>  <!--  내용  -->
+    <div name="programInfoCard"></div>  <!--  작품 정보 영역 카드  -->
+    <div name="writerCard"></div>  <!--  작성자 영역 카드  -->
+
+</th:block>
+</html>
