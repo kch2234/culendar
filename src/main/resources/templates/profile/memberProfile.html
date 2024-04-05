@@ -8,9 +8,11 @@
         <span name="memberInfo">  <!--  회원 정보 영역  -->
             <div name="memberInfoTop">  <!--  회원 정보 상단  -->
                 <span name="username"></span>  <!--  닉네임  -->
+                <input type="text" th:field="${member.id}" id="username" readonly>
                 <span name="following"></span>  <!--  팔로잉  -->
                 <span name="follower"></span>  <!--  팔로워  -->
                 <span name="edit-button"></span>  <!--  프로필 수정 버튼  -->
+                <button type="button" th:href="@{/members/{id}/edit(id=${member.id})}">프로필 수정</button>
             </div>
             <div name="memberInfoBottom">  <!--  회원 정보 하단  -->
                 <span name="location"></span>  <!--  지역  -->
