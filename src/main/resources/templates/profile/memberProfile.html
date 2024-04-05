@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <h1>회원 페이지 영역</h1>
-
+<th:block th:fragment="content">
     <div name="memberProfile">  <!--  회원 프로필 영역  -->
         <span name="memberImage"></span>  <!--  회원 프로필 사진  -->
         <span name="memberInfo">  <!--  회원 정보 영역  -->
@@ -18,6 +18,7 @@
                 <span name="memberTest-button"></span>  <!--  성향테스트 페이지 이동 버튼  -->
             </div>
         </span>  <!--  회원 정보 영역  -->
+        </form>
     </div>  <!--  회원 프로필 영역 END  -->
     <div name="filter">  <!--  필터링 (카테고리) 영역  -->
         <span name="myFilter">  <!--  회원(나) 관련 필터 영역 / TODO 해당 카드에 등록버튼 삭제  -->
@@ -47,6 +48,6 @@
         <span name="{filter}Card"></span>
     </div>
     <!--  무한 스크롤 영역  -->
-
+</th:block>
 </th:block>
 </html>

@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
 <h1>Please sign in</h1>
 <form class="user" action="" th:action th:object="${memberForm}" method="post">
-    <input type="text" th:field="*{username}" placeholder="Username">
-    <input type="password" th:field="*{password}" placeholder="Password">
+    <!-- CustomMember 클래스의 필드명과 일치하기 위해 username으로 설정-->
+    <input type="text" th:field="*{username}" placeholder="아이디">
+    <input type="password" th:field="*{password}" placeholder="비밀번호">
     <button type="submit">
         Login
     </button>
 </form>
-
 </html>

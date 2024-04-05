@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}">  // 헤더 네브 푸터
+    <h1>메인 페이지 영역</h1>
+
+    <th:block th:fragment="content">
+<!--TODO 권한 접근 테스트용 추후 main과 일치하게 수정 후 로그인처리된 메인화면으로 변경예정-->
 <h1>로그인 홈</h1>
 <p sec:authentication="principal.member.username"></p>
 <ul>
+    <!-- -->
     <li><a th:href="@{members/admin}">adminPage</a></li>
-    <li><a th:href="@{members/member}">memberPage</a></li>
+    <li><a th:href="@{members/{id}(id=${member.member.id})}">Profile</a></li>
 </ul>
 <form th:action="@{/logout}" method="post">
     <button type="submit">Logout</button>
 </form>
-</body>
+    </th:block>
+</th:block>
 </html>

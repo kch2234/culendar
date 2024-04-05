@@ -29,9 +29,5 @@ public class MemberService {
         return saved.getId();
     }
 
-    public MemberDTO getMember(Long id) {
-        Optional<Member> findMember = memberRepository.findById(id);
-        if(findMember.isPresent()) return new MemberDTO(findMember.get());
-        return null;
-    }
+
 }

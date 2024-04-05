@@ -1,6 +1,8 @@
 package com.teamproject.culendar.config;
 
+import com.teamproject.culendar.repository.MemberRepository;
 import com.teamproject.culendar.security.CustomUserDetailsService;
+import com.teamproject.culendar.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +24,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true) // TODO:추가 @PreAuthorize 어노테이션을 사용하기 위해 필요한 설정
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -47,7 +49,6 @@ public class SecurityConfig {
                 .formLogin(login -> // 로그인 설정
                         login.loginPage("/login")
                                 .defaultSuccessUrl("/", true) // 로그인 성공 후 이동할 페이지
-                                .failureUrl("/")
                 )
                 .rememberMe(remember -> // 로그인 유지 설정
                         remember.userDetailsService(userDetailsService)
@@ -79,6 +80,7 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    // remember-me 설정을 위한 빈
     @Bean
     public PersistentTokenRepository tokenRepository() {
         JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
