@@ -7,7 +7,7 @@
 <h1>Please sign in</h1>
 <form class="user" action="" th:action th:object="${memberForm}" method="post">
     <!-- CustomMember 클래스의 필드명과 일치하기 위해 username으로 설정-->
-    <input type="text" th:field="*{username}" placeholder="아이디">
+    <input type="text" th:field="*{userid}" placeholder="아이디">
     <input type="password" th:field="*{password}" placeholder="비밀번호">
     <button type="submit">
         Login

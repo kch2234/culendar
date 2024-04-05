@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // CSRF 보안 기능 비활성화
                 .formLogin(login -> // 로그인 설정
                         login.loginPage("/login")
+                                .usernameParameter("userid")
                                 .defaultSuccessUrl("/", true) // 로그인 성공 후 이동할 페이지
                 )
                 .rememberMe(remember -> // 로그인 유지 설정

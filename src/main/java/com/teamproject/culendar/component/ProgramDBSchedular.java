@@ -39,7 +39,7 @@ public class ProgramDBSchedular {
             seq++;
             i++;
 
-        } while (i != 1000);
+        } while (i != 1000 && seq < 273000L);
 
     log.info("******** ProgramDBSchedular scheduleProgram - 크롤링 완료 현재 seq : " + seq + " ********");
     }
