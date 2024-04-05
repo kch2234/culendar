@@ -22,7 +22,7 @@ public class MemberDTO {
     private int phone;
     private String email;
     //지역 ENUM
-    private Location location;
+    //private Location location;
     private LocalDateTime birth;
     private MemberType memberType;
     private Gender gender;
@@ -42,7 +42,7 @@ public class MemberDTO {
         this.password = member.getPassword();
         this.phone = member.getPhone();
         this.email = member.getEmail();
-        //this.location = member.getLocation();
+//        this.location = member.getLocation();
         this.birth = member.getBirth();
         this.memberType = member.getMemberType();
         this.gender = member.getGender();

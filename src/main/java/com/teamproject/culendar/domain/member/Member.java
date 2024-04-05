@@ -9,6 +9,7 @@ import com.teamproject.culendar.domain.enumFiles.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -34,9 +35,10 @@ public class Member extends BaseEntityCreatedDate {
   private int phone = 0;
   private String email = "";
 
-  // 지역 ENUM 예정
+  /* 지역 ENUM 예정
   @Column(nullable = false)
   private Location location;
+  */
 
   // 생년 월일
   @Column(nullable = false)
