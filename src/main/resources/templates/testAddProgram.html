@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form class="program" action="" th:action th:object="${programDTO}" method="post">
+    <input type="number" th:field="*{seq}" >
+    <button type="submit">
+        크롤링 & 저장
+    </button>
+
+</body>
+</html>

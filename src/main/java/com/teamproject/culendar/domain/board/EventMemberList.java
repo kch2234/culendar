@@ -2,6 +2,7 @@ package com.teamproject.culendar.domain.board;
 
 import com.teamproject.culendar.domain.baseEntity.BaseEntityCreatedDate;
 import com.teamproject.culendar.domain.enumFiles.EventMemberStatus;
+import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,6 +23,9 @@ public class EventMemberList extends BaseEntityCreatedDate {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @Column(nullable = false)
+    private Location location;
 
     // 확정 여부
     private EventMemberStatus status = EventMemberStatus.WAIT;
