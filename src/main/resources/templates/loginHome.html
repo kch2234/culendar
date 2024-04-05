@@ -1,19 +1,53 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>로그인 홈</h1>
-<p sec:authentication="principal.member.userid"></p>
-<ul>
-    <li><a th:href="@{members/admin}">adminPage</a></li>
-    <li><a th:href="@{members/member}">memberPage</a></li>
-</ul>
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Logout</button>
-</form>
-</body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}">  // 헤더 네브 푸터
+    <h1>메인 페이지 영역</h1>
+
+    <th:block th:fragment="content">
+        <p sec:authentication="principal.member.userid"></p>
+        <ul>
+            <li><a th:href="@{members/admin}">adminPage</a></li>
+            <li><a th:href="@{members/{id}(id=${member.member.id})}">memberPage</a></li>
+        </ul>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Logout</button>
+        </form>
+        <div name="calendar">캘린더 영역</div>
+        <div name="favProgram">  <!-- 인기 작품 영역 -->
+            <div>
+                <div name="heading">인기 작품</div>  <!--  제목  -->
+                <div name="icon-horizon"></div>
+            </div>
+            <div name="cards">
+                <h1>카드 영역</h1>
+                <span name="programCard"></span>  <!--  작품 카드  -->
+                <span name="programCard"></span>
+                <span name="programCard"></span>
+                <span name="programCard"></span>
+            </div>
+        </div>  <!--  인기 작품 영역 END  -->
+        <div name="favMeeting">  <!-- 인기 모임 영역 -->
+            <div>
+                <div name="heading">인기 모임</div>  <!--  제목  -->
+                <div name="icon-horizon"></div>
+            </div>
+            <div name="cards">
+                <h1>카드 영역</h1>
+                <span name="meetingCard"></span>  <!--  작품 카드  -->
+                <span name="meetingCard"></span>
+                <span name="meetingCard"></span>
+                <span name="meetingCard"></span>
+            </div>
+        </div> <!--  인기 모임 영역  -->
+        <!--TODO nav로 이동 예정
+              <li><a href="/">Home</a></li>
+      <li><a th:href="@{/signup}">Signup</a></li>
+      <li><a th:href="@{/login}">Login</a></li>
+      <li><a th:href="@{/members/admin}">adminPage</a></li>
+      <li><a th:href="@{/members/member}">memberPage</a></li>
+
+        -->
+    </th:block>
+</th:block>
 </html>
