@@ -27,7 +27,7 @@ public class ProgramDBSchedular {
     @Scheduled(fixedDelay = 6000) // 작업 종료 후 6초 후에 다시 실행
     public void scheduleProgram() {
 
-        int i = 0;
+        /*int i = 0;
 
         log.info("******** ProgramDBSchedular scheduleProgram - 크롤링 시작 현재 seq : " + seq + " ********");
 
@@ -41,7 +41,8 @@ public class ProgramDBSchedular {
 
         } while (i != 1000 && seq < 273000L);
 
-    log.info("******** ProgramDBSchedular scheduleProgram - 크롤링 완료 현재 seq : " + seq + " ********");
+    log.info("******** ProgramDBSchedular scheduleProgram - 크롤링 완료 현재 seq : " + seq + " ********");*/
+
     }
 
 

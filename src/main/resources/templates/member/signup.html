@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-    <h1>회원가입 페이지 영역</h1>
+<h1>회원가입 페이지 영역</h1>
 
-    <div name="profile">  <!--  회원 프로필 영역 START  -->
+<div name="profile">  <!--  회원 프로필 영역 START  -->
+    <form class="user" action="" th:action th:object="${memberForm}" method="post">
         <span name="memberInfo">  <!--  회원 프로필 사진 영역 START  -->
             <div name="memberImage">  <!--  회원 프로필 사진  -->
-                <!-- TODO: 추가예정
-                <input type="file" th:field="*{profileImage}" name="profileImage">
-                -->
+        <!-- TODO: 추가예정
+        <input type="file" th:field="*{profileImage}" name="profileImage">  -->
             </div>
             <div name="gernder-radio">  <!--  버튼 영역  -->
                 <input type="radio" th:field="*{gender}" th:value="MALE">
@@ -77,16 +77,16 @@
             <input type="text" th:field="*{introduction}" placeholder="자기소개">
         </div>
 
-    </div>  <!--  회원 프로필 영역 END  -->
-    <div name="genre">  <!-- 관심사 영역 START -->
-        <div name="heading">관심사</div>  <!--  제목  -->
-        <div name="cards">  <!--  관심사 카드 영역 상단 START  -->
-            <h1>카드 영역</h1>
-            <span name="card">
+</div>  <!--  회원 프로필 영역 END  -->
+<div name="genre">  <!-- 관심사 영역 START -->
+    <div name="heading">관심사</div>  <!--  제목  -->
+    <div name="cards">  <!--  관심사 카드 영역 상단 START  -->
+        <h1>카드 영역</h1>
+        <span name="card">
                 <div name="image"></div>
                 <div name="title"></div>
             </span>
-            <span name="card">
+        <span name="card">
                 <div name="image"></div>
                 <div name="title"></div>
             </span><span name="card">
@@ -96,14 +96,14 @@
                 <div name="image"></div>
                 <div name="title"></div>
             </span>
-        </div>  <!--  관심사 카드 영역 상단 END  -->
-        <div name="cards">  <!--  관심사 카드 영역 하단 START  -->
-            <h1>카드 영역</h1>
-            <span name="card">
+    </div>  <!--  관심사 카드 영역 상단 END  -->
+    <div name="cards">  <!--  관심사 카드 영역 하단 START  -->
+        <h1>카드 영역</h1>
+        <span name="card">
                 <div name="image"></div>
                 <div name="title"></div>
             </span>
-            <span name="card">
+        <span name="card">
                 <div name="image"></div>
                 <div name="title"></div>
             </span><span name="card">
@@ -113,22 +113,22 @@
                 <div name="image"></div>
                 <div name="title"></div>
             </span>
-        </div>  <!--  관심사 카드 영역 하단 END  -->
-    </div>  <!-- 관심사 영역 START -->
-    <div name="submit-button">
-        <button type="submit">회원가입</button>
-    </div>
-    </form>
-    <!--TODO secu test용 form 수정 필요
-<form class="user" action="" th:action th:object="${memberForm}" method="post">
-    <input type="text" th:field="*{username}" placeholder="아이디">
-    <input type="password" th:field="*{password}" placeholder="비밀번호">
-    <input type="radio" th:field="*{role}" th:value="MEMBER">MEMBER
-    <input type="radio" th:field="*{role}" th:value="ADMIN">ADMIN
-    <input type="radio" th:field="*{role}" th:value="CANCEL">CANCEL
-    <input type="submit" value="회원가입">
+    </div>  <!--  관심사 카드 영역 하단 END  -->
+</div>  <!-- 관심사 영역 START -->
+<div name="submit-button">
+    <button type="submit">회원가입</button>
+</div>
 </form>
--->
-    </th:block>
+        <!--TODO secu test용 form 수정 필요
+    <form class="user" action="" th:action th:object="${memberForm}" method="post">
+        <input type="text" th:field="*{username}" placeholder="아이디">
+        <input type="password" th:field="*{password}" placeholder="비밀번호">
+        <input type="radio" th:field="*{role}" th:value="MEMBER">MEMBER
+        <input type="radio" th:field="*{role}" th:value="ADMIN">ADMIN
+        <input type="radio" th:field="*{role}" th:value="CANCEL">CANCEL
+        <input type="submit" value="회원가입">
+    </form>
+    -->
+</th:block>
 </th:block>
 </html>

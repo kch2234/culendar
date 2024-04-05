@@ -34,9 +34,9 @@ public class Member extends BaseEntityCreatedDate {
   private int phone = 0;
   private String email = "";
 
-  // 지역 ENUM 예정
-  @Column(nullable = false)
-  private Location location;
+  // 지역 ENUM 예정 NOTE 임시 주석처리
+  /*@Column(nullable = false)
+  private Location location;*/
 
   // 생년 월일
   @Column(nullable = false)

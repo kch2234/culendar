@@ -6,18 +6,52 @@
     <h1>헤더 영역</h1>
     <th:block th:replace="~{/layouts/header :: headerFrg}"></th:block>
 
-    <!--  네브  -->
-    <h1>네브 영역</h1>
-    <th:block th:replace="~{/layouts/nav :: navFrg}"></th:block>
+    <body data-spy="scroll" data-target=".site-navbar-target" data-offset="100">
 
-    <!--  컨텐트  -->
-    <h1>컨텐트 영역</h1>
-    <th:block th:replace="${content}"></th:block>
+        <div class="site-mobile-menu site-navbar-target">
+            <div class="site-mobile-menu-header">
+                <div class="site-mobile-menu-close">
+                    <span class="icofont-close js-menu-toggle"></span>
+                </div>
+            </div>
+            <div class="site-mobile-menu-body"></div>
+        </div>
 
-    <!-- 푸터  -->
-    <h1>푸터 영역</h1>
-    <th:block th:replace="~{/layouts/footer :: footerFrg}"></th:block>
+
+        <!--  네브  -->
+        <h1>네브 영역</h1>
+        <th:block th:replace="~{/layouts/nav :: navFrg}"></th:block>
+
+        <!--  컨텐트  -->
+        <h1>컨텐트 영역</h1>
+        <th:block th:replace="${content}"></th:block>
+
+        <!-- 푸터  -->
+        <h1>푸터 영역</h1>
+        <th:block th:replace="~{/layouts/footer :: footerFrg}"></th:block>
+
+
+        <div id="overlayer"></div>
+        <div class="loader">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+        <script th:src="@{/sbadmin/js/jquery-3.4.1.min.js}"></script>
+        <script th:src="@{/sbadmin/js/jquery-migrate-3.0.1.min.js}"></script>
+        <script th:src="@{/sbadmin/js/popper.min.js}"></script>
+        <script th:src="@{/sbadmin/js/bootstrap.min.js}"></script>
+        <script th:src="@{/sbadmin/js/owl.carousel.min.js}"></script>
+        <script th:src="@{/sbadmin/js/jquery.easing.1.3.js}"></script>
+        <script th:src="@{/sbadmin/js/jquery.animateNumber.min.js}"></script>
+        <script th:src="@{/sbadmin/js/jquery.waypoints.min.js}"></script>
+        <script th:src="@{/sbadmin/js/jquery.fancybox.min.js}"></script>
+        <script th:src="@{/sbadmin/js/aos.js}"></script>
+
+        <script th:src="@{/sbadmin/js/custom.js}"></script>
+
+    </body>
 
 </th:block>
-
 </html>

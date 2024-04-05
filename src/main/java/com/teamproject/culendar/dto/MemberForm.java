@@ -30,7 +30,7 @@ public class MemberForm  {
     // 한줄 소개
     private String introduction;
     // 권한
-    private Role role;
+    private Role role = Role.MEMBER;  // NOTE 임시 선언 private Role role;
 
     // form -> Entity
     public Member toEntity() {

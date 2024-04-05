@@ -19,9 +19,11 @@ public class HomeController {
     public String home(@AuthenticationPrincipal CustomMember customMember, Model model) {
         log.info("***** HomeController GET Home!! - customMember : {}", customMember);
         if (customMember == null) { // 로그인 안한 경우
+            log.info("***** Home : 비로그인 사용자");
             return "main";
         }
         model.addAttribute("member", customMember); // 로그인한 회원 정보를 Model에 담아서 전달
+        log.info("***** Home : 로그인 사용자");
         return "main";
     }
 
