@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="navFrg">
+
+    <!--  네브 시작  -->
+
+    <nav class="site-nav dark js-site-navbar mb-5 site-navbar-target">
+        <div class="container">
+            <div class="site-navigation">
+                <a th:href="@{/}" class="logo m-0 float-left">Culendar<span class="text-primary">.</span></a>
+
+                <ul class="js-clone-nav d-none d-lg-inline-block site-menu float-left">
+                    <li class="active"><a th:href="@{/myCalendar}" class="nav-link">My Calendar</a></li>
+                    <li class="active"><a th:href="@{/search}" class="nav-link">Search</a></li>
+                    <li class="active"><a th:href="@{/boards/list}" class="nav-link">Community</a></li>
+                    <li class="active"><a th:href="@{/clubs/list}" class="nav-link">Club</a></li>
+                </ul>
+
+                <ul class="js-clone-nav d-none d-lg-inline-block site-menu float-right">
+                    <li class="has-children">
+                        <i href="#" class="fa-solid fa-circle-user fa-2x"></i>
+                        <ul class="dropdown">
+                            <!--<li><a th:href="@{/members/{id}(id=${member.id})}" class="nav-link">프로필</a></li>-->
+                            <!--<li><a th:href="@{/members/{id}/settings(id=${member.id})}" class="nav-link">설정</a></li>-->
+                            <li><a th:href="@{/logout}" class="nav-link">로그아웃</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+
+                <a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block dark d-lg-none" data-toggle="collapse" data-target="#main-navbar">
+                    <span></span>
+                </a>
+
+            </div>
+        </div>
+    </nav>
+
+    <!--    <div name="nav">-->
+    <!--        <span name="title">CULENDAR</span>  &lt;!&ndash;  사이트 이름 영역  &ndash;&gt;-->
+    <!--        <span name="menu">-->
+    <!--            <span name="myCalendar">myCalendar</span>-->
+    <!--            <span name="search">search</span>-->
+    <!--            <span name="community">community</span>-->
+    <!--            <span name="club">club</span>-->
+    <!--        </span>-->
+    <!--        <span name="profile">-->
+    <!--            &lt;!&ndash;  회원(로그인)  &ndash;&gt;-->
+    <!--            <div name="dropdown-edit">edit</div>-->
+    <!--            <div name="dropdown-setting">setting</div>-->
+    <!--            <div name="dropdown-logout">logout</div>-->
+    <!--            &lt;!&ndash;  비회원  &ndash;&gt;-->
+    <!--            <span name="login-button"></span>-->
+    <!--            <span name="signup-button"></span>-->
+    <!--        </span>-->
+    <!--    </div>-->
+    <!--  네브 끝  -->
+
+</th:block>

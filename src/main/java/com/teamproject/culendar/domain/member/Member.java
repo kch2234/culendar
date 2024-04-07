@@ -35,10 +35,10 @@ public class Member extends BaseEntityCreatedDate {
   private int phone = 0;
   private String email = "";
 
-  /* 지역 ENUM 예정
+  // 지역 ENUM
   @Column(nullable = false)
   private Location location;
-  */
+
 
   // 생년 월일
   @Column(nullable = false)

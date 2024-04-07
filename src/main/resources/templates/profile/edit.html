@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+    <th:block th:fragment="content">
     <h1>프로필 수정 페이지 영역</h1>
 
     <div name="profile">  <!--  회원 프로필 영역  -->
@@ -13,11 +14,32 @@
         </span>
         <span name="memberInfo">  <!--  회원 정보 영역  -->
             <div name="username">  <!--  닉네임 영역  -->
-                <span name="username-textbox">닉네임</span>
+                <span name="username-textbox"></span>
+                <input type="text" th:field="*{username}" placeholder="닉네임">
                 <span name="submit-button">중복확인</span>
             </div>
             <div name="location">  <!--  위치 영역  -->
                 <span name="location-dropdown"></span>
+                        <select th:field="*{location}">
+                            <option th:value="SEOUL">서울</option>
+                            <option th:value="BUSAN">부산</option>
+                            <option th:value="DAEGU">대구</option>
+                            <option th:value="INCHEON">인천</option>
+                            <option th:value="GWANGJU">광주</option>
+                            <option th:value="DAEJEON">대전</option>
+                            <option th:value="ULSAN">울산</option>
+                            <option th:value="SEJONG">세종</option>
+                            <option th:value="GYEONGGI">경기</option>
+                            <option th:value="GANGWON">강원</option>
+                            <option th:value="CHUNGBUK">충북</option>
+                            <option th:value="CHUNGNAM">충남</option>
+                            <option th:value="JEONBUK">전북</option>
+                            <option th:value="JEONNAM">전남</option>
+                            <option th:value="GYEONGBUK">경북</option>
+                            <option th:value="GYEONGNAM">경남</option>
+                            <option th:value="JEJU">제주</option>
+                            <option th:value="ETC">기타</option>
+                        </select>
                 <span name="location-checkbox"></span>
             </div>
             <div name="introduce">자기소개</div>
@@ -60,6 +82,7 @@
             </span>
         </div>
     <div name="submit-button">저장</div>
-
+    </div>
+    </th:block>
 </th:block>
 </html>

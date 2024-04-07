@@ -21,7 +21,7 @@ public class MemberForm  {
     private int phone;
     private String email;
     //TODO 지역 ENUM 예정
-//    private Location location;
+    private Location location;
     // 생년 월일
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private String birth;
@@ -41,7 +41,7 @@ public class MemberForm  {
         member.setPassword(password); // 암호화 된것
         member.setPhone(phone);
         member.setEmail(email);
-//        member.setLocation(location);
+        member.setLocation(location);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         birth += " 00:00:00";
         member.setBirth(LocalDateTime.parse(birth, formatter));
