@@ -2,12 +2,49 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}"> // 헤더 네브 푸터
-    <h1>메인 페이지 영역</h1>
 
     <th:block th:fragment="content">
+
+<!--                분류 모달-->
+        <div class="modal" id="type-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">분류 선택</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" th:each="pType : ${programType}" class="btn btn-primary pTypeBtn"
+                                th:text="${pType.value}" th:if="${pType.value !='기타'}" th:data-type="${pType.name()}"></button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--                지역 모달-->
+        <div class="modal" id="location-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">분류 선택</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" th:each="lType : ${locationType}" class="btn btn-primary lTypeBtn"
+                                th:text="${lType.value}" th:if="${lType.value !='기타'}" th:data-loc="${lType.name()}"></button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <li><a th:href="@{/signup}">Signup</a></li>
         <li><a th:href="@{/login}">Login</a></li>
-        <div id='calendar' class="w-75 m-auto mt-2"></div>
+
+        <div id='calendar' class="w-75 h-100 m-auto mt-2"></div>
+
+
         <div name="favProgram">  <!-- 인기 작품 영역 -->
             <div>
                 <div name="heading">인기 작품</div>  <!--  제목  -->
@@ -35,14 +72,43 @@
             </div>
         </div> <!--  인기 모임 영역  -->
 
+
         <script>
 
             // 달력
             $(document).ready(function () {
                 var calendarEl = document.getElementById('calendar');
+                var modalProgramType = "DRAMA";
+                var modalLocationType = "SEOUL";
+                var modalProgramTypeName;
+                var modalLocationTypeName;
+
                 var calendar = new FullCalendar.Calendar(calendarEl, {
+
+                    customButtons: {
+                        programType: {
+                            text: '분류',
+                            click: function () {
+                                // 모달 display block으로 변경
+                                $('#type-modal').css('display', 'block');
+                                // 이 버튼 이름 바꾸기
+                                console.log();
+
+
+                            }
+                        },
+                        location: {
+                            text: '지역',
+                            click: function () {
+                                // 모달로 카테고리 설정 예정
+                                $('#location-modal').css('display', 'block');
+
+
+                            }
+                        }
+                    },
                     headerToolbar: {
-                        left: 'prev',
+                        left: 'prev programType location',
                         center: 'title',
                         right: 'next'
                     },
@@ -52,6 +118,8 @@
                     showNonCurrentDates: false,
                     editable: false,
                     dayMaxEvents: true,
+                    displayEventTime: false,
+
 
                     // 달력 날짜에 "일"을 제거
                     dayCellContent: function (info) {
@@ -69,12 +137,64 @@
                     },
                     datesSet: (info) => {
                         // 현재 달력에 표시된 월 가져오기
-                        console.log(info);
-                        console.log(info.startStr);
+                        var startMonth = info.startStr;
+
                     },
+                    // ajax 통신으로 fullcalendar 이벤트 가져오기
+                    events: {
+                        url: '/calendar/list', // 이벤트를 가져올 서버의 URL
+                        method: 'GET', // HTTP 요청 방식
+                        extraParams: function () { // 서버에 전달할 추가적인 파라미터
+                            return {
+                                programType: modalProgramType,
+                                location: modalLocationType,
+                            };
+                        },
+                        failure: function (e) { // 요청이 실패했을 때 호출되는 콜백 함수
+                            alert('there was an error while fetching events!');
+                            console.log(e);
+                        },
+                        textColor: 'black' // 이벤트의 글자색
+                    }
 
 
-      -->
-</th:block>
+                });
+
+                calendar.render();
+
+                // 모달 닫기
+                $(document).on('click', '.close', function () {
+                    $('#type-modal').css('display', 'none');
+                });
+                $(document).on('click', '.close', function () {
+                    $('#location-modal').css('display', 'none');
+                });
+                // 모달 버튼 클릭시 데이터 받기
+                $(document).on('click', ".pTypeBtn", function () {
+                    modalProgramType = $(this).data('type');
+                    modalProgramTypeName = $(this).text();
+                    $('#type-modal').css('display', 'none');
+                    $('#calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div:nth-child(1) > button.fc-programType-button.fc-button.fc-button-primary').text(modalProgramTypeName);
+                    calendar.refetchEvents();
+
+                });
+                $(document).on('click', ".lTypeBtn", function () {
+                    modalLocationType = $(this).data('loc');
+                    modalLocationTypeName = $(this).text();
+                    $('#location-modal').css('display', 'none');
+                    $('#calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div:nth-child(1) > button.fc-location-button.fc-button.fc-button-primary').text(modalLocationTypeName);
+
+                    calendar.refetchEvents();
+
+                });
+            });
+
+
+
+
+        </script>
+
+
+    </th:block>
 </th:block>
 </html>
