@@ -20,28 +20,29 @@
                 </div>
                 <div name="location">  <!--  위치 영역  -->
                     <span name="location-dropdown">
-                        <select th:field="*{location}">
-                            <option th:value="SEOUL">서울</option>
-                            <option th:value="BUSAN">부산</option>
-                            <option th:value="DAEGU">대구</option>
-                            <option th:value="INCHEON">인천</option>
-                            <option th:value="GWANGJU">광주</option>
-                            <option th:value="DAEJEON">대전</option>
-                            <option th:value="ULSAN">울산</option>
-                            <option th:value="SEJONG">세종</option>
-                            <option th:value="GYEONGGI">경기</option>
-                            <option th:value="GANGWON">강원</option>
-                            <option th:value="CHUNGBUK">충북</option>
-                            <option th:value="CHUNGNAM">충남</option>
-                            <option th:value="JEONBUK">전북</option>
-                            <option th:value="JEONNAM">전남</option>
-                            <option th:value="GYEONGBUK">경북</option>
-                            <option th:value="GYEONGNAM">경남</option>
-                            <option th:value="JEJU">제주</option>
-                            <option th:value="ETC">기타</option>
-                        </select>
+                            <select th:field="*{location}">
+                                <option value="seoul">서울</option>
+                                <option value="busan">부산</option>
+                                <option value="daegu">대구</option>
+                                <option value="incheon">인천</option>
+                                <option value="gwangju">광주</option>
+                                <option value="daejeon">대전</option>
+                                <option value="ulsan">울산</option>
+                                <option value="sejong">세종</option>
+                                <option value="gyeonggi">경기</option>
+                                <option value="gangwon">강원</option>
+                                <option value="chungbuk">충북</option>
+                                <option value="chungnam">충남</option>
+                                <option value="jeonbuk">전북</option>
+                                <option value="jeonnam">전남</option>
+                                <option value="gyeongbuk">경북</option>
+                                <option value="gyeongnam">경남</option>
+                                <option value="jeju">제주</option>
+                                <option value="etc">기타</option>
+                            </select>
                     </span>
                     <span name="location-checkbox">
+                        <!-- 활동 지역 외 게시글, 작품 미노출 -->
                         <input type="checkbox" >
                     </span>
                 </div>
@@ -56,21 +57,21 @@
                 </div>
                 <div name="username">
                     <span name="username-textbox"></span>
-                        <input type="text" th:field="*{username}" id="username" placeholder="닉네임">
+                        <input type="text" th:field="*{username}" placeholder="닉네임">
                     <span name="submit-button">
                         <button type="button" id="checkUsernameBtn">중복확인</button>
                     </span>
                 </div>
                 <div name="email">
                     <span name="email-textbox"></span>
-                        <input type="email" th:field="*{email}" id="email" placeholder="이메일">
+                        <input type="email" th:field="*{email}" placeholder="이메일">
                     <span name="submit-button">
                         <button type="button" id="checkEmailBtn">중복확인</button>
                     </span>
                 </div>
                 <div name="password">
                     <span name="password-textbox"></span>
-                        <input type="password" th:field="*{password}" id="password" placeholder="비밀번호">
+                        <input type="password" th:field="*{password}" placeholder="비밀번호">
                     <span name="password-textbox">
                         <input type="password" id="repeatPassword" placeholder="비밀번호 재입력">
                     </span>
@@ -104,15 +105,17 @@
             <span name="card">
                 <div name="image"></div>
                 <div name="title"></div>
-            </span><span name="card">
+            </span>
+            <span name="card">
                 <div name="image"></div>
                 <div name="title"></div>
-            </span><span name="card">
+            </span>
+            <span name="card">
                 <div name="image"></div>
                 <div name="title"></div>
             </span>
         </div>  <!--  관심사 카드 영역 상단 END  -->
-        <div name="cards">  <!--  관심사 카드 영역 하단 START  -->
+       <!-- <div name="cards">  &lt;!&ndash;  관심사 카드 영역 하단 START  &ndash;&gt;
             <h1>카드 영역</h1>
             <span name="card">
                 <div name="image"></div>
@@ -121,19 +124,21 @@
             <span name="card">
                 <div name="image"></div>
                 <div name="title"></div>
-            </span><span name="card">
-                <div name="image"></div>
-                <div name="title"></div>
-            </span><span name="card">
+            </span>
+            <span name="card">
                 <div name="image"></div>
                 <div name="title"></div>
             </span>
-        </div>  <!--  관심사 카드 영역 하단 END  -->
-    </div>  <!-- 관심사 영역 START -->
-        <div name="submit-button">
-            <button type="submit">회원가입</button>
-        </div>
+            <span name="card">
+                <div name="image"></div>
+                <div name="title"></div>
+            </span>
+        </div>  &lt;!&ndash;  관심사 카드 영역 하단 END  &ndash;&gt;-->
     </form>
+            <div name="submit-button">
+                <button type="submit">회원가입</button>
+            </div>
+    </div>  <!-- 관심사 영역 End -->
     </div><!--  회원가입 영역 END -->
         <!-- 모달 버튼
         <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal">모달 열기</button>
@@ -144,33 +149,22 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">모달 제목</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="닫기">
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="닫기">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">지역</label>
+                            <input type="text" class="form-control" id="recipient-name">
+                        </div>
+                        <div class="mb-3">
 
+                        </div>
+                    </form>
                     <!--여기에 콘텐츠를 넣습니다.
-                    <select name="location">
-                        <option value="seoul">서울</option>
-                        <option value="busan">부산</option>
-                        <option value="daegu">대구</option>
-                        <option value="incheon">인천</option>
-                        <option value="gwangju">광주</option>
-                        <option value="daejeon">대전</option>
-                        <option value="ulsan">울산</option>
-                        <option value="sejong">세종</option>
-                        <option value="gyeonggi">경기</option>
-                        <option value="gangwon">강원</option>
-                        <option value="chungbuk">충북</option>
-                        <option value="chungnam">충남</option>
-                        <option value="jeonbuk">전북</option>
-                        <option value="jeonnam">전남</option>
-                        <option value="gyeongbuk">경북</option>
-                        <option value="gyeongnam">경남</option>
-                        <option value="jeju">제주</option>
-                        <option value="etc">기타</option>
-                    </select>-->
+                   -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
@@ -184,7 +178,7 @@
 <!-- jQuery, Popper.js, 부트스트랩 JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function(){

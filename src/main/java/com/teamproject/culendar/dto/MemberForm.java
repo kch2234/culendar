@@ -3,9 +3,10 @@ package com.teamproject.culendar.dto;
 
 import com.teamproject.culendar.domain.enumFiles.Gender;
 import com.teamproject.culendar.domain.enumFiles.Location;
-import com.teamproject.culendar.domain.enumFiles.MemberType;
 import com.teamproject.culendar.domain.enumFiles.Role;
 import com.teamproject.culendar.domain.member.Member;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,16 +16,23 @@ import java.time.format.DateTimeFormatter;
 @Data
 public class MemberForm  {
     private Long id; // 생략
+    @NotBlank(message = "아이디는 필수 입력 값입니다.")
     private String userid; // 아이디
+    @NotBlank(message = "닉네임은 필수 입력 값입니다.")
     private String username; //닉네임
+    @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
     private String password;
     private int phone;
+    @Email(message = "이메일 형식이 아닙니다.")
     private String email;
-    //TODO 지역 ENUM 예정
+    // 지역 ENUM
+    @NotBlank(message = "지역은 필수 입력 값입니다.")
     private Location location;
     // 생년 월일
+    @NotBlank(message = "생년월일은 필수 입력 값입니다.")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private String birth;
+    @NotBlank(message = "성별은 필수 입력 값입니다.")
     private Gender gender;
     //TODO 프로필 사진 예정
     //private String profileImage;
@@ -51,4 +59,5 @@ public class MemberForm  {
         member.setRole(role);
         return member;
     }
+
 }

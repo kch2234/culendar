@@ -1,6 +1,8 @@
 package com.teamproject.culendar.service;
 
 import com.teamproject.culendar.domain.member.Member;
+import com.teamproject.culendar.dto.FollowDTO;
+import com.teamproject.culendar.dto.InterestDTO;
 import com.teamproject.culendar.dto.MemberDTO;
 import com.teamproject.culendar.dto.MemberForm;
 import com.teamproject.culendar.repository.MemberRepository;
@@ -33,27 +35,48 @@ public class MemberService {
         return new MemberDTO(member);
     }
     // 아이디 중복 체크
-    public MemberDTO findByUserid(String userId) {
-        Member member = memberRepository.findByUserid(userId).orElse(null);
+    public CustomMember findByUserid(String userid) {
+        log.info("********** MemberService findByUserid - userId : {}", userid);
+        Optional<Member> member = memberRepository.findByUserid(userid);
         log.info("********** MemberService findByUserid - member : {}", member);
-        return new MemberDTO(member);
+        if(member.isPresent()) {
+            return new CustomMember(member.get());
+        }
+        return null;
     }
     // 닉네임 중복 체크
-    public MemberDTO findByUsername(String username) {
-        Member member = memberRepository.findByUsername(username).orElse(null);
+    public CustomMember findByUsername(String username) {
+        log.info("********** MemberService findByUsername - username : {}", username);
+        Optional<Member> member = memberRepository.findByUsername(username);
         log.info("********** MemberService findByUsername - member : {}", member);
-        return new MemberDTO(member);
+        if(member.isPresent()) {
+            return new CustomMember(member.get());
+        }
+        return null;
     }
     // 이메일 중복 체크
-    public MemberDTO findByEmail(String email) {
-        Member member = memberRepository.findByEmail(email).orElse(null);
+    public CustomMember findByEmail(String email) {
+        log.info("********** MemberService findByEmail - email : {}", email);
+        Optional<Member> member = memberRepository.findByEmail(email);
         log.info("********** MemberService findByEmail - member : {}", member);
-        return new MemberDTO(member);
+        if(member.isPresent()) {
+            return new CustomMember(member.get());
+        }
+        return null;
     }
 
     // 팔로우, 팔로워 조회
+    public void findFollow(Long id) {
+        log.info("********** MemberService findFollow - id : {}", id);
+    }
 
     // 회원정보 수정
+    public void updateMember(MemberForm memberForm) {
+        Member findMember = memberRepository.findById(memberForm.getId()).orElse(null);
+        findMember.setUsername(memberForm.getUsername());
+        findMember.setLocation(memberForm.getLocation());
+        findMember.setIntroduction(memberForm.getIntroduction());
+    }
 
     // 회원정보 삭제 - 회원탈퇴 비활성화 추가 예정
     public void deleteMember(Long id) {}
@@ -65,6 +88,5 @@ public class MemberService {
         log.info("********** MemberService saveMember - saved : {}", saved);
         return saved.getId();
     }
-
 
 }

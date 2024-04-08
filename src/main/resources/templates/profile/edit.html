@@ -5,6 +5,7 @@
     <h1>프로필 수정 페이지 영역</h1>
 
     <div name="profile">  <!--  회원 프로필 영역  -->
+        <form action="" th:action th:object="${member}" name="inputForm" method="post">
         <span name="imageInfo">  <!--  회원 프로필 사진 영역  -->
             <div name="memberImage"></div>  <!--  회원 프로필 사진  -->
             <div name="button">  <!--  버튼 영역  -->
@@ -14,11 +15,13 @@
         </span>
         <span name="memberInfo">  <!--  회원 정보 영역  -->
             <div name="username">  <!--  닉네임 영역  -->
-                <span name="username-textbox"></span>
+                <span name="username-textbox">닉네임</span>
                 <input type="text" th:field="*{username}" placeholder="닉네임">
-                <span name="submit-button">중복확인</span>
+                <span name="submit-button">
+                    <button type="button" id="checkUsernameBtn">중복확인</button>
+                </span>
             </div>
-            <div name="location">  <!--  위치 영역  -->
+            <div name="location">지역  <!--  위치 영역  -->
                 <span name="location-dropdown"></span>
                         <select th:field="*{location}">
                             <option th:value="SEOUL">서울</option>
@@ -40,9 +43,13 @@
                             <option th:value="JEJU">제주</option>
                             <option th:value="ETC">기타</option>
                         </select>
-                <span name="location-checkbox"></span>
+                <span name="location-checkbox">
+                    <input type="checkbox" >
+                </span>
             </div>
-            <div name="introduce">자기소개</div>
+            <div name="introduce">자기소개
+                <input type="text" th:field="*{introduction}" placeholder="자기소개">
+            </div>
         </span>
     </div>
     <div name="genre">  <!-- 관심사 영역 -->
@@ -81,8 +88,42 @@
                 <div name="title"></div>
             </span>
         </div>
-    <div name="submit-button">저장</div>
+        <div name="submit-button">
+            <button type="submit">저장</button>
+        </div>
     </div>
+    </form>
     </th:block>
 </th:block>
+<script th:inline="javascript">
+    $(document).ready(function(){
+        let checkResult = null;
+
+        $("#username").change(function(){
+            let username = $(this).val(); // 사용자가 작성한 값 꺼내기
+            console.log("username : " + username);
+            $.ajax({
+                type: "post",
+                url: "/usernameCheck",
+                data: {username: username},
+                success: function(result){
+                    console.log("성공!");
+                    console.log(result);
+                    checkResult = result; // 성공 결과 저장
+                },
+                error: function(e) {
+                    console.log("실패...");
+                    console.log(e);
+                }
+            });
+        });
+        $("#checkUsernameBtn").click(function(){
+            if(checkResult !== null) {
+                alert(checkResult); // 마지막 AJAX 호출 결과 사용
+            } else {
+                alert("닉네임 중복확인을 해주세요.");
+            }
+        });
+    });
+</script>
 </html>

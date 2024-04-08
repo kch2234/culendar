@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .rememberMe(remember -> // 로그인 유지 설정
                         remember.userDetailsService(userDetailsService)
                                 .tokenRepository(tokenRepository())
-                                //.rememberMeParameter("auto")
+//                                .rememberMeParameter("auto")
                                 .tokenValiditySeconds(604800)) // 로그인 유지 시간
                 .logout(logout -> // 로그아웃 설정
                         logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -62,9 +62,8 @@ public class SecurityConfig {
                                 .invalidateHttpSession(true)) // 로그아웃 시 세션 무효화
                 .exceptionHandling(exception -> exception
                                 .accessDeniedHandler((request, response, accessDeniedException) ->
-                                        response.sendRedirect("/access-denied")
-                                )); // 권한 없음 에러 처리
-                //TODO: 세션 관리 설정
+                                        response.sendRedirect("/access-denied"))) // 권한 없음 페이지로 이동
+                ;
         return http.build();
     }
 

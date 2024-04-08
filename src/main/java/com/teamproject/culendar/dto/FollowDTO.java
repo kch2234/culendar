@@ -1,5 +1,6 @@
 package com.teamproject.culendar.dto;
 
+import com.teamproject.culendar.domain.member.Follow;
 import com.teamproject.culendar.domain.member.Member;
 import lombok.Data;
 
@@ -10,8 +11,13 @@ import java.time.LocalDateTime;
 public class FollowDTO {
     private Long id;
     private LocalDateTime createDate;
-    private Long member_id; // 팔로우 하는 사람
-    private Long follow_id; // 팔로우 대상
+    private Member member;
+    private Member follow;
 
-
+    public FollowDTO(Follow follow){
+        this.id = follow.getId();
+        this.createDate = follow.getCreateDate();
+        this.member = follow.getMember();
+        this.follow = follow.getFollow();
+    }
 }

@@ -6,6 +6,7 @@ import com.teamproject.culendar.dto.FollowDTO;
 import com.teamproject.culendar.dto.MemberDTO;
 
 
+import com.teamproject.culendar.dto.MemberForm;
 import com.teamproject.culendar.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -41,6 +42,11 @@ public class MemberController {
         return "profile/memberProfile";
     }
     // 팔로우, 팔로워 조회
+    @GetMapping("/{id}/follow")
+    public String follow(@PathVariable("id") Long id, Model model){
+        log.info("********** MemberController GET /members/:id/follow - id : {}", id);
+        return "profile/follow";
+    }
 
     // 회원 정보 수정
     @GetMapping("/{id}/edit")
@@ -49,6 +55,15 @@ public class MemberController {
         MemberDTO member = memberService.findById(id);
         model.addAttribute("member", member);
         return "profile/edit";
+    }
+
+    // 회원 정보 수정 처리
+    @PostMapping("/{id}/edit")
+    public String editPro(@PathVariable("id") Long id, MemberForm memberForm){
+        log.info("********** MemberController POST /members/:id/edit - id : {}", id);
+        log.info("********** MemberController POST /members/:id/edit - memberForm : {}", memberForm);
+        memberService.updateMember(memberForm);
+        return "redirect:/members/{id}";
     }
 
     // 회원 탈퇴 - 비활성화 추가 예정

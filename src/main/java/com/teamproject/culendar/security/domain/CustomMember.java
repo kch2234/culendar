@@ -22,7 +22,7 @@ public class CustomMember extends User {
     }
 
     public CustomMember(Member member) {
-        super(member.getUsername(), member.getPassword(),
+        super(member.getUserid(), member.getPassword(),
                 Arrays.asList(new SimpleGrantedAuthority("ROLE_" + member.getRole().getValue())));
         this.member = new MemberDTO(member);
     }
