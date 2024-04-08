@@ -1,6 +1,7 @@
 package com.teamproject.culendar.controller;
 
 import com.teamproject.culendar.domain.board.Board;
+import com.teamproject.culendar.domain.enumFiles.BoardType;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.*;
 import com.teamproject.culendar.security.domain.CustomMember;
@@ -46,15 +47,16 @@ public class BoardController {
 
   // 게시글 작성
   @GetMapping("/add")
-  public String addForm(@ModelAttribute BoardForm boardForm, @AuthenticationPrincipal CustomMember customMember) {
+  public String addForm(@ModelAttribute BoardForm boardForm, Model model, @AuthenticationPrincipal CustomMember customMember) {
     log.info("***** BoardController GET /boards/add");
+    model.addAttribute("boardType", BoardType.values());
 
     return "community/boardAdd";
   }
   @PostMapping("/add")
   public String addPRo(BoardForm boardForm, @AuthenticationPrincipal CustomMember customMember) {
     log.info("**** BoardController POST /boards/add - boardForm : {}", boardForm);
-    MemberDTO member = customMember.getMember();
+    MemberDTO member = customMember.getMember();  // todo 초기화 지점 확인
     boardForm.setMember(member.toEntity());
     Long save = boardService.save(boardForm);
 
@@ -75,7 +77,7 @@ public class BoardController {
 
   // 게시글 삭제
   @PostMapping("/{id}/delete")
-  public String delete(@PathVariable("id") Long id, String writer) {
+  public String delete(@PathVariable("id") Long id) {
     log.info("**** BoardController POST /boards/:id/delete - id : {}", id);
     boardService.deleteOneBoard(id);
     return "redirect:/boards/list";

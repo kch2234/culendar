@@ -74,7 +74,7 @@ public class ClubController {
 
   // 모임 삭제
   @PostMapping("/{id}/delete")
-  public String delete(@PathVariable("id") Long id, String writer) {
+  public String delete(@PathVariable("id") Long id) {
     log.info("**** ClubController POST /boards/:id/delete - id : {}", id);
     eventBoardService.deleteOneBoard(id);
     return "redirect:clubs/list";

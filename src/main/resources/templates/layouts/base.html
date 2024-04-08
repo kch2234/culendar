@@ -3,8 +3,8 @@
 <th:block th:fragment="base(content)">
 
     <!--  헤더  -->
-    <h1>헤더 영역</h1>
     <th:block th:replace="~{/layouts/header :: headerFrg}"></th:block>
+
 
     <body data-spy="scroll" data-target=".site-navbar-target" data-offset="100">
 
@@ -17,17 +17,13 @@
             <div class="site-mobile-menu-body"></div>
         </div>
 
-
-        <!--  네브  -->
-        <h1>네브 영역</h1>
-        <th:block th:replace="~{/layouts/nav :: navFrg}"></th:block>
+    <!--  네브  -->
+    <th:block th:replace="~{/layouts/nav :: navFrg}"></th:block>
 
         <!--  컨텐트  -->
-        <h1>컨텐트 영역</h1>
         <th:block th:replace="${content}"></th:block>
 
         <!-- 푸터  -->
-        <h1>푸터 영역</h1>
         <th:block th:replace="~{/layouts/footer :: footerFrg}"></th:block>
 
 
