@@ -56,11 +56,12 @@ public class BoardController {
   @PostMapping("/add")
   public String addPRo(BoardForm boardForm, @AuthenticationPrincipal CustomMember customMember) {
     log.info("**** BoardController POST /boards/add - boardForm : {}", boardForm);
-    MemberDTO member = customMember.getMember();  // todo 초기화 지점 확인
+    MemberDTO member = customMember.getMember();
+    log.info("***** BoardController POST /boards/add - writer(member) : {}", member.getUsername());
     boardForm.setMember(member.toEntity());
     Long save = boardService.save(boardForm);
 
-    return "redirect:/community/communityHome";
+    return "redirect:/boards/list";
   }
 
   // 게시글 상세

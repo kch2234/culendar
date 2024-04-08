@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @Data
 public class BoardDTO {
   private Long id;
-  private BoardType boardType;
   private Member member;
+  private BoardType boardType;
   private Program program;
   private String title;
   private String content;
@@ -22,11 +22,14 @@ public class BoardDTO {
   private LocalDateTime createDate;
   private LocalDateTime lastModifiedDate;
 
+  // Board entity -> BoardDTO 변환
   public BoardDTO(Board board) {
     this.id = board.getId();
     this.member = board.getMember();
     this.title = board.getTitle();
     this.content = board.getContent();
+    this.boardType = board.getBoardType();
+    this.program = board.getProgram();
     this.viewCount = board.getViewCount();
     this.createDate = board.getCreateDate();
     this.lastModifiedDate = board.getLastModifiedDate();

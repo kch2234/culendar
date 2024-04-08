@@ -23,9 +23,6 @@
                             <!--<li><a th:href="@{/members/{id}(id=${member.id})}" class="nav-link">프로필</a></li>-->
                             <!--<li><a th:href="@{/members/{id}/settings(id=${member.id})}" class="nav-link">설정</a></li>-->
                             <li>
-                                <!--                                <form th:action="@{/logout}" method="post">-->
-                                <!--                                    <input type="submit">  &lt;!&ndash;  class="nav-link"  &ndash;&gt;-->
-                                <!--                                </form>-->
                                 <form th:action="@{/login}" method="post">
                                     <a class="nav-link" onclick="this.parentNode.submit();">로그인</a>  <!--  todo  -->
                                 </form>

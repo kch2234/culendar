@@ -3,14 +3,14 @@
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
-        <div class="untree_co-section bg-light">
+        <div class="untree_co-section bg-light">  <!--  todo 반응형 패딩 안 맞음  -->
             <div class="container">
-                <div class="row mb-5">
+                <div class="row mb-5">  <!--  제목  -->
                     <div class="col-12 mb-5 aos-init aos-animate" data-aos="fade-up">
                         <h2 class="heading">인기글</h2>
                     </div>
-                </div>  <!--  row mb-5  -->
-                <div class="row">
+                </div>  <!--  row mb-5 제목 영역  -->
+                <div class="row">  <!--  인기글 카드  -->
                     <div class="col-md-6 mb-4 mb-lg-0 col-lg-4" data-aos="fade-up" data-aos-delay="0">
                         <div class="news-item">  <!--  게시글 카드 1  -->
                             <div class="vcard d-flex mb-4">
@@ -123,74 +123,51 @@
                             </a></p>
                         </div>  <!-- news-item 4 -->
                     </div>  <!--  애니메이션 속성 END  -->
-                </div>  <!--  row  -->
+                </div>  <!--  row 인기글 카드  -->
                 <div class="col-12 mb-5 aos-init aos-animate" data-aos="fade-up">
-                    <table>
-                        <thead>
+                    <div class="row">  <!--  카테고리  -->
+                        <button type="button" class="btn btn-warning">인기글</button>  <!--  todo 필터링  -->
+                        <button type="button" class="btn btn-secondary">정보</button>
+                        <button type="button" class="btn btn-secondary">후기</button>
+                        <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/boards/add}'|">글 작성</button>
+                    </div>  <!--  row 카테고리 영역  -->
+                </div>  <!--  col-12 mb-5 aos-init aos-animate todo 뜯어보기  -->
+                    <table class="row">  <!--  row 리스트 제목  -->
+                        <thead class="col-12">
                             <tr>
-                                <th>No</th>
+                                <th>Category</th>
                                 <th>Title</th>
                                 <th>Writer</th>
-                                <th>Last Modified Date</th>
-                                <th>Created Date</th>
-                                <th>Viewed</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="col-12">  <!--  게시글 리스트  -->
                             <tr th:each="board : ${list}">
-                                <td><a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.boardType}">카테고리</a></td>
+                                <td><a th:text="${board.boardType}">카테고리</a></td>
                                 <td><a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}">제목</a></td>
+                                <td><a th:text="${board.member.getUsername()}">작성자</a></td>
 <!--                                <td th:text="${board.writer}">작성자</td>-->
-<!--                                <td th:text="${#temporals.format(board.lastModifiedDate, 'yyyy-MM-dd HH:mm')}">Last Modified Date</td>-->
-<!--                                <td th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}">Created Date</td>-->
-<!--                                <td th:text="${board.viewCount}">Count</td>-->
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>  <!--  container  -->
-        </div>  <!--  untree_co-section  -->
-        <div name="board">  <!--  게시글 영역  -->
-            <div name="boardCategory">  <!--  게시글 카테고리 영역  -->
-                <span name="favBoard-category">인기글</span>
-                <span name="infoBoard-category">정보</span>
-                <span name="reviewBoard-category">후기</span>
-                <span name="add-button">글 작성</span>
-            </div>
-            <div name="boardList">  <!--  게시글 리스트 영역  -->
-                <div name="boardListHeader">  <!--  게시글 리스트 헤더 영역  -->
-                    <span name="category">카테고리</span>
-                    <span name="title">제목</span>
-                    <span name="writer">작성자</span>
-                </div>
-                <div name="boardListContents">  <!--  게시글 컨텐츠 영역  -->
-                    <span name="category">ex정보</span>
-                    <span name="title">ex헤드윅할인</span>
-                    <span name="writer">ex홍길동</span>
-                </div>
-            </div>
-            <div name="boardFooter">  <!--  게시글 리스트 푸터 영역  -->
-                <span name="searchCategory">검색카테고리</span>
-                <span name="searchBar">검색창</span>
-                <span name="prev-button">이전</span>
-                <span name="pagingNum">페이징번호</span>
-                <span name="next-button">다음</span>
-            </div>
-        </div>  <!--  게시글 영역 END  -->
+                        </tbody>  <!--  row 게시글 리스트  -->
+                    </table>  <!--  row 리스트 제목 영역  -->
+
+                    <div class="row text-start pt-5 border-top">  <!--  페이징 영역 todo 뜯어보기  -->
+                        <div class="col-mb-12">
+                            <div class="custom-pagination">
+                                <span class="page-item" th:classappend="${pageDTO.prev == false} ? 'disabled'">
+                                        <a th:href="@{/boards/list(page=${pageDTO.startPage-1},size=${pageDTO.pageRequestDTO.size})}" class="page-link">Previous</a>
+                                </span>
+                                <span th:each="page : ${pageDTO.pageNumList}" class="page-item" th:classappend="${pageDTO.pageRequestDTO.page == page} ? 'active'">
+                                        <a th:href="@{/boards/list(page=${page},size=${pageDTO.pageRequestDTO.size})}" class="page-link" th:text="${page}">0</a>
+                                </span>
+                                <span class="page-item" th:classappend="${pageDTO.next == false} ? 'disabled'">
+                                        <a th:href="@{/boards/list(page=${pageDTO.endPage+1},size=${pageDTO.pageRequestDTO.size})}" class="page-link">Next</a>
+                                </span>
+                            </div>  <!--  custom-pagination  -->
+                        </div>  <!-- col-mb-12   -->
+                    </div>  <!-- row text-start pt-5 border-top 페이징 영역   -->
+            </div>  <!--  container 전체 영역  -->
+        </div>  <!--  untree_co-section 배경 영역  -->
+
     </th:block>
-    <div name="favBoard">  <!-- 인기글 카드 영역 -->
-        <div>
-            <div name="heading"></div>  <!--  제목  -->
-            <div name="icon-horizon"></div>
-        </div>
-        <div name="cards">  <!--  카드 영역  -->
-            <span name="boardCard"></span>  <!--  당일 가준 관람일이 지난 작품 카드 (관람한 작품)  -->
-            <span name="boardCard"></span>
-            <span name="boardCard"></span>
-            <span name="boardCard"></span>
-        </div>
-    </div> <!--  인기글 카드 영역  -->
-
-
 </th:block>
 </html>

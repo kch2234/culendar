@@ -53,7 +53,7 @@ public class SecurityConfig {
                 )
                 .rememberMe(remember -> // 로그인 유지 설정
                         remember.userDetailsService(userDetailsService)
-                                .tokenRepository(tokenRepository())
+//                                .tokenRepository(tokenRepository())
                                 //.rememberMeParameter("auto")
                                 .tokenValiditySeconds(604800)) // 로그인 유지 시간
                 .logout(logout -> // 로그아웃 설정

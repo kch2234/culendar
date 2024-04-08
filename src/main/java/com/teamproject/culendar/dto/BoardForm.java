@@ -20,7 +20,10 @@ public class BoardForm {
   public Board toEntity() {
     Board board = new Board();
     board.setTitle(title);
+    board.setBoardType(boardType);
+    board.setProgram(program);
     board.setContent(content);
+    board.setMember(member);
     return board;
   }
 
