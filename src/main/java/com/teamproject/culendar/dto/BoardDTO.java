@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 public class BoardDTO {
   private Long id;
-  private Member member;
+  private MemberDTO memberDTO;  // member 직접 사용 X
   private BoardType boardType;
   private Program program;
   private String title;
@@ -25,11 +25,11 @@ public class BoardDTO {
   // Board entity -> BoardDTO 변환
   public BoardDTO(Board board) {
     this.id = board.getId();
-    this.member = board.getMember();
-    this.title = board.getTitle();
-    this.content = board.getContent();
+    // memberDTO -> 외부(getOneBoard)에서 변환
     this.boardType = board.getBoardType();
     this.program = board.getProgram();
+    this.title = board.getTitle();
+    this.content = board.getContent();
     this.viewCount = board.getViewCount();
     this.createDate = board.getCreateDate();
     this.lastModifiedDate = board.getLastModifiedDate();

@@ -1,8 +1,10 @@
 package com.teamproject.culendar.service;
 
 import com.teamproject.culendar.domain.board.Board;
+import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.BoardDTO;
 import com.teamproject.culendar.dto.BoardForm;
+import com.teamproject.culendar.dto.MemberDTO;
 import com.teamproject.culendar.dto.PageRequestDTO;
 import com.teamproject.culendar.repository.BoardRepository;
 import com.teamproject.culendar.repository.MemberRepository;
@@ -60,7 +62,12 @@ public class BoardService {
     Board board = boardRepository.findById(id).orElse(null);
     board.setViewCount(board.getViewCount() + 1);
 
-    return new BoardDTO(board);
+    Member member = board.getMember(); // Board 에서 Member 엔티티만 꺼내기
+    MemberDTO memberDTO = new MemberDTO(member); // Member entity -> MemberDTO 로 변환
+    BoardDTO boardDTO = new BoardDTO(board); // Board entity -> BoardDTO 변환
+    boardDTO.setMemberDTO(memberDTO); // BoardDTO 에 부족한 MemberDTO 를 채우기
+
+    return boardDTO;
   }
 
   // 게시글 삭제

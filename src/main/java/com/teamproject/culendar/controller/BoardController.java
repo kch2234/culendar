@@ -57,7 +57,7 @@ public class BoardController {
   public String addPRo(BoardForm boardForm, @AuthenticationPrincipal CustomMember customMember) {
     log.info("**** BoardController POST /boards/add - boardForm : {}", boardForm);
     MemberDTO member = customMember.getMember();
-    log.info("***** BoardController POST /boards/add - writer(member) : {}", member.getUsername());
+    log.info("***** BoardController POST /boards/add - writer(member.username) : {}", member.getUsername());
     boardForm.setMember(member.toEntity());
     Long save = boardService.save(boardForm);
 
