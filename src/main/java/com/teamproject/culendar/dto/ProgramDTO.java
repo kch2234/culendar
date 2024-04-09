@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ProgramDTO {
 
+    private Long id;
     private String title;
     private Long seq;
     private LocalDateTime startDate;
@@ -28,6 +29,7 @@ public class ProgramDTO {
 
     public Program toEntity() {
         Program program = new Program();
+        program.setId(this.id);
         program.setTitle(this.title);
         program.setSeq(this.seq);
         program.setStartDate(this.startDate);
