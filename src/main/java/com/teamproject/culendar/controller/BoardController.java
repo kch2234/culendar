@@ -29,17 +29,17 @@ public class BoardController {
   @GetMapping("/list")
   public String list(Model model, PageRequestDTO pageRequestDTO) {
     log.info("**** BoardController GET /boards/list");
-    Page<Board> result = boardService.getListWithPaging(pageRequestDTO);
-    List<Board> contents = result.getContent();
+    Page<Board> result = boardService.getListWithPaging(pageRequestDTO);  // 페이징
+    List<Board> contents = result.getContent();  // Board 주소(정보)들
     List<BoardDTO> list = new ArrayList<>();
     for(int i = 0; i < contents.size(); i++) {
-      Board board = contents.get(i);
-      BoardDTO dto = new BoardDTO(board);
-      list.add(dto);
+      Board board = contents.get(i);  // Board 주소(정보) 1개
+      BoardDTO dto = new BoardDTO(board);  // BoardDTO 정보 1개 - MemberDTO 포함
+      list.add(dto);  // 리스트에 추가
     }
     PageResponseDTO pageResponseDTO = new PageResponseDTO(pageRequestDTO, result.getTotalElements());
 
-    model.addAttribute("list", list); // 글 목록 view에 전달
+    model.addAttribute("list", list); // BoardDTO 정보들 -> 글 목록 view에 전달
     model.addAttribute("pageDTO", pageResponseDTO);
 
     return "community/communityHome";

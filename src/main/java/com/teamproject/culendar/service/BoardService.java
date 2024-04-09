@@ -62,10 +62,11 @@ public class BoardService {
     Board board = boardRepository.findById(id).orElse(null);
     board.setViewCount(board.getViewCount() + 1);
 
-    Member member = board.getMember(); // Board 에서 Member 엔티티만 꺼내기
-    MemberDTO memberDTO = new MemberDTO(member); // Member entity -> MemberDTO 로 변환
+    //BoardDTO 의 memberDTO 를 외부(getOneBoard)에서 변환하는 경우
+//    Member member = board.getMember(); // Board 에서 Member 엔티티만 꺼내기
+//    MemberDTO memberDTO = new MemberDTO(member); // Member entity -> MemberDTO 로 변환
     BoardDTO boardDTO = new BoardDTO(board); // Board entity -> BoardDTO 변환
-    boardDTO.setMemberDTO(memberDTO); // BoardDTO 에 부족한 MemberDTO 를 채우기
+//    boardDTO.setMemberDTO(memberDTO); // BoardDTO 에 부족한 MemberDTO 를 채우기
 
     return boardDTO;
   }

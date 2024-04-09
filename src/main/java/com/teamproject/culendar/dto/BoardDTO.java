@@ -4,6 +4,7 @@ import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.enumFiles.BoardType;
 import com.teamproject.culendar.domain.program.Program;
+import com.teamproject.culendar.repository.BoardRepository;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ public class BoardDTO {
   // Board entity -> BoardDTO 변환
   public BoardDTO(Board board) {
     this.id = board.getId();
-    // memberDTO -> 외부(getOneBoard)에서 변환
+    this.memberDTO = new MemberDTO(board.getMember());
     this.boardType = board.getBoardType();
     this.program = board.getProgram();
     this.title = board.getTitle();

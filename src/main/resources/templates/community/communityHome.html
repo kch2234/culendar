@@ -4,13 +4,13 @@
     <th:block th:fragment="content">
 
         <div class="untree_co-section bg-light">  <!--  todo 반응형 패딩 안 맞음  -->
-            <div class="container">
+            <div class="container">  <!--  커뮤니티홈  -->
                 <div class="row mb-5">  <!--  제목  -->
                     <div class="col-12 mb-5 aos-init aos-animate" data-aos="fade-up">
                         <h2 class="heading">인기글</h2>
                     </div>
                 </div>  <!--  row mb-5 제목 영역  -->
-                <div class="row">  <!--  인기글 카드  -->
+                <div class="row">  <!--  인기글 카드 TODO DB 연결 -->
                     <div class="col-md-6 mb-4 mb-lg-0 col-lg-4" data-aos="fade-up" data-aos-delay="0">
                         <div class="news-item">  <!--  게시글 카드 1  -->
                             <div class="vcard d-flex mb-4">
@@ -20,8 +20,8 @@
                                 <div class="post-meta"></div>
                             </div>
                             <div class="news-contents mb-4">
-                                <h3><a href="#">헤드윅 꿀팁 공유합니다</a></h3>
-                                <span class="post-meta-2">이번주 재관람 30% 할인이라네요~~</span>
+                                <h3><a href="#">게시글 제목</a></h3>
+                                <span class="post-meta-2">게시글 내용</span>
                             </div>
                             <div class="news-contents mb-4"></div>
                             <p class="mb-0"><a href="#" class="read-more-arrow">
@@ -38,7 +38,7 @@
                                 </svg>
                             </a></p>
                         </div>  <!-- news-item 1 -->
-                    </div>  <!--  애니메이션 속성 END  -->
+                    </div>  <!--  게시글 카드 1 애니메이션 속성  -->
                     <div class="col-md-6 mb-4 mb-lg-0 col-lg-4" data-aos="fade-up" data-aos-delay="100">
                         <div class="news-item">  <!--  게시글 카드 2  -->
                             <div class="vcard d-flex align-items-center mb-4">
@@ -50,7 +50,7 @@
                             <div class="news-contents mb-4">
                                 <h3><a href="#">게시글 제목</a></h3>
                                 <p>게시글 내용</p>
-                                <span class="post-meta-2">(조회수)</span>
+
                             </div>
                             <p class="mb-0"><a href="#" class="read-more-arrow">
                                 <svg class="bi bi-arrow-right"
@@ -66,7 +66,7 @@
                                 </svg>
                             </a></p>
                         </div>  <!-- news-item 2 -->
-                    </div>  <!--  애니메이션 속성 END  -->
+                    </div>  <!--  게시글 카드 2 애니메이션 속성  -->
                     <div class="col-md-6 mb-4 mb-lg-0 col-lg-4" data-aos="fade-up" data-aos-delay="300">
                         <div class="news-item">  <!--  게시글 카드 3  -->
                             <div class="vcard d-flex align-items-center mb-4">
@@ -78,7 +78,7 @@
                             <div class="news-contents mb-4">
                                 <h3><a href="#">게시글 제목</a></h3>
                                 <p>게시글 내용</p>
-                                <span class="post-meta-2">(조회수)</span>
+
                             </div>
                             <p class="mb-0"><a href="#" class="read-more-arrow">
                                 <svg class="bi bi-arrow-right"
@@ -94,7 +94,7 @@
                                 </svg>
                             </a></p>
                         </div>  <!-- news-item 3 -->
-                    </div>  <!--  애니메이션 속성 END  -->
+                    </div>  <!--  게시글 카드 3 애니메이션 속성  -->
                     <div class="col-md-6 mb-4 mb-lg-0 col-lg-4" data-aos="fade-up" data-aos-delay="500">
                         <div class="news-item">  <!--  게시글 카드 4  -->
                             <div class="vcard d-flex align-items-center mb-4">
@@ -106,7 +106,7 @@
                             <div class="news-contents mb-4">
                                 <h3><a href="#">게시글 제목</a></h3>
                                 <p>게시글 내용</p>
-                                <span class="post-meta-2">(조회수)</span>
+                                
                             </div>
                             <p class="mb-0"><a href="#" class="read-more-arrow">
                                 <svg class="bi bi-arrow-right"
@@ -122,7 +122,7 @@
                                 </svg>
                             </a></p>
                         </div>  <!-- news-item 4 -->
-                    </div>  <!--  애니메이션 속성 END  -->
+                    </div>  <!--  게시글 카드 4 애니메이션 속성  -->
                 </div>  <!--  row 인기글 카드  -->
                 <div class="col-12 mb-5 aos-init aos-animate" data-aos="fade-up">
                     <div class="row">  <!--  카테고리  -->
@@ -131,7 +131,7 @@
                         <button type="button" class="btn btn-secondary">후기</button>
                         <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/boards/add}'|">글 작성</button>
                     </div>  <!--  row 카테고리 영역  -->
-                </div>  <!--  col-12 mb-5 aos-init aos-animate todo 뜯어보기  -->
+                </div>  <!--  col-12 mb-5 aos-init aos-animate 카테고리  -->
                     <table class="row">  <!--  row 리스트 제목  -->
                         <thead class="col-12">
                             <tr>
@@ -144,13 +144,12 @@
                             <tr th:each="board : ${list}">
                                 <td><a th:text="${board.boardType}">카테고리</a></td>
                                 <td><a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}">제목</a></td>
-                                <td><a th:text="${board.member.getUsername()}">작성자</a></td>
-<!--                                <td th:text="${board.writer}">작성자</td>-->
+                                <td><a th:text="${board.memberDTO.username}">작성자</a></td>
                             </tr>
                         </tbody>  <!--  row 게시글 리스트  -->
-                    </table>  <!--  row 리스트 제목 영역  -->
+                    </table>  <!--  row 리스트 헤더 영역  -->
 
-                    <div class="row text-start pt-5 border-top">  <!--  페이징 영역 todo 뜯어보기  -->
+                    <div class="row text-start pt-5 border-top">  <!--  페이징 영역  -->
                         <div class="col-mb-12">
                             <div class="custom-pagination">
                                 <span class="page-item" th:classappend="${pageDTO.prev == false} ? 'disabled'">
@@ -164,8 +163,11 @@
                                 </span>
                             </div>  <!--  custom-pagination  -->
                         </div>  <!-- col-mb-12   -->
-                    </div>  <!-- row text-start pt-5 border-top 페이징 영역   -->
-            </div>  <!--  container 전체 영역  -->
+                    </div>  <!-- row text-start pt-5 border-top 검색창+페이징 영역   -->
+                
+                <!--  todo 검색 기능 추가  -->
+                
+            </div>  <!--  container 커뮤니티홈 영역  -->
         </div>  <!--  untree_co-section 배경 영역  -->
 
     </th:block>

@@ -6,8 +6,10 @@ import com.teamproject.culendar.domain.enumFiles.Gender;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.domain.program.Program;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 public class EventBoardForm {
@@ -20,13 +22,19 @@ public class EventBoardForm {
   private String content;
   //  private String image;  TODO 이미지 추가
   private Program program;
-  private LocalDateTime eventDate;  // 일정 날짜
+
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private Date eventDate;  // 일정 날짜
+
   //  private Location location; TODO 지역 추가
   private Integer maxPeople;  // 최대 정원
   private Gender filterGender;
   private Integer filterMinAge;
   private Integer filterMaxAge;
-  private LocalDateTime deadlineDate;  // 일정 모집 마감 날짜
+
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private Date deadlineDate;  // 일정 모집 마감 날짜
+
   private Boolean autoAccept;  // 자동 수락 여부
 
   public EventBoard toEntity() {
@@ -34,12 +42,12 @@ public class EventBoardForm {
     eventBoard.setTitle(title);
     eventBoard.setContent(content);
 //    eventBoard.setProgram(program);
-//    eventBoard.setEventDate(eventDate);  NOTE 모임 날짜 수정 불가능
+//    eventBoard.setEventDate(eventDate);
     eventBoard.setMaxPeople(maxPeople);
     eventBoard.setFilterGender(filterGender);
     eventBoard.setFilterMinAge(filterMinAge);
     eventBoard.setFilterMaxAge(filterMaxAge);
-    eventBoard.setDeadlineDate(deadlineDate);
+//    eventBoard.setDeadlineDate(deadlineDate);
     eventBoard.setAutoAccept(autoAccept);
     return eventBoard;
   }

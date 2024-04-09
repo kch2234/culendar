@@ -5,8 +5,8 @@
     <th:block th:fragment="content">
         <!--  TODO 텍스트 에디터 API  -->
 
-        <div class="untree_co-hero py-5 mb-0" id="home-section">
-            <div class="container pb-5 mb-5 border-bottom">
+        <div class="untree_co-hero py-5 mb-0" id="home-section">  <!--  배경 영역  -->
+            <div class="container pb-5 mb-5 border-bottom">  <!--  게시글 작성  -->
                 <div class="row">
                     <div class="col-lg-7">
                         <form action="" th:action th:object="${boardForm}" method="post">
@@ -28,7 +28,7 @@
 <!--                            <div class="form-group">-->
 <!--                                <label class="text-blank" for="file">이미지 첨부</label>-->
 <!--                                <input type="file" th:field="*{image}" class="form-control" id="file">-->
-<!--                            </div>-->
+<!--                            </div>  &lt;!&ndash;  todo 이미지 첨부 기능 예정  &ndash;&gt;-->
                             <div class="form-group">
                                 <label class="text-blank" for="content">내용</label>
                                 <textarea th:field="*{content}" class="form-control" id="content" rows="10"></textarea>
@@ -38,10 +38,10 @@
                             </button>
                             <button type="submit" class="btn btn-primary">등록</button>
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </div>  <!--  col-lg-7  -->
+                </div>  <!--  row  -->
+            </div>  <!--  container 게시글 작성  -->
+        </div>  <!-- untree_co-hero py-5 mb-0 배경 영역   -->
     </th:block>
 </th:block>
 </html>
