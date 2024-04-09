@@ -4,12 +4,16 @@ import com.teamproject.culendar.domain.enumFiles.Gender;
 import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.MemberType;
 import com.teamproject.culendar.domain.enumFiles.Role;
+import com.teamproject.culendar.domain.member.Interest;
 import com.teamproject.culendar.domain.member.Member;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -20,6 +24,7 @@ public class MemberDTO {
     private String username;
     private String password;
     private int phone;
+//    @Email(message = "이메일 형식이 아닙니다.")
     private String email;
     //지역 ENUM
     private Location location;
@@ -42,7 +47,7 @@ public class MemberDTO {
         this.password = member.getPassword();
         this.phone = member.getPhone();
         this.email = member.getEmail();
-        //this.location = member.getLocation();
+        this.location = member.getLocation();
         this.birth = member.getBirth();
         this.memberType = member.getMemberType();
         this.gender = member.getGender();
@@ -61,4 +66,5 @@ public class MemberDTO {
         member.setRole(this.role);
         return member;
     }
+
 }

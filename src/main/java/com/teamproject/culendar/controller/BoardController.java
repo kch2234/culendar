@@ -55,7 +55,7 @@ public class BoardController {
   public String addPRo(BoardForm boardForm, @AuthenticationPrincipal CustomMember customMember) {
     log.info("**** BoardController POST /boards/add - boardForm : {}", boardForm);
     MemberDTO member = customMember.getMember();
-    boardForm.setMember(member.toEntity());
+    boardForm.setMember(member.toEntity()); 
     Long save = boardService.save(boardForm);
 
     return "redirect:/community/communityHome";

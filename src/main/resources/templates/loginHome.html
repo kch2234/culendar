@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<th:block th:replace="~{/layouts/base :: base(~{this::content})}">  // 헤더 네브 푸터
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <h1>메인 페이지 영역</h1>
 
     <th:block th:fragment="content">
@@ -10,7 +10,7 @@
         <p sec:authentication="principal.member.userid"></p>
         <ul>
             <li><a th:href="@{members/admin}">adminPage</a></li>
-            <li><a th:href="@{members/{id}(id=${member.member.id})}">memberPage</a></li>
+            <li><a th:href="@{members/{id}(id=${member.member.id})}">memberProfile</a></li>
         </ul>
         <form th:action="@{/logout}" method="post">
             <button type="submit">Logout</button>
