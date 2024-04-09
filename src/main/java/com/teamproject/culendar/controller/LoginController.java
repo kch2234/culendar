@@ -38,17 +38,16 @@ public class LoginController {
         return "member/signup";
     }
     @PostMapping("/signup")
-    public String signupPro(MemberForm memberForm, InterestForm interestForm, Model model) {
+    public String signupPro(MemberForm memberForm, InterestForm interestForm) {
         log.info("********** HomeController POST /signup - memberForm : {}", memberForm);
         Long savedId = memberService.saveMember(memberForm);
         // TODO: savedId 활용 -> 홈에서 모달이나 alert 띄울때 필요하면 사용
-            /*MemberDTO member = memberService.findById(savedId);
-            interestForm.setMember(member.toEntity());*/
-            /*for (ProgramType programType : interestForm.getInterestList()) {
-                interestForm.setInterest(programType);
+            MemberDTO member = memberService.findById(savedId);
+            interestForm.setMember(member.toEntity());
+            for (ProgramType programType : interestForm.getInterestList()) {
+                interestForm.setInterestList(programType);
                 interestService.saveInterest(interestForm);
-            }*/
-//            Long saved = interestService.saveInterest(interestForm);
+            }
         return "redirect:/";
     }
 

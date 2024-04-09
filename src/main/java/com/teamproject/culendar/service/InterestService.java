@@ -16,12 +16,7 @@ public class InterestService {
 
     public Long saveInterest(InterestForm interestForm) {
         Interest entity = interestForm.toEntity();
-        // 회원이 선택한 관심사들을 interestList에 담아서 저장
-        for (int i = 0; i < interestForm.getInterestList().size(); i++) {
-            entity.setInterest(interestForm.getInterestList().get(i));
-            interestRepository.save(entity);
-        }
-//        Interest saveInterest = interestRepository.save(entity);
-        return entity.getId();
+        Interest savedInterest = interestRepository.save(entity);
+        return savedInterest.getId();
     }
 }
