@@ -21,7 +21,7 @@ public class LoginController {
     private final MemberService memberService;
 
     @GetMapping("/signup")
-    public String signupForm(@ModelAttribute MemberForm memberForm, Model model) {
+    public String signupForm(@ModelAttribute("memberForm") MemberForm memberForm, Model model) {
         log.info("********** HomeController GET /signup ");
         // 회원가입 페이지에서 사용할 Role enum 값 전달
         model.addAttribute("roleType", Role.values());

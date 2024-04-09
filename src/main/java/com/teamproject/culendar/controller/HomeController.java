@@ -37,6 +37,11 @@ public class HomeController {
         return "access-denied";
     }
 
+    @GetMapping("/myCalendar")
+    public String calendar() {
+        return "myCalendar/myCalendarHome";
+    }
+
 
     @ModelAttribute("programType") // 작품 종류 데이터를 뷰에 전달
     public ProgramType[] programTypes() {

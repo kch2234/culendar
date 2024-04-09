@@ -14,11 +14,13 @@ public class CalendarDTO {
     private LocalDateTime  start;
     private LocalDateTime end;
     private String color;
+    private String id;
 
     public CalendarDTO(Program program) {
         this.title = program.getTitle();
         this.start = program.getStartDate();
         this.end = program.getEndDate();
+        this.id = program.getSeq().toString();
         if (program.getProgramType() == ProgramType.CONCERT){
             this.color = "#FFD700";
         } else if (program.getProgramType() == ProgramType.DRAMA){

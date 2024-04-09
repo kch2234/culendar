@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}"> // 헤더 네브 푸터
+
+    <th:block th:fragment="content">
+
+        <div class="container" style="width: 90%">
+            <!--        작품 정보-->
+            <div class="row">
+                <div class="col-6">
+                    <!--                썸네일 이미지-->
+                    <img class="w-100" th:src="${program.getThumbnail()}" alt="썸네일 이미지">
+                </div>
+                <div class="col ml-2 p-3">
+                    <!--                작품 정보-->
+                    <div class="row" style="height: 10%">
+                        <div class="col-4">
+                            <div class="badge text-bg-secondary w-100 h-100">
+                                문장형 평가
+                            </div>
+                        </div>
+                        <div class="col"></div>
+                        <div class="col-4 row">
+                            <div class="col p-0">
+                                <i class="fa-regular fa-bookmark"></i>
+                            </div>
+                            <div class="col p-0">
+                                <i class="fa-regular fa-clipboard"></i>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="height: 20%">
+                        <div class="col-12 h-100">
+                            <div class="badge text-bg-secondary fs-2 w-100 h-100" th:text="${program.getTitle()}"></div>
+                        </div>
+                    </div>
+                    <div class="row" style="height: 7%">
+                        <div class="col-10 h-100" >
+                            <div class="badge text-bg-secondary w-100 h-100" th:text="|${#temporals.format(program.getStartDate(), 'yyyy-MM-dd')} ~ ${#temporals.format(program.getEndDate(), 'yyyy-MM-dd')}|"
+                            ></div>
+                        </div>
+                    </div>
+                    <div class="row" style="height: 10%">
+                        <div class="col-4">
+                            <div class="badge text-bg-secondary w-100 h-100">좋아요</div>
+                        </div>
+                        <div class="col"></div>
+                        <div class="col-2">
+                            <div class="badge text-bg-secondary w-100 h-100">내후기</div>
+                        </div>
+                        <div class="col-2">
+                            <div class="badge text-bg-secondary w-100 h-100">체크박스</div>
+                        </div>
+                    </div>
+                    <div class="row" style="height: 40%">
+                        <div class="col-12 h-100">
+                            <div class="badge text-bg-secondary w-100 h-100">지도</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div>
+                <div>인기 후기</div>
+                <div>인기 일정 모임</div>
+            </div>
+
+        </div>
+
+    </th:block>
+</th:block>
+</html>

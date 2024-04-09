@@ -1,48 +1,235 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+
     <th:block th:fragment="content">
-        <h1>마이캘린더 페이지 영역</h1>
-        <div>  <!--  캘린더+사이드정보창 영역  -->
-            <span>  <!--  마이캘린더 영역  -->
-            <spna>캘린더 API 영역</spna>
-            <span name="dropdown-memberClendar"></span>  <!--  마이캘린더 종류  -->
-        </span>  <!--  마이캘린더 영역  -->
-            <span>  <!--  사이드 정보창 영역  -->
-            <span>사이드 정보창 영역</span>
-            <div name="myCalendarResult">  <!--  마이캘린더 내 작품 검색  -->
-                <div name="searchBar"></div>  <!--  검색창  -->
-                <div name="programCard"></div>  <!--  작품 카드  -->
-                <div name="programContent"></div>  <!--  작품 개요  -->
-                <div name="map"></div>
+
+        <!--                분류 모달-->
+        <div class="modal" id="type-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">분류 선택</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" th:each="pType : ${programType}" class="btn btn-primary pTypeBtn"
+                                th:text="${pType.value}" th:if="${pType.value !='기타'}" th:data-type="${pType.name()}"></button>
+
+                    </div>
+                </div>
             </div>
-                <div name="icon-horizonBar"></div>
-            <div name="favBoard">  <!--  인기 후기 영역  -->
-                <h1>인기 후기 영역</h1>
-                <div name="heading">인기 후기</div>  <!--  제목  -->
-                <div name="boardCard"></div>  <!--  게시글 카드  -->
+        </div>
+
+        <!--                지역 모달-->
+        <div class="modal" id="location-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">분류 선택</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" th:each="lType : ${locationType}" class="btn btn-primary lTypeBtn"
+                                th:text="${lType.value}" th:if="${lType.value !='기타'}" th:data-loc="${lType.name()}"></button>
+
+                    </div>
+                </div>
             </div>
-                <div name="icon-horizonBar"></div>
-            <div name="favMeeting">  <!--  임기 모임 영역  -->
-                <h1>인기 모임 영역</h1>
-                <div name="heading">인기 모임</div>  <!--  제목  -->
-                <div name="meetingCard"></div>  <!--  모임 카드  -->
+        </div>
+
+        <div class="w-75 container m-auto">
+            <div class="row">
+                <div class="col-9" id="calendar"></div>
+                <div class="col ml-2 p-0" id="side-search">
+                    <form class="row">
+                        <button  type="submit" class="btn-dark fa-solid fa-magnifying-glass col"></button>
+                        <input type="text" class="form-control col-9"></input>
+                    </form>
+                    <div class="w-100 h-100 border-1">
+                        asd
+                    </div>
+                </div>
             </div>
-        </span>  <!--  사이드 정보창 영역  -->
-        </div>  <!--  캘린더+사이드정보창 영역 END  -->
-        <div name="favMeeting">  <!-- 후기 작성 영역 -->
-            <div>
-                <div name="heading">후기 작성</div>  <!--  제목  -->
-                <div name="icon-horizon"></div>
-            </div>
-            <div name="cards">  <!--  카드 영역  -->
-                <h1>카드 영역</h1>
-                <span name="meetingCard"></span>  <!--  당일 가준 관람일이 지난 작품 카드 (관람한 작품)  -->
-                <span name="meetingCard"></span>
-                <span name="meetingCard"></span>
-                <span name="meetingCard"></span>
-            </div>
-        </div> <!--  후기 작성 영역  -->
+        </div>
+
+
+        <script>
+            // 달력
+            $(document).ready(function () {
+                var calendarEl = document.getElementById('calendar');
+                var modalProgramType = "DRAMA";
+                var modalLocationType = "SEOUL";
+                var modalProgramTypeName;
+                var modalLocationTypeName;
+
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+
+                    customButtons: {
+                        programType: {
+                            text: '분류',
+                            click: function () {
+                                // 모달 display block으로 변경
+                                $('#type-modal').css('display', 'block');
+                                // 이 버튼 이름 바꾸기
+                                console.log();
+
+
+                            }
+                        },
+                        location: {
+                            text: '지역',
+                            click: function () {
+                                // 모달로 카테고리 설정 예정
+                                $('#location-modal').css('display', 'block');
+
+
+                            }
+                        },
+                        myCalendar: {
+                            text: '내 달력',
+                            click: function () {
+                                // 모달로 카테고리 설정 예정
+
+
+                            }
+                        }
+                    },
+                    headerToolbar: {
+                        left: 'prev programType location myCalendar',
+                        center: 'title',
+                        right: 'next'
+                    },
+                    initialView: 'dayGridMonth',
+                    locale: 'ko',
+                    navLinks: false,
+                    showNonCurrentDates: false,
+                    editable: false,
+                    dayMaxEvents: true,
+                    displayEventTime: false,
+
+
+                    // 달력 날짜에 "일"을 제거
+                    dayCellContent: function (info) {
+                        var number = document.createElement("a");
+                        number.classList.add("fc-daygrid-day-number");
+                        number.innerHTML = info.dayNumberText.replace("일", " ");
+                        if (info.view.type === "dayGridMonth") {
+                            return {
+                                html: number.outerHTML
+                            };
+                        }
+                        return {
+                            domNodes: []
+                        };
+                    },
+                    datesSet: (info) => {
+                        // 현재 달력에 표시된 월 가져오기
+                        var startMonth = info.startStr;
+
+                    },
+                    // ajax 통신으로 fullcalendar 이벤트 가져오기
+                    events: {
+                        url: '/calendar/list', // 이벤트를 가져올 서버의 URL
+                        method: 'GET', // HTTP 요청 방식
+                        extraParams: function () { // 서버에 전달할 추가적인 파라미터
+                            return {
+                                programType: modalProgramType,
+                                location: modalLocationType,
+                            };
+                        },
+                        failure: function (e) { // 요청이 실패했을 때 호출되는 콜백 함수
+                            alert('there was an error while fetching events!');
+                            console.log(e);
+                        },
+                        textColor: 'black' // 이벤트의 글자색
+                    }
+
+
+                });
+
+                calendar.render();
+
+                // 모달 닫기
+                $(document).on('click', '.close', function () {
+                    $('#type-modal').css('display', 'none');
+                });
+                $(document).on('click', '.close', function () {
+                    $('#location-modal').css('display', 'none');
+                });
+                // 모달 버튼 클릭시 데이터 받기
+                $(document).on('click', ".pTypeBtn", function () {
+                    modalProgramType = $(this).data('type');
+                    modalProgramTypeName = $(this).text();
+                    $('#type-modal').css('display', 'none');
+                    $('#calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div:nth-child(1) > button.fc-programType-button.fc-button.fc-button-primary').text(modalProgramTypeName);
+                    calendar.refetchEvents();
+
+                });
+                $(document).on('click', ".lTypeBtn", function () {
+                    modalLocationType = $(this).data('loc');
+                    modalLocationTypeName = $(this).text();
+                    $('#location-modal').css('display', 'none');
+                    $('#calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div:nth-child(1) > button.fc-location-button.fc-button.fc-button-primary').text(modalLocationTypeName);
+
+                    calendar.refetchEvents();
+
+                });
+            });
+        </script>
+
+        <!--<div class="container">
+            <h1>마이캘린더 페이지 영역</h1>
+
+            <div>  &lt;!&ndash;  캘린더+사이드정보창 영역  &ndash;&gt;
+                <div>  &lt;!&ndash;  마이캘린더 영역  &ndash;&gt;
+                    <div id="calendar"></div>
+                </div>  &lt;!&ndash;  마이캘린더 영역  &ndash;&gt;
+                <div>  &lt;!&ndash;  사이드 정보창 영역  &ndash;&gt;
+                    <div name="myCalendarResult">  &lt;!&ndash;  마이캘린더 내 작품 검색  &ndash;&gt;
+                        <div name="searchBar"></div>  &lt;!&ndash;  검색창  &ndash;&gt;
+                        <div name="programCard"></div>  &lt;!&ndash;  작품 카드  &ndash;&gt;
+                        <div name="programContent"></div>  &lt;!&ndash;  작품 개요  &ndash;&gt;
+                        <div name="map"></div>
+                    </div>
+
+                    <div name="icon-horizonBar"></div>
+
+                    <div name="favBoard">  &lt;!&ndash;  인기 후기 영역  &ndash;&gt;
+                        <h1>인기 후기 영역</h1>
+                        <div name="heading">인기 후기</div>  &lt;!&ndash;  제목  &ndash;&gt;
+                        <div name="boardCard"></div>  &lt;!&ndash;  게시글 카드  &ndash;&gt;
+                    </div>
+
+                    <div name="icon-horizonBar"></div>
+
+                    <div name="favMeeting">  &lt;!&ndash;  임기 모임 영역  &ndash;&gt;
+                        <h1>인기 모임 영역</h1>
+                        <div name="heading">인기 모임</div>  &lt;!&ndash;  제목  &ndash;&gt;
+                        <div name="meetingCard"></div>  &lt;!&ndash;  모임 카드  &ndash;&gt;
+                    </div>
+
+                </div>  &lt;!&ndash;  사이드 정보창 영역  &ndash;&gt;
+            </div>  &lt;!&ndash;  캘린더+사이드정보창 영역 END  &ndash;&gt;
+
+
+            <div name="favMeeting">  &lt;!&ndash; 후기 작성 영역 &ndash;&gt;
+                <div>
+                    <div name="heading">후기 작성</div>  &lt;!&ndash;  제목  &ndash;&gt;
+                    <div name="icon-horizon"></div>
+                </div>
+                <div name="cards">  &lt;!&ndash;  카드 영역  &ndash;&gt;
+                    <h1>카드 영역</h1>
+                    <span name="meetingCard"></span>  &lt;!&ndash;  당일 가준 관람일이 지난 작품 카드 (관람한 작품)  &ndash;&gt;
+                    <span name="meetingCard"></span>
+                    <span name="meetingCard"></span>
+                    <span name="meetingCard"></span>
+                </div>
+            </div> &lt;!&ndash;  후기 작성 영역  &ndash;&gt;
+
+        </div>-->
+
     </th:block>
 </th:block>
 </html>

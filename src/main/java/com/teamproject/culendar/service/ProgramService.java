@@ -237,5 +237,13 @@ public class ProgramService {
         save(program);
     }
 
+    public ProgramDTO getOneProgram(Long seq) {
+        Optional<Program> program = programRepository.findBySeq(seq);
+        if (program.isPresent()) {
+            return new ProgramDTO(program.get());
+        }
+        return null;
+    }
+
 
 }

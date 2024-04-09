@@ -3,8 +3,9 @@
 
     <h1>회원가입 페이지 영역</h1>
 
-    <div name="profile">  <!--  회원 프로필 영역 START  -->
-        <span name="memberInfo">  <!--  회원 프로필 사진 영역 START  -->
+    <form action th:action th:object="${memberForm}" method="post">
+        <div name="profile">  <!--  회원 프로필 영역 START  -->
+            <span name="memberInfo">  <!--  회원 프로필 사진 영역 START  -->
             <div name="memberImage">  <!--  회원 프로필 사진  -->
                 <!-- TODO: 추가예정
                 <input type="file" th:field="*{profileImage}" name="profileImage">
@@ -32,7 +33,7 @@
                 </span>
             </div>
         </span>  <!--  회원 프로필 사진 영역 END  -->
-        <span name="memberInfo-textbox">  <!--  회원 정보 영역 START  -->
+            <span name="memberInfo-textbox">  <!--  회원 정보 영역 START  -->
             <div name="userId">
                 <span name="userId-textbox">
                     <input type="text" th:field="*{userid}" placeholder="아이디">
@@ -73,11 +74,12 @@
                 <span name="submit-button">중복확인</span>
             </div>
         </span>  <!--  회원 정보 영역 END  -->
-        <div name="introduce">
-            <input type="text" th:field="*{introduction}" placeholder="자기소개">
-        </div>
+            <div name="introduce">
+                <input type="text" th:field="*{introduction}" placeholder="자기소개">
+            </div>
 
-    </div>  <!--  회원 프로필 영역 END  -->
+        </div>
+     <!--  회원 프로필 영역 END  -->
     <div name="genre">  <!-- 관심사 영역 START -->
         <div name="heading">관심사</div>  <!--  제목  -->
         <div name="cards">  <!--  관심사 카드 영역 상단 START  -->

@@ -4,6 +4,7 @@ import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.program.Program;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ProgramDTO {
 
     private String title;
@@ -37,6 +39,19 @@ public class ProgramDTO {
         program.setLocationX(this.locationX);
         program.setLocationY(this.locationY);
         return program;
+    }
+
+    public ProgramDTO(Program program) {
+        this.title = program.getTitle();
+        this.seq = program.getSeq();
+        this.startDate = program.getStartDate();
+        this.endDate = program.getEndDate();
+        this.programTime = program.getProgramTime();
+        this.programType = program.getProgramType();
+        this.thumbnail = program.getThumbnail();
+        this.location = program.getLocation();
+        this.locationX = program.getLocationX();
+        this.locationY = program.getLocationY();
     }
 
 }

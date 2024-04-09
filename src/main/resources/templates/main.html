@@ -5,7 +5,7 @@
 
     <th:block th:fragment="content">
 
-<!--                분류 모달-->
+        <!--                분류 모달-->
         <div class="modal" id="type-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -15,7 +15,8 @@
                     </div>
                     <div class="modal-body">
                         <button type="button" th:each="pType : ${programType}" class="btn btn-primary pTypeBtn"
-                                th:text="${pType.value}" th:if="${pType.value !='기타'}" th:data-type="${pType.name()}"></button>
+                                th:text="${pType.value}" th:if="${pType.value !='기타'}"
+                                th:data-type="${pType.name()}"></button>
 
                     </div>
                 </div>
@@ -32,7 +33,8 @@
                     </div>
                     <div class="modal-body">
                         <button type="button" th:each="lType : ${locationType}" class="btn btn-primary lTypeBtn"
-                                th:text="${lType.value}" th:if="${lType.value !='기타'}" th:data-loc="${lType.name()}"></button>
+                                th:text="${lType.value}" th:if="${lType.value !='기타'}"
+                                th:data-loc="${lType.name()}"></button>
 
                     </div>
                 </div>
@@ -42,7 +44,7 @@
         <li><a th:href="@{/signup}">Signup</a></li>
         <li><a th:href="@{/login}">Login</a></li>
 
-        <div id='calendar' class="w-75 h-100 m-auto mt-2"></div>
+        <div id='calendar' style="width: 90%" class="m-auto mt-5"></div>
 
 
         <div name="favProgram">  <!-- 인기 작품 영역 -->
@@ -117,8 +119,12 @@
                     navLinks: false,
                     showNonCurrentDates: false,
                     editable: false,
-                    dayMaxEvents: true,
+                    dayMaxEvents: 4,
                     displayEventTime: false,
+                    eventClick: function (info) {
+                        openProgramPage(info.event.id);
+
+                    },
 
 
                     // 달력 날짜에 "일"을 제거
@@ -187,9 +193,11 @@
                     calendar.refetchEvents();
 
                 });
+
+                function openProgramPage(id) {
+                    location.href = "/program/" + id;
+                }
             });
-
-
 
 
         </script>
