@@ -1,10 +1,9 @@
 package com.teamproject.culendar.service;
 
+import com.teamproject.culendar.domain.enumFiles.ProgramType;
+import com.teamproject.culendar.domain.member.Interest;
 import com.teamproject.culendar.domain.member.Member;
-import com.teamproject.culendar.dto.FollowDTO;
-import com.teamproject.culendar.dto.InterestDTO;
-import com.teamproject.culendar.dto.MemberDTO;
-import com.teamproject.culendar.dto.MemberForm;
+import com.teamproject.culendar.dto.*;
 import com.teamproject.culendar.repository.MemberRepository;
 import com.teamproject.culendar.security.domain.CustomMember;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +37,6 @@ public class MemberService {
     public CustomMember findByUserid(String userid) {
         log.info("********** MemberService findByUserid - userId : {}", userid);
         Optional<Member> member = memberRepository.findByUserid(userid);
-        log.info("********** MemberService findByUserid - member : {}", member);
         if(member.isPresent()) {
             return new CustomMember(member.get());
         }
@@ -48,7 +46,6 @@ public class MemberService {
     public CustomMember findByUsername(String username) {
         log.info("********** MemberService findByUsername - username : {}", username);
         Optional<Member> member = memberRepository.findByUsername(username);
-        log.info("********** MemberService findByUsername - member : {}", member);
         if(member.isPresent()) {
             return new CustomMember(member.get());
         }
@@ -58,7 +55,6 @@ public class MemberService {
     public CustomMember findByEmail(String email) {
         log.info("********** MemberService findByEmail - email : {}", email);
         Optional<Member> member = memberRepository.findByEmail(email);
-        log.info("********** MemberService findByEmail - member : {}", member);
         if(member.isPresent()) {
             return new CustomMember(member.get());
         }
@@ -88,5 +84,7 @@ public class MemberService {
         log.info("********** MemberService saveMember - saved : {}", saved);
         return saved.getId();
     }
+
+
 
 }

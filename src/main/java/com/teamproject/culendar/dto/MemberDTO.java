@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class MemberDTO {
     private String username;
     private String password;
     private int phone;
-    @Email(message = "이메일 형식이 아닙니다.")
+//    @Email(message = "이메일 형식이 아닙니다.")
     private String email;
     //지역 ENUM
     private Location location;
