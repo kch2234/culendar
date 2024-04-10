@@ -25,5 +25,5 @@ public class Rating extends BaseEntityLastModifiedDate {
 
     // 문장형 평가 내용
     @Column(nullable = false)
-    private RatingType rating;
+    private Long rating;
 }

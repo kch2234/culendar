@@ -3,6 +3,7 @@ package com.teamproject.culendar.controller;
 
 import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
+import com.teamproject.culendar.domain.enumFiles.RatingType;
 import com.teamproject.culendar.dto.CalendarNameDTO;
 import com.teamproject.culendar.dto.MemberDTO;
 import com.teamproject.culendar.repository.MemberRepository;
@@ -83,8 +84,10 @@ public class HomeController {
 
     @ModelAttribute("locationType") // 작품 종류 데이터를 뷰에 전달
     public Location[] locations() {
-        List<Location> programTypes = new ArrayList<>();
+        List<Location> locationTypes = new ArrayList<>();
         return Location.values();
     }
+
+
 }
 

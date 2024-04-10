@@ -44,6 +44,7 @@ public class ProgramDTO {
     }
 
     public ProgramDTO(Program program) {
+        this.id = program.getId();
         this.title = program.getTitle();
         this.seq = program.getSeq();
         this.startDate = program.getStartDate();

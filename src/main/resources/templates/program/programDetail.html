@@ -11,11 +11,32 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">분류 선택</h4>
+                        <div class="hidden-true" th:if="${member != null}">
+                            <div id="memberId" class="hidden-true"
+                                 th:data-memberId="${member.getMember().getId()}"></div>
+                        </div>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body">
-                        <div id="addMyCalendarContainer"></div>
+                    <div class="modal-body" id="addMyCalContainer">
+                        <div id="addMyCalendarBtnContainer"></div>
 
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--    문장형 평가 추가 모달-->
+        <div class="modal" id="addRating-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">문장형 평가 추가</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body" id="addRatingContainer">
+                        <div th:each="rating : ${ratingType}">
+                            <button class="btn btn-primary" th:text="${rating.getValue()}" th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -29,115 +50,316 @@
                     <!--                썸네일 이미지-->
                     <img class="w-100" th:src="${program.getThumbnail()}" alt="썸네일 이미지">
                 </div>
-                <div class="col ml-2">
+                <div class="col ml-2" id="programContainer">
                     <!--                작품 정보-->
                     <div class="row" style="height: 10%">
                         <div class="col-4">
-                            <div class="badge text-bg-secondary w-100 h-100">
-                                문장형 평가
+                            <div class="badge text-bg-secondary w-100 h-100" id="AvgRating">
+<!--                                문장형 평가 위치-->
                             </div>
                         </div>
                         <div class="col"></div>
-                        <div class="col-4 row" th:if="${member != null}">
-                            <div class="col p-0">
-                                <button class="fa-regular fa-bookmark w-75 h-75"></button>
-                            </div>
-                            <div class="col p-0">
-                                <button class="fa-regular fa-clipboard w-75 h-75"></button>
 
-                            </div>
-                        </div>
-                        <div class="col-4 row" th:if="${member == null}">
+                        <!-- 북마크, 캘린더 추가 버튼 -->
+                        <div class="col-4 row" id="addBtnContainer">
+                            <th:block th:if="${member != null}">
+                                <div class="col p-0">
+                                    <button id="bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>
+                                </div>
+                                <div class="col p-0">
+                                    <button class="fa-regular fa-clipboard w-75 h-75"></button>
+
+                                </div>
+                            </th:block>
+                            <th:block th:if="${member == null}">
+
+                            </th:block>
 
                         </div>
                     </div>
                     <div class="row" style="height: 20%">
+
+                        <!-- 작품 제목 -->
                         <div class="col-12 h-100">
                             <div class="badge text-bg-secondary fs-2 w-100 h-100" th:text="${program.getTitle()}"></div>
                         </div>
                     </div>
                     <div class="row" style="height: 7%">
-                        <div class="col-10 h-100" >
-                            <div class="badge text-bg-secondary w-100 h-100" th:text="|${#temporals.format(program.getStartDate(), 'yyyy-MM-dd')} ~ ${#temporals.format(program.getEndDate(), 'yyyy-MM-dd')}|"
+                        <div class="col-10 h-100">
+                            <!-- 작품 시작일 ~ 종료일 -->
+                            <div class="badge text-bg-secondary w-100 h-100"
+                                 th:text="|${#temporals.format(program.getStartDate(), 'yyyy-MM-dd')} ~ ${#temporals.format(program.getEndDate(), 'yyyy-MM-dd')}|"
                             ></div>
                         </div>
                     </div>
-                    <div class="row" style="height: 10%">
-                        <div class="col-4">
-                            <div class="badge text-bg-secondary w-100 h-100">좋아요</div>
+                    <!-- 회원일 경우 문장형 후기 작성 버튼 및 좋아요, 후기, 체크박스 버튼 -->
+                    <th:block th:if="${member != null}">
+                        <div class="row" style="height: 10%">
+                            <div class="col-4" id= "addRating">
+                                <!--   회원 문장형 평가 위치-->
+                            </div>
+                            <div class="col"></div>
+                            <div class="col-2">
+                                <div class="badge text-bg-secondary w-100 h-100">내후기</div>
+                            </div>
+                            <div class="col-2">
+                                <div class="badge text-bg-secondary w-100 h-100">체크박스</div>
+                            </div>
+
                         </div>
-                        <div class="col"></div>
-                        <div class="col-2">
-                            <div class="badge text-bg-secondary w-100 h-100">내후기</div>
-                        </div>
-                        <div class="col-2">
-                            <div class="badge text-bg-secondary w-100 h-100">체크박스</div>
-                        </div>
-                    </div>
+                    </th:block>
+                    <!-- 지도 API -->
                     <div class="row" style="height: 40%">
                         <div class="col-12 h-100">
                             <div class="badge text-bg-secondary w-100 h-100">지도</div>
+                        </div>
+
                     </div>
+                </div> <!-- end of 작품 정보 -->
 
+                <div>
+                    <div>인기 후기</div>
+                    <div>인기 일정 모임</div>
                 </div>
-            </div>
 
-            <div> <!-- end of 작품 정보 -->
-                <div>인기 후기</div>
-                <div>인기 일정 모임</div>
             </div>
 
         </div>
 
-        </div>
-
-        <script>
+        <script th:inline="javascript">
 
             $(document).ready(function () {
-                $('.fa-bookmark').click(function () {
-                    alert('로그인이 필요한 서비스입니다.')
 
-                });
-                $('.fa-clipboard').click(function () {
+                var memberId = $('#memberId').data('memberid');
+                var programId = [[${program.getId()}]];
 
-                    console.log([[${member.getMember().getId()}]]);
-                    // ajax로 내 달력 리스트 가져오기
+                // 평균 문장형 평가 가져오기
+                function getAvgRating() {
                     $.ajax({
-                        url: '/calendar/myCalendarNameList/'+ [[${member.getMember().getId()}]],
+                        url: '/rating/getAvgRating/' + programId,
+                        type: 'GET',
+                        success: function (data) {
+                            $('#AvgRating').text(data);
+                        }
+                    });
+                }
+
+                getAvgRating();
+
+                // 회원 문장형 평가 가져오기
+                function getMyRating() {
+                    $.ajax({
+                        url: '/rating/getRating/' + memberId + '/' + programId,
                         type: 'GET',
                         success: function (data) {
                             console.log(data);
                             let html = '';
-                            data.forEach(function (item) {
-                                html += '<button class="btn-dark" data-myCalId=" ' + item.id + ' " >'+item.name+'</button>';
-                            });
-                            $('#addMyCalendarContainer').html(html);
+                            html += '<div class="badge text-bg-secondary w-100 h-100">' + data + '</div>';
+                            $('#addRating').html(html);
                         }
                     });
-                    $('#addMyCalendar-modal').modal('show');
+                }
+
+                getMyRating();
+
+                // 좋아요 클릭시 모달 띄우기
+                $('#programContainer').on('click', '#addRating', function () {
+
+                    let data = {
+                        memberId: memberId,
+                        programId: programId
+                    };
+
+                    $('#addRating-modal').modal('show');
+
+
+                });
+
+                // 문장형 평가 모달 버튼 클릭시 이벤트
+                $('#addRatingContainer').on('click', 'button', function () {
+                    let rating = $(this).data('rating');
+                    console.log(rating);
+                    let ratingNum = 0;
+
+                    if (rating === 'VERYGOOD') {
+                        ratingNum = 5;
+                    } else if (rating === 'GOOD') {
+                        ratingNum = 4;
+                    } else if (rating === 'NORMAL') {
+                        ratingNum = 3;
+                    } else if (rating === 'BAD') {
+                        ratingNum = 2;
+                    } else if (rating === 'VERYBAD') {
+                        ratingNum = 1;
+                    }
+                    console.log(ratingNum);
+
+                    let data = {
+                        memberId: memberId,
+                        programId: programId,
+                        rating: ratingNum
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/rating/addRating',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (result, status) {
+                            console.log(result);
+                            $('#addRating-modal').modal('hide');
+                            if (result === 'fail') {
+                                alert('평가가 수정 되었습니다.');
+                                getMyRating();
+                                getAvgRating();
+                                return;
+                            }
+                            alert('평가가 등록되었습니다.');
+                            getMyRating();
+                            getAvgRating();
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('평가 등록에 실패했습니다.');
+                        }
+
+                    });
+
+                });
+
+
+                // 북마크 클릭시 이벤트
+                $('#addBtnContainer').on('click', '#bkMarkBtn', function () {
+
+                    let data = {
+                        memberId: memberId,
+                        programId: programId
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/bkmark/addProgramBkmark',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (result, status) {
+                            console.log(result);
+
+                            if (result === 'fail') {
+                                alert('북마크에서 삭제 되었습니다.');
+                                return;
+                            }
+                            alert('북마크에 추가되었습니다.');
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('북마크 추가에 실패했습니다.');
+                        }
+                    });
+
+                });
+
+                $('#addBtnContainer').on('click', '.fa-clipboard', function () {
+
+                    // ajax로 내 달력 목록 가져오기
+                    $.ajax({
+                        url: '/calendar/myCalendarNameList/' + memberId,
+                        type: 'GET',
+                        success: function (data) {
+                            console.log(data);
+                            let html = '';
+                            data.forEach(function (myCalendar) {
+                                html += '<button class="btn btn-primary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
+                            });
+                            html += '<br><input type="text" id="newCalendarName" placeholder="새로운 캘린더 이름"><button id="addNewCalendarBtn" class="btn btn-primary">추가</button>';
+                            $('#addMyCalContainer').html(html);
+
+                            $('#addMyCalendar-modal').modal('show');
+                        }
+                    });
                 });
                 $('.close').click(function () {
                     // close modal
                     $('#addMyCalendar-modal').modal('hide');
                 });
 
-                $('#addMyCalendarContainer').on('click', 'button', function () {
+                $('#addMyCalContainer').on('click', '.cal-name', function () {
                     let myCalId = $(this).data('mycalid');
                     console.log(myCalId);
-                    // ajax로 내 달력에 일정 추가
+                    console.log(programId);
+                    // ajax로 내 달력에 일정 추가 POST방식
+                    let data = {
+                        calendarId: myCalId,
+                        programId: programId
+                    };
+
+                    console.log(data);
                     $.ajax({
-                        url: '/calendar/saveCalendarContent/' + [[${member.getMember().getId()}]] + '/' + myCalId + '/' + [[${program.getId}]],
-                        type: 'GET',
-                        success: function (data) {
-                            console.log(data);
+                        type: 'POST',
+                        url: '/calendar/addProgramToCalendar',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (result, status) {
+                            console.log(result);
+
+                            if (result === 'fail') {
+                                alert('이미 추가된 일정입니다.');
+                                return;
+                            }
                             alert('일정이 추가되었습니다.');
                             $('#addMyCalendar-modal').modal('hide');
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('일정 추가에 실패했습니다.');
                         }
                     });
+
+                });
+
+                $('#addMyCalContainer').on('click', '#addNewCalendarBtn', function () {
+                    let newCalendarName = $('#newCalendarName').val();
+                    console.log(newCalendarName);
+                    if (newCalendarName === '') {
+                        alert('캘린더 이름을 입력해주세요.');
+                        return;
+                    } else {
+
+                        let data = {
+                            memberId: memberId,
+                            name: newCalendarName
+                        };
+                        $.ajax({
+                            type: 'POST',
+                            url: '/calendar/addNewCalendar',
+                            data: JSON.stringify(data),
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (result, status) {
+                                console.log(result);
+                                if (result === 'fail') {
+                                    alert('이미 존재하는 캘린더 이름입니다.');
+                                    return;
+                                }
+                                alert('새로운 캘린더가 추가되었습니다.');
+                                $('#addMyCalendar-modal').modal('hide');
+                            },
+                            error: function (error) {
+                                console.log(error);
+                                alert('캘린더 추가에 실패했습니다.');
+                            }
+                        });
+                    }
+
+                });
+
+                // 모달 닫기 버튼 클릭시
+                $('.close').click(function () {
+                    // close modal
+                    $('#addRating-modal').modal('hide');
+                    $('#addMyCalendar-modal').modal('hide');
                 });
 
 
-            });
+            }); // end of document ready
 
 
         </script>
