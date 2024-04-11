@@ -82,8 +82,8 @@
                 var calendarEl = document.getElementById('calendar');
                 var modalProgramType = "DRAMA";
                 var modalLocationType = "SEOUL";
-                var modalProgramTypeName;
-                var modalLocationTypeName;
+                var modalProgramTypeName = "연극";
+                var modalLocationTypeName = "서울";
 
                 var calendar = new FullCalendar.Calendar(calendarEl, {
 
@@ -171,16 +171,15 @@
                 // 모달 닫기
                 $(document).on('click', '.close', function () {
                     $('#type-modal').css('display', 'none');
-                });
-                $(document).on('click', '.close', function () {
                     $('#location-modal').css('display', 'none');
                 });
-                // 모달 버튼 클릭시 데이터 받기
+
+                // 분류 모달 버튼 클릭시 데이터 받기
                 $(document).on('click', ".pTypeBtn", function () {
                     modalProgramType = $(this).data('type');
                     modalProgramTypeName = $(this).text();
                     $('#type-modal').css('display', 'none');
-                    $('#calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div:nth-child(1) > button.fc-programType-button.fc-button.fc-button-primary').text(modalProgramTypeName);
+                    // $('#calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div:nth-child(1) > button.fc-programType-button.fc-button.fc-button-primary').text(modalProgramTypeName);
                     calendar.refetchEvents();
 
                 });
@@ -188,7 +187,7 @@
                     modalLocationType = $(this).data('loc');
                     modalLocationTypeName = $(this).text();
                     $('#location-modal').css('display', 'none');
-                    $('#calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div:nth-child(1) > button.fc-location-button.fc-button.fc-button-primary').text(modalLocationTypeName);
+                    // $('#calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div:nth-child(1) > button.fc-location-button.fc-button.fc-button-primary').text(modalLocationTypeName);
 
                     calendar.refetchEvents();
 

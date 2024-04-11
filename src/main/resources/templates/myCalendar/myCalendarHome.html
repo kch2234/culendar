@@ -64,26 +64,69 @@
             </div>
         </div>
 
-        <!-- TODO 사이드 검색창 -->
+        <!-- 메인 컨테이너 영역 -->
         <div class="w-75 container m-auto">
             <div class="row">
+                <!-- 달력 영역 -->
                 <div class="col-9" id="calendar"></div>
-                <div class="col ml-2 p-0" id="side-search">
-                    <form class="container">
-                        <div class="row">
-                            <button type="submit" class="btn-dark fa-solid fa-magnifying-glass col-3"></button>
-                            <input type="text" class="form-control col"></input>
+
+                <!-- TODO 사이드 검색창 -->
+                <div class="col ml-2 h-100" id="side-search">
+                    <form class="container p-0">
+                        <!-- TODO 검색창 -->
+                        <div class="row p-0" style="height: 10%">
+                            <!-- 버튼 비활성화 -->
+                            <div class="col-3 p-0">
+                                <button type="submit" id="search-btn"
+                                        class="w-100 h-100 btn-dark fa-solid fa-magnifying-glass"></button>
+                            </div>
+                            <div class="dropdown col-8 p-0">
+                                <input type="text" id="search-text" class="p-0 w-100 form-controlcol dropdown-toggle"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                <ul class="dropdown-menu overflow-scroll" id="searched-list">
+                                    <!-- 동적으로 드롭다운 검색 결과 -->
+                                </ul>
+                            </div>
+
                         </div>
+                        <!-- TODO 검색 결과 -->
+                        <div class="row p-0">
+
+                            <!-- 검색 결과 양식 -->
+                            <div class="card p-0 overflow-scroll">
+                                <img src="http://www.culture.go.kr//upload/rdf/23/07/show_202307716154193040.jpg" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">최정화: 온나 온나, 모다 모다</h5>
+                                    <p class="card-text">지도 예정</p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">연극</li>
+                                    <li class="list-group-item">서울</li>
+                                    <li class="list-group-item">2023-05-01 ~ 2025-04-30</li>
+                                    <li class="list-group-item">화-일 10:00-18:00, 월요일 휴관</li>
+                                </ul>
+                                <div class="card-body">
+                                    <a href="#" class="card-link">Card link</a>
+                                    <a href="#" class="card-link">Another link</a>
+                                </div>
+                                <img src="http://www.culture.go.kr//upload/rdf/23/07/show_202307716154193040.jpg" class="card-img-top" alt="...">
+                                <img src="http://www.culture.go.kr//upload/rdf/23/07/show_202307716154193040.jpg" class="card-img-top" alt="...">
+                                <img src="http://www.culture.go.kr//upload/rdf/23/07/show_202307716154193040.jpg" class="card-img-top" alt="...">
+
+
+                            </div>
+
+
+                        </div>
+
                     </form>
-                    <div class="w-100 h-100 border-1">
-                        asd
-                    </div>
                 </div>
+
             </div>
         </div>
 
 
-        <script>
+        <script th:inline="javascript">
             // 달력
             $(document).ready(function () {
 
@@ -96,11 +139,30 @@
                 var modalLocationTypeName;
                 var myCalendarList = [[${myCalendarList.get(0).id}]];
                 var userId = [[${member.id}]];
+                var programId;
 
                 console.log(myCalendarList);
                 console.log(userId);
 
                 // ********** 페이지 로딩시 실행할 함수들 **********
+
+                // TODO 검색창에 값변경시
+                $('#search-text').on('keyup', function () {
+                    console.log($(this).val());
+                    $.ajax({
+                        url: '/program/search/' + $(this).val(),
+                        type: 'GET',
+                        success: function (data) {
+                            console.log(data);
+                            changeDropdown(data);
+                            programId = null;
+                            // 드롭다운 보여주기
+                            $('.dropdown-menu').css('display', 'block')
+                        }
+                    });
+                });
+
+
 
 
                 // 달력
@@ -112,7 +174,6 @@
                             click: function () {
                                 // 모달 display block으로 변경
                                 $('#type-modal').css('display', 'block');
-                                // 이 버튼 이름 바꾸기
                                 console.log();
 
 
@@ -163,6 +224,8 @@
                     dayMaxEvents: true,
                     displayEventTime: false,
                     eventClick: function (info) {
+                        // 클릭한 이벤트의 id를 가져와서 작품 페이지로 이동
+                        // 사이드 창으로 띄우기
                         openProgramPage(info.event.id);
 
                     },
@@ -182,11 +245,13 @@
                             domNodes: []
                         };
                     },
+
                     datesSet: (info) => {
                         // 현재 달력에 표시된 월 가져오기
                         var startMonth = info.startStr;
 
                     },
+
                     // ajax 통신으로 fullcalendar 이벤트 가져오기
                     events: {
                         url: '/calendar/myCalendarList', // 이벤트를 가져올 서버의 URL
@@ -195,7 +260,6 @@
                             return {
                                 programType: modalProgramType,
                                 location: modalLocationType,
-                                userid: userId,
                                 calendarId: myCalendarList
                             };
                         },
@@ -278,65 +342,69 @@
 
                 });
 
+                // 검색 버튼 클릭시 기본 이벤트 제거
+                $('#search-btn').click(function (e) {
+                    e.preventDefault();
+                });
+
+                // 드롭다운 외부 클릭시 드롭다운 숨기기
+                $(document).mouseup(function (e) {
+                    var container = $(".dropdown");
+                    if (!container.is(e.target) && container.has(e.target).length === 0) {
+                        container.find('.dropdown-menu').css('display', 'none');
+                    }
+                });
+
+                // 드롭다운 내부 클릭시 input에 값 넣기
+                $(document).on('click', '.dropdown-item', function () {
+                    $('#search-text').val($(this).text());
+                    programId = $(this).data('programid');
+                    $('.dropdown-menu').css('display', 'none');
+                });
+
+                // TODO 검색 버튼 클릭시 카드 내부 변경
+                $('#search-btn').click(function () {
+                    if (programId === undefined) {
+                        alert('검색 결과를 선택해주세요.');
+                        return;
+                    }
+                    else if(programId === null){
+                        alert('검색 결과가 없습니다.');
+                        return;
+                    }
+                    else if(programId !== null){
+                        $.ajax({
+                            url: '/program/find/' + programId,
+                            type: 'GET',
+                            success: function (data) {
+                                console.log(data);
+                            },
+                            error: function (error) {
+                                console.log(error);
+                            }
+                        });
+                    }
+                });
+
                 // ********** 각종 함수들 **********
 
                 // 작품 클릭시 작품 페이지로 이동
                 function openProgramPage(id) {
                     location.href = "/program/" + id;
                 }
+
+                // 검색창 드롭다운 내용 변경
+                function changeDropdown(data) {
+                    let html = '';
+                    data.forEach(function (program) {
+                        html += '<li><a class="dropdown-item" href="#" data-programId="' + program.id + '">' + program.title + '</a></li>';
+
+                    });
+                    $('#searched-list').html(html);
+                }
             });
         </script>
 
-        <!--<div class="container">
-            <h1>마이캘린더 페이지 영역</h1>
-
-            <div>  &lt;!&ndash;  캘린더+사이드정보창 영역  &ndash;&gt;
-                <div>  &lt;!&ndash;  마이캘린더 영역  &ndash;&gt;
-                    <div id="calendar"></div>
-                </div>  &lt;!&ndash;  마이캘린더 영역  &ndash;&gt;
-                <div>  &lt;!&ndash;  사이드 정보창 영역  &ndash;&gt;
-                    <div name="myCalendarResult">  &lt;!&ndash;  마이캘린더 내 작품 검색  &ndash;&gt;
-                        <div name="searchBar"></div>  &lt;!&ndash;  검색창  &ndash;&gt;
-                        <div name="programCard"></div>  &lt;!&ndash;  작품 카드  &ndash;&gt;
-                        <div name="programContent"></div>  &lt;!&ndash;  작품 개요  &ndash;&gt;
-                        <div name="map"></div>
-                    </div>
-
-                    <div name="icon-horizonBar"></div>
-
-                    <div name="favBoard">  &lt;!&ndash;  인기 후기 영역  &ndash;&gt;
-                        <h1>인기 후기 영역</h1>
-                        <div name="heading">인기 후기</div>  &lt;!&ndash;  제목  &ndash;&gt;
-                        <div name="boardCard"></div>  &lt;!&ndash;  게시글 카드  &ndash;&gt;
-                    </div>
-
-                    <div name="icon-horizonBar"></div>
-
-                    <div name="favMeeting">  &lt;!&ndash;  임기 모임 영역  &ndash;&gt;
-                        <h1>인기 모임 영역</h1>
-                        <div name="heading">인기 모임</div>  &lt;!&ndash;  제목  &ndash;&gt;
-                        <div name="meetingCard"></div>  &lt;!&ndash;  모임 카드  &ndash;&gt;
-                    </div>
-
-                </div>  &lt;!&ndash;  사이드 정보창 영역  &ndash;&gt;
-            </div>  &lt;!&ndash;  캘린더+사이드정보창 영역 END  &ndash;&gt;
-
-
-            <div name="favMeeting">  &lt;!&ndash; 후기 작성 영역 &ndash;&gt;
-                <div>
-                    <div name="heading">후기 작성</div>  &lt;!&ndash;  제목  &ndash;&gt;
-                    <div name="icon-horizon"></div>
-                </div>
-                <div name="cards">  &lt;!&ndash;  카드 영역  &ndash;&gt;
-                    <h1>카드 영역</h1>
-                    <span name="meetingCard"></span>  &lt;!&ndash;  당일 가준 관람일이 지난 작품 카드 (관람한 작품)  &ndash;&gt;
-                    <span name="meetingCard"></span>
-                    <span name="meetingCard"></span>
-                    <span name="meetingCard"></span>
-                </div>
-            </div> &lt;!&ndash;  후기 작성 영역  &ndash;&gt;
-
-        </div>-->
 
     </th:block>
 </th:block>

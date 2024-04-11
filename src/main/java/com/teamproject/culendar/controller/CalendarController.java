@@ -42,13 +42,20 @@ public class CalendarController {
 
     // memberId, calendarId programType, location 을 받아서 해당하는 작품들 리스트를 반환
     @GetMapping("myCalendarList")
-    public ResponseEntity<List<CalendarDTO>> myCalendarList(@RequestParam("programType") String programType, @RequestParam("location") String location, @RequestParam("userid") Long userid, @RequestParam("calendarId") Long calendarId) {
+    public ResponseEntity<List<CalendarDTO>> myCalendarList(@RequestParam("programType") String programType, @RequestParam("location") String location, @RequestParam("calendarId") Long calendarId) {
         log.info("** CalendarController GET /myCalendarList 요청");
         log.info("** programType: {}", programType);
         log.info("** location: {}", location);
-        log.info("** memberId: {}", userid);
         log.info("** calendarName: {}", calendarId);
-        return null;
+
+        // programType, location에 해당하는 작품들 리스트를 가져옴
+        List<Program> programList = calendarService.getProgramFromMyCal(programType, location, calendarId);
+        // programList를 FullCalendar event 형식에 맞는 CalendarDTO로 변환
+        List<CalendarDTO> calendarDTOList = programList.stream()
+                .map(CalendarDTO::new)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(calendarDTOList);
     }
 
     // memberId를 받아서 회원이 가지고 있는 달력 이름 리스트를 반환
