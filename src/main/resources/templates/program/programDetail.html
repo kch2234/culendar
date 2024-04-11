@@ -10,7 +10,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">분류 선택</h4>
+                        <h4 class="modal-title">달력 선택</h4>
                         <div class="hidden-true" th:if="${member != null}">
                             <div id="memberId" class="hidden-true"
                                  th:data-memberId="${member.getMember().getId()}"></div>
@@ -18,7 +18,9 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body" id="addMyCalContainer">
-                        <div id="addMyCalendarBtnContainer"></div>
+                        <div id="addMyCalendarBtnContainer">
+                            <!--    내 캘린더 목록 및 캘린더 추가 버튼 위치 -->
+                        </div>
 
                     </div>
                 </div>
@@ -55,22 +57,23 @@
                     <div class="row" style="height: 10%">
                         <div class="col-4">
                             <div class="badge text-bg-secondary w-100 h-100" id="AvgRating">
-<!--                                문장형 평가 위치-->
+                                <!--    평균 문장형 평가 위치-->
                             </div>
                         </div>
                         <div class="col"></div>
 
                         <!-- 북마크, 캘린더 추가 버튼 -->
                         <div class="col-4 row" id="addBtnContainer">
+                            <!-- 회원일 경우에만 북마크, 캘린더 추가 버튼 보이기 -->
                             <th:block th:if="${member != null}">
                                 <div class="col p-0">
                                     <button id="bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>
                                 </div>
                                 <div class="col p-0">
                                     <button class="fa-regular fa-clipboard w-75 h-75"></button>
-
                                 </div>
                             </th:block>
+                            <!-- 비회원일 경우에는 북마크, 캘린더 추가 버튼 보이지 않기 -->
                             <th:block th:if="${member == null}">
 
                             </th:block>
@@ -78,7 +81,6 @@
                         </div>
                     </div>
                     <div class="row" style="height: 20%">
-
                         <!-- 작품 제목 -->
                         <div class="col-12 h-100">
                             <div class="badge text-bg-secondary fs-2 w-100 h-100" th:text="${program.getTitle()}"></div>
@@ -99,6 +101,7 @@
                                 <!--   회원 문장형 평가 위치-->
                             </div>
                             <div class="col"></div>
+                            <!-- TODO : 좋아요, 후기, 체크박스 버튼 -->
                             <div class="col-2">
                                 <div class="badge text-bg-secondary w-100 h-100">내후기</div>
                             </div>
@@ -108,7 +111,7 @@
 
                         </div>
                     </th:block>
-                    <!-- 지도 API -->
+                    <!-- TODO 지도 API -->
                     <div class="row" style="height: 40%">
                         <div class="col-12 h-100">
                             <div class="badge text-bg-secondary w-100 h-100">지도</div>
@@ -118,6 +121,7 @@
                 </div> <!-- end of 작품 정보 -->
 
                 <div>
+                    <!-- TODO : 인기 후기, 인기 일정 모임 -->
                     <div>인기 후기</div>
                     <div>인기 일정 모임</div>
                 </div>
@@ -133,36 +137,20 @@
                 var memberId = $('#memberId').data('memberid');
                 var programId = [[${program.getId()}]];
 
-                // 평균 문장형 평가 가져오기
-                function getAvgRating() {
-                    $.ajax({
-                        url: '/rating/getAvgRating/' + programId,
-                        type: 'GET',
-                        success: function (data) {
-                            $('#AvgRating').text(data);
-                        }
-                    });
-                }
-
+                // 페이지 로딩시 시작할 함수들
                 getAvgRating();
-
-                // 회원 문장형 평가 가져오기
-                function getMyRating() {
-                    $.ajax({
-                        url: '/rating/getRating/' + memberId + '/' + programId,
-                        type: 'GET',
-                        success: function (data) {
-                            console.log(data);
-                            let html = '';
-                            html += '<div class="badge text-bg-secondary w-100 h-100">' + data + '</div>';
-                            $('#addRating').html(html);
-                        }
-                    });
-                }
-
                 getMyRating();
 
-                // 좋아요 클릭시 모달 띄우기
+                // ********** 클릭시 이벤트들 **********
+
+                // 모달 닫기 버튼 클릭시
+                $('.close').click(function () {
+                    // close modal
+                    $('#addRating-modal').modal('hide');
+                    $('#addMyCalendar-modal').modal('hide');
+                });
+
+                // 회원의 문장형 평가 클릭시 모달 띄우기
                 $('#programContainer').on('click', '#addRating', function () {
 
                     let data = {
@@ -175,7 +163,7 @@
 
                 });
 
-                // 문장형 평가 모달 버튼 클릭시 이벤트
+                // 문장형 평가 모달내에 버튼 클릭시 이벤트
                 $('#addRatingContainer').on('click', 'button', function () {
                     let rating = $(this).data('rating');
                     console.log(rating);
@@ -227,8 +215,7 @@
 
                 });
 
-
-                // 북마크 클릭시 이벤트
+                // 북마크 버튼 클릭시 이벤트
                 $('#addBtnContainer').on('click', '#bkMarkBtn', function () {
 
                     let data = {
@@ -258,6 +245,7 @@
 
                 });
 
+                // 일정 아이콘 클릭시 이벤트
                 $('#addBtnContainer').on('click', '.fa-clipboard', function () {
 
                     // ajax로 내 달력 목록 가져오기
@@ -277,11 +265,8 @@
                         }
                     });
                 });
-                $('.close').click(function () {
-                    // close modal
-                    $('#addMyCalendar-modal').modal('hide');
-                });
 
+                // 일정 모달 내에 달력 버튼 클릭시
                 $('#addMyCalContainer').on('click', '.cal-name', function () {
                     let myCalId = $(this).data('mycalid');
                     console.log(myCalId);
@@ -316,6 +301,7 @@
 
                 });
 
+                // 일정 모달 내에 새로운 캘린더 추가 버튼 클릭시
                 $('#addMyCalContainer').on('click', '#addNewCalendarBtn', function () {
                     let newCalendarName = $('#newCalendarName').val();
                     console.log(newCalendarName);
@@ -351,12 +337,32 @@
 
                 });
 
-                // 모달 닫기 버튼 클릭시
-                $('.close').click(function () {
-                    // close modal
-                    $('#addRating-modal').modal('hide');
-                    $('#addMyCalendar-modal').modal('hide');
-                });
+                // ********** 각종 함수들 **********
+
+                // 평균 문장형 평가 가져는 함수
+                function getAvgRating() {
+                    $.ajax({
+                        url: '/rating/getAvgRating/' + programId,
+                        type: 'GET',
+                        success: function (data) {
+                            $('#AvgRating').text(data);
+                        }
+                    });
+                }
+
+                // 회원 문장형 평가 가져오기
+                function getMyRating() {
+                    $.ajax({
+                        url: '/rating/getRating/' + memberId + '/' + programId,
+                        type: 'GET',
+                        success: function (data) {
+                            console.log(data);
+                            let html = '';
+                            html += '<div class="badge text-bg-secondary w-100 h-100">' + data + '</div>';
+                            $('#addRating').html(html);
+                        }
+                    });
+                }
 
 
             }); // end of document ready

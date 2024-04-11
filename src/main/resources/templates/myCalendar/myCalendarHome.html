@@ -16,7 +16,8 @@
                     </div>
                     <div class="modal-body">
                         <button type="button" th:each="pType : ${programType}" class="btn btn-primary pTypeBtn"
-                                th:text="${pType.value}" th:if="${pType.value !='기타'}" th:data-type="${pType.name()}"></button>
+                                th:text="${pType.value}" th:if="${pType.value !='기타'}"
+                                th:data-type="${pType.name()}"></button>
 
                     </div>
                 </div>
@@ -33,30 +34,37 @@
                     </div>
                     <div class="modal-body">
                         <button type="button" th:each="lType : ${locationType}" class="btn btn-primary lTypeBtn"
-                                th:text="${lType.value}" th:if="${lType.value !='기타'}" th:data-loc="${lType.name()}"></button>
+                                th:text="${lType.value}" th:if="${lType.value !='기타'}"
+                                th:data-loc="${lType.name()}"></button>
 
                     </div>
                 </div>
             </div>
         </div>
 
-        <!--                달력 모달-->
+        <!--    내 달력 카테고리 모달-->
         <div class="modal" id="calendar-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">달력 선택</h4>
+                        <div class="hidden-true" th:if="${member != null}">
+                            <div id="memberId" class="hidden-true"
+                                 th:data-memberId="${member.getId()}"></div>
+                        </div>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body">
-                        <button type="button" th:each="lType : ${locationType}" class="btn btn-primary lTypeBtn"
-                                th:text="${lType.value}" th:if="${lType.value !='기타'}" th:data-loc="${lType.name()}"></button>
+                    <div class="modal-body" id="addMyCalContainer">
+                        <div id="addMyCalendarBtnContainer">
+                            <!--    내 캘린더 목록 및 캘린더 추가 버튼 위치 -->
+                        </div>
 
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- TODO 사이드 검색창 -->
         <div class="w-75 container m-auto">
             <div class="row">
                 <div class="col-9" id="calendar"></div>
@@ -78,6 +86,9 @@
         <script>
             // 달력
             $(document).ready(function () {
+
+                // ********** 사용하는 변수들 **********
+
                 var calendarEl = document.getElementById('calendar');
                 var modalProgramType = "DRAMA";
                 var modalLocationType = "SEOUL";
@@ -89,6 +100,10 @@
                 console.log(myCalendarList);
                 console.log(userId);
 
+                // ********** 페이지 로딩시 실행할 함수들 **********
+
+
+                // 달력
                 var calendar = new FullCalendar.Calendar(calendarEl, {
 
                     customButtons: {
@@ -114,7 +129,22 @@
                         myCalendar: {
                             text: '내 달력',
                             click: function () {
-                                // 모달로 카테고리 설정 예정
+                                $.ajax({
+                                    url: '/calendar/myCalendarNameList/' + userId,
+                                    type: 'GET',
+                                    success: function (data) {
+                                        console.log(data);
+                                        let html = '';
+                                        data.forEach(function (myCalendar) {
+                                            html += '<button class="btn btn-primary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
+                                        });
+                                        html += '<br><input type="text" id="newCalendarName" placeholder="새로운 캘린더 이름"><button id="addNewCalendarBtn" class="btn btn-primary">추가</button>';
+                                        $('#addMyCalContainer').html(html);
+
+                                        $('#calendar-modal').css('display', 'block');
+
+                                    }
+                                });
 
 
                             }
@@ -181,14 +211,17 @@
 
                 calendar.render();
 
+                // ********** 클릭시 이벤트들 **********
+
                 // 모달 닫기
                 $(document).on('click', '.close', function () {
                     $('#type-modal').css('display', 'none');
-                });
-                $(document).on('click', '.close', function () {
                     $('#location-modal').css('display', 'none');
+                    $('#calendar-modal').css('display', 'none');
+
                 });
-                // 모달 버튼 클릭시 데이터 받기
+
+                // 작품 분류 모달 내에서 분류 선택시 달력 업데이트
                 $(document).on('click', ".pTypeBtn", function () {
                     modalProgramType = $(this).data('type');
                     modalProgramTypeName = $(this).text();
@@ -197,6 +230,8 @@
                     calendar.refetchEvents();
 
                 });
+
+                // 지역 모달 내에서 지역 선택시 달력 업데이트
                 $(document).on('click', ".lTypeBtn", function () {
                     modalLocationType = $(this).data('loc');
                     modalLocationTypeName = $(this).text();
@@ -207,6 +242,45 @@
 
                 });
 
+                // 일정 모달 내에 새로운 캘린더 추가 버튼 클릭시
+                $('#addMyCalContainer').on('click', '#addNewCalendarBtn', function () {
+                    let newCalendarName = $('#newCalendarName').val();
+                    console.log(newCalendarName);
+                    if (newCalendarName === '') {
+                        alert('캘린더 이름을 입력해주세요.');
+                        return;
+                    } else {
+
+                        let data = {
+                            memberId: userId,
+                            name: newCalendarName
+                        };
+                        $.ajax({
+                            type: 'POST',
+                            url: '/calendar/addNewCalendar',
+                            data: JSON.stringify(data),
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (result, status) {
+                                console.log(result);
+                                if (result === 'fail') {
+                                    alert('이미 존재하는 캘린더 이름입니다.');
+                                    return;
+                                }
+                                alert('새로운 캘린더가 추가되었습니다.');
+                                $('#addMyCalendar-modal').css('display', 'none');
+                            },
+                            error: function (error) {
+                                console.log(error);
+                                alert('캘린더 추가에 실패했습니다.');
+                            }
+                        });
+                    }
+
+                });
+
+                // ********** 각종 함수들 **********
+
+                // 작품 클릭시 작품 페이지로 이동
                 function openProgramPage(id) {
                     location.href = "/program/" + id;
                 }
