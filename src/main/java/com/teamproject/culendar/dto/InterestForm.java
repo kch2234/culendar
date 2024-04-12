@@ -14,18 +14,17 @@ import java.util.List;
 public class InterestForm {
     private Long id;
     private ProgramType interest;
-    private List<ProgramType> interestList = new ArrayList<>();
+    private List<ProgramType> interestList;
     private Member member;
 
     public Interest toEntity() {
         Interest interests = new Interest();
+        interests.setInterest(interest);
         interests.setMember(member);
-        setInterestList(interest);
         return interests;
     }
 
-    public void setInterestList(ProgramType interest) {
+    public InterestForm(ProgramType interest) {
         this.interest = interest;
-        interestList.add(interest);
     }
 }

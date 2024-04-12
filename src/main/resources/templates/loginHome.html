@@ -10,7 +10,7 @@
         <p sec:authentication="principal.member.userid"></p>
         <ul>
             <li><a th:href="@{members/admin}">adminPage</a></li>
-            <li><a th:href="@{members/{id}(id=${member.member.id})}">memberProfile</a></li>
+            <li><a th:href="@{members/{id}(id=${customMember.member.id})}">memberProfile</a></li>
         </ul>
         <form th:action="@{/logout}" method="post">
             <button type="submit">Logout</button>

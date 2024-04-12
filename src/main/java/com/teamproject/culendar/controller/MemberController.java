@@ -1,12 +1,14 @@
 package com.teamproject.culendar.controller;
 
 
+import com.teamproject.culendar.domain.member.Follow;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.FollowDTO;
 import com.teamproject.culendar.dto.MemberDTO;
 
 
 import com.teamproject.culendar.dto.MemberForm;
+import com.teamproject.culendar.service.FollowService;
 import com.teamproject.culendar.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -29,6 +31,7 @@ import java.util.Optional;
 public class MemberController {
 
     private final MemberService memberService;
+    private final FollowService followService;
 
     /* 회원 전체 조회 - 관리자용
         (@PreAuthorize("hasRole('ADMIN')"))*/
@@ -38,13 +41,17 @@ public class MemberController {
     public String myProfile(@PathVariable("id") Long id, Model model){
         log.info("********** MemberController GET /members/:id (myProfile) - id : {}", id);
         MemberDTO member = memberService.findById(id);
+        FollowDTO follow = followService.findById(id);
         model.addAttribute("member", member);
+        model.addAttribute("follow", follow);
         return "profile/memberProfile";
     }
     // 팔로우, 팔로워 조회
     @GetMapping("/{id}/follow")
-    public String follow(@PathVariable("id") Long id, Model model){
+    public String follow(@PathVariable("id") Long id, Follow follow, Model model){
         log.info("********** MemberController GET /members/:id/follow - id : {}", id);
+        MemberDTO member = memberService.findById(id);
+        model.addAttribute("member", member);
         return "profile/follow";
     }
 

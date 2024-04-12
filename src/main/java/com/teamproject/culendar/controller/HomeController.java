@@ -21,7 +21,7 @@ public class HomeController {
         if (customMember == null) { // 로그인 안한 경우
             return "main";
         }
-        model.addAttribute("member", customMember); // 로그인한 회원 정보를 Model에 담아서 전달
+        model.addAttribute("customMember", customMember); // 로그인한 회원 정보를 Model에 담아서 전달
         return "loginHome";
     }
 
