@@ -19,9 +19,10 @@
                                 </div>
                                 <div class="post-meta"></div>
                             </div>
-                            <div class="news-contents mb-4">
-                                <h3><a href="#">게시글 제목</a></h3>
-                                <span class="post-meta-2">게시글 내용</span>
+                            <!--  TODO 북마크 데이터로 인기글 조건 걸어서 필터링 / 텍스트 링크 -> 영역 링크로 변경  -->
+                            <div class="news-contents mb-4" th:each="board : ${list}">
+                                <h3><a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}">인기글1 제목</a></h3>
+                                <span class="post-meta-2"><a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.content}">인기글1 내용</a></span>
                             </div>
                             <div class="news-contents mb-4"></div>
                             <p class="mb-0"><a href="#" class="read-more-arrow">
@@ -126,28 +127,29 @@
                 </div>  <!--  row 인기글 카드  -->
                 <div class="col-12 mb-5 aos-init aos-animate" data-aos="fade-up">
                     <div class="row">  <!--  카테고리  -->
-                        <button type="button" class="btn btn-warning">인기글</button>  <!--  todo 필터링  -->
-                        <button type="button" class="btn btn-secondary">정보</button>
-                        <button type="button" class="btn btn-secondary">후기</button>
+                        <!--  TODO 북마크 데이터로 인기글 조건 걸어서 필터링 버튼  -->
+                        <button type="button" class="btn btn-warning">인기글</button>
+                        <button type="button" class="btn btn-secondary" onclick="filterByCategory('INFO')">정보</button>
+                        <button type="button" class="btn btn-secondary" onclick="filterByCategory('REVIEW')">후기</button>
                         <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/boards/add}'|">글 작성</button>
                     </div>  <!--  row 카테고리 영역  -->
                 </div>  <!--  col-12 mb-5 aos-init aos-animate 카테고리  -->
-                    <table class="row">  <!--  row 리스트 제목  -->
-                        <thead class="col-12">
-                            <tr>
-                                <th>Category</th>
-                                <th>Title</th>
-                                <th>Writer</th>
-                            </tr>
-                        </thead>
-                        <tbody class="col-12">  <!--  게시글 리스트  -->
-                            <tr th:each="board : ${list}">
-                                <td><a th:text="${board.boardType}">카테고리</a></td>
-                                <td><a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}">제목</a></td>
-                                <td><a th:text="${board.memberDTO.username}">작성자</a></td>
-                            </tr>
-                        </tbody>  <!--  row 게시글 리스트  -->
-                    </table>  <!--  row 리스트 헤더 영역  -->
+                <table class="row">  <!--  row 리스트 제목  -->
+                    <thead class="col-12">
+                        <tr>
+                            <th>Category</th>
+                            <th>Title</th>
+                            <th>Writer</th>
+                        </tr>
+                    </thead>
+                    <tbody class="col-12">  <!--  게시글 리스트  -->
+                        <tr th:each="board : ${list}" class="boardItem" th:attr="data-category=${board.boardType}">
+                            <td><a th:text="${board.boardType}">카테고리</a></td>
+                            <td><a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}">제목</a></td>
+                            <td><a th:text="${board.memberDTO.username}">작성자</a></td>
+                        </tr>
+                    </tbody>  <!--  row 게시글 리스트  -->
+                </table>  <!--  row 리스트 헤더 영역  -->
 
                     <div class="row text-start pt-5 border-top">  <!--  페이징 영역  -->
                         <div class="col-mb-12">
@@ -164,11 +166,25 @@
                             </div>  <!--  custom-pagination  -->
                         </div>  <!-- col-mb-12   -->
                     </div>  <!-- row text-start pt-5 border-top 검색창+페이징 영역   -->
-                
+
                 <!--  todo 검색 기능 추가  -->
-                
+
             </div>  <!--  container 커뮤니티홈 영역  -->
         </div>  <!--  untree_co-section 배경 영역  -->
+
+        <script th:inline="javascript">
+            function filterByCategory(category) {
+                var items = document.getElementsByClassName('boardItem');
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    if (category === 'ALL' || item.getAttribute('data-category') === category) {
+                        item.style.display = '';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }
+            }
+        </script>
 
     </th:block>
 </th:block>
