@@ -9,8 +9,12 @@
         <span name="imageInfo">  <!--  회원 프로필 사진 영역  -->
             <div name="memberImage"></div>  <!--  회원 프로필 사진  -->
             <div name="button">  <!--  버튼 영역  -->
-                <span name="delete-button"></span>
-                <span name="edit-button"></span>
+                <span name="delete-button">
+                    <button type="button" class="btn btn-danger">삭제</button>
+                </span>
+                <span name="edit-button">
+                    <button type="button" class="btn btn-warning">수정</button>
+                </span>
             </div>
         </span>
         <span name="memberInfo">  <!--  회원 정보 영역  -->
@@ -56,22 +60,34 @@
         <div name="heading">관심사</div>  <!--  제목  -->
         <div name="cards">  <!--  관심사 카드 영역 상단  -->
             <h1>카드 영역</h1>
+            <form action="" th:action th:object="${interestForm}" method="post">
             <span name="card">
                 <div name="image"></div>
-                <div name="title"></div>
+                <input type="checkbox" th:field="*{interestList}" th:value="DRAMA">
+                <div name="title">연극</div>
             </span>
             <span name="card">
                 <div name="image"></div>
-                <div name="title"></div>
-            </span><span name="card">
+                <input type="checkbox" th:field="*{interestList}" th:value="CONCERT">
+                <div name="title">음악/콘서트</div>
+            </span>
+            <span name="card">
                 <div name="image"></div>
-                <div name="title"></div>
-            </span><span name="card">
+                <input type="checkbox" th:field="*{interestList}" th:value="EXHIBITION">
+                <div name="title">전시</div>
+            </span>
+            <span name="card">
                 <div name="image"></div>
-                <div name="title"></div>
+                <input type="checkbox" th:field="*{interestList}" th:value="MUSICAL">
+                <div name="title">뮤지컬/오페라</div>
+            </span>
+            <span name="card">
+                <div name="image"></div>
+                <input type="checkbox" th:field="*{interestList}" th:value="ETC">
+                <div name="title">기타</div>
             </span>
         </div>
-        <div name="cards">  <!--  관심사 카드 영역 하단  -->
+        <!--<div name="cards">  &lt;!&ndash;  관심사 카드 영역 하단  &ndash;&gt;
             <h1>카드 영역</h1>
             <span name="card">
                 <div name="image"></div>
@@ -87,9 +103,9 @@
                 <div name="image"></div>
                 <div name="title"></div>
             </span>
-        </div>
+        </div>-->
         <div name="submit-button">
-            <button type="submit">저장</button>
+            <button type="submit">저장하기</button>
         </div>
     </div>
     </form>

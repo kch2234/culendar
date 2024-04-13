@@ -3,7 +3,7 @@
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
         <h1>회원설정 페이지 영역</h1>
-
+        <form action="" th:action th:object="${member}" method="post">
         <div name="ReasonWithdrawalList">  <!--  회원 탈퇴 사유 리스트 영역 START  -->
             <div name="heading">회원 탈퇴</div>
             <div name="reasonWithdrawal">  <!--  회원 탈퇴 사유  -->
@@ -26,9 +26,12 @@
         </div>
         <div name="passwordCheck">비밀번호 입력</div>
         <div name="button">
-            <span name="cancel-button">취소</span>
-            <span name="withdrawal-button">회원 탈퇴</span>
+            <span name="cancel-button"></span>
+            <button type="button" th:onclick="history.go(-1)">취소</button>
+            <span name="withdrawal-button"></span>
+            <button type="submit">회원 탈퇴</button>
         </div>
+        </form>
     </th:block>
 </th:block>
 </html>

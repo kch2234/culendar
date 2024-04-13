@@ -6,9 +6,10 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-// 팔로우 DTO // 팔로우 하는 사람, 팔로우 대상 // 팔로우 테이블
 @Data
 public class FollowDTO {
+    private long followerCount;
+    private long followingCount;
     private Long id;
     private LocalDateTime createDate;
     private Member member;
