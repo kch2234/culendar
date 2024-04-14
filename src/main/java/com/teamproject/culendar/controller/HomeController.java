@@ -1,12 +1,17 @@
 package com.teamproject.culendar.controller;
 
 
+import com.teamproject.culendar.domain.enumFiles.Location;
+import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.security.domain.CustomMember;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -32,6 +37,24 @@ public class HomeController {
     public String accessDenied(CustomMember customMember) {
         log.info("권한이 없는 사용자가 접근했습니다. : {}", customMember);
         return "access-denied";
+    }
+
+    @GetMapping("/myCalendar")
+    public String calendar() {
+        return "myCalendar/myCalendarHome";
+    }
+
+
+    @ModelAttribute("programType") // 작품 종류 데이터를 뷰에 전달
+    public ProgramType[] programTypes() {
+        List<ProgramType> programTypes = new ArrayList<>();
+        return ProgramType.values();
+    }
+
+    @ModelAttribute("locationType") // 작품 종류 데이터를 뷰에 전달
+    public Location[] locations() {
+        List<Location> programTypes = new ArrayList<>();
+        return Location.values();
     }
 }
 

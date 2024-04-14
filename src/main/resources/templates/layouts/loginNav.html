@@ -3,8 +3,8 @@
 <th:block th:fragment="navFrg">
 
     <!--  네브 시작  -->
-<!--    <nav class="site-nav dark js-site-navbar mb-5 site-navbar-target">-->
-    <nav class="dark js-site-navbar mb-5 site-navbar-target">
+
+    <nav class="site-nav dark js-site-navbar mb-5 site-navbar-target">
         <div class="container">
             <div class="site-navigation">
                 <a th:href="@{/}" class="logo m-0 float-left">Culendar<span class="text-primary">.</span></a>
@@ -22,17 +22,7 @@
                         <ul class="dropdown">
                             <!--<li><a th:href="@{/members/{id}(id=${member.id})}" class="nav-link">프로필</a></li>-->
                             <!--<li><a th:href="@{/members/{id}/settings(id=${member.id})}" class="nav-link">설정</a></li>-->
-                            <li>
-                                <form th:action="@{/login}" method="post">
-                                    <a class="nav-link" onclick="this.parentNode.submit();">로그인</a>  <!--  todo  -->
-                                </form>
-                                <form th:action="@{/signup}" method="post">
-                                    <a class="nav-link" onclick="this.parentNode.submit();">회원가입</a>  <!--  todo  -->
-                                </form>
-                                <form th:action="@{/logout}" method="post">
-                                    <a class="nav-link" onclick="this.parentNode.submit();">로그아웃</a>
-                                </form>
-                            </li>
+                            <li><a th:href="@{/logout}" class="nav-link">로그아웃</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -46,7 +36,6 @@
             </div>
         </div>
     </nav>
-    <!--  네브 끝  -->
 
     <!--    <div name="nav">-->
     <!--        <span name="title">CULENDAR</span>  &lt;!&ndash;  사이트 이름 영역  &ndash;&gt;-->
@@ -66,5 +55,6 @@
     <!--            <span name="signup-button"></span>-->
     <!--        </span>-->
     <!--    </div>-->
+    <!--  네브 끝  -->
 
 </th:block>

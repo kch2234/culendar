@@ -49,7 +49,6 @@ public class BoardController {
   @GetMapping("/add")
   public String addForm(@ModelAttribute BoardForm boardForm, Model model, @AuthenticationPrincipal CustomMember customMember) {
     log.info("***** BoardController GET /boards/add");
-    model.addAttribute("boardType", BoardType.values());
 
     return "community/boardAdd";
   }

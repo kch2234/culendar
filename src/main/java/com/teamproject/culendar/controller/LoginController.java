@@ -19,22 +19,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LoginController {
 
     private final MemberService memberService;
+    private final InterestService interestService;
 
     @GetMapping("/signup")
-    public String signupForm(@ModelAttribute MemberForm memberForm, Model model) {
+    public String signupForm(@ModelAttribute MemberForm memberForm, @ModelAttribute InterestForm interestForm, Model model) {
         log.info("********** HomeController GET /signup ");
         // 회원가입 페이지에서 사용할 Role enum 값 전달
-        model.addAttribute("roleType", Role.values());
+        /*model.addAttribute("roleType", Role.values());
         model.addAttribute("genderType", Gender.values());
+        model.addAttribute("programType", ProgramType.values());*/
         return "member/signup";
     }
     @PostMapping("/signup")
-    public String signupPro(MemberForm memberForm) {
+    public String signupPro(MemberForm memberForm, InterestForm interestForm, Model model) {
         log.info("********** HomeController POST /signup - memberForm : {}", memberForm);
-        log.info("********** HomeController POST /signup - memberForm : {}", memberForm.getRole());
-        log.info("********** HomeController POST /signup - memberForm : {}", memberForm.getGender());
         Long savedId = memberService.saveMember(memberForm);
         // TODO: savedId 활용 -> 홈에서 모달이나 alert 띄울때 필요하면 사용
+            /*MemberDTO member = memberService.findById(savedId);
+            interestForm.setMember(member.toEntity());*/
+            /*for (ProgramType programType : interestForm.getInterestList()) {
+                interestForm.setInterest(programType);
+                interestService.saveInterest(interestForm);
+            }*/
+//            Long saved = interestService.saveInterest(interestForm);
         return "redirect:/";
     }
 

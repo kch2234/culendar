@@ -2,7 +2,8 @@ package com.teamproject.culendar.dto;
 
 
 import com.teamproject.culendar.domain.enumFiles.Gender;
-import com.teamproject.culendar.domain.enumFiles.MemberType;
+import com.teamproject.culendar.domain.enumFiles.Location;
+import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.enumFiles.Role;
 import com.teamproject.culendar.domain.member.Member;
 import lombok.Data;
@@ -14,13 +15,18 @@ import java.time.format.DateTimeFormatter;
 @Data
 public class MemberForm  {
     private Long id; // 생략
+//    @NotBlank(message = "아이디는 필수 입력 값입니다.")
     private String userid; // 아이디
+//    @NotBlank(message = "닉네임은 필수 입력 값입니다.")
     private String username; //닉네임
+//    @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
     private String password;
     private int phone;
+//    @Email(message = "이메일 형식이 아닙니다.")
     private String email;
-    //TODO 지역 ENUM 예정
-    //private Location location;
+    // 지역 ENUM
+//    @NotBlank(message = "지역은 필수 입력 값입니다.")
+    private Location location;
     // 생년 월일
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private String birth;
@@ -30,7 +36,7 @@ public class MemberForm  {
     // 한줄 소개
     private String introduction;
     // 권한
-    private Role role = Role.MEMBER;  // NOTE 임시 선언 private Role role;
+    private Role role = Role.MEMBER;
 
     // form -> Entity
     public Member toEntity() {
