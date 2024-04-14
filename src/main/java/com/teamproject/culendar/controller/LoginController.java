@@ -2,7 +2,9 @@ package com.teamproject.culendar.controller;
 
 import com.teamproject.culendar.domain.enumFiles.Gender;
 import com.teamproject.culendar.domain.enumFiles.Role;
+import com.teamproject.culendar.dto.InterestForm;
 import com.teamproject.culendar.dto.MemberForm;
+import com.teamproject.culendar.service.InterestService;
 import com.teamproject.culendar.service.MemberService;
 
 import lombok.RequiredArgsConstructor;

@@ -16,4 +16,10 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
     List<Program> findProgramsById(Long id);
 
     List<Program> findProgramsByProgramTypeAndLocation(ProgramType programType, Location location);
+
+    List<Program> findProgramsByLocation(Location location);
+
+    List<Program> findProgramsByProgramType(ProgramType programType);
+
+    List<Program> findByTitleContaining(String keyword);
 }

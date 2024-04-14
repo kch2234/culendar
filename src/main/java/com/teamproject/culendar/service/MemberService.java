@@ -85,6 +85,10 @@ public class MemberService {
         return saved.getId();
     }
 
+    public Member getMember(Long id) {
+        return memberRepository.findById(id).orElse(null);
+    }
+
 
 
 }

@@ -23,12 +23,11 @@ public class HomeController {
     // CustomMember : 로그인한 사용자 정보를 담고 있는 객체
     public String home(@AuthenticationPrincipal CustomMember customMember, Model model) {
         log.info("***** HomeController GET Home!! - customMember : {}", customMember);
-        if (customMember == null) { // 로그인 안한 경우
-            log.info("***** Home : 비로그인 사용자");
+        /*if (customMember == null) { // 로그인 안한 경우
             return "main";
-        }
+        }*/
         model.addAttribute("member", customMember); // 로그인한 회원 정보를 Model에 담아서 전달
-        log.info("***** Home : 로그인 사용자");
+//        return "loginHome";
         return "main";
     }
 
@@ -40,7 +39,28 @@ public class HomeController {
     }
 
     @GetMapping("/myCalendar")
-    public String calendar() {
+    public String calendar(@AuthenticationPrincipal CustomMember customMember, Model model) {
+
+        log.info("***** HomeController GET /myCalendar - customMember : {}", customMember);
+        if (customMember == null) { // 로그인 안한 경우
+            return "redirect:/login";
+        }
+        Long id = customMember.getMember().getId();
+        log.info("***** HomeController GET /myCalendar - id : {}", id);
+
+        List<CalendarNameDTO> myCalendarList = calendarService.getCalendarList(id);
+        log.info("***** HomeController GET /myCalendar - myCalendarList : {}", myCalendarList);
+        if (myCalendarList.size() == 0) {
+            calendarService.saveCalendarName(id);
+            myCalendarList = calendarService.getCalendarList(id);
+            log.info("***** HomeController GET /myCalendar - myCalendarList : {}", myCalendarList);
+        }
+        MemberDTO byId = memberService.findById(id);
+        model.addAttribute("member", byId);
+
+        model.addAttribute("myCalendarList", myCalendarList);
+
+
         return "myCalendar/myCalendarHome";
     }
 
