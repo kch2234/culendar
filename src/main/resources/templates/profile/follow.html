@@ -38,7 +38,6 @@
             <span name="follow-button"></span>  <!--  팔로우 버튼  -->
 
             <form th:action="@{/members/{id}/follow(id=${members.id})}" method="post">
-                <input type="hidden" name="id" th:value="${members.id}" />
                 <button type="submit">팔로우</button>
             </form>
         </div>  <!--  팔로우 멤버*반복 END  -->

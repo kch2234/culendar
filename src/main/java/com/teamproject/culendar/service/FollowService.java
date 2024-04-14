@@ -62,19 +62,4 @@ public class FollowService {
     public List<Follow> findByFollowId(Long id) {
         return followRepository.findByFollowId(id);
     }
-
-    /*
-    public void saveFollow(Follow followEntity) {
-        followRepository.save(followEntity);
-    }
-
-    public boolean isFollowing(Member follower, Member following) {
-        List<Follow> followList = followRepository.findByMemberId(follower.getId());
-        for (Follow follow : followList) {
-            if (follow.getFollow().equals(following.getId())) {
-                return true;
-            }
-        }
-        return false;
-    }*/
 }

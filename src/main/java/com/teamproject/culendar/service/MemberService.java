@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static java.time.LocalDateTime.now;
+
 
 @Service
 @RequiredArgsConstructor
@@ -72,8 +74,9 @@ public class MemberService {
     // 회원정보 삭제 - 회원탈퇴 비활성화
     public void deactivateMember(Long id) {
         Member findMember = memberRepository.findById(id).orElse(null);
+
         findMember.setDisabled(true);
-        findMember.setDisabledDate(null);
+        findMember.setDisabledDate(now());
     }
 
     public Long saveMember(MemberForm memberForm) {

@@ -47,6 +47,7 @@ public class MemberController {
     private final InterestService interestService;
 
     // 회원 전체 조회 - 관리자용
+
 //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public String memberList(Model model){
@@ -65,12 +66,14 @@ public class MemberController {
         Follow follow = followService.findById(id);
         log.info("********** MemberController GET /members/:id (myProfile) - followId : {}", follow.getId());
         FollowDTO followDTO = new FollowDTO(follow);
+        // TODO: 팔로우, 팔로워 수
         long followerCount = followDTO.getFollowerCount();
         long followingCount = followDTO.getFollowingCount();
         model.addAttribute("follow", followDTO);
         model.addAttribute("member", member);
         return "profile/memberProfile";
     }
+
 /*
 
     // 다른 회원의 프로필 조회
