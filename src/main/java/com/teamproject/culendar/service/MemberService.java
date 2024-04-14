@@ -10,8 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 
@@ -28,9 +26,9 @@ public class MemberService {
 
 
     // 회원정보 상세 조회
-    public MemberDTO findById(Long id) {
+    public Member findById(Long id) {
         Member member = memberRepository.findById(id).orElse(null);
-        return new MemberDTO(member);
+        return member;
     }
     // 아이디 중복 체크
     public CustomMember findByUserid(String userid) {

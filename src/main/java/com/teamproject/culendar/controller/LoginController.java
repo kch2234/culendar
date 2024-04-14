@@ -4,6 +4,7 @@ import com.teamproject.culendar.domain.enumFiles.Gender;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.enumFiles.Role;
 import com.teamproject.culendar.domain.member.Interest;
+import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.*;
 import com.teamproject.culendar.security.domain.CustomMember;
 import com.teamproject.culendar.service.InterestService;
@@ -42,21 +43,21 @@ public class LoginController {
     }
 
     @PostMapping("/signup")
-    public String signupPro(InterestForm interestForm, MemberForm memberForm, MemberDTO memberDTO) {
+    public String signupPro(InterestForm interestForm, MemberForm memberForm) {
         log.info("********** HomeController POST /signup - memberForm : {}", memberForm);
         log.info("********** HomeController POST /signup - interestList : {}", interestForm.getInterestList());
         // 회원가입
         // 만약 비활성화 회원이 다시 회원가입을 할 경우 활성화 처리
-        if (memberDTO.isDisabled()) {
+        /*if (memberDTO.isDisabled()) {
             memberDTO.setDisabled(false);
-        }
+        }*/
         Long savedId = memberService.saveMember(memberForm); // TODO: savedId 활용 -> 홈에서 모달이나 alert 띄울때 필요하면 사용
         // 회원가입한 회원 조회
-        MemberDTO member = memberService.findById(savedId);
+        Member member = memberService.findById(savedId);
         // 회원가입한 회원의 관심분야 저장
         for (ProgramType programType : interestForm.getInterestList()) {
             InterestForm interest = new InterestForm(programType);
-            interest.setMember(member.toEntity());
+            interest.setMember(member);
             interestService.saveInterest(interest);
         }
         return "redirect:/";
