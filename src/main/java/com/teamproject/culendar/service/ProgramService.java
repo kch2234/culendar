@@ -267,14 +267,6 @@ public class ProgramService {
         return programDTOList;
     }
 
-    public ProgramDTO findProgram(Long id) {
-        log.info("** ProgramService - findProgram - id: {}", id);
-        Optional<Program> program = programRepository.findById(id);
-        if (program.isPresent()) {
-            return new ProgramDTO(program.get());
-        }
-        return null;
-    }
 
 
 }
