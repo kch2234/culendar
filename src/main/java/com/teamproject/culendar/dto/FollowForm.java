@@ -7,16 +7,16 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class FollowDTO {
+public class FollowForm {
     private Long id;
     private LocalDateTime createDate;
     private Member member;
     private Member follow;
 
-    public FollowDTO(Follow entity) {
-        id = entity.getId();
-        createDate = entity.getCreateDate();
-        member = entity.getMember();
-        follow = entity.getFollow();
+    public Follow toEntity() {
+        Follow flw = new Follow();
+        flw.setFollow(follow);
+        flw.setMember(member);
+        return flw;
     }
 }

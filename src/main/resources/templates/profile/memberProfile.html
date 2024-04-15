@@ -10,15 +10,16 @@
             <div name="memberInfoTop">  <!--  회원 정보 상단  -->
                 <span name="username"></span>  <!--  닉네임  -->
                 <input type="text" th:field="${member.username}" id="username" readonly>
+                <div>
                 <span name="following">
-<!--                    <button class="btn btn-info" id="following" type="button" th:text="${follow.followingCount}" ></button>-->
+                    <!-- 팔로잉 모달 버튼-->
+                    <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#followModal">팔로잉 모달</button>
                 </span>  <!--  팔로잉  -->
                 <span name="follower">
-<!--                    <button class="btn btn-info" id="follower" type="button" th:text="${follow.followingCount}" ></button>-->
+                    <!-- 팔로잉 모달 버튼-->
+                    <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal2">팔로워 모달</button>
                 </span>  <!--  팔로워  -->
-                <span name="follow-button"></span> <!--  팔로우 버튼  -->
-                <button type="button" class="btn btn-info" th:onclick="|location.href='@{/members/{id}/follow(id=${member.id})}'|">팔로우</button>
-                <button type="button" class="btn btn-info" th:onclick="|location.href='@{/members/{id}/follower(id=${member.id})}'|">팔로워</button>
+                </div>
                 <span name="edit-button"></span>  <!--  프로필 수정 버튼  -->
                 <button type="button" class="btn btn-warning" th:onclick="|location.href='@{/members/{id}/edit(id=${member.id})}'|">프로필 수정</button>
             </div>
@@ -61,6 +62,142 @@
         <span name="{filter}Card"></span>
     </div>
     <!--  무한 스크롤 영역  -->
+    <!-- 모달 버튼
+        <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal">모달 열기</button>
+        -->
+    <!-- 팔로잉 모달 -->
+        <div class="modal fade" id="followModal" tabindex="-1" role="dialog" aria-labelledby="followModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="followModalLabel">팔로잉</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-dialog modal-dialog-scrollable"><!-- 스크롤 모달 -->
+                    <div class="modal-body">
+                        <form>
+                            <div class="card-body" id="followList"></div>
+                        </form>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="card-body" id="memberList"></div>
+                        </form>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </th:block>
 </th:block>
+<script th:inline="javascript">
+    $(document).ready(function(){
+        let memberIdVal = [[${member.id}]] // 회원 id
+        let flowListDiv = $('#followList'); // 팔로잉 리스트 div
+        let memberListDiv = $('#memberList'); // 팔로잉 리스트 div
+
+        getFollowingList();
+
+        function getFollowingList() {
+            $.ajax({
+                type: 'GET',
+                url: '/follows/' + memberIdVal,
+                success: function (result){
+                    console.log("팔로잉 리스트 가져오기 성공");
+                    console.log(result);
+                    printFollowList(result.followingList);
+                    printMemberList(result.memberList);
+                },
+                error: function (e){
+                    console.log("팔로잉 리스트 가져오기 실패");
+                    console.log(e);
+                }
+            });
+        }
+        function printFollowList(list) {
+            let html = '';
+            for (let i = 0; i < list.length; i++) {
+                html += '<div name="member">';
+                html += '<span name="memberImage">프로필 사진</span>';
+                html += '<input type="text" id="profileImage" readonly>';
+                html += '<span name="memberInfo">';
+                html += '<div name="username">닉네임';
+                html += '<input type="text" value="' + list[i].username + '" id="username" readonly>';
+                html += '</div>';
+                html += '<div name="memberInfoBottom">';
+                html += '<span name="location">지역</span>';
+                html += '<input type="text" value="' + list[i].location + '" id="location" readonly>';
+                html += '<span name="introduce">자기소개</span>';
+                html += '<input type="text" value="' + list[i].introduction + '" id="introduction" readonly>';
+                html += '</div>';
+                html += '</span>';
+                html += '<span name="follow-button"></span>';
+                html += '<button type="button" class="btn btn-secondary" id="unFollowBtn">팔로잉</button>';
+                html += '</div>';
+            }
+            flowListDiv.html(html);
+        }
+
+        function printMemberList(memberList) {
+            let html = '';
+            for (let i = 0; i < memberList.length; i++) {
+                html += '<div name="member">';
+                html += '<span name="memberImage">프로필 사진</span>';
+                html += '<input type="text" id="profileImage" readonly>';
+                html += '<span name="memberInfo">';
+                html += '<div name="username">닉네임';
+                html += '<input type="text" value="' + memberList[i].username + '" id="username" readonly>';
+                html += '</div>';
+                html += '<div name="memberInfoBottom">';
+                html += '<span name="location">지역</span>';
+                html += '<input type="text" value="' + memberList[i].location + '" id="location" readonly>';
+                html += '<span name="introduce">자기소개</span>';
+                html += '<input type="text" value="' + memberList[i].introduction + '" id="introduction" readonly>';
+                html += '</div>';
+                html += '</span>';
+                html += '<span name="follow-button"></span>';
+                html += '<button type="button" class="btn btn-primary" id="flwBtn">팔로우</button>';
+                html += '</div>';
+            }
+            memberListDiv.html(html);
+        }
+        // 팔로우 버튼 클릭 이벤트
+        $("#flwBtn").on("click", function(){
+            console.log("팔로우 버튼 클릭");
+            let mid = [[${member.id}]]
+            let data = {
+                memberId: mid,
+                followingId: mid
+            }
+            console.log(data);
+            saveFollow(data, function (){
+                getFollowingList();
+            });
+        });
+        function saveFollow(data, callback) {
+            $.ajax({
+                type: 'POST',
+                url: '/follows/follow',
+                data: JSON.stringify(data),
+                contentType: 'application/json; charset=utf-8',
+                success: function (result){
+                    console.log("팔로우 성공");
+                    console.log(result);
+                    callback();
+                },
+                error: function (e){
+                    console.log("팔로우 실패");
+                    console.log(e);
+                }
+            });
+        }
+
+
+    });
+</script>
 </html>

@@ -151,39 +151,6 @@
         </form>
     </div>  <!-- 관심사 영역 End -->
     </div><!--  회원가입 영역 END -->
-        <!-- 모달 버튼
-        <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal">모달 열기</button>
-        -->
-    <!-- 모달 -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">모달 제목</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="닫기">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="recipient-name" class="col-form-label">지역</label>
-                            <input type="text" class="form-control" id="recipient-name">
-                        </div>
-                        <div class="mb-3">
-
-                        </div>
-                    </form>
-                    <!--여기에 콘텐츠를 넣습니다.
-                   -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                    <button type="button" class="btn btn-primary">저장</button>
-                </div>
-            </div>
-        </div>
-    </div>
     </th:block>
 </th:block>
 <!-- jQuery, Popper.js, 부트스트랩 JS -->
@@ -285,12 +252,5 @@
             alert("비밀번호가 일치하지 않습니다.");
         }
     });
-</script>
-<script>
-    const myModal = document.getElementById('exampleModal') // 모달
-    const myInput = document.getElementById('myInput') // 모달 내부의 input
-    myModal.addEventListener('shown.bs.modal', () => {
-        myInput.focus()
-    })
 </script>
 </html>
