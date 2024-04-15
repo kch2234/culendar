@@ -66,33 +66,33 @@
         <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal">모달 열기</button>
         -->
     <!-- 팔로잉 모달 -->
+    <div class="modal-dialog modal-dialog-scrollable"><!-- 스크롤 모달 -->
         <div class="modal fade" id="followModal" tabindex="-1" role="dialog" aria-labelledby="followModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="followModalLabel">팔로잉</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-dialog modal-dialog-scrollable"><!-- 스크롤 모달 -->
-                    <div class="modal-body" id="followList">
-                        <form>
-
-                        </form>
-                    </div>
-                    <div class="modal-body" id="memberList">
-                        <form>
-
-                        </form>
-                    </div>
-                    </div> <!-- 스크롤 모달 -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                    </div>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="followModalLabel">팔로잉</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div id="followList"></div>
+                                    </form>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div id="memberList"></div>
+                                    </form>
+                                </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                        </div>
                 </div>
             </div>
         </div>
+    </div> <!-- 스크롤 모달 -->
 </th:block>
 </th:block>
 <script th:inline="javascript">
@@ -120,61 +120,51 @@
                 }
             });
         }
+
+        function MemberFollowList(member) {
+            let memberId = member.id;  // 멤버 고유의 ID
+            let html = '<div class="member">';
+            html += '<span name="memberImage"></span>';
+            // html += `<input type="text" id="memberImage${memberId}" readonly value="${member.profileImage}">`;
+            html += '<span name="memberInfo"></span>';
+            html += '<div>';
+            html += `<label for="username${memberId}">닉네임:</label>`;
+            html += `<input type="text" id="username${memberId}" readonly value="${member.username}">`;
+            html += '</div>';
+            html += '<span name="memberInfoBottom">';
+            html += `<label for="location${memberId}">지역:</label>`;
+            html += `<input type="text" id="location${memberId}" readonly value="${member.location}">`;
+            html += `<label for="introduction${memberId}">자기소개:</label>`;
+            html += `<input type="text" id="introduction${memberId}" readonly value="${member.introduction}">`;
+            html += '</span>';
+            html += '</div>';
+            return html;
+        }
+
         function printFollowList(list) {
-            let html = '';
-            for (let i = 0; i < list.length; i++) {
-                html += '<div name="member">';
-                html += '<span name="memberImage">프로필 사진</span>';
-                html += '<input type="text" id="profileImage" readonly>';
-                html += '<span name="memberInfo">';
-                html += '<div name="username">닉네임';
-                html += '<input type="text" value="' + list[i].username + '" id="username" readonly>';
-                html += '</div>';
-                html += '<div name="memberInfoBottom">';
-                html += '<span name="location">지역</span>';
-                html += '<input type="text" value="' + list[i].location + '" id="location" readonly>';
-                html += '<span name="introduce">자기소개</span>';
-                html += '<input type="text" value="' + list[i].introduction + '" id="introduction" readonly>';
-                html += '</div>';
-                html += '</span>';
-                html += '<span name="follow-button"></span>';
-                html += '<button type="button" class="btn btn-info unFollowBtn" data-unFlwBtn"'+ list[i].id +'">팔로잉</button>';
-                html += '</div>';
-            }
+            let html = list.map(follow =>
+                MemberFollowList(follow) + '<div name="follow-button"><button type="button" class="btn btn-info unFollowBtn" id="unFollowBtn" data-unFlwBtn="'+ follow.id +'">팔로잉</button></div></div>').join('');
             flowListDiv.html(html);
         }
 
         function printMemberList(memberList) {
-            let html = '';
-            for (let i = 0; i < memberList.length; i++) {
-                html += '<div name="member">';
-                html += '<span name="memberImage">프로필 사진</span>';
-                html += '<input type="text" id="profileImage" readonly>';
-                html += '<span name="memberInfo">';
-                html += '<div name="username">닉네임';
-                html += '<input type="text" value="' + memberList[i].username + '" id="username" readonly>';
-                html += '</div>';
-                html += '<div name="memberInfoBottom">';
-                html += '<span name="location">지역</span>';
-                html += '<input type="text" value="' + memberList[i].location + '" id="location" readonly>';
-                html += '<span name="introduce">자기소개</span>';
-                html += '<input type="text" value="' + memberList[i].introduction + '" id="introduction" readonly>';
-                html += '</div>';
-                html += '</span>';
-                html += '<span name="follow-button"></span>';
-                html += '<button type="button" class="btn btn-primary followBtn" data-flwBtn="'+ memberList[i].id +'">팔로우</button>';
-                html += '</div>';
-            }
+            let html = memberList.map(follow =>
+                MemberFollowList(follow) + '<div name="follow-button"><button type="button" class="btn btn-primary followBtn" id="followBtn" data-flwBtn="' + follow.id + '">팔로우</button></div></div>').join('');
             memberListDiv.html(html);
         }
+
         // 팔로우 버튼 클릭 이벤트
         memberListDiv.on("click", "button.followBtn", function(e){
             console.log("팔로우 버튼 클릭");
-            let followId = $(this).data("flwBtn");
-            console.log("팔로우 버튼 클릭 memberId : " + followId);
+            let memberIdVal = $(this).data("flwBtn");
+            console.log("팔로우 버튼 클릭 memberId : " + memberIdVal);
+            if (!memberIdVal) {
+                console.error("memberId is undefined.");
+                return;
+            }
             $.ajax({
                 type: 'POST',
-                url: '/follows/' + followIdVal,
+                url: '/follows/' + memberIdVal + '/follow',
                 success: function (result){
                     console.log("팔로우 성공");
                     console.log(result);
@@ -190,11 +180,15 @@
         // 언팔로우 버튼 클릭 이벤트
         flowListDiv.on("click", "button.unFollowBtn", function(e){
             console.log("언팔로우 버튼 클릭");
-            let followId = $(this).data("unFlwBtn");
-            console.log("언팔로우 버튼 클릭 memberId : " + followId);
+            let memberIdVal = $(this).data("unFlwBtn");
+            console.log("언팔로우 버튼 클릭 memberId : " + memberIdVal);
+            if (!memberIdVal) {
+                console.error("memberId is undefined.");
+                return;
+            }
             $.ajax({
                 type: 'DELETE',
-                url: '/follows/' + followIdVal,
+                url: '/follows/' + memberIdVal + '/unfollow',
                 success: function (result){
                     console.log("언팔로우 성공");
                     console.log(result);

@@ -56,12 +56,12 @@ public class FollowController {
     }
 
     // 팔로우 처리
-    @PostMapping("/{followId}/follow")
-    public ResponseEntity<String> follow (@PathVariable Long followId, @AuthenticationPrincipal CustomMember customMember){
-        Long memberId = customMember.getMember().getId();
-        log.info("********** MemberController POST  /members/:id/follow - memberId : {}", memberId);
-        log.info("********** MemberController POST  /members/:id/follow - followId : {}", followId);
-        FollowDTO followDTO = followService.unfollow(memberId, followId);
+    @PostMapping("/{memberId}/follow")
+    public ResponseEntity<String> follow (@PathVariable Long memberId, @AuthenticationPrincipal CustomMember customMember){
+        Long cusMemberId = customMember.getMember().getId();
+        log.info("********** MemberController POST  /members/:id/follow - memberId : {}", cusMemberId);
+        log.info("********** MemberController POST  /members/:id/follow - followId : {}", memberId);
+        FollowDTO followDTO = followService.follow(cusMemberId, memberId);
         log.info("********** MemberController POST  /members/:id/follow - followDTO : {}", followDTO);
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
