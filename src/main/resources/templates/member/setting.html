@@ -3,24 +3,30 @@
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
         <h1>회원설정 페이지 영역</h1>
+    <form action="" th:action th:object="${member}" method="post">
 
         <div name="heading">회원설정</div>
         <div name="memberInfo">
             <div name="userId-box">
                 <span name="heading">아이디</span>
                 <span name="userId" readonly></span>
+                <input type="text" th:field="*{userid}" readonly>
             </div>
             <div name="gender-radio">
+                <input type="radio" th:field="*{gender}" th:value="MALE">
                 <span name="male-gender-radio">남성</span>
+                <input type="radio" th:field="*{gender}" th:value="FEMALE">
                 <span name="female-gender-radio">여성</span>
             </div>
             <div name="phone-box">
                 <span name="heading">전화번호</span>
                 <span name="phone-textbox"></span>
+                <input type="text" th:field="*{phone}" placeholder="전화번호">
             </div>
             <div name="password-box">
                 <span name="heading">비밀번호</span>
-                <span name="password-textbox">비밀번호를 입력하세요</span>
+                <span name="password-textbox"></span>
+                <input type="password" th:field="*{password}" placeholder="비밀번호를 입력하세요">
             </div>
             <div name="birth-box">
                 <span name="heading">생년월일</span>
@@ -77,9 +83,12 @@
         </span>
         </div>
         <div name="button">
-            <span name="cancel-button">취소</span>
-            <span name="withdrawal-button">회원 탈퇴</span>
+            <span name="cancel-button"></span>
+            <button type="button" th:onclick="history.go(-1)">취소</button>
+            <span name="withdrawal-button"></span>
+            <button type="button" th:onclick="|location.href='@{/members/{id}/deactivate(id=${member.userid})}'|">회원 탈퇴</button>
         </div>
+    </form>
     </th:block>
 </th:block>
 </html>

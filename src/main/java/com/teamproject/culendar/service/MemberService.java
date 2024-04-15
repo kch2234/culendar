@@ -12,8 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.Optional;
+
+import static java.time.LocalDateTime.now;
 
 
 @Service
@@ -67,15 +68,21 @@ public class MemberService {
     }
 
     // 회원정보 수정
-    public void updateMember(MemberForm memberForm) {
+    public Long updateMember(MemberForm memberForm) {
         Member findMember = memberRepository.findById(memberForm.getId()).orElse(null);
         findMember.setUsername(memberForm.getUsername());
         findMember.setLocation(memberForm.getLocation());
         findMember.setIntroduction(memberForm.getIntroduction());
+        return findMember.getId();
     }
 
-    // 회원정보 삭제 - 회원탈퇴 비활성화 추가 예정
-    public void deleteMember(Long id) {}
+    // 회원정보 삭제 - 회원탈퇴 비활성화
+    public void deactivateMember(Long id) {
+        Member findMember = memberRepository.findById(id).orElse(null);
+
+        findMember.setDisabled(true);
+        findMember.setDisabledDate(now());
+    }
 
     public Long saveMember(MemberForm memberForm) {
         // 비밀번호 암호화

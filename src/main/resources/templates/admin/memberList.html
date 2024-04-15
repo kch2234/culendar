@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 목록 페이지</title>
+</head>
+<body>
+<h1> 회원 목록 페이지 </h1>
+<table>
+    <thead>
+    <tr>
+        <th>회원Id</th>
+        <th>아이디</th>
+        <th>닉네임</th>
+        <th>비밀번호</th>
+        <th>전화번호</th>
+        <th>이메일</th>
+        <th>지역</th>
+        <th>생년월일</th>
+        <th>회원타입</th>
+        <th>성별</th>
+        <th>자기소개</th>
+        <th>탈퇴일</th>
+        <th>탈퇴여부</th>
+        <th>권한</th>
+        <th>가입일</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="member : ${list}">
+        <td><a th:href="@{/members/{id}(id=${member.id})}" th:text="${member.id}"></a></td>
+        <td><a th:href="@{/members/{id}(id=${member.id})}" th:text="${member.userid}"></a></td>
+        <td><a th:text="${member.username}"></a></td>
+        <td><a th:text="${member.password}"></a></td>
+        <td><a th:text="${member.phone}"></a></td>
+        <td><a th:text="${member.email}"></a></td>
+        <td><a th:text="${member.location}"></a></td>
+        <td><a th:text="${member.birth}"></a></td>
+        <td><a th:text="${member.memberType}"></a></td>
+        <td><a th:text="${member.gender}"></a></td>
+        <td><a th:text="${member.introduction}"></a></td>
+        <td><a th:text="${member.disabledDate}"></a></td>
+        <td><a th:text="${member.disabled}"></a></td>
+        <td><a th:text="${member.role}"></a></td>
+        <td><a th:text="${member.createDate}"></a></td>
+    </tr>
+    </tbody>
+</table>
+<button type="button" th:onclick="|location.href='@{/}'|">홈으로</button>
+</body>
+</html>

@@ -95,36 +95,36 @@
             </div>
         </div>  <!--  회원 프로필 영역 END  -->
     <div name="genre">  <!-- 관심사 영역 START -->
-        <!--<form action="" th:action th:object="${interestForm}" method="post">
-        <div name="heading">관심사</div>  &lt;!&ndash;  제목  &ndash;&gt;
-        <div name="cards">  &lt;!&ndash;  관심사 카드 영역 상단 START  &ndash;&gt;
+        <div name="heading">관심사</div>  <!--  제목  -->
+        <form action="" th:action th:object="${interestForm}" method="post">
+        <div name="cards">  <!--  관심사 카드 영역 상단 START  -->
             <h1>카드 영역</h1>
             <span name="card">
-                <input type="checkbox" th:field="*{interest}" th:value="DRAMA">
+                <input type="checkbox" th:field="*{interestList}" th:value="DRAMA">
                 <div name="image"></div>
                 <div name="title">연극</div>
             </span>
             <span name="card">
-                <input type="checkbox" th:field="*{interest}" th:value="CONCERT">
+                <input type="checkbox" th:field="*{interestList}" th:value="CONCERT">
                 <div name="image"></div>
                 <div name="title">음악/콘서트</div>
             </span>
             <span name="card">
-                <input type="checkbox" th:field="*{interest}" th:value="EXHIBITION">
+                <input type="checkbox" th:field="*{interestList}" th:value="EXHIBITION">
                 <div name="image"></div>
                 <div name="title">전시</div>
             </span>
             <span name="card">
-                <input type="checkbox" th:field="*{interest}" th:value="MUSICAL">
+                <input type="checkbox" th:field="*{interestList}" th:value="MUSICAL">
                 <div name="image"></div>
                 <div name="title">뮤지컬/오페라</div>
             </span>
             <span name="card">
-                <input type="checkbox" th:field="*{interest}" th:value="ETC">
+                <input type="checkbox" th:field="*{interestList}" th:value="ETC">
                 <div name="image"></div>
                 <div name="title">기타</div>
             </span>
-        </div>  &lt;!&ndash;  관심사 카드 영역 상단 END  &ndash;&gt;-->
+        </div>  <!--  관심사 카드 영역 상단 END  -->
        <!-- <div name="cards">  &lt;!&ndash;  관심사 카드 영역 하단 START  &ndash;&gt;
             <h1>카드 영역</h1>
             <span name="card">
@@ -278,6 +278,9 @@
     $("#repeatPassword").change(function(){
         let password = $("#password").val();
         let repeatPassword = $(this).val();
+        if (password === null || password === "") {
+            alert("비밀번호를 먼저 입력해주세요.");
+        }
         if(password !== repeatPassword){
             alert("비밀번호가 일치하지 않습니다.");
         }

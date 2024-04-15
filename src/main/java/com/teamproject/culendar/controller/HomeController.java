@@ -36,10 +36,8 @@ public class HomeController {
         log.info("***** HomeController GET Home - 비로그인 사용자");
             return "main";
         }
-        model.addAttribute("member", customMember); // 로그인한 회원 정보를 Model에 담아서 전달
-        log.info("***** HomeController GET Home - 로그인 사용자");
-//        return "loginHome";
-        return "main";
+        model.addAttribute("customMember", customMember); // 로그인한 회원 정보를 Model에 담아서 전달
+        return "loginHome";
     }
 
     // 권한이 없는 사용자가 접근했을 때

@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+
 @Entity
 @Getter @Setter
 public class Member extends BaseEntityCreatedDate {
@@ -63,5 +64,6 @@ public class Member extends BaseEntityCreatedDate {
 
   // 권한
   private Role role;
+
 
 }

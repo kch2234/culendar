@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<h1>팔로우 모달 영역</h1>
+
+<div name="members">  <!--  팔로우 멤버 리스트 START  -->
+    <div name="member" th:each="members :${followers}">  <!--  팔로우 멤버*반복 START  -->
+        <span name="memberImage"></span>  <!--  회원 프로필 사진  -->
+        <span name="memberInfo">  <!--  회원 정보 영역  -->
+                <div name="username">닉네임
+                    <input type="text" th:value="${members.username}" id="username" readonly>
+                </div>
+                <div name="memberInfoBottom">
+                    <span name="location">지역</span>
+                    <input type="text" th:value="${members.location}" id="location" readonly>
+                    <span name="introduce">자기소개?</span>
+                    <input type="text" th:value="${members.introduction}" id="introduction" readonly>
+                </div>
+            </span>
+        <span name="follow-button"></span>  <!--  팔로우 버튼  -->
+        <form th:unless="${members.id}" th:action="@{/members/{id}/follow(id=${members.id})}" method="post">
+            <input type="hidden" th:field="*{id}" value="2" />
+            <button type="submit">팔로우</button>
+        </form>
+        <form th:if="${members.id}" th:action="@{/members/{id}/unfollow(id=${members.id})}" method="post">
+            <input type="hidden" th:field="*{id}" value="2" />
+            <button type="submit">언팔로우</button>
+        </form>
+    </div>  <!--  팔로우 멤버*반복 END  -->
+</div>  <!--  팔로우 멤버 리스트 END  -->
+
+</html>
