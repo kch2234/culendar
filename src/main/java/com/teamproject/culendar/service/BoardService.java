@@ -1,10 +1,9 @@
 package com.teamproject.culendar.service;
 
 import com.teamproject.culendar.domain.board.Board;
-import com.teamproject.culendar.domain.member.Member;
+import com.teamproject.culendar.domain.enumFiles.BoardType;
 import com.teamproject.culendar.dto.BoardDTO;
 import com.teamproject.culendar.dto.BoardForm;
-import com.teamproject.culendar.dto.MemberDTO;
 import com.teamproject.culendar.dto.PageRequestDTO;
 import com.teamproject.culendar.repository.BoardRepository;
 import com.teamproject.culendar.repository.MemberRepository;
@@ -15,9 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -35,16 +31,6 @@ public class BoardService {
     return savedBoard.getId();
   }
 
-//  // 게시글 목록 불러오기 (페이징 X)
-//  public List<BoardDTO> getList() {
-//    List<Board> all = boardRepository.findAll();
-//    List<BoardDTO> list = all.stream()
-//        .map(b -> new BoardDTO(b))
-//        .collect(Collectors.toList());
-//
-//    return list;
-//  }
-
   // 게시글 목록 불러오기
   public Page<Board> getListWithPaging(PageRequestDTO pageRequestDTO) {
     Pageable pageable = PageRequest.of(
@@ -54,6 +40,28 @@ public class BoardService {
 
     Page<Board> result = boardRepository.findAll(pageable);
 
+    return result;
+  }
+
+  // 게시글 카테고리 목록 불러오기
+  public Page<Board> getListWithCategory(PageRequestDTO pageRequestDTO, BoardType boardType){
+    Pageable pageable = PageRequest.of(
+        pageRequestDTO.getPage() - 1,
+        pageRequestDTO.getSize(),
+        Sort.by("id").descending());
+
+    Page<Board> result = boardRepository.findByBoardType(boardType, pageable);
+    return result;
+  }
+
+  // 게시글 인기순(북마크순) 목록 불러오기
+  public Page<Board> getListWithBkMark(PageRequestDTO pageRequestDTO){
+    Pageable pageable = PageRequest.of(
+        pageRequestDTO.getPage() - 1,
+        pageRequestDTO.getSize(),
+        Sort.by("id").descending());
+
+    Page<Board> result = boardRepository.findOrderByBkMark(pageable);
     return result;
   }
 

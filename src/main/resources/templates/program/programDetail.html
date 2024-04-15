@@ -50,7 +50,9 @@
 
                 <div class="col-6">
                     <!--                썸네일 이미지-->
-                    <img class="w-100" th:src="${program.getThumbnail()}" alt="썸네일 이미지">
+                    <div th:if="${program != null}">
+                        <img class="w-100" th:src="${program.getThumbnail()}" alt="썸네일 이미지">
+                    </div>
                 </div>
                 <div class="col ml-2" id="programContainer">
                     <!--                작품 정보-->
@@ -82,7 +84,7 @@
                     </div>
                     <div class="row" style="height: 20%">
                         <!-- 작품 제목 -->
-                        <div class="col-12 h-100">
+                        <div class="col-12 h-100" th:if="${program != null}">
                             <div class="badge text-bg-secondary fs-2 w-100 h-100" th:text="${program.getTitle()}"></div>
                         </div>
                     </div>

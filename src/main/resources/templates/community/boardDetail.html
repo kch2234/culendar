@@ -9,6 +9,10 @@
             <label for="title"></label>
             <input type="text" class="form-control" th:field="${board.title}" id="title" readonly>
         </div>
+            <button type="button" class="btn btn-success" th:onclick="|location.href='@{/boards/{id}/modify(id=${board.id})}'|">수정</button>
+            <form action="" th:action="@{/boards/{id}/delete(id=${board.id})}" method="post">
+                <button type="submit" class="btn btn-danger">삭제</button>  <!--  TODO 삭제 확인 모달   -->
+            </form>
 
         <div class="container">  <!--  포스터 + 작품 정보 카드  -->
             <div class="row">
@@ -44,8 +48,14 @@
                                 </form>
                             </span>  <!--  toggle  -->
                             <div>  <!--  todo DB, 링크 연결  -->
-                                <h2>작품 제목</h2>
-                                <h5>작품 기간</h5>
+<!--                                <div class="form-group">  &lt;!&ndash;  게시글 내용  &ndash;&gt;-->
+<!--                                    <label for="programTitle">작품 제목</label>-->
+<!--                                    <span id="programTitle" th:text="${board.program.title}"></span>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">  &lt;!&ndash;  게시글 내용  &ndash;&gt;-->
+<!--                                    <label for="programStartDate">작품 제목</label>-->
+<!--                                    <span id="programStartDate" th:text="${board.program.programStartDate}"></span>-->
+<!--                                </div>-->
                             </div>
                             <div>  <!--  todo DB연결  -->
                                 <button type="button" class="btn btn-primary">좋아요</button>  <!--  todo 작품의 내 문장형 평가  -->

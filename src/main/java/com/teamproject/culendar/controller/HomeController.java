@@ -3,7 +3,12 @@ package com.teamproject.culendar.controller;
 
 import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
+import com.teamproject.culendar.dto.CalendarNameDTO;
+import com.teamproject.culendar.dto.MemberDTO;
 import com.teamproject.culendar.security.domain.CustomMember;
+import com.teamproject.culendar.service.CalendarService;
+import com.teamproject.culendar.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -15,7 +20,11 @@ import java.util.List;
 
 @Controller
 @Slf4j
+@RequiredArgsConstructor
 public class HomeController {
+
+    private final CalendarService calendarService;
+    private final MemberService memberService;
 
     // 메인 페이지
     @GetMapping("/")
@@ -23,10 +32,12 @@ public class HomeController {
     // CustomMember : 로그인한 사용자 정보를 담고 있는 객체
     public String home(@AuthenticationPrincipal CustomMember customMember, Model model) {
         log.info("***** HomeController GET Home!! - customMember : {}", customMember);
-        /*if (customMember == null) { // 로그인 안한 경우
+        if (customMember == null) { // 로그인 안한 경우
+        log.info("***** HomeController GET Home - 비로그인 사용자");
             return "main";
-        }*/
+        }
         model.addAttribute("member", customMember); // 로그인한 회원 정보를 Model에 담아서 전달
+        log.info("***** HomeController GET Home - 로그인 사용자");
 //        return "loginHome";
         return "main";
     }

@@ -128,9 +128,10 @@
                 <div class="col-12 mb-5 aos-init aos-animate" data-aos="fade-up">
                     <div class="row">  <!--  카테고리  -->
                         <!--  TODO 북마크 데이터로 인기글 조건 걸어서 필터링 버튼  -->
-                        <button type="button" class="btn btn-warning">인기글</button>
-                        <button type="button" class="btn btn-secondary" onclick="filterByCategory('INFO')">정보</button>
-                        <button type="button" class="btn btn-secondary" onclick="filterByCategory('REVIEW')">후기</button>
+                        <button type="button" class="btn btn-warning" id="btnBest">인기순</button>
+                        <button type="button" class="btn btn-warning" id="btnAll">전체글</button>
+                        <button type="button" class="btn btn-secondary" id="btnInfo">정보</button>
+                        <button type="button" class="btn btn-secondary" id="btnReview">후기</button>
                         <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/boards/add}'|">글 작성</button>
                     </div>  <!--  row 카테고리 영역  -->
                 </div>  <!--  col-12 mb-5 aos-init aos-animate 카테고리  -->
@@ -142,27 +143,15 @@
                             <th>Writer</th>
                         </tr>
                     </thead>
-                    <tbody class="col-12">  <!--  게시글 리스트  -->
-                        <tr th:each="board : ${list}" class="boardItem" th:attr="data-category=${board.boardType}">
-                            <td><a th:text="${board.boardType}">카테고리</a></td>
-                            <td><a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}">제목</a></td>
-                            <td><a th:text="${board.memberDTO.username}">작성자</a></td>
-                        </tr>
+                    <tbody class="col-12" id="listContainer">  <!--  게시글 리스트  -->
+                        <!--  동적으로 추가  -->
                     </tbody>  <!--  row 게시글 리스트  -->
                 </table>  <!--  row 리스트 헤더 영역  -->
 
                     <div class="row text-start pt-5 border-top">  <!--  페이징 영역  -->
                         <div class="col-mb-12">
                             <div class="custom-pagination">
-                                <span class="page-item" th:classappend="${pageDTO.prev == false} ? 'disabled'">
-                                        <a th:href="@{/boards/list(page=${pageDTO.startPage-1},size=${pageDTO.pageRequestDTO.size})}" class="page-link">Previous</a>
-                                </span>
-                                <span th:each="page : ${pageDTO.pageNumList}" class="page-item" th:classappend="${pageDTO.pageRequestDTO.page == page} ? 'active'">
-                                        <a th:href="@{/boards/list(page=${page},size=${pageDTO.pageRequestDTO.size})}" class="page-link" th:text="${page}">0</a>
-                                </span>
-                                <span class="page-item" th:classappend="${pageDTO.next == false} ? 'disabled'">
-                                        <a th:href="@{/boards/list(page=${pageDTO.endPage+1},size=${pageDTO.pageRequestDTO.size})}" class="page-link">Next</a>
-                                </span>
+                                <!--  동적으로 추가  -->
                             </div>  <!--  custom-pagination  -->
                         </div>  <!-- col-mb-12   -->
                     </div>  <!-- row text-start pt-5 border-top 검색창+페이징 영역   -->
@@ -173,17 +162,91 @@
         </div>  <!--  untree_co-section 배경 영역  -->
 
         <script th:inline="javascript">
-            function filterByCategory(category) {
-                var items = document.getElementsByClassName('boardItem');
-                for (var i = 0; i < items.length; i++) {
-                    var item = items[i];
-                    if (category === 'ALL' || item.getAttribute('data-category') === category) {
-                        item.style.display = '';
-                    } else {
-                        item.style.display = 'none';
-                    }
+            $(document).ready(function () {
+                let currPage = 1;
+
+                // 페이지 로딩 후 실행
+                getAllList("ALL", 1);
+
+                function getAllList(sort, page) {
+                    console.log("getAllList! page: " + page);
+                    currPage = page;
+                    $.ajax({
+                        type: "get",
+                        url: "/ajaxBoards/list/" + sort + "/" + page,
+                        success: function (result) {
+                            console.log("게시글 목록 요청 성공!");
+                            console.log(result);
+                            // 게시글 목록 화면에 띄우기
+                            printBoardList(result.list);
+                            // 게시글 페이지네이션 화면에 띄우기
+                            printPagination(result, sort);
+                        },
+                        error: function (e) {
+                            console.log("게시글 목록 요청 실패....");
+                            console.log(e);
+                        },
+                    });
                 }
-            }
+
+                function printBoardList(list) {
+                    var html = '';
+                    for (let i = 0; i < list.length; i++) {
+                        html += '<tr>'
+                        html += '<td><a>' + list[i].boardType + '</a></td>';
+                        html += '<td><a href="/boards/' + list[i].id + '">' + list[i].title + '</a></td>';
+                        html += '<td><a>' + list[i].memberDTO.username + '</a></td>';
+                        html += '</tr>';
+                    }
+                    $('#listContainer').html(html);
+                }
+
+                // 댓글 Pagination 띄우는 함수
+                function printPagination(pageDTO, sort) {
+                    let html = "";
+
+                    html += '<span class="page-item"';
+                    if (pageDTO.prev == false) { html += 'disabled'; }
+                    html += '><a href="' + (pageDTO.startPage - 1);
+                    html += '" class="page-link" data-sort="'+ sort +'">Previous</a></span>';
+
+                    for (let i = 0; i < pageDTO.pageNumList.length; i++) {
+                        html += '<span class="page-item ';
+                        if (pageDTO.pageNumList[i] == currPage) { html += 'active'; }
+                        html += '"><a href="' + pageDTO.pageNumList[i];
+                        html += '" class="page-link" data-sort="'+ sort +'">' + pageDTO.pageNumList[i] + '</a></span>';
+                    }
+
+                    html += '<span class="page-item"';
+                    if (pageDTO.next == false) { html += 'disabled'; }
+                    html += '><a href="' + (pageDTO.endPage + 1);
+                    html += '" class="page-link" data-sort="'+ sort +'">Next</a></span>';
+
+                    $(".custom-pagination").html(html); // 부착!
+                }
+
+                $(".custom-pagination").on("click", "a.page-link", function(e){
+                    e.preventDefault(); // <a> 태그 이동기능 삭제
+                    let pageNum = $(this).attr("href"); // <a> 태그 href 속성에 담아둔 이동할 페이지번호 꺼내기
+                    let sort = $(this).data("sort");
+                    getAllList(sort, pageNum);
+                });
+
+                $("#btnBest").on("click", function(){
+                    getAllList("BEST", 1);
+                });
+                $("#btnAll").on("click", function(){
+                    getAllList("ALL", 1);
+                });
+                $("#btnInfo").on("click", function(){
+                    getAllList("INFO", 1);
+                });
+                $("#btnReview").on("click", function(){
+                    getAllList("REVIEW", 1);
+                });
+
+
+            });
         </script>
 
     </th:block>

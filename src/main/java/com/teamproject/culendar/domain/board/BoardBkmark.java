@@ -18,6 +18,7 @@ public class BoardBkmark extends BaseEntityCreatedDate {
 
     // 게시판 분류
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private BoardType boardType;
 
     @ManyToOne(fetch = FetchType.LAZY)
