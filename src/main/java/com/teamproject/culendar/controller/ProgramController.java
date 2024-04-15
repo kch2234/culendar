@@ -37,6 +37,8 @@ public class ProgramController {
         return "program/programDetail";
     }
 
+
+
     @ModelAttribute("ratingType") // 작품 종류 데이터를 뷰에 전달
     public RatingType[] ratingTypes() {
         List<RatingType> ratingTypes = new ArrayList<>();

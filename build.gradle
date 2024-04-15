@@ -31,6 +31,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
+	// for API
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+
 	implementation 'org.jsoup:jsoup:1.15.3'
 
 	compileOnly 'org.projectlombok:lombok'
