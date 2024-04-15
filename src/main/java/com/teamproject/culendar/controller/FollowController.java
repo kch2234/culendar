@@ -56,18 +56,20 @@ public class FollowController {
     }
 
     // 팔로우 처리
-    @PostMapping("/follow")
-    public ResponseEntity<String> follow (@RequestBody FollowForm followForm){
-        log.info("********** MemberController POST /members/:id/follow - followForm : {}", followForm);
-        Long followed = followService.follow(followForm);
-        log.info("********** MemberController POST /members/:id/follow - followed : {}", followed);
+    @PostMapping("/{followId}/follow")
+    public ResponseEntity<String> follow (@PathVariable Long followId, @AuthenticationPrincipal CustomMember customMember){
+        Long memberId = customMember.getMember().getId();
+        log.info("********** MemberController POST  /members/:id/follow - memberId : {}", memberId);
+        log.info("********** MemberController POST  /members/:id/follow - followId : {}", followId);
+        FollowDTO followDTO = followService.unfollow(memberId, followId);
+        log.info("********** MemberController POST  /members/:id/follow - followDTO : {}", followDTO);
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
     // 언팔로우 처리
     @DeleteMapping("/{followId}/unfollow")
     public ResponseEntity<String> unfollow(@PathVariable Long followId, @AuthenticationPrincipal CustomMember customMember){
         Long memberId = customMember.getMember().getId();
-        log.info("********** MemberController DELETE /members/:id/follow - id : {}", memberId);
+        log.info("********** MemberController DELETE /members/:id/follow - memberId : {}", memberId);
         log.info("********** MemberController DELETE /members/:id/follow - followId : {}", followId);
         FollowDTO followDTO = followService.unfollow(memberId, followId);
         log.info("********** MemberController DELETE /members/:id/follow - followDTO : {}", followDTO);

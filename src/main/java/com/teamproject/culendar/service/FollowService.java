@@ -3,7 +3,6 @@ package com.teamproject.culendar.service;
 import com.teamproject.culendar.domain.member.Follow;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.FollowDTO;
-import com.teamproject.culendar.dto.FollowForm;
 import com.teamproject.culendar.dto.FollowResponseDTO;
 import com.teamproject.culendar.dto.MemberDTO;
 import com.teamproject.culendar.repository.FollowRepository;
@@ -26,10 +25,7 @@ public class FollowService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Long follow(FollowForm followForm) {
-        Follow flw = followForm.toEntity();
-        Long memberId = followForm.getMember().getId();
-        Long followId = followForm.getFollow().getId();
+    public FollowDTO follow(Long memberId, Long followId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
         Member follow = memberRepository.findById(followId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
         if (memberId.equals(followId)) {
@@ -38,8 +34,9 @@ public class FollowService {
         if (followRepository.findByMemberAndFollow(member, follow).orElse(null) != null) {
             throw new IllegalArgumentException("이미 팔로우 중입니다.");
         }
-        Follow saved = followRepository.save(flw);
-        return saved.getId();
+        Follow followEntity = new Follow(member, follow);
+        Follow saved = followRepository.save(followEntity);
+        return new FollowDTO(saved);
     }
 
     @Transactional
