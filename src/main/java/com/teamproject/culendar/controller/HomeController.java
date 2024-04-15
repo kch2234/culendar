@@ -37,7 +37,7 @@ public class HomeController {
             return "main";
         }
         model.addAttribute("customMember", customMember); // 로그인한 회원 정보를 Model에 담아서 전달
-        return "loginHome";
+        return "main";
     }
 
     // 권한이 없는 사용자가 접근했을 때

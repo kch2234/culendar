@@ -1,7 +1,6 @@
 package com.teamproject.culendar.controller;
 
 import com.teamproject.culendar.domain.board.Board;
-import com.teamproject.culendar.domain.board.BoardBkmark;
 import com.teamproject.culendar.domain.enumFiles.BoardType;
 import com.teamproject.culendar.dto.BoardDTO;
 import com.teamproject.culendar.dto.PageRequestDTO;

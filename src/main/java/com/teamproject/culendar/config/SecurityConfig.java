@@ -1,8 +1,6 @@
 package com.teamproject.culendar.config;
 
-import com.teamproject.culendar.repository.MemberRepository;
 import com.teamproject.culendar.security.CustomUserDetailsService;
-import com.teamproject.culendar.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

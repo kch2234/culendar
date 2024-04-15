@@ -102,7 +102,7 @@
                                         class="w-100 h-100 btn-dark fa-solid fa-magnifying-glass"></button>
                             </div>
                             <div class="dropdown col-8 p-0">
-                                <input type="text" id="search-text" class="p-0 w-100 form-controlcol dropdown-toggle"
+                                <input type="text" id="search-text" class="p-0 w-100 form-control col dropdown-toggle"
                                        data-bs-toggle="dropdown" aria-expanded="false">
                                 <ul class="dropdown-menu overflow-scroll" id="searched-list">
                                     <!-- 동적으로 드롭다운 검색 결과 -->
@@ -599,7 +599,7 @@
                         location = '경남';
                     }
 
-                    var programDate = data.startDate.substring(0, 10) + ' ~ ' + data.endDate.substring(0, 10);
+                    var programDate = data.startDate + ' ~ ' + data.endDate;
 
                     let html = '';
                     html += '<img src="' + data.thumbnail + '" class="card-img-top" alt="...">';
@@ -632,6 +632,7 @@
                         url: '/program/find/' + id,
                         type: 'GET',
                         success: function (data) {
+                            console.log(data);
                             changeSideInfo(data);
                             return data;
                         },

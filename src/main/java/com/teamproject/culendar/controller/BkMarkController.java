@@ -1,6 +1,5 @@
 package com.teamproject.culendar.controller;
 
-import com.teamproject.culendar.dto.CalendarNameDTO;
 import com.teamproject.culendar.dto.ProgramBkMarkDTO;
 import com.teamproject.culendar.service.BkMarkService;
 import lombok.RequiredArgsConstructor;
