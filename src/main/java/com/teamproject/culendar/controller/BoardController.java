@@ -49,7 +49,7 @@ public class BoardController {
 
   // 게시글 작성
   @GetMapping("/add")
-  public String addForm(@ModelAttribute("boardForm") BoardForm boardForm, Model model, @AuthenticationPrincipal CustomMember customMember) {
+  public String addForm(@ModelAttribute("boardForm") BoardForm boardForm) {
     log.info("***** BoardController GET /boards/add");
     // TODO 모델 추가
 
@@ -61,7 +61,8 @@ public class BoardController {
     MemberDTO member = customMember.getMember();
     log.info("***** BoardController POST /boards/add - writer(member.username) : {}", member.getUsername());
     boardForm.setMember(member.toEntity());
-    Long save = boardService.save(boardForm);
+
+//    Long save = boardService.save(boardForm);
 
     return "redirect:/boards/list";
   }

@@ -10,3 +10,15 @@
     width: 80%;
 
 }
+
+#searched-list {
+    overflow-y: auto;
+}
+
+#searched-list::-webkit-scrollbar {
+    display: none;
+}
+
+textarea{
+    resize: none;
+}
