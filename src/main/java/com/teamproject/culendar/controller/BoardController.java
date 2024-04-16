@@ -49,7 +49,7 @@ public class BoardController {
 
   // 게시글 작성
   @GetMapping("/add")
-  public String addForm(@ModelAttribute BoardForm boardForm, Model model, @AuthenticationPrincipal CustomMember customMember) {
+  public String addForm(@ModelAttribute("boardForm") BoardForm boardForm, Model model, @AuthenticationPrincipal CustomMember customMember) {
     log.info("***** BoardController GET /boards/add");
     // TODO 모델 추가
 
@@ -101,6 +101,12 @@ public class BoardController {
     boardService.updateOneBoard(boardForm);
     return "redirect:/boards/{id}";
   }
+
+  // programType 보내기
+    @ModelAttribute("boardTypes")
+    public BoardType[] boardType() {
+        return BoardType.values();
+    }
 
 
 

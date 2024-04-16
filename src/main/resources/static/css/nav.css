@@ -1,0 +1,6 @@
+#nav-dropdown{
+    font-size: 32px;
+}
+#nav-dropdown::after {
+    display: none;
+}

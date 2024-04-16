@@ -43,6 +43,103 @@
                 </div>  <!--  row  -->
             </div>  <!--  container 게시글 작성  -->
         </div>  <!-- untree_co-hero py-5 mb-0 배경 영역   -->
+
+        <div id="boardAddWrapper" >
+
+            <form class="container" th:object="${boardForm}">
+
+                <div class="row "> <!-- 제목, 게시글 분류 선택 -->
+
+                    <div class="col-12 input-group">
+
+                        <span class="input-group-text">제목</span>
+                        <input hidden="hidden" th:field="*{boardType}" id="boardTypeValue" type="text">
+                        <button class="dropdown-toggle btn-outline-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">글 분류</button>
+                        <ul class="dropdown-menu">
+                            <li th:each="bType : ${boardTypes}"><button class="dropdown-item" th:text="${bType.value}"></button></li>
+                        </ul>
+
+                        <input type="text" class="form-control" th:field="*{title}">
+
+                    </div>
+
+                </div>
+
+                <div class="row"> <!-- 작품 선택 -->
+
+                    <div class="col-12 input-group">
+
+                        <label for="search-text" class="input-group-text">작품 선택</label>
+                        <div class="input-group-text">
+                            <input class="form-check-input mt-0" type="checkbox" value="">
+                        </div>
+
+                        <input type="text" id="search-text" class="form-control dropdown-toggle"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                        <ul class="dropdown-menu overflow-scroll" id="searched-list">
+                            <!-- 동적으로 드롭다운 검색 결과 -->
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+
+            </form>
+
+        </div>
+
+        <script th:inline="javascript">
+            $(document).ready(function() {
+
+                var programId = null;
+
+
+                // 작품 분류 선택시 값 변경
+                $('.dropdown-menu').on('click', '.dropdown-item', function() {
+                    // 버튼 기본 기능 비활성화
+                    event.preventDefault();
+                    // #dropdown-menu 값 변경
+                    $('#boardTypeValue').val($(this).text());
+                    // 버튼 텍스트 변경
+                    $('.dropdown-toggle').text($(this).text());
+
+                });
+
+                // 검색창에 값변경시
+                $('#search-text').on('keyup', function () {
+                    console.log($(this).val());
+                    $.ajax({
+                        url: '/program/search/' + $(this).val(),
+                        type: 'GET',
+                        success: function (data) {
+                            console.log(data);
+                            changeDropdown(data);
+                            programId = null;
+                            // 드롭다운 보여주기
+                            $('#searched-list').css('display', 'block')
+                        }
+                    });
+                });
+
+                function changeDropdown(data) {
+                    let html = '';
+                    data.forEach(function (program) {
+                        html += '<li><a class="dropdown-item" href="#" data-programId="' + program.id + '">' + program.title + '</a></li>';
+
+                    });
+                    $('#searched-list').html(html);
+                }
+
+                // 드롭다운 내부 클릭시 input에 값 넣기
+                $(document).on('click', '.dropdown-item', function () {
+                    $('#search-text').val($(this).text());
+                    programId = $(this).data('programid');
+                    $('.dropdown-menu').css('display', 'none');
+                });
+            });
+        </script>
     </th:block>
 </th:block>
 </html>

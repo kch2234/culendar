@@ -41,23 +41,10 @@
             </div>
         </div>
 
-        <li><a th:href="@{/signup}">Signup</a></li>
-        <li><a th:href="@{/login}">Login</a></li>
+
+        <div id='calendar' class="m-auto mt-5 main-calendar"></div>
 
 
-
-
-    <h1>메인 페이지 영역</h1>
-
-        <ul>
-            <li><a th:href="@{members/admin}">adminPage</a></li>
-            <!--  NOTE 임시 주석처리  -->
-            <!-- <li><a th:href="@{members/{id}(id=${member.id})}">memberPage</a></li> -->
-        </ul>
-        <form th:action="@{/logout}" method="post">
-            <button type="submit">Logout</button>
-        </form>
-        <div id='calendar' style="width: 90%" class="m-auto mt-5"></div>
         <div name="favProgram">  <!-- 인기 작품 영역 -->
             <div>
                 <div name="heading">인기 작품</div>  <!--  제목  -->
@@ -126,11 +113,11 @@
                         right: 'next'
                     },
                     initialView: 'dayGridMonth',
-                    locale: 'ko',
+                    // locale: 'ko',
                     navLinks: false,
                     showNonCurrentDates: false,
                     editable: false,
-                    dayMaxEvents: 4,
+                    dayMaxEvents: 3,
                     displayEventTime: false,
                     eventClick: function (info) {
                         openProgramPage(info.event.id);
