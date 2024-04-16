@@ -19,4 +19,8 @@ public class FollowDTO {
         member = entity.getMember();
         follow = entity.getFollow();
     }
+
+    public FollowDTO(Member follow) {
+        this.follow = follow;
+    }
 }

@@ -28,9 +28,9 @@ public class MemberService {
 
 
     // 회원정보 상세 조회
-    public Member findById(Long id) {
-        Member member = memberRepository.findById(id).orElse(null);
-        return member;
+    public MemberDTO findById(Long id) {
+        Optional<Member> member = memberRepository.findById(id);
+        return new MemberDTO(member.orElse(null));
     }
     // 아이디 중복 체크
     public CustomMember findByUserid(String userid) {
@@ -55,11 +55,6 @@ public class MemberService {
             return new CustomMember(member.get());
         }
         return null;
-    }
-
-    // 팔로우, 팔로워 조회
-    public void findFollow(Long id) {
-
     }
 
     // 회원정보 수정

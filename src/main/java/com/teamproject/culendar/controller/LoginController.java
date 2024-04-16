@@ -49,11 +49,11 @@ public class LoginController {
         // 회원가입
         Long savedId = memberService.saveMember(memberForm); // TODO: savedId 활용 -> 홈에서 모달이나 alert 띄울때 필요하면 사용
         // 회원가입한 회원 조회
-        Member member = memberService.findById(savedId);
+        MemberDTO member = memberService.findById(savedId);
         // 회원가입한 회원의 관심분야 저장
         for (ProgramType programType : interestForm.getInterestList()) {
             InterestForm interest = new InterestForm(programType);
-            interest.setMember(member);
+            interest.setMember(member.toEntity());
             interestService.saveInterest(interest);
         }
         return "redirect:/";

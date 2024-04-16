@@ -14,7 +14,6 @@ import lombok.Setter;
                 name = "uk_member_follow",
                 columnNames = {"member_id", "follow_id"}
         )})
-
 public class Follow  extends BaseEntityCreatedDate {
     // *****    팔로우    *****
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

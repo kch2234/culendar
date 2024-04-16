@@ -25,6 +25,11 @@ public class HomeController {
         return "loginHome";
     }
 
+    @GetMapping("/map")
+    public String search() {
+        return "contents/map";
+    }
+
     // 권한이 없는 사용자가 접근했을 때
     @GetMapping("/access-denied")
     public String accessDenied(CustomMember customMember) {

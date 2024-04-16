@@ -60,12 +60,12 @@ public class MemberController {
     public String myProfile(@PathVariable("id") Long id, @AuthenticationPrincipal CustomMember customMember, Model model){
         log.info("********** MemberController GET /members/:id (myProfile) - id : {}", id);
         MemberDTO member = customMember.getMember();
-        Follow follow = followService.findById(id);
-        FollowDTO followDTO = new FollowDTO(follow);
+        /*Follow follow = followService.findById(id);
+        FollowDTO followDTO = new FollowDTO(follow);*/
         // TODO: 팔로우, 팔로워 수
         /*long followerCount = followDTO.getFollowerCount();
         long followingCount = followDTO.getFollowingCount();*/
-        model.addAttribute("follow", followDTO);
+//        model.addAttribute("follow", followDTO);
         model.addAttribute("member", member);
         return "profile/memberProfile";
     }
@@ -86,7 +86,7 @@ public class MemberController {
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") Long id, InterestForm interestForm, Model model){
         log.info("********** MemberController GET /members/:id/edit - id : {}", id);
-        Member member = memberService.findById(id);
+        MemberDTO member = memberService.findById(id);
         model.addAttribute("member", member);
         model.addAttribute("interestForm", interestForm);
         return "profile/edit";
@@ -101,7 +101,7 @@ public class MemberController {
         // 회원 정보
         Long updateId = memberService.updateMember(memberForm);
         // 수정된 회원 정보 조회
-        Member member = memberService.findById(updateId);
+        MemberDTO member = memberService.findById(updateId);
         // 기존 관심분야 삭제
         List<Interest> interestList = interestService.findByMemberId(updateId);
         for (Interest interest : interestList) {
@@ -110,7 +110,7 @@ public class MemberController {
         // 회원의 관심분야 수정
         for (ProgramType programType : interestForm.getInterestList()) {
             InterestForm interest = new InterestForm(programType);
-            interest.setMember(member);
+            interest.setMember(member.toEntity());
             interestService.saveInterest(interest);
         }
         return "redirect:/members/{id}";
@@ -121,7 +121,7 @@ public class MemberController {
     @GetMapping("/{id}/setting")
     public String setting(@PathVariable("id") Long id, Model model){
         log.info("********** MemberController GET /members/:id/setting - id : {}", id);
-        Member member = memberService.findById(id);
+        MemberDTO member = memberService.findById(id);
         model.addAttribute("member", member);
         return "member/setting";
     }
@@ -138,7 +138,7 @@ public class MemberController {
     @GetMapping("/{id}/deactivate")
     public String deactivate(@PathVariable("id") Long id, Model model){
         log.info("********** MemberController GET /members/:id/deactivate - id : {}", id);
-        Member member = memberService.findById(id);
+        MemberDTO member = memberService.findById(id);
         model.addAttribute("member", member);
         return "member/withdrawal";
     }

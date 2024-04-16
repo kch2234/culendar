@@ -10,16 +10,14 @@
             <div name="memberInfoTop">  <!--  회원 정보 상단  -->
                 <span name="username"></span>  <!--  닉네임  -->
                 <input type="text" th:field="${member.username}" id="username" readonly>
-                <div>
                 <span name="following">
                     <!-- 팔로잉 모달 버튼-->
-                    <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#followModal">팔로잉 모달</button>
+                    <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#followingModal">팔로잉 모달</button>
                 </span>  <!--  팔로잉  -->
                 <span name="follower">
                     <!-- 팔로잉 모달 버튼-->
-                    <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal2">팔로워 모달</button>
+                    <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#followerModal">팔로워 모달</button>
                 </span>  <!--  팔로워  -->
-                </div>
                 <span name="edit-button"></span>  <!--  프로필 수정 버튼  -->
                 <button type="button" class="btn btn-warning" th:onclick="|location.href='@{/members/{id}/edit(id=${member.id})}'|">프로필 수정</button>
             </div>
@@ -62,30 +60,22 @@
         <span name="{filter}Card"></span>
     </div>
     <!--  무한 스크롤 영역  -->
-    <!-- 모달 버튼
-        <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal">모달 열기</button>
-        -->
     <!-- 팔로잉 모달 -->
     <div class="modal-dialog modal-dialog-scrollable"><!-- 스크롤 모달 -->
-        <div class="modal fade" id="followModal" tabindex="-1" role="dialog" aria-labelledby="followModalLabel" aria-hidden="true">
+        <div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="followingModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="followModalLabel">팔로잉</h5>
+                            <h5 class="modal-title" id="followingModalLabel">팔로잉</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div id="followList"></div>
-                                    </form>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div id="memberList"></div>
-                                    </form>
-                                </div>
+                        <div class="modal-body">
+                            <form>
+                                <div id="followingList"></div>
+                            </form>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
                         </div>
@@ -93,26 +83,56 @@
             </div>
         </div>
     </div> <!-- 스크롤 모달 -->
-</th:block>
+
+    <!-- 팔로워 모달 -->
+    <div class="modal-dialog modal-dialog-scrollable"><!-- 스크롤 모달 -->
+        <div class="modal fade" id="followerModal" tabindex="-1" role="dialog" aria-labelledby="followerModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="followerModalLabel">팔로워</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div id="followerList"></div>
+                        </form>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div id="memberList"></div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- 스크롤 모달 -->
+
+    </th:block>
 </th:block>
 <script th:inline="javascript">
     $(document).ready(function(){
         let memberIdVal = [[${member.id}]];
-        let followIdVal = [[${follow.id}]];
-        let flowListDiv = $('#followList');
+        let flowListDiv = $('#followingList');
+        let FlwerListDiv = $('#followerList');
         let memberListDiv = $('#memberList');
-
         getFollowingList();
+        getFollowerList();
 
         function getFollowingList() {
             $.ajax({
                 type: 'GET',
-                url: '/follows/' + memberIdVal,
-                success: function (result){
+                url: '/follows/' + memberIdVal + '/following',
+                success: function (follow){
                     console.log("팔로잉 리스트 가져오기 성공");
-                    console.log(result);
-                    printFollowList(result.followingList);
-                    printMemberList(result.memberList);
+                    console.log(follow);
+                    printFollowingList(follow.followingList);
                 },
                 error: function (e){
                     console.log("팔로잉 리스트 가져오기 실패");
@@ -121,50 +141,95 @@
             });
         }
 
-        function MemberFollowList(member) {
-            let memberId = member.id;  // 멤버 고유의 ID
-            let html = '<div class="member">';
-            html += '<span name="memberImage"></span>';
-            // html += `<input type="text" id="memberImage${memberId}" readonly value="${member.profileImage}">`;
-            html += '<span name="memberInfo"></span>';
-            html += '<div>';
-            html += `<label for="username${memberId}">닉네임:</label>`;
-            html += `<input type="text" id="username${memberId}" readonly value="${member.username}">`;
-            html += '</div>';
-            html += '<span name="memberInfoBottom">';
-            html += `<label for="location${memberId}">지역:</label>`;
-            html += `<input type="text" id="location${memberId}" readonly value="${member.location}">`;
-            html += `<label for="introduction${memberId}">자기소개:</label>`;
-            html += `<input type="text" id="introduction${memberId}" readonly value="${member.introduction}">`;
-            html += '</span>';
-            html += '</div>';
-            return html;
+        function getFollowerList() {
+            $.ajax({
+                type: 'GET',
+                url: '/follows/' + memberIdVal + '/follower',
+                success: function (results){
+                    console.log("팔로워 리스트 가져오기 성공");
+                    console.log(results);
+                    printFollowerList(results.followerList);
+                    printMemberList(results.memberList);
+                },
+                error: function (e){
+                    console.log("팔로워 리스트 가져오기 실패");
+                    console.log(e);
+                }
+            });
         }
 
-        function printFollowList(list) {
-            let html = list.map(follow =>
-                MemberFollowList(follow) + '<div name="follow-button"><button type="button" class="btn btn-info unFollowBtn" id="unFollowBtn" data-unFlwBtn="'+ follow.id +'">팔로잉</button></div></div>').join('');
+
+        function printFollowingList(listFollowing) {
+            console.log("팔로잉 리스트 출력");
+            console.log(listFollowing);
+            let html = '';
+            for (let i = 0; i < listFollowing.length; i++) {
+                html += '<div name="member">';
+                html += '<span name="memberImage"></span>';
+                html += '<span name="memberInfo">';
+                html += '<div name="username">닉네임 ' + listFollowing[i].username + '</div>';
+                html += '<div name="memberInfoBottom">';
+                html += '<span name="location">지역 ' + listFollowing[i].location.valueOf() + '</span>';
+                html += '<span name="introduce">자기소개 ' + listFollowing[i].introduction + '</span>';
+                html += '</div></span></div>';
+                html += '<span name="follow-button"></span>';
+                html += '<button type="button" class="btn btn-info unFollowBtn" data-unflowbtn="' + listFollowing[i].id + '">팔로잉</button>';
+            }
             flowListDiv.html(html);
         }
 
         function printMemberList(memberList) {
-            let html = memberList.map(follow =>
-                MemberFollowList(follow) + '<div name="follow-button"><button type="button" class="btn btn-primary followBtn" id="followBtn" data-flwBtn="' + follow.id + '">팔로우</button></div></div>').join('');
+            let html = '';
+            for (let i = 0; i < memberList.length; i++) {
+                html += '<div name="member">';
+                html += '<span name="memberImage"></span>';
+                html += '<span name="memberInfo">';
+                html += '<div name="username">닉네임' + memberList[i].username + '</div>';
+                html += '<div name="memberInfoBottom">';
+                html += '<span name="location">지역' + memberList[i].location.valueOf() + '</span>';
+                html += '<span name="introduce">자기소개' + memberList[i].introduction + '</span>';
+                html += '</div></span></div>';
+                html += '<span name="follow-button"></span>';
+                html += '<button type="button" class="btn btn-info unFollowBtn" data-unflowbtn="' + memberList[i].id + '">팔로잉</button>';
+            }
             memberListDiv.html(html);
+        }
+        function printFollowerList(listFollower) {
+            console.log("팔로워 리스트 출력");
+            console.log(listFollower);
+            let html = '';
+            for (let i = 0; i < listFollower.length; i++) {
+                html += '<div name="member">';
+                html += '<span name="memberImage"></span>';
+                html += '<span name="memberInfo">';
+                html += '<div name="username">닉네임 ' + listFollower[i].username + '</div>';
+                html += '<div name="memberInfoBottom">';
+                html += '<span name="location">지역 ' + listFollower[i].location.valueOf() + '</span>';
+                html += '<span name="introduce">자기소개 ' + listFollower[i].introduction + '</span>';
+                html += '</div></span></div>';
+                html += '<span name="follow-button"></span>';
+                /*if (listFollower[i].follow) {
+                    html += '<button type="button" class="btn btn-info unFollowBtn" data-unflowbtn="' + listFollower[i].id + '">팔로잉</button>';
+                } else {
+                }*/
+                html += '<button type="button" class="btn btn-primary followBtn" data-flwbtn="' + listFollower[i].id + '">팔로우</button>';
+            }
+            FlwerListDiv.html(html);
         }
 
         // 팔로우 버튼 클릭 이벤트
-        memberListDiv.on("click", "button.followBtn", function(e){
+        FlwerListDiv.on("click", "button.followBtn", function(e){
             console.log("팔로우 버튼 클릭");
-            let memberIdVal = $(this).data("flwBtn");
-            console.log("팔로우 버튼 클릭 memberId : " + memberIdVal);
-            if (!memberIdVal) {
+            let memberId = $(this).data("flwbtn");
+            console.log($(this).data("flwbtn"))
+            console.log("팔로우 버튼 클릭 memberId : " + memberId);
+            if (!memberId) {
                 console.error("memberId is undefined.");
                 return;
             }
             $.ajax({
                 type: 'POST',
-                url: '/follows/' + memberIdVal + '/follow',
+                url: '/follows/follow/' + memberId,
                 success: function (result){
                     console.log("팔로우 성공");
                     console.log(result);
@@ -178,17 +243,18 @@
         });
 
         // 언팔로우 버튼 클릭 이벤트
-        flowListDiv.on("click", "button.unFollowBtn", function(e){
+        $(".modal-content").on("click", "button.unFollowBtn", function(e){
             console.log("언팔로우 버튼 클릭");
-            let memberIdVal = $(this).data("unFlwBtn");
-            console.log("언팔로우 버튼 클릭 memberId : " + memberIdVal);
-            if (!memberIdVal) {
+            let memberId = $(this).data("unflowbtn");
+            console.log($(this).data("unflowbtn"))
+            console.log("언팔로우 버튼 클릭 memberId : " + memberId);
+            if (!memberId) {
                 console.error("memberId is undefined.");
                 return;
             }
             $.ajax({
                 type: 'DELETE',
-                url: '/follows/' + memberIdVal + '/unfollow',
+                url: '/follows/unfollow/' + memberId,
                 success: function (result){
                     console.log("언팔로우 성공");
                     console.log(result);
@@ -202,9 +268,4 @@
         });
     });
 </script>
-<!-- jQuery, Popper.js, 부트스트랩 JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </html>
