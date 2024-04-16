@@ -60,9 +60,10 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li th:each="bType : ${boardTypes}">
-                                <button class="dropdown-item boardTypeValue" th:text="${bType.value}"></button>
+                                <button class="dropdown-item boardTypeValue" th:text="${bType.value}" th:data-type="${bType.name()}"></button>
                             </li>
                         </ul>
+                        <input id="boardType" hidden="hidden" th:field="*{boardType}">
 
                         <input type="text" class="form-control" th:field="*{title}">
 
@@ -131,9 +132,11 @@
                     // 버튼 기본 기능 비활성화
                     event.preventDefault();
                     // #dropdown-menu 값 변경
-                    $('#boardTypeValue').val($(this).val());
+                    $('#boardTypeValue').val($(this).data('type'));
                     // 버튼 텍스트 변경
                     $('.bTypeBtn').text($(this).text());
+                    // #boardType 값 변경
+                    $('#boardType').val($(this).data('type'));
 
                 });
 
@@ -154,6 +157,7 @@
                     });
                 });
 
+                // 드롭다운 내부 값 변경
                 function changeDropdown(data) {
                     let html = '';
                     data.forEach(function (program) {
@@ -205,10 +209,6 @@
                     }
                 })
 
-                // boarType 텍스트 Enum 값으로 변환
-                function boardTypeToEnum() {
-
-                }
 
             });
         </script>
