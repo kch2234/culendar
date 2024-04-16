@@ -37,8 +37,8 @@ public class ProgramRestController {
     }
 
     @GetMapping("find/{id}")
-    public ResponseEntity<ProgramDTO> findProgram(@PathVariable("id") Long seq){
-        ProgramDTO programDTO = programService.getOneProgram(seq);
+    public ResponseEntity<ProgramDTO> findProgram(@PathVariable("id") Long id){
+        ProgramDTO programDTO = programService.getOneProgram(id);
 
         return ResponseEntity.ok(programDTO);
     }

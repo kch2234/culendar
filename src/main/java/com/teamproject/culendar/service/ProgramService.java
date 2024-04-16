@@ -240,8 +240,8 @@ public class ProgramService {
         save(program);
     }
 
-    public ProgramDTO getOneProgram(Long seq) {
-        Optional<Program> program = programRepository.findBySeq(seq);
+    public ProgramDTO getOneProgram(Long id) {
+        Optional<Program> program = programRepository.findById(id);
         if (program.isPresent()) {
             return new ProgramDTO(program.get());
         }
