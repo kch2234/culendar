@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
-    <h1>탐색 영역</h1>
-
     <th:block th:fragment="content">
-        <!--  카카오 지도  -->
-        <div name="map">지도 영역</div>
-            <div>
-                <div>
+        <h1>탐색 페이지 영역</h1>
+        <!--TODO: 카카오 지도 API -->
+        <div name="search-box">
+            <span name="mapWithModal">  <!--  지도+검색결과 작품  -->
+                <span name="map">
                     <div class="map_wrap">
-                        <div id="map" style="width:75%;height:50%;position:relative;overflow:hidden;"></div>
-
+                        <div id="map" style="width:75%;height:600px;position:relative;overflow:hidden;"></div>
                         <div id="menu_wrap" class="bg_white">
                             <div class="option">
                                 <div>
@@ -26,52 +23,85 @@
                             <div id="pagination"></div>
                         </div>
                     </div>
-                </div>
+                </span>
+                <span name="searchResult-box">  <!--  검색결과 작품  -->
+                    <div name="programCard"></div>
+                    <div name="programDetail-button">자세히</div>  <!--  TODO programDetail에 개요가 없다면 페이지 넘겨도 더 보여줄 게 없을 듯..  -->
+                </span>
+            </span>  <!--  mapWithModal  -->
+            <span name="sideInfo-box">
                 <div>
+                    <div name="heading">인기 작품</div>
+                    <div name="programCard"></div>  <!--  NOTE 검색 전) 현재 위치의 인기작품 노출 / 검색 후) 검색 결과 작품 노출  -->
                 </div>
+                <hr />  <!--  horizonBar  -->
+                <div>
+                    <div name="heading">인기 모임</div>
+                    <div name="eventCard"></div>  <!--  NOTE 검색 전) 현재 위치의 인기모임 노출 / 검색 후) 검색 결과 모임 노출  -->
+                </div>
+            </span>  <!--  sideInfo-box  -->
+        </div>  <!--  search-box  -->
+        <div name="favLocationProgram">
+            <div name="favLocaionProgramHeader">
+                <div>
+                    <span name="heading">지역별 인기작품</span>
+                    <span name="genre-dropdown">
+                        <select name="programType">
+                            <option value="EXHIBITION">전시</option>
+                            <option value="CONCERT">음악/콘서트</option>
+                            <option value="DRAMA">연극</option>
+                            <option value="MUSICAL">뮤지컬/오페라</option>
+                            <option value="ETC">기타</option>
+                        </select>
+                    </span>
+                    <span name="location-dropdown">
+                        <select name="location">
+                            <option value="SEOUL">서울</option>
+                            <option value="BUSAN">부산</option>
+                            <option value="DAEGU">대구</option>
+                            <option value="INCHEON">인천</option>
+                            <option value="GWANGJU">광주</option>
+                            <option value="DAEJEON">대전</option>
+                            <option value="ULSAN">울산</option>
+                            <option value="SEJONG">세종</option>
+                            <option value="GYEONGGI">경기</option>
+                            <option value="GANGWON">강원</option>
+                            <option value="CHUNGBUK">충북</option>
+                            <option value="CHUNGNAM">충남</option>
+                            <option value="JEONBUK">전북</option>
+                            <option value="JEONNAM">전남</option>
+                            <option value="GYEONGBUK">경북</option>
+                            <option value="GYEONGNAM">경남</option>
+                            <option value="JEJU">제주</option>
+                            <option value="ETC">기타</option>
+                        </select>
+                    </span>
+                </div>
+                <hr />
+            </div>  <!--  favLocaionProgramHeader  -->
+            <div name="favLocaionProgram">  <!--  좌우 스크롤  -->
+                <span name="programCard"></span>
+                <span name="programCard"></span>
+                <span name="programCard"></span>
+                <span name="programCard"></span>
             </div>
-        <div>
-            <span name="bestProgramLocation">지역별 인기 작품</span> <!--지역별 인기 작품 start-->
-            <select name="programType">
-                <option value="EXHIBITION">전시</option>
-                <option value="CONCERT">음악/콘서트</option>
-                <option value="DRAMA">연극</option>
-                <option value="MUSICAL">뮤지컬/오페라</option>
-                <option value="ETC">기타</option>
-            </select>
-            <select name="location" value="지역">
-                <option value="SEOUL">서울</option>
-                <option value="BUSAN">부산</option>
-                <option value="DAEGU">대구</option>
-                <option value="INCHEON">인천</option>
-                <option value="GWANGJU">광주</option>
-                <option value="DAEJEON">대전</option>
-                <option value="ULSAN">울산</option>
-                <option value="SEJONG">세종</option>
-                <option value="GYEONGGI">경기</option>
-                <option value="GANGWON">강원</option>
-                <option value="CHUNGBUK">충북</option>
-                <option value="CHUNGNAM">충남</option>
-                <option value="JEONBUK">전북</option>
-                <option value="JEONNAM">전남</option>
-                <option value="GYEONGBUK">경북</option>
-                <option value="GYEONGNAM">경남</option>
-                <option value="JEJU">제주</option>
-                <option value="ETC">기타</option>
-            </select>
-            <select>
-                <option value=""
-            </select>
-            <div>
-                <!--TODO : 작품카드-->
+        </div>  <!--  favLocationProgram  -->
+        <div name="favLocationEvent">
+            <div name="favLocaionEventHeader">
+                <div>
+                    <span name="heading">지역별 인기모임</span>
+                    <span name="genre-dropdown"></span>
+                    <span name="location-dropdown"></span>
+                </div>
+                <hr />
+            </div>  <!--  favLocaionProgramHeader  -->
+            <div name="favLocaionEvent">  <!--  좌우 스크롤  -->
+                <span name="eventCard"></span>
+                <span name="eventCard"></span>
+                <span name="eventCard"></span>
+                <span name="eventCard"></span>
             </div>
-        </div> <!--지역별 인기 작품 end-->
-        <div>
-            <span name="bestProgramLocation">지역별 인기 모임</span> <!--지역별 인기 모임 start-->
-            <div>
-                <!--TODO : 모임카드-->
-            </div>
-        </div> <!--지역별 인기 모임 end-->
+        </div>  <!--  favLocationEvent  -->
     </th:block>
 </th:block>
 <script>
@@ -132,65 +162,6 @@
             message = '현재 위치를 찾을 수 없습니다.'
         displayMarker(locPosition, message);
     }
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
-    <th:block th:fragment="content">
-        <h1>탐색 페이지 영역</h1>
-
-        <div name="search-box">
-            <span name="mapWithModal">  <!--  지도+검색결과 작품  -->
-                <span name="map"></span>
-                <span name="searchResult-box">  <!--  검색결과 작품  -->
-                    <div name="programCard"></div>
-                    <div name="programDetail-button">자세히</div>  <!--  TODO programDetail에 개요가 없다면 페이지 넘겨도 더 보여줄 게 없을 듯..  -->
-                </span>
-            </span>  <!--  mapWithModal  -->
-            <span name="sideInfo-box">
-                <div>
-                    <div name="heading">인기 작품</div>
-                    <div name="programCard"></div>  <!--  NOTE 검색 전) 현재 위치의 인기작품 노출 / 검색 후) 검색 결과 작품 노출  -->
-                </div>
-                <hr />  <!--  horizonBar  -->
-                <div>
-                    <div name="heading">인기 모임</div>
-                    <div name="eventCard"></div>  <!--  NOTE 검색 전) 현재 위치의 인기모임 노출 / 검색 후) 검색 결과 모임 노출  -->
-                </div>
-            </span>  <!--  sideInfo-box  -->
-        </div>  <!--  search-box  -->
-        <div name="favLocationProgram">
-            <div name="favLocaionProgramHeader">
-                <div>
-                    <span name="heading">지역별 인기작품</span>
-                    <span name="genre-dropdown"></span>
-                    <span name="location-dropdown"></span>
-                </div>
-                <hr />
-            </div>  <!--  favLocaionProgramHeader  -->
-            <div name="favLocaionProgram">  <!--  좌우 스크롤  -->
-                <span name="programCard"></span>
-                <span name="programCard"></span>
-                <span name="programCard"></span>
-                <span name="programCard"></span>
-            </div>
-        </div>  <!--  favLocationProgram  -->
-        <div name="favLocationEvent">
-            <div name="favLocaionEventHeader">
-                <div>
-                    <span name="heading">지역별 인기모임</span>
-                    <span name="genre-dropdown"></span>
-                    <span name="location-dropdown"></span>
-                </div>
-                <hr />
-            </div>  <!--  favLocaionProgramHeader  -->
-            <div name="favLocaionEvent">  <!--  좌우 스크롤  -->
-                <span name="eventCard"></span>
-                <span name="eventCard"></span>
-                <span name="eventCard"></span>
-                <span name="eventCard"></span>
-            </div>
-        </div>  <!--  favLocationEvent  -->
-    </th:block>
-</th:block>
     // 지도에 마커와 인포윈도우를 표시하는 함수입니다
     function displayMarker(locPosition, message) {
 

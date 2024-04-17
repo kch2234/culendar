@@ -47,6 +47,12 @@ public class HomeController {
         return "access-denied";
     }
 
+    @GetMapping("/search")
+    public String search() {
+
+        return "search/searchHome";
+    }
+
     @GetMapping("/myCalendar")
     public String calendar(@AuthenticationPrincipal CustomMember customMember, Model model) {
 

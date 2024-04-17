@@ -40,7 +40,6 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MemberRepository memberRepository;
-    private final FollowService followService;
     private final InterestService interestService;
 
     // 회원 전체 조회 - 관리자용
@@ -68,61 +67,6 @@ public class MemberController {
 //        model.addAttribute("follow", followDTO);
         model.addAttribute("member", member);
         return "profile/memberProfile";
-    }
-*/
-
-    // 팔로우, 팔로워 조회
-    @GetMapping("/{id}/follow")
-    public String followings(@PathVariable("id") Long id, Model model){
-        log.info("********** MemberController GET /members/:userid/follow - userid : {}", id);
-        List<Member> memberList = memberRepository.findAll();
-        List<Follow> followList = followService.findByMemberId(id);// 팔로우한 사람들의 정보
-        List<MemberDTO> followings = new ArrayList<>();
-        for (Follow follow : followList) {
-            MemberDTO member = new MemberDTO(follow.getFollow()); // 팔로우한 사람들의 정보
-            followings.add(member); // 팔로우한 사람들의 정보를 리스트에 추가
-            log.info("********** MemberController GET /members/:userid/follow - followings : {}", followings);
-            log.info("********** MemberController GET /members/:userid/follow - member : {}", member);
-            model.addAttribute("followings", followings);// 팔로우한 사람들의 정보를 모델에 추가
-        }
-        model.addAttribute("memberList", memberList);
-        return "profile/follow";
-    }
-
-    @GetMapping("/{id}/follower")
-    public String followers(@PathVariable("id") Long id, Model model){
-        log.info("********** MemberController GET /members/:userid/follow - userid : {}", id);
-        List<Follow> followerList = followService.findByFollowId(id);
-        List<MemberDTO> followers = new ArrayList<>();
-        for (Follow follow : followerList) {
-            MemberDTO member = new MemberDTO(follow.getMember());
-            followers.add(member);
-            log.info("********** MemberController GET /members/:userid/follow - followers : {}", followers);
-            log.info("********** MemberController GET /members/:userid/follow - member : {}", member);
-            model.addAttribute("followers", followers);
-        }
-        return "profile/follower";
-    }
-
-    // 팔로우 처리
-    @PostMapping("/{followid}/follow")
-    public String follow (@PathVariable Long followid, @AuthenticationPrincipal CustomMember customMember){
-        Long id = customMember.getMember().getId();
-        log.info("********** MemberController POST /members/:id/follow - id : {}", id);
-        log.info("********** MemberController POST /members/:id/follow - followId : {}", followid);
-        FollowDTO followDTO = followService.follow(id, followid);
-        log.info("********** MemberController POST /members/:id/follow - followDTO : {}", followDTO);
-        return "redirect:/members/" + id + "/follow";
-    }
-    // 언팔로우 처리
-    @PostMapping("/{followid}/unfollow")
-    public String unfollow(@PathVariable Long followid, @AuthenticationPrincipal CustomMember customMember){
-        Long id = customMember.getMember().getId();
-        log.info("********** MemberController DELETE /members/:id/follow - id : {}", id);
-        log.info("********** MemberController DELETE /members/:id/follow - followId : {}", followid);
-        FollowDTO followDTO = followService.unfollow(id, followid);
-
-        return "redirect:/members/" + id + "/follow";
     }
 
     // 회원 정보 수정
