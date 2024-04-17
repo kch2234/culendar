@@ -45,4 +45,13 @@ public class BkMarkService {
 
         programBkMarkRepository.delete(findProgramBkMark);
     }
+
+    public boolean checkProgramBkmark(Long memberId, Long programId){
+        log.info("** BkMarkService - checkProgramBkmark - memberId: {}, programId: {}", memberId, programId);
+        ProgramBkmark findProgramBkMark = programBkMarkRepository.findByMemberIdAndProgramId(memberId, programId);
+        if(findProgramBkMark != null){
+            return true;
+        }
+        return false;
+    }
 }
