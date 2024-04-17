@@ -379,14 +379,12 @@
                         success: function (data) {
                             if (data === true) {
                                 console.log(data);
-                                $('#bkMarkBtn').toggleClass('fa-regular', false);
-                                $('#bkMarkBtn').toggleClass('fa-solid', true);
+                                $('#bkMarkBtn').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
                             }
 
                             if (data === false) {
                                 console.log(data);
-                                $('#bkMarkBtn').toggleClass('fa-regular', true);
-                                $('#bkMarkBtn').toggleClass('fa-solid', false);
+                                $('#bkMarkBtn').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
                             }
                         }
                     });

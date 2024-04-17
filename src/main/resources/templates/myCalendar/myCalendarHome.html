@@ -228,8 +228,7 @@
                         // 클릭한 이벤트의 id를 가져와서 작품 페이지로 이동
                         // TODO 사이드 창으로 띄우기
                         console.log(info.event.id);
-                        getProgramData(info.event.id);
-                        // openProgramPage(info.event.id);
+                        getProgramDataBySeq(info.event.id);
 
                     },
 
@@ -517,9 +516,11 @@
 
                             if (result === 'fail') {
                                 alert('북마크에서 삭제 되었습니다.');
+                                checkBkmark();
                                 return;
                             }
                             alert('북마크에 추가되었습니다.');
+                            checkBkmark();
                         },
                         error: function (error) {
                             console.log(error);
@@ -624,10 +625,11 @@
                     html += '</div>';
 
                     $('#search-info-box').html(html);
+                    checkBkmark();
 
                 }
 
-                // 프로그램 데이터 받아오기
+                // id로 프로그램 데이터 받아오기
                 function getProgramData(id) {
                     $.ajax({
                         url: '/program/find/' + id,
@@ -640,6 +642,41 @@
                         error: function (error) {
                             console.log(error);
                         },
+                    });
+                }
+                // seq로 프로그램 데이터 받아오기
+                function getProgramDataBySeq(seq) {
+                    $.ajax({
+                        url: '/program/findBySeq/' + seq,
+                        type: 'GET',
+                        success: function (data) {
+                            console.log(data);
+                            changeSideInfo(data);
+                            return data;
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        },
+                    });
+                }
+
+                // 북마크 여부 확인 이벤트
+                function checkBkmark() {
+                    console.log("checkBkmark");
+                    $.ajax({
+                        url: '/bkmark/checkProgramBkmark/' + userId + '/' + programId,
+                        type: 'GET',
+                        success: function (data) {
+                            if (data === true) {
+                                console.log(data);
+                                $('.fa-bookmark').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
+                            }
+
+                            if (data === false) {
+                                console.log(data);
+                                $('.fa-bookmark').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
+                            }
+                        }
                     });
                 }
             });
