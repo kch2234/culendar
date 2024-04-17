@@ -240,12 +240,13 @@ public class ProgramService {
         save(program);
     }
 
-    public ProgramDTO getOneProgram(Long id) {
-        Optional<Program> program = programRepository.findById(id);
-        if (program.isPresent()) {
-            return new ProgramDTO(program.get());
+    public ProgramDTO getOneProgram(Long seq) {
+        Program programsById = programRepository.findBySeq(seq).orElse(null);
+        log.info("******** ProgramService - getOneProgram - id: {}", seq);
+        if (programsById == null) {
+            return null;
         }
-        return null;
+        return new ProgramDTO(programsById);
     }
 
     public List<ProgramDTO> searchProgram(String keyword) {

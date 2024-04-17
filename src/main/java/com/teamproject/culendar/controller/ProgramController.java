@@ -26,10 +26,10 @@ public class ProgramController {
     private final ProgramService programService;
 
     @GetMapping("/{id}")
-    public String programDetail(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal CustomMember customMember){
+    public String programDetail(@PathVariable("id") Long seq, Model model, @AuthenticationPrincipal CustomMember customMember){
 
-        log.info("** ProgramController GET /program/:id - id: {}", id);
-        ProgramDTO programDTO = programService.getOneProgram(id);
+        log.info("** ProgramController GET /program/:id - id: {}", seq);
+        ProgramDTO programDTO = programService.getOneProgram(seq);
         log.info("** ProgramController GET /program/:id - programDTO: {}", programDTO);
         model.addAttribute("program", programDTO);
         model.addAttribute("member", customMember);

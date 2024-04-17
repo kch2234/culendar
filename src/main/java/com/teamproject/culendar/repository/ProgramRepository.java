@@ -13,7 +13,7 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
     // seq 값으로 Program 찾기
     Optional<Program> findBySeq(Long seq);
 
-    List<Program> findProgramsById(Long id);
+    Program findProgramsById(Long id);
 
     List<Program> findProgramsByProgramTypeAndLocation(ProgramType programType, Location location);
 
