@@ -174,18 +174,21 @@
             <div class="container"> <!-- 인기글 -->
 
                 <div>
-                    <span class="badge text-bg-secondary fs-4">인기글</span>
+                    <span class="badge text-bg-secondary fs-4 mb-3">인기글</span>
                 </div>
 
-                <div class="row"> <!-- 인기글 조회 해서 4개 띄우기 -->
+                <div class="row" id="BestListContainer">
 
-                    <div class="col"> <!-- 인기글 카드 양식 -->
-                        <div style="width: 18rem;">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the
-                                    bulk of the card's content.</p>
+                    <!-- 인기글 조회 해서 4개 띄우기 -->
+                    <div class="col-3 ml-1 mr-1 ">
+                    <div>
+                        <img src="" class="card-img-top mb-1 img-thumbnail img-fluid" alt="...">
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-auto card-title fs-4">제목</div>
+                                <div class="col-2 badge text-bg-secondary fs-6">정보</div>
+                            </div>
+                            <p class="card-text">lㅁㄴㅇㅁㄴㅇㄴㅁㅀㄴㅇㄴㅇㅀㅀㅇㅇㅀㅇㅀ</p>
                             </div>
                         </div>
                     </div>
@@ -298,6 +301,8 @@
                         success: function (result) {
                             console.log("인기글 목록 요청 성공!");
                             console.log(result);
+
+                            changeBestList(result);
                             // 인기글 목록 화면에 띄우기
                         },
                         error: function (e) {
@@ -305,6 +310,49 @@
                             console.log(e);
                         },
                     });
+                }
+
+                function changeBestList(list) {
+                    /*<div class="col-3 ml-1 mr-1 ">
+                        <div>
+                            <img src="" class="card-img-top mb-1 img-thumbnail img-fluid" alt="...">
+                                <div class="card-body">
+                                    <div class="row mb-2">
+                                        <div class="col-auto card-title fs-4">제목</div>
+                                        <div class="col-2 badge text-bg-secondary fs-6">정보</div>
+                                    </div>
+                                    <p class="card-text">lㅁㄴㅇㅁㄴㅇㄴㅁㅀㄴㅇㄴㅇㅀㅀㅇㅇㅀㅇㅀ</p>
+                                </div>
+                        </div>
+                    </div>*/
+                    var html = '';
+                    for (let i = 0; i < list.length; i++) {
+
+                        html += '<div class="col-3 ml-1 mr-1 ">';
+                        html += '<div>';
+                        html += '<img src="' + list[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid" style="height: 30vw" alt="...">';
+                        html += '<div class="card-body">';
+                        html += '<div class="row mb-2">';
+                        html += '<div class="col-auto card-title fs-4">' + list[i].title + '</div>';
+                        html += '<div class="col-2 badge text-bg-secondary fs-6">' + getBoardType(list[i].boardType) + '</div>';
+                        html += '</div>';
+                        html += '<p class="card-text">' + list[i].content + '</p>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                    }
+                    $('#BestListContainer').html(html);
+                }
+
+
+                function getBoardType(type) {
+                    if (type == "INFO") {
+                        return "정보";
+                    } else if (type == "REVIEW") {
+                        return "후기";
+                    } else {
+                        return "기타";
+                    }
                 }
 
 
