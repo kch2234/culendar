@@ -61,4 +61,19 @@ public class AjaxBoardController {
   }
 
 
+    // 최고 인기 게시글 4개 조회
+    @GetMapping("/best")
+    public ResponseEntity<List<BoardDTO>> bestList() {
+        log.info("**** AjaxBoardController GET /ajaxBoards/best");
+        List<Board> result = boardService.getBestList();
+        List<BoardDTO> list = new ArrayList<>();
+        for(int i = 0; i < result.size(); i++) {
+            Board board = result.get(i);  // Board 주소(정보) 1개
+            BoardDTO dto = new BoardDTO(board);  // BoardDTO 정보 1개 - MemberDTO 포함
+            list.add(dto);  // 리스트에 추가
+        }
+        log.info("**** AjaxBoardController GET /ajaxBoards/best - list : {}", list);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
 }

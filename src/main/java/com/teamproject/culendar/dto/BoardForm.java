@@ -13,6 +13,7 @@ public class BoardForm {
   private BoardType boardType;
   private Member member;
   private Program program;
+  private Long programId;
   private String title;
   private String content;
 //  private String image;  TODO 이미지 추가

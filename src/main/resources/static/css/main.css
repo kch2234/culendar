@@ -1,0 +1,33 @@
+.main-calendar {
+    width: 100%;
+}
+
+#community-wrapper {
+    margin-top: 5vh;
+}
+
+#boardAddWrapper{
+    width: 80%;
+}
+
+#boardDetailWrapper {
+    width: 60vw;
+}
+#content-wrapper{
+    align-items: center;
+    width: 90vw;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+#searched-list {
+    overflow-y: auto;
+}
+
+#searched-list::-webkit-scrollbar {
+    display: none;
+}
+
+textarea{
+    resize: none;
+}

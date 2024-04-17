@@ -23,4 +23,13 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
       "GROUP BY b " +
       "ORDER BY COUNT(bb) DESC")
   Page<Board> findOrderByBkMark(Pageable pageable);
+
+  // 최근 일주일 동안 최고 인기글 4개 조회
+    @Query("SELECT b " +
+        "FROM Board b " +
+        "LEFT JOIN BoardBkmark bb ON b.id = bb.board.id " +
+        "WHERE b.createDate >= CURRENT_DATE - 7 " +
+        "GROUP BY b " +
+        "ORDER BY COUNT(bb) DESC")
+    List<Board> findBestByBkMark();
 }

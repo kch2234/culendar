@@ -8,6 +8,7 @@ import com.teamproject.culendar.dto.PageRequestDTO;
 import com.teamproject.culendar.repository.BoardRepository;
 import com.teamproject.culendar.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,9 +16,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class BoardService {
 
   private final BoardRepository boardRepository;
@@ -90,6 +95,15 @@ public class BoardService {
     findBoard.setTitle(boardForm.getTitle());
     findBoard.setContent(boardForm.getContent());
   }
+
+  // 최근 일주일 동안 최고 인기글 4개 조회
+    public List<Board> getBestList() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime weekAgo = now.minusDays(7);
+        List<Board> result = boardRepository.findBestByBkMark();
+        log.info("**** BoardService getBestList - result : {}", result);
+        return result;
+    }
 
 
 }

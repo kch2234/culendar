@@ -4,76 +4,90 @@
 <th:block th:fragment="navFrg">
 
     <!--  네브 시작  -->
-<!--    <nav class="site-nav dark js-site-navbar mb-5 site-navbar-target">-->
-    <nav class="dark js-site-navbar mb-5 site-navbar-target">
-        <div class="site-navigation container h-25">
-            <div class="row">
-                <a th:href="@{/}" class="logo m-0 col-2">Culendar<span class="text-primary">.</span></a>
+    <!--    <nav class="site-nav dark js-site-navbar mb-5 site-navbar-target">-->
+    <!--<nav class="container" id="nav">
+        <div class="row" id="nav-row">
+            <a th:href="@{/}" class="m-0 col-3">Culendar<span class="text-primary">.</span></a>
 
-                <!--<ul class="js-clone-nav d-none d-lg-inline-block site-menu float-left">
-                    <li class="active"><a th:href="@{/myCalendar}" class="nav-link">My Calendar</a></li>
-                    <li class="active"><a th:href="@{/search}" class="nav-link">Search</a></li>
-                    <li class="active"><a th:href="@{/boards/list}" class="nav-link">Community</a></li>
-                    <li class="active"><a th:href="@{/clubs/list}" class="nav-link">Club</a></li>
-                </ul>-->
+            <div class="active col"><a th:href="@{/myCalendar}" class="nav-link">My Calendar</a></div>
+            <div class="active col"><a th:href="@{/search}" class="nav-link">Search</a></div>
+            <div class="active col"><a th:href="@{/boards/list}" class="nav-link">Community</a></div>
+            <div class="active col"><a th:href="@{/clubs/list}" class="nav-link">Club</a></div>
 
-                <div class="active col-2"><a th:href="@{/myCalendar}" class="nav-link">My Calendar</a></div>
-                <div class="active col-2"><a th:href="@{/search}" class="nav-link">Search</a></div>
-                <div class="active col-2"><a th:href="@{/boards/list}" class="nav-link">Community</a></div>
-                <div class="active col-2"><a th:href="@{/clubs/list}" class="nav-link">Club</a></div>
 
-                <div class="col"></div>
+            <ul class="col">
+                <li class="dropdown">
+                    <button class="fa-solid fa-circle-user fa-2x dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false"></button>
+                    &lt;!&ndash; 드롭다운 &ndash;&gt;
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/}" class="nav-link">프로필</a></li>
+                        <li><a th:href="@{/}" class="nav-link">설정</a></li>
+                    </ul>
+                </li>
+            </ul>
 
-                <ul class="js-clone-nav d-none d-lg-inline-block site-menu col-2">
-                    <li class="has-children dropdown">
-                        <button class="fa-solid fa-circle-user fa-2x dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                        <!-- 드롭다운 -->
-                        <ul class="dropdown-menu">
-                            <li><a th:href="@{/}" class="nav-link">프로필</a></li>
-                            <li><a th:href="@{/}" class="nav-link">설정</a></li>
-                            <li>
-                                <form th:action="@{/login}" method="post">
-                                    <a class="nav-link" onclick="this.parentNode.submit();">로그인</a>  <!--  todo  -->
-                                </form>
-                                <form th:action="@{/signup}" method="post">
-                                    <a class="nav-link" onclick="this.parentNode.submit();">회원가입</a>  <!--  todo  -->
-                                </form>
-                                <form th:action="@{/logout}" method="post">
-                                    <a class="nav-link" onclick="this.parentNode.submit();">로그아웃</a>
-                                </form>
-                            </li>
-                        </ul>
+        </div>
+    </nav>-->
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+
+        <div class="container-fluid">
+
+            <div>
+                <a class="navbar-brand" th:href="@{/}">Culendar</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <div>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/myCalendar}">My Calendar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/search}">Search</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/boards/list}">Community</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/clubs/list}">Club</a>
                     </li>
                 </ul>
+            </div>
 
+            <div sec:authorize="isAuthenticated()">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fa-regular fa-user" id="nav-dropdown" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
 
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/}" class="dropdown-item">프로필</a></li>
+                        <li><a th:href="@{/}" class="dropdown-item">설정</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li sec:authorize="hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{members/admin}">adminPage</a></li>
+                        <li><a th:href="@{/logout}" class="dropdown-item">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
 
-                <a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block dark d-lg-none" data-toggle="collapse" data-target="#main-navbar">
-                    <span></span>
-                </a>
+            <div sec:authorize="isAnonymous()">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/signup}">Signup</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/login}">Login</a></li>
 
+                </ul>
             </div>
         </div>
     </nav>
     <!--  네브 끝  -->
 
-    <!--    <div name="nav">-->
-    <!--        <span name="title">CULENDAR</span>  &lt;!&ndash;  사이트 이름 영역  &ndash;&gt;-->
-    <!--        <span name="menu">-->
-    <!--            <span name="myCalendar">myCalendar</span>-->
-    <!--            <span name="search">search</span>-->
-    <!--            <span name="community">community</span>-->
-    <!--            <span name="club">club</span>-->
-    <!--        </span>-->
-    <!--        <span name="profile">-->
-    <!--            &lt;!&ndash;  회원(로그인)  &ndash;&gt;-->
-    <!--            <div name="dropdown-edit">edit</div>-->
-    <!--            <div name="dropdown-setting">setting</div>-->
-    <!--            <div name="dropdown-logout">logout</div>-->
-    <!--            &lt;!&ndash;  비회원  &ndash;&gt;-->
-    <!--            <span name="login-button"></span>-->
-    <!--            <span name="signup-button"></span>-->
-    <!--        </span>-->
-    <!--    </div>-->
 
 </th:block>
