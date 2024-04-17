@@ -76,6 +76,11 @@
                                 <div id="followingList"></div>
                             </form>
                         </div>
+                        <div class="modal-body">
+                            <form>
+                                <div id="memberList"></div>
+                            </form>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
                         </div>
@@ -102,10 +107,9 @@
                     </div>
                     <div class="modal-body">
                         <form>
-                            <div id="memberList"></div>
+<!--                            <div id="memberList"></div>-->
                         </form>
                     </div>
-
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
                     </div>
@@ -133,6 +137,9 @@
                     console.log("팔로잉 리스트 가져오기 성공");
                     console.log(follow);
                     printFollowingList(follow.followingList);
+                    if (follow.followingList != null) {
+                        printMemberList(follow.memberList);
+                    }
                 },
                 error: function (e){
                     console.log("팔로잉 리스트 가져오기 실패");
@@ -145,11 +152,11 @@
             $.ajax({
                 type: 'GET',
                 url: '/follows/' + memberIdVal + '/follower',
-                success: function (results){
+                success: function (follower){
                     console.log("팔로워 리스트 가져오기 성공");
-                    console.log(results);
-                    printFollowerList(results.followerList);
-                    printMemberList(results.memberList);
+                    console.log(follower);
+                    printFollowerList(follower.followerList);
+                    // printMemberList(follower.memberList);
                 },
                 error: function (e){
                     console.log("팔로워 리스트 가져오기 실패");
@@ -169,7 +176,7 @@
                 html += '<span name="memberInfo">';
                 html += '<div name="username">닉네임 ' + listFollowing[i].username + '</div>';
                 html += '<div name="memberInfoBottom">';
-                html += '<span name="location">지역 ' + listFollowing[i].location.valueOf() + '</span>';
+                html += '<span name="location">지역 ' + listFollowing[i].location + '</span>';
                 html += '<span name="introduce">자기소개 ' + listFollowing[i].introduction + '</span>';
                 html += '</div></span></div>';
                 html += '<span name="follow-button"></span>';
@@ -186,11 +193,11 @@
                 html += '<span name="memberInfo">';
                 html += '<div name="username">닉네임' + memberList[i].username + '</div>';
                 html += '<div name="memberInfoBottom">';
-                html += '<span name="location">지역' + memberList[i].location.valueOf() + '</span>';
+                html += '<span name="location">지역' + memberList[i].location + '</span>';
                 html += '<span name="introduce">자기소개' + memberList[i].introduction + '</span>';
                 html += '</div></span></div>';
                 html += '<span name="follow-button"></span>';
-                html += '<button type="button" class="btn btn-info unFollowBtn" data-unflowbtn="' + memberList[i].id + '">팔로잉</button>';
+                html += '<button type="button" class="btn btn-primary followBtn" data-flwbtn="' + memberList[i].id + '">팔로우</button>';
             }
             memberListDiv.html(html);
         }
@@ -204,21 +211,21 @@
                 html += '<span name="memberInfo">';
                 html += '<div name="username">닉네임 ' + listFollower[i].username + '</div>';
                 html += '<div name="memberInfoBottom">';
-                html += '<span name="location">지역 ' + listFollower[i].location.valueOf() + '</span>';
+                html += '<span name="location">지역 ' + listFollower[i].location + '</span>';
                 html += '<span name="introduce">자기소개 ' + listFollower[i].introduction + '</span>';
                 html += '</div></span></div>';
                 html += '<span name="follow-button"></span>';
-                /*if (listFollower[i].follow) {
+                if (listFollower[i].id == null) {
                     html += '<button type="button" class="btn btn-info unFollowBtn" data-unflowbtn="' + listFollower[i].id + '">팔로잉</button>';
                 } else {
-                }*/
                 html += '<button type="button" class="btn btn-primary followBtn" data-flwbtn="' + listFollower[i].id + '">팔로우</button>';
+                }
             }
             FlwerListDiv.html(html);
         }
 
         // 팔로우 버튼 클릭 이벤트
-        FlwerListDiv.on("click", "button.followBtn", function(e){
+        memberListDiv.on("click", "button.followBtn", function(e){
             console.log("팔로우 버튼 클릭");
             let memberId = $(this).data("flwbtn");
             console.log($(this).data("flwbtn"))
@@ -245,16 +252,16 @@
         // 언팔로우 버튼 클릭 이벤트
         $(".modal-content").on("click", "button.unFollowBtn", function(e){
             console.log("언팔로우 버튼 클릭");
-            let memberId = $(this).data("unflowbtn");
+            let followId = $(this).data("unflowbtn");
             console.log($(this).data("unflowbtn"))
-            console.log("언팔로우 버튼 클릭 memberId : " + memberId);
-            if (!memberId) {
-                console.error("memberId is undefined.");
+            console.log("언팔로우 버튼 클릭 followId : " + followId);
+            if (!followId) {
+                console.error("followId is undefined.");
                 return;
             }
             $.ajax({
                 type: 'DELETE',
-                url: '/follows/unfollow/' + memberId,
+                url: '/follows/unfollow/' + followId,
                 success: function (result){
                     console.log("언팔로우 성공");
                     console.log(result);

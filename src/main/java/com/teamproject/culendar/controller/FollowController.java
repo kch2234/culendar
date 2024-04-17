@@ -1,7 +1,6 @@
 package com.teamproject.culendar.controller;
 
-import com.teamproject.culendar.dto.FollowFollowing;
-import com.teamproject.culendar.dto.FollowerResponseDTO;
+import com.teamproject.culendar.dto.FollowResponseDTO;
 import com.teamproject.culendar.repository.MemberRepository;
 import com.teamproject.culendar.security.domain.CustomMember;
 import com.teamproject.culendar.service.FollowService;
@@ -26,16 +25,15 @@ public class FollowController {
 
     // 팔로우, 팔로워 조회
     @GetMapping("/{memberId}/following")
-    public ResponseEntity<FollowFollowing> followingList(@PathVariable("memberId") Long memberId){
+    public ResponseEntity<FollowResponseDTO> followingList(@PathVariable("memberId") Long memberId){
         log.info("********** FollowController GET /follows/:userid/follow - memberId : {}", memberId);
-        FollowFollowing followingList = followService.getFollowingList(memberId);
+        FollowResponseDTO followingList = followService.getFollowList(memberId);
         return new ResponseEntity<>(followingList, HttpStatus.OK);
     }
     @GetMapping("/{memberId}/follower")
-    public ResponseEntity<FollowerResponseDTO> followerList(@PathVariable("memberId") Long memberId){
+    public ResponseEntity<FollowResponseDTO> followerList(@PathVariable("memberId") Long memberId){
         log.info("********** FollowController GET /follows/:userid/follower - memberId : {}", memberId);
-        FollowerResponseDTO followerList = followService.getFollowerList(memberId);
-        log.info("********** FollowController GET /follows/:userid/follower - followerList : {}", followerList);
+        FollowResponseDTO followerList = followService.getFollowList(memberId);
         return new ResponseEntity<>(followerList, HttpStatus.OK);
     }
 
@@ -49,10 +47,12 @@ public class FollowController {
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
     // 언팔로우 처리
-    @DeleteMapping("/unfollow/{memberId}")
-    public ResponseEntity<String> unfollow(@PathVariable Long memberId){
+    @DeleteMapping("/unfollow/{followId}")
+    public ResponseEntity<String> unfollow(@AuthenticationPrincipal CustomMember customMember, @PathVariable Long followId){
+        log.info("********** FollowController DELETE /members/:id/follow - memberId : {}", followId);
+        Long memberId = customMember.getMember().getId();
         log.info("********** FollowController DELETE /members/:id/follow - memberId : {}", memberId);
-        followService.unfollow(memberId);
+        followService.unfollow(memberId, followId);
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
 }

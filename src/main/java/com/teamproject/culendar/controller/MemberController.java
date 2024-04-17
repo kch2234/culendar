@@ -70,17 +70,6 @@ public class MemberController {
         return "profile/memberProfile";
     }
 
-/*
-    // 다른 회원의 프로필 조회
-    @GetMapping("/{id}/profile")
-    public String profile(@PathVariable("id") Long id, Model model){
-        log.info("********** MemberController GET /members/:id/profile - id : {}", id);
-        MemberDTO member = memberService.findById(id);
-        model.addAttribute("member", member);
-        return "profile/memberProfile";
-    }
-*/
-
     // 회원 정보 수정
 //    @PreAuthorize("hasRole('MEMBER')")
     @GetMapping("/{id}/edit")

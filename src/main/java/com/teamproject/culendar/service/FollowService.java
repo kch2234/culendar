@@ -3,7 +3,7 @@ package com.teamproject.culendar.service;
 import com.teamproject.culendar.domain.member.Follow;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.FollowFollowing;
-import com.teamproject.culendar.dto.FollowerResponseDTO;
+import com.teamproject.culendar.dto.FollowResponseDTO;
 import com.teamproject.culendar.dto.MemberDTO;
 import com.teamproject.culendar.repository.FollowRepository;
 import com.teamproject.culendar.repository.MemberRepository;
@@ -41,8 +41,10 @@ public class FollowService {
         return new ResponseEntity<>(member.getUsername() + "님을 팔로우하였습니다.", HttpStatus.OK);
     }
     @Transactional
-    public void unfollow(Long memberId) {
-        followRepository.deleteById(memberId);
+    public void unfollow(Long memberId, Long followId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        Member follow = memberRepository.findById(followId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        followRepository.deleteById(followRepository.findByMemberAndFollow(member, follow).orElseThrow(() -> new IllegalArgumentException("팔로우하지 않은 회원입니다.")).getId());
     }
 
 
@@ -56,28 +58,36 @@ public class FollowService {
         }
     }
 
-    public FollowFollowing getFollowingList(Long memberId) {
+    public FollowResponseDTO getFollowList(Long memberId) {
 //        Long followingCount = followRepository.countAllByMemberId(memberId);
+        List<Member> memberList = memberRepository.findAll();
         List<Follow> followList = followRepository.findByMemberId(memberId);
+        List<Follow> followerList = followRepository.findByFollowId(memberId);
         List<MemberDTO> listFollowing = new ArrayList<>();
         for (Follow follow : followList) {
             MemberDTO member = new MemberDTO(follow.getFollow());
             listFollowing.add(member);
         }
-        log.info("********** FollowService /follows/:userid/follow - followings : {}", listFollowing);
-        return new FollowFollowing(listFollowing);
-    }
-
-    public FollowerResponseDTO getFollowerList(Long memberId) {
-        List<Member> memberList = memberRepository.findAll();
-        List<Follow> followerList = followRepository.findByFollowId(memberId);
-        log.info("********** FollowService /follows/:userid/follow - followerList : {}", followerList);
         List<MemberDTO> listFollower = new ArrayList<>();
         for (Follow follow : followerList) {
             MemberDTO member = new MemberDTO(follow.getMember());
             listFollower.add(member);
         }
+        log.info("********** FollowService /follows/:userid/follow - followings : {}", listFollowing);
         log.info("********** FollowService /follows/:userid/follow - followers : {}", listFollower);
-        return new FollowerResponseDTO(listFollower, memberList);
+        return new FollowResponseDTO(listFollowing, listFollower, memberList);
+    }
+
+    public FollowFollowing getFollowerList(Long memberId) {
+        List<Member> memberList = memberRepository.findAll();
+        /*List<Follow> followerList = followRepository.findByFollowId(memberId);
+        log.info("********** FollowService /follows/:userid/follow - followerList : {}", followerList);
+        List<MemberDTO> listFollower = new ArrayList<>();
+        for (Follow follow : followerList) {
+            MemberDTO member = new MemberDTO(follow.getMember());
+            listFollower.add(member);
+        }*/
+//        log.info("********** FollowService /follows/:userid/follow - followers : {}", listFollower);
+        return new FollowFollowing(memberList);
     }
 }
