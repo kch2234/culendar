@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,9 +29,12 @@ public class BoardController {
 
 
   // 게시글 전체 목록 (커뮤니티)
+//  public ResponseEntity<PageResponseDTO> list(@PathVariable("sort") String sort, @PathVariable("page") int page){
+//    log.info("**** AjaxBoardController GET /ajaxBoards/list/{} : ", page);
+
   @GetMapping("/list")
   public String list() {  // Model model, PageRequestDTO pageRequestDTO
-//    log.info("**** BoardController GET /boards/list");
+    log.info("**** BoardController GET /boards/list");
 //    Page<Board> result = boardService.getListWithPaging(pageRequestDTO);  // 페이징
 //    List<Board> contents = result.getContent();  // Board 주소(정보)들
 //    List<BoardDTO> list = new ArrayList<>();

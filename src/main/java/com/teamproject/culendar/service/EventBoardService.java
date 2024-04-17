@@ -1,12 +1,16 @@
 package com.teamproject.culendar.service;
 
+import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.EventBoard;
+import com.teamproject.culendar.domain.enumFiles.ProgramType;
+import com.teamproject.culendar.domain.program.Program;
 import com.teamproject.culendar.dto.EventBoardDTO;
 import com.teamproject.culendar.dto.EventBoardForm;
 import com.teamproject.culendar.dto.PageRequestDTO;
 import com.teamproject.culendar.repository.EventBoardRepository;
 import com.teamproject.culendar.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 public class EventBoardService {
@@ -30,16 +35,6 @@ public class EventBoardService {
     return savedBoard.getId();
   }
 
-//  // 모임 목록 불러오기 (페이징 X)
-//  public List<BoardDTO> getList() {
-//    List<Board> all = eventBoardRepository.findAll();
-//    List<BoardDTO> list = all.stream()
-//        .map(b -> new BoardDTO(b))
-//        .collect(Collectors.toList());
-//
-//    return list;
-//  }
-
   // 모임 목록 불러오기
   public Page<EventBoard> getListWithPaging(PageRequestDTO pageRequestDTO) {
     Pageable pageable = PageRequest.of(
@@ -49,6 +44,17 @@ public class EventBoardService {
 
     Page<EventBoard> result = eventBoardRepository.findAll(pageable);
 
+    return result;
+  }
+
+  // 게시글 프로그램타입별 목록 불러오기
+  public Page<EventBoard> getListWithProgramType(PageRequestDTO pageRequestDTO, ProgramType programType) {
+    Pageable pageable = PageRequest.of(
+        pageRequestDTO.getPage() - 1,
+        pageRequestDTO.getSize(),
+        Sort.by("id").descending());
+
+    Page<EventBoard> result = eventBoardRepository.findByProgramType(programType, pageable);
     return result;
   }
 
@@ -69,7 +75,6 @@ public class EventBoardService {
     findEventBoard.setTitle(eventBoardForm.getTitle());
     findEventBoard.setContent(eventBoardForm.getContent());
   }
-
 
 
 }

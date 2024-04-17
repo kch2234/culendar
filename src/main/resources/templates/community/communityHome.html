@@ -20,9 +20,9 @@
                                 <div class="post-meta"></div>
                             </div>
                             <!--  TODO 북마크 데이터로 인기글 조건 걸어서 필터링 / 텍스트 링크 -> 영역 링크로 변경  -->
-                            <div class="news-contents mb-4" th:each="board : ${list}">
-                                <h3><a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}">인기글1 제목</a></h3>
-                                <span class="post-meta-2"><a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.content}">인기글1 내용</a></span>
+                            <div class="news-contents mb-4" th:each="board, index : ${list}" th:if="${index == 0}">
+                                <h3><a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}">게시글 제목</a></h3>
+                                <span class="post-meta-2" th:text="${board.content}">게시글 내용</span>
                             </div>
                             <div class="news-contents mb-4"></div>
                             <p class="mb-0"><a href="#" class="read-more-arrow">
@@ -107,7 +107,7 @@
                             <div class="news-contents mb-4">
                                 <h3><a href="#">게시글 제목</a></h3>
                                 <p>게시글 내용</p>
-                                
+
                             </div>
                             <p class="mb-0"><a href="#" class="read-more-arrow">
                                 <svg class="bi bi-arrow-right"
@@ -144,14 +144,14 @@
                         </tr>
                     </thead>
                     <tbody class="col-12" id="listContainer">  <!--  게시글 리스트  -->
-                        <!--  동적으로 추가  -->
+                        <!--  NOTE 동적으로 추가  -->
                     </tbody>  <!--  row 게시글 리스트  -->
                 </table>  <!--  row 리스트 헤더 영역  -->
 
                     <div class="row text-start pt-5 border-top">  <!--  페이징 영역  -->
                         <div class="col-mb-12">
                             <div class="custom-pagination">
-                                <!--  동적으로 추가  -->
+                                <!--  NOTE 동적으로 추가  -->
                             </div>  <!--  custom-pagination  -->
                         </div>  <!-- col-mb-12   -->
                     </div>  <!-- row text-start pt-5 border-top 검색창+페이징 영역   -->
@@ -165,89 +165,109 @@
             $(document).ready(function () {
                 let currPage = 1;
 
-                // 페이지 로딩 후 실행
-                getAllList("ALL", 1);
+            // 페이지 로딩 후 실행
+            getAllList("ALL", 1);
 
-                function getAllList(sort, page) {
-                    console.log("getAllList! page: " + page);
-                    currPage = page;
-                    $.ajax({
-                        type: "get",
-                        url: "/ajaxBoards/list/" + sort + "/" + page,
-                        success: function (result) {
-                            console.log("게시글 목록 요청 성공!");
-                            console.log(result);
-                            // 게시글 목록 화면에 띄우기
-                            printBoardList(result.list);
-                            // 게시글 페이지네이션 화면에 띄우기
-                            printPagination(result, sort);
+            function getAllList(sort, page) {
+                console.log("getAllList! page: " + page);
+            currPage = page;
+            $.ajax({
+                type: "get",
+            url: "/ajaxClubs/list/" + sort + "/" + page,
+            success: function (result) {
+                console.log("게시글 목록 요청 성공!");
+            console.log(result);
+            // 게시글 목록 화면에 띄우기
+            printBoardList(result.eventList);
+            // 게시글 페이지네이션 화면에 띄우기
+            printPagination(result, sort);
                         },
-                        error: function (e) {
-                            console.log("게시글 목록 요청 실패....");
-                            console.log(e);
+            error: function (e) {
+                console.log("게시글 목록 요청 실패....");
+            console.log(e);
                         },
                     });
                 }
 
-                function printBoardList(list) {
-                    var html = '';
-                    for (let i = 0; i < list.length; i++) {
-                        html += '<tr>'
-                        html += '<td><a>' + list[i].boardType + '</a></td>';
-                        html += '<td><a href="/boards/' + list[i].id + '">' + list[i].title + '</a></td>';
-                        html += '<td><a>' + list[i].memberDTO.username + '</a></td>';
-                        html += '</tr>';
+            // 모임 목록 띄우는 함수
+            function printBoardList(eventList) {
+                        var html = "";
+            for (let i = 0; i < eventList.length; i++) {
+                html += '<div class="card">';
+            html += '<div class="thumbnail"></div>';
+            html +=
+            '<h3><a href="/clubs/' +
+                            eventList[i].id +
+                            '">' +
+                eventList[i].title +
+                "</h3>";
+            html +=
+            '<p><a href="/clubs/' +
+                            eventList[i].id +
+                            '">' +
+                eventList[i].content +
+                "</p>";
+                        }
+            $("#eventListContainer").html(html);
+            }
+
+            // 모임 Pagination 띄우는 함수
+            function printPagination(pageDTO, sort) {
+                let html = "";
+                html += '<span class="page-item"';
+                if (pageDTO.prev == false) {
+                html += "disabled";
+                }
+                html += '><a href="' + (pageDTO.startPage - 1);
+                html += '" class="page-link" data-sort="' + sort + '">Previous</a></span>';
+
+                for (let i = 0; i < pageDTO.pageNumList.length; i++) {
+                    html += '<span class="page-item ';
+                    if (pageDTO.pageNumList[i] == currPage) {
+                        html += "active";
                     }
-                    $('#listContainer').html(html);
+                    html += '"><a href="' + pageDTO.pageNumList[i];
+                    html +=
+                        '" class="page-link" data-sort="' +
+                        sort +
+                        '">' +
+                        pageDTO.pageNumList[i] +
+                        "</a></span>";
                 }
 
-                // 댓글 Pagination 띄우는 함수
-                function printPagination(pageDTO, sort) {
-                    let html = "";
-
-                    html += '<span class="page-item"';
-                    if (pageDTO.prev == false) { html += 'disabled'; }
-                    html += '><a href="' + (pageDTO.startPage - 1);
-                    html += '" class="page-link" data-sort="'+ sort +'">Previous</a></span>';
-
-                    for (let i = 0; i < pageDTO.pageNumList.length; i++) {
-                        html += '<span class="page-item ';
-                        if (pageDTO.pageNumList[i] == currPage) { html += 'active'; }
-                        html += '"><a href="' + pageDTO.pageNumList[i];
-                        html += '" class="page-link" data-sort="'+ sort +'">' + pageDTO.pageNumList[i] + '</a></span>';
-                    }
-
-                    html += '<span class="page-item"';
-                    if (pageDTO.next == false) { html += 'disabled'; }
-                    html += '><a href="' + (pageDTO.endPage + 1);
-                    html += '" class="page-link" data-sort="'+ sort +'">Next</a></span>';
-
-                    $(".custom-pagination").html(html); // 부착!
+                html += '<span class="page-item"';
+                if (pageDTO.next == false) {
+                    html += "disabled";
                 }
+                html += '><a href="' + (pageDTO.endPage + 1);
+                html += '" class="page-link" data-sort="' + sort + '">Next</a></span>';
 
-                $(".custom-pagination").on("click", "a.page-link", function(e){
-                    e.preventDefault(); // <a> 태그 이동기능 삭제
-                    let pageNum = $(this).attr("href"); // <a> 태그 href 속성에 담아둔 이동할 페이지번호 꺼내기
+                $(".custom-pagination").html(html);
+                            }
+
+                $(".custom-pagination").on("click", "a.page-link", function (e) {
+                    e.preventDefault();
+                    let pageNum = $(this).attr("href");
                     let sort = $(this).data("sort");
                     getAllList(sort, pageNum);
                 });
 
-                $("#btnBest").on("click", function(){
+                $("#btnBest").on("click", function () {
                     getAllList("BEST", 1);
                 });
-                $("#btnAll").on("click", function(){
+                $("#btnAll").on("click", function () {
                     getAllList("ALL", 1);
                 });
-                $("#btnInfo").on("click", function(){
+                $("#btnInfo").on("click", function () {
                     getAllList("INFO", 1);
                 });
-                $("#btnReview").on("click", function(){
+                $("#btnReview").on("click", function () {
                     getAllList("REVIEW", 1);
                 });
 
 
             });
-        </script>
+        </script >
 
     </th:block>
 </th:block>
