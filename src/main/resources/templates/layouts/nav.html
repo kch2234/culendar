@@ -42,8 +42,8 @@
 
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a th:href="@{/}" class="dropdown-item">프로필</a></li>
-                        <li><a th:href="@{/}" class="dropdown-item">설정</a></li>
+                        <li><a th:href="@{/members/{id}(id=${#authentication.name})}" class="dropdown-item">프로필</a></li>
+                        <li><a th:href="@{/members/{id}/setting(id=${#authentication.name})}" class="dropdown-item">설정</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
