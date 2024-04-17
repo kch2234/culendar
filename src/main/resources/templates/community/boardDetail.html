@@ -60,13 +60,15 @@
                                     th:onclick="|location.href='@{/boards/{id}/modify(id=${board.id})}'|">수정
                             </button>
                             <form action="" th:action="@{/boards/{id}/delete(id=${board.id})}" method="post">
-                                <button type="submit" class="btn btn-outline-secondary">삭제</button>  <!--  TODO 삭제 확인 모달   -->
+                                <button type="submit" class="btn btn-outline-secondary">삭제</button>
+                                <!--  TODO 삭제 확인 모달   -->
                             </form>
                         </th:block>
                     </th:block>
                 </div>
                 <div class="col-2">
-                    <button sec:authorize="isAuthenticated()" type="button" class="btn btn-outline-secondary">북마크</button>
+                    <button sec:authorize="isAuthenticated()" type="button" class="btn btn-outline-secondary">북마크
+                    </button>
                 </div>
 
             </div>
@@ -163,37 +165,41 @@
 
 
             <!--  프로필 이미지 + 회원 정보 영역  -->
-            <div class="row">
-                <div class="col-md-6 mb-4 mb-lg-0 col-lg-4">
-                    <div class="news-item">
-                        <div class="vcard d-flex mb-4">  <!--  프로필 이미지  -->
-                            <div class="img-wrap">
-                                <img th:src="@{/sbadmin/images/person_1.jpg}" alt="Image" class="img-fluid">
-                            </div>
-                            <div class="post-meta"></div>
+            <div class="row d-flex justify-content-center mt-5 mb-5">
+
+                <div class="col-6">
+                    <!-- 프로필 이미지 -->
+                    <div class="row mb-3 justify-content-center">
+                        <div class="col-4">
+                            <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid">
                         </div>
-                        <div class="news-contents mb-4">  <!--  회원 정보  -->
-                            <button type="button" class="btn btn-primary" th:onclick="">Follow</button>
-                            <!--  todo 회원 팔로우  -->
-                            <div class="form-group">
-                                <label for="username">닉네임</label>
-                                <input type="text" class="form-control" th:value="${board.memberDTO.username}" id="username"
-                                       readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="location">지역</label>
-                                <input type="text" class="form-control" th:value="${board.memberDTO.location}" id="location"
-                                       readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="introduction">한줄소개</label>
-                                <input type="text" class="form-control" th:value="${board.memberDTO.introduction}"
-                                       id="introduction" readonly>
-                            </div>
-                        </div>  <!--  news-contents 회원 정보 영역  -->
-                    </div>  <!--  news-item 프로필 이미지 + 회원 정보 영역  -->
+                    </div>
+
+                    <!-- 닉네임, 팔로우 버튼 -->
+                    <div class="row text-center mb-3">
+                        <div class="col-6 text-end">
+                            <div class="badge text-bg-secondary fs-4 d-inline-block" th:text="${board.getMemberDTO().getUsername()}"></div>
+                        </div>
+                        <div class="col-6 text-start">
+                            <div sec:authorize="isAuthenticated()" class="badge text-bg-primary fs-6">Follow</div>
+                        </div>
+                    </div>
+
+                    <!-- 지역, 소개 -->
+                    <div class="row text-center justify-content-center">
+                        <div class="col-3 text-end">
+                            <div class="badge text-bg-secondary fs-6" th:text="${board.getMemberDTO().getLocation().value}"></div>
+                        </div>
+                        <div class="col-auto text-start">
+                            <div class="badge text-bg-secondary fs-6" th:text="${board.getMemberDTO().getIntroduction()}"></div>
+
+                        </div>
+                    </div>
+
                 </div>
-            </div> <!--  col-md-6 mb-4 mb-lg-0 col-lg-4 작성자 영역 카드  -->
+
+
+            </div>
 
             <!-- 댓글 Card todo 댓글  -->
             <div class="row">
@@ -306,7 +312,7 @@
                 // 현재 로그인이 되어 있다면 회원 id를, 아니면 null을 저장
                 var member = [[${member}]]
                 var memberId
-                if(member == null) {
+                if (member == null) {
                     memberId = 0;
                 } else {
                     memberId = member.id;
