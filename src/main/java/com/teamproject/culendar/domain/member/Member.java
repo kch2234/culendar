@@ -2,6 +2,7 @@ package com.teamproject.culendar.domain.member;
 
 
 import com.teamproject.culendar.domain.enumFiles.Gender;
+import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.MemberType;
 import com.teamproject.culendar.domain.baseEntity.BaseEntityCreatedDate;
 import com.teamproject.culendar.domain.enumFiles.Role;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+
 
 @Entity
 @Getter @Setter
@@ -33,9 +35,9 @@ public class Member extends BaseEntityCreatedDate {
   private int phone = 0;
   private String email = "";
 
-  //TODO 지역 ENUM 예정
-  //@Column(nullable = false)
-  //private Location location;
+  // 지역 ENUM
+  @Column(nullable = false)
+  private Location location;
 
   // 생년 월일
   @Column(nullable = false)
@@ -62,5 +64,6 @@ public class Member extends BaseEntityCreatedDate {
 
   // 권한
   private Role role;
+
 
 }

@@ -1,48 +1,651 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+
     <th:block th:fragment="content">
-        <h1>마이캘린더 페이지 영역</h1>
-        <div>  <!--  캘린더+사이드정보창 영역  -->
-            <span>  <!--  마이캘린더 영역  -->
-            <spna>캘린더 API 영역</spna>
-            <span name="dropdown-memberClendar"></span>  <!--  마이캘린더 종류  -->
-        </span>  <!--  마이캘린더 영역  -->
-            <span>  <!--  사이드 정보창 영역  -->
-            <span>사이드 정보창 영역</span>
-            <div name="myCalendarResult">  <!--  마이캘린더 내 작품 검색  -->
-                <div name="searchBar"></div>  <!--  검색창  -->
-                <div name="programCard"></div>  <!--  작품 카드  -->
-                <div name="programContent"></div>  <!--  작품 개요  -->
-                <div name="map"></div>
+
+        <!--                분류 모달-->
+        <div class="modal" id="type-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">분류 선택</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" th:each="pType : ${programType}" class="btn btn-primary pTypeBtn"
+                                th:text="${pType.value}" th:if="${pType.value !='기타'}"
+                                th:data-type="${pType.name()}"></button>
+
+                    </div>
+                </div>
             </div>
-                <div name="icon-horizonBar"></div>
-            <div name="favBoard">  <!--  인기 후기 영역  -->
-                <h1>인기 후기 영역</h1>
-                <div name="heading">인기 후기</div>  <!--  제목  -->
-                <div name="boardCard"></div>  <!--  게시글 카드  -->
+        </div>
+
+        <!--                지역 모달-->
+        <div class="modal" id="location-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">분류 선택</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" th:each="lType : ${locationType}" class="btn btn-primary lTypeBtn"
+                                th:text="${lType.value}" th:if="${lType.value !='기타'}"
+                                th:data-loc="${lType.name()}"></button>
+
+                    </div>
+                </div>
             </div>
-                <div name="icon-horizonBar"></div>
-            <div name="favMeeting">  <!--  임기 모임 영역  -->
-                <h1>인기 모임 영역</h1>
-                <div name="heading">인기 모임</div>  <!--  제목  -->
-                <div name="meetingCard"></div>  <!--  모임 카드  -->
+        </div>
+
+        <!--        일정 추가 모달-->
+        <div class="modal" id="addMyCalendar-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">달력 선택</h4>
+                        <div class="hidden-true" th:if="${member != null}">
+
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body" id="addMyCalContainer2">
+                        <div id="addMyCalendarBtnContainer2">
+                            <!--    내 캘린더 목록 및 캘린더 추가 버튼 위치 -->
+                        </div>
+
+                    </div>
+                </div>
             </div>
-        </span>  <!--  사이드 정보창 영역  -->
-        </div>  <!--  캘린더+사이드정보창 영역 END  -->
-        <div name="favMeeting">  <!-- 후기 작성 영역 -->
-            <div>
-                <div name="heading">후기 작성</div>  <!--  제목  -->
-                <div name="icon-horizon"></div>
+        </div>
+
+        <!--    내 달력 카테고리 모달-->
+        <div class="modal" id="calendar-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">달력 선택</h4>
+                        <div class="hidden-true" th:if="${member != null}">
+                            <div id="memberId" class="hidden-true"
+                                 th:data-memberId="${member.getId()}"></div>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body" id="addMyCalContainer">
+                        <div id="addMyCalendarBtnContainer">
+                            <!--    내 캘린더 목록 및 캘린더 추가 버튼 위치 -->
+                        </div>
+
+                    </div>
+                </div>
             </div>
-            <div name="cards">  <!--  카드 영역  -->
-                <h1>카드 영역</h1>
-                <span name="meetingCard"></span>  <!--  당일 가준 관람일이 지난 작품 카드 (관람한 작품)  -->
-                <span name="meetingCard"></span>
-                <span name="meetingCard"></span>
-                <span name="meetingCard"></span>
+        </div>
+
+        <!-- 메인 컨테이너 영역 -->
+        <div class="w-75 container m-auto">
+            <div class="row">
+                <!-- 달력 영역 -->
+                <div class="col-9" id="calendar"></div>
+
+                <!-- TODO 사이드 검색창 -->
+                <div class="col ml-2 h-100" id="side-search">
+                    <form class="container p-0">
+                        <!-- TODO 검색창 -->
+                        <div class="row p-0" style="height: 10%">
+                            <!-- 버튼 비활성화 -->
+                            <div class="col-3 p-0">
+                                <button type="submit" id="search-btn"
+                                        class="w-100 h-100 btn-dark fa-solid fa-magnifying-glass"></button>
+                            </div>
+                            <div class="dropdown col-8 p-0">
+                                <input type="text" id="search-text" class="p-0 w-100 form-control col dropdown-toggle"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                <ul class="dropdown-menu overflow-scroll" id="searched-list">
+                                    <!-- 동적으로 드롭다운 검색 결과 -->
+                                </ul>
+                            </div>
+
+                        </div>
+                        <!-- TODO 검색 결과 -->
+                        <div class="row p-0">
+
+                            <!-- 검색 결과 양식 -->
+                            <div class="card p-0 overflow-scroll" id="search-info-box">
+
+                            </div>
+
+
+                        </div>
+
+                    </form>
+                </div>
+
             </div>
-        </div> <!--  후기 작성 영역  -->
+        </div>
+
+
+        <script th:inline="javascript">
+            // 달력
+            $(document).ready(function () {
+
+
+                // ********** 사용하는 변수들 **********
+
+                var calendarEl = document.getElementById('calendar');
+                var modalProgramType = "DRAMA";
+                var modalLocationType = "SEOUL";
+                var modalProgramTypeName;
+                var modalLocationTypeName;
+                var myCalendarList = [[${myCalendarList.get(0).id}]];
+                var userId = [[${member.id}]];
+                var programId;
+                var memberId = [[${member.id}]];
+
+                console.log(myCalendarList);
+                console.log(userId);
+
+                // ********** 페이지 로딩시 실행할 함수들 **********
+
+                // 검색창에 값변경시
+                $('#search-text').on('keyup', function () {
+                    console.log($(this).val());
+                    $.ajax({
+                        url: '/program/search/' + $(this).val(),
+                        type: 'GET',
+                        success: function (data) {
+                            console.log(data);
+                            changeDropdown(data);
+                            programId = null;
+                            // 드롭다운 보여주기
+                            $('.dropdown-menu').css('display', 'block')
+                        }
+                    });
+                });
+
+                // 달력
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+
+                    customButtons: {
+                        programType: {
+                            text: '분류',
+                            click: function () {
+                                // 모달 display block으로 변경
+                                $('#type-modal').css('display', 'block');
+                                console.log();
+
+
+                            }
+                        },
+                        location: {
+                            text: '지역',
+                            click: function () {
+                                // 모달 띄우기
+                                $('#location-modal').css('display', 'block');
+
+                            }
+                        },
+                        myCalendar: {
+                            text: '내 달력',
+                            click: function () {
+                                $.ajax({
+                                    url: '/calendar/myCalendarNameList/' + userId,
+                                    type: 'GET',
+                                    success: function (data) {
+                                        console.log(data);
+                                        let html = '';
+                                        data.forEach(function (myCalendar) {
+                                            html += '<button class="btn btn-primary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
+                                        });
+                                        html += '<br><input type="text" id="newCalendarName" placeholder="새로운 캘린더 이름"><button id="addNewCalendarBtn" class="btn btn-primary">추가</button>';
+                                        $('#addMyCalContainer').html(html);
+
+                                        $('#calendar-modal').css('display', 'block');
+
+                                    }
+                                });
+
+
+                            }
+                        }
+                    },
+                    headerToolbar: {
+                        left: 'prev programType location myCalendar',
+                        center: 'title',
+                        right: 'next'
+                    },
+                    initialView: 'dayGridMonth',
+                    locale: 'ko',
+                    navLinks: false,
+                    showNonCurrentDates: false,
+                    editable: false,
+                    dayMaxEvents: true,
+                    displayEventTime: false,
+                    eventClick: function (info) {
+                        // 클릭한 이벤트의 id를 가져와서 작품 페이지로 이동
+                        // TODO 사이드 창으로 띄우기
+                        console.log(info.event.id);
+                        getProgramData(info.event.id);
+                        // openProgramPage(info.event.id);
+
+                    },
+
+
+                    // 달력 날짜에 "일"을 제거
+                    dayCellContent: function (info) {
+                        var number = document.createElement("a");
+                        number.classList.add("fc-daygrid-day-number");
+                        number.innerHTML = info.dayNumberText.replace("일", " ");
+                        if (info.view.type === "dayGridMonth") {
+                            return {
+                                html: number.outerHTML
+                            };
+                        }
+                        return {
+                            domNodes: []
+                        };
+                    },
+
+                    datesSet: (info) => {
+                        // 현재 달력에 표시된 월 가져오기
+                        var startMonth = info.startStr;
+
+                    },
+
+                    // ajax 통신으로 fullcalendar 이벤트 가져오기
+                    events: {
+                        url: '/calendar/myCalendarList', // 이벤트를 가져올 서버의 URL
+                        method: 'GET', // HTTP 요청 방식
+                        extraParams: function () { // 서버에 전달할 추가적인 파라미터
+                            return {
+                                programType: modalProgramType,
+                                location: modalLocationType,
+                                calendarId: myCalendarList
+                            };
+                        },
+                        failure: function (e) { // 요청이 실패했을 때 호출되는 콜백 함수
+                            alert('there was an error while fetching events!');
+                            console.log(e);
+                        },
+                        textColor: 'black' // 이벤트의 글자색
+                    }
+
+
+                });
+
+                calendar.render();
+
+                // ********** 클릭시 이벤트들 **********
+
+                // 모달 닫기
+                $(document).on('click', '.close', function () {
+                    $('#type-modal').css('display', 'none');
+                    $('#location-modal').css('display', 'none');
+                    $('#calendar-modal').css('display', 'none');
+                    $('#addMyCalendar-modal').css('display', 'none');
+
+                });
+
+                // 작품 분류 모달 내에서 분류 선택시 달력 업데이트
+                $(document).on('click', ".pTypeBtn", function () {
+                    modalProgramType = $(this).data('type');
+                    modalProgramTypeName = $(this).text();
+                    $('#type-modal').css('display', 'none');
+                    // $('#calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div:nth-child(1) > button.fc-programType-button.fc-button.fc-button-primary').text(modalProgramTypeName);
+                    calendar.refetchEvents();
+
+                });
+
+                // 지역 모달 내에서 지역 선택시 달력 업데이트
+                $(document).on('click', ".lTypeBtn", function () {
+                    modalLocationType = $(this).data('loc');
+                    modalLocationTypeName = $(this).text();
+                    $('#location-modal').css('display', 'none');
+                    // $('#calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div:nth-child(1) > button.fc-location-button.fc-button.fc-button-primary').text(modalLocationTypeName);
+
+                    calendar.refetchEvents();
+
+                });
+
+                // 내 달력 모달 내에서 달력 선택시 달력 업데이트
+                $(document).on('click', '.cal-name', function () {
+                    let myCalId = $(this).data('mycalid');
+                    console.log(myCalId);
+                    myCalendarList = [myCalId];
+                    console.log(myCalendarList);
+                    $('#calendar-modal').css('display', 'none');
+                    calendar.refetchEvents();
+                });
+
+                // 일정 모달 내에 새로운 캘린더 추가 버튼 클릭시
+                $('#addMyCalContainer').on('click', '#addNewCalendarBtn', function () {
+                    let newCalendarName = $('#newCalendarName').val();
+                    console.log(newCalendarName);
+                    if (newCalendarName === '') {
+                        alert('캘린더 이름을 입력해주세요.');
+                        return;
+                    } else {
+
+                        let data = {
+                            memberId: userId,
+                            name: newCalendarName
+                        };
+                        $.ajax({
+                            type: 'POST',
+                            url: '/calendar/addNewCalendar',
+                            data: JSON.stringify(data),
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (result, status) {
+                                console.log(result);
+                                if (result === 'fail') {
+                                    alert('이미 존재하는 캘린더 이름입니다.');
+                                    return;
+                                }
+                                alert('새로운 캘린더가 추가되었습니다.');
+                                $('#addMyCalendar-modal').css('display', 'none');
+                            },
+                            error: function (error) {
+                                console.log(error);
+                                alert('캘린더 추가에 실패했습니다.');
+                            }
+                        });
+                    }
+
+                });
+
+                // 검색 버튼 클릭시 기본 이벤트 제거
+                $('#search-btn').click(function (e) {
+                    e.preventDefault();
+                });
+
+                // 드롭다운 외부 클릭시 드롭다운 숨기기
+                $(document).mouseup(function (e) {
+                    var container = $(".dropdown");
+                    if (!container.is(e.target) && container.has(e.target).length === 0) {
+                        container.find('.dropdown-menu').css('display', 'none');
+                    }
+                });
+
+                // 드롭다운 내부 클릭시 input에 값 넣기
+                $(document).on('click', '.dropdown-item', function () {
+                    $('#search-text').val($(this).text());
+                    programId = $(this).data('programid');
+                    $('.dropdown-menu').css('display', 'none');
+                });
+
+                // TODO 검색 버튼 클릭시 카드 내부 변경
+                $('#search-btn').click(function () {
+                    console.log(programId);
+                    if (programId === undefined) {
+                        alert('검색 결과를 선택해주세요.');
+                        return;
+                    } else if (programId === null) {
+                        alert('검색 결과가 없습니다.');
+                        return;
+                    } else if (programId !== null) {
+                        $.ajax({
+                            url: '/program/find/' + programId,
+                            type: 'GET',
+                            success: function (data) {
+                                console.log(data);
+
+                                changeSideInfo(data);
+
+                            },
+                            error: function (error) {
+                                console.log(error);
+                            }
+                        });
+                    }
+                });
+
+                // 사이드 정보창 일정 아이콘 클릭시 이벤트
+                $('#search-info-box').on('click', '.fa-clipboard', function () {
+
+                    // ajax로 내 달력 목록 가져오기
+                    $.ajax({
+                        url: '/calendar/myCalendarNameList/' + memberId,
+                        type: 'GET',
+                        success: function (data) {
+                            console.log(data);
+                            let html = '';
+                            data.forEach(function (myCalendar) {
+                                html += '<button class="btn btn-primary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
+                            });
+                            html += '<br><input type="text" id="newCalendarName" placeholder="새로운 캘린더 이름"><button id="addNewCalendarBtn" class="btn btn-primary">추가</button>';
+                            $('#addMyCalContainer2').html(html);
+
+                            $('#addMyCalendar-modal').modal('show');
+                        }
+                    });
+                });
+
+                // 사이드 정보창 일정 모달 내에 달력 버튼 클릭시
+                $('#addMyCalContainer2').on('click', '.cal-name', function () {
+                    let myCalId = $(this).data('mycalid');
+                    console.log(myCalId);
+                    console.log(programId);
+                    // ajax로 내 달력에 일정 추가 POST방식
+                    let data = {
+                        calendarId: myCalId,
+                        programId: programId
+                    };
+
+                    console.log(data);
+                    $.ajax({
+                        type: 'POST',
+                        url: '/calendar/addProgramToCalendar',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (result, status) {
+                            console.log(result);
+
+                            if (result === 'fail') {
+                                alert('이미 추가된 일정입니다.');
+                                return;
+                            }
+                            alert('일정이 추가되었습니다.');
+                            $('#addMyCalendar-modal').modal('hide');
+                            calendar.refetchEvents();
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('일정 추가에 실패했습니다.');
+                        }
+                    });
+
+                });
+
+                // 사이드 정보창 일정 모달 내에 새로운 캘린더 추가 버튼 클릭시
+                $('#addMyCalContainer2').on('click', '#addNewCalendarBtn', function () {
+                    let newCalendarName = $('#newCalendarName').val();
+                    console.log(newCalendarName);
+                    if (newCalendarName === '') {
+                        alert('캘린더 이름을 입력해주세요.');
+                        return;
+                    } else {
+
+                        let data = {
+                            memberId: memberId,
+                            name: newCalendarName
+                        };
+                        $.ajax({
+                            type: 'POST',
+                            url: '/calendar/addNewCalendar',
+                            data: JSON.stringify(data),
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (result, status) {
+                                console.log(result);
+                                if (result === 'fail') {
+                                    alert('이미 존재하는 캘린더 이름입니다.');
+                                    return;
+                                }
+                                alert('새로운 캘린더가 추가되었습니다.');
+                                $('#addMyCalendar-modal').modal('hide');
+                            },
+                            error: function (error) {
+                                console.log(error);
+                                alert('캘린더 추가에 실패했습니다.');
+                            }
+                        });
+                    }
+
+                });
+
+
+                // 북마크 버튼 클릭시 이벤트
+                $('#search-info-box').on('click', '.fa-bookmark', function () {
+
+                    let data = {
+                        memberId: memberId,
+                        programId: programId
+                    };
+
+                    console.log(data);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/bkmark/addProgramBkmark',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (result, status) {
+                            console.log(result);
+
+                            if (result === 'fail') {
+                                alert('북마크에서 삭제 되었습니다.');
+                                return;
+                            }
+                            alert('북마크에 추가되었습니다.');
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('북마크 추가에 실패했습니다.');
+                        }
+                    });
+
+                });
+
+                // ********** 각종 함수들 **********
+
+                // 작품 클릭시 작품 페이지로 이동
+                function openProgramPage(id) {
+                    location.href = "/program/" + id;
+                }
+
+                // 검색창 드롭다운 내용 변경
+                function changeDropdown(data) {
+                    let html = '';
+                    data.forEach(function (program) {
+                        html += '<li><a class="dropdown-item" href="#" data-programId="' + program.id + '">' + program.title + '</a></li>';
+
+                    });
+                    $('#searched-list').html(html);
+                }
+
+                // 사이드 검색창 상세 정보 바꾸기
+                function changeSideInfo(data) {
+
+                    // ENUM으로 바꾸기
+                    var programType = data.programType;
+                    var location = data.location;
+
+                    if (programType === 'DRAMA') {
+                        programType = '연극';
+                    } else if (programType === 'MUSICAL') {
+                        programType = '뮤지컬/오페라';
+                    } else if (programType === 'EXHIBITION') {
+                        programType = '전시';
+                    } else if (programType === 'CONCERT') {
+                        programType = '음악/콘서트';
+                    } else if (programType === 'ETC') {
+                        programType = '기타';
+                    }
+
+                    if (location === 'SEOUL') {
+                        location = '서울';
+                    } else if (location === 'GYEONGGI') {
+                        location = '경기';
+                    } else if (location === 'INCHEON') {
+                        location = '인천';
+                    } else if (location === 'DAEJEON') {
+                        location = '대전';
+                    } else if (location === 'GWANGJU') {
+                        location = '광주';
+                    } else if (location === 'DAEGU') {
+                        location = '대구';
+                    } else if (location === 'BUSAN') {
+                        location = '부산';
+                    } else if (location === 'ULSAN') {
+                        location = '울산';
+                    } else if (location === 'SEJONG') {
+                        location = '세종';
+                    } else if (location === 'JEJU') {
+                        location = '제주';
+                    } else if (location === 'GANGWON') {
+                        location = '강원';
+                    } else if (location === 'CHUNGBUK') {
+                        location = '충북';
+                    } else if (location === 'CHUNGNAM') {
+                        location = '충남';
+                    } else if (location === 'JEONBUK') {
+                        location = '전북';
+                    } else if (location === 'JEONNAM') {
+                        location = '전남';
+                    } else if (location === 'GYEONGBUK') {
+                        location = '경북';
+                    } else if (location === 'GYEONGNAM') {
+                        location = '경남';
+                    }
+
+                    var programDate = data.startDate + ' ~ ' + data.endDate;
+
+                    let html = '';
+                    html += '<img src="' + data.thumbnail + '" class="card-img-top" alt="...">';
+                    html += '<div class="card-body">';
+                    html += '<h5 class="card-title">' + data.title + '</h5>';
+                    html += '<p class="card-text">지도 예정</p>';
+                    html += '</div>';
+                    html += '<ul class="list-group list-group-flush">';
+                    html += '<li class="list-group-item">' + programType + '</li>';
+                    html += '<li class="list-group-item">' + location + '</li>';
+                    html += '<li class="list-group-item">' + +'</li>';
+                    html += '<li class="list-group-item">' + programDate + '</li>';
+                    html += '</ul>';
+                    html += '<div class="card-body">';
+                    html += '<div class="col p-0">';
+                    html += '<button id="#bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>';
+                    html += '</div>';
+                    html += '<div class="col p-0">';
+                    html += '<button class="fa-regular fa-clipboard w-75 h-75"></button>';
+                    html += '</div>';
+                    html += '</div>';
+
+                    $('#search-info-box').html(html);
+
+                }
+
+                // 프로그램 데이터 받아오기
+                function getProgramData(id) {
+                    $.ajax({
+                        url: '/program/find/' + id,
+                        type: 'GET',
+                        success: function (data) {
+                            console.log(data);
+                            changeSideInfo(data);
+                            return data;
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        },
+                    });
+                }
+            });
+        </script>
+
+
     </th:block>
 </th:block>
 </html>

@@ -1,6 +1,9 @@
 package com.teamproject.culendar.controller;
 
 import com.teamproject.culendar.domain.board.EventBoard;
+import com.teamproject.culendar.domain.enumFiles.BoardType;
+import com.teamproject.culendar.domain.enumFiles.Gender;
+import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.dto.*;
 import com.teamproject.culendar.security.domain.CustomMember;
 import com.teamproject.culendar.service.EventBoardService;
@@ -12,6 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +33,7 @@ public class ClubController {
   // 모임 목록 (클럽)
   @GetMapping("/list")
   public String list(Model model, PageRequestDTO pageRequestDTO) {
-    log.info("**** ClubController GET /boards/list");
+    log.info("**** ClubController GET /clubs/list");
     Page<EventBoard> result = eventBoardService.getListWithPaging(pageRequestDTO);
     List<EventBoard> contents = result.getContent();
     List<EventBoardDTO> list = new ArrayList<>();
@@ -45,14 +52,22 @@ public class ClubController {
 
   // 모임 작성
   @GetMapping("/add")
-  public String addForm(@ModelAttribute BoardForm eventBoardForm, @AuthenticationPrincipal CustomMember customMember) {
-    log.info("***** ClubController GET /boards/add");
+  public String addForm(@ModelAttribute EventBoardForm eventBoardForm, Model model, @AuthenticationPrincipal CustomMember customMember) {
+    log.info("***** ClubController GET /clubs/add");
+    model.addAttribute("locaton", Location.values());
+    model.addAttribute("filterLocaton", Location.values());
 
     return "club/eventAdd";
   }
   @PostMapping("/add")
   public String addPRo(EventBoardForm eventBoardForm, @AuthenticationPrincipal CustomMember customMember) {
-    log.info("**** ClubController POST /boards/add - eventBoardForm : {}", eventBoardForm);
+    log.info("**** ClubController POST /clubs/add - eventBoardForm : {}", eventBoardForm);
+    LocalDateTime eventDate = eventBoardForm.getEventDate().toInstant() // Date -> Instant
+                                                .atZone(ZoneId.systemDefault()) // Instant -> ZonedDateTime
+                                                .toLocalDateTime();
+    LocalDateTime deadlineDate = eventBoardForm.getDeadlineDate().toInstant() // Date -> Instant
+      .atZone(ZoneId.systemDefault()) // Instant -> ZonedDateTime
+      .toLocalDateTime();
     MemberDTO member = customMember.getMember();
     eventBoardForm.setMember(member.toEntity());
     Long save = eventBoardService.save(eventBoardForm);
@@ -74,8 +89,8 @@ public class ClubController {
 
   // 모임 삭제
   @PostMapping("/{id}/delete")
-  public String delete(@PathVariable("id") Long id, String writer) {
-    log.info("**** ClubController POST /boards/:id/delete - id : {}", id);
+  public String delete(@PathVariable("id") Long id) {
+    log.info("**** ClubController POST /clubs/:id/delete - id : {}", id);
     eventBoardService.deleteOneBoard(id);
     return "redirect:clubs/list";
   }
@@ -83,15 +98,15 @@ public class ClubController {
   // 모임 수정
   @GetMapping("/{id}/modify")
   public String modifyForm(@PathVariable("id") Long id, Model model) {
-    log.info("**** ClubController GET /boards/:id/modify - id : {}", id);
+    log.info("**** ClubController GET /clubs/:id/modify - id : {}", id);
     EventBoardDTO eventBoard = eventBoardService.getOneBoard(id);
     model.addAttribute("eventBoard", eventBoard);
     return "club/eventModify";
   }
   @PostMapping("/{id}/modify")
   public String modifyPro(@PathVariable("id") Long id, EventBoardForm eventBoardForm) {
-    log.info("**** ClubController GET /boards/:id/modify - id : {}", id);
-    log.info("**** ClubController GET /boards/:id/modify - eventBoardForm : {}", eventBoardForm);
+    log.info("**** ClubController GET /clubs/:id/modify - id : {}", id);
+    log.info("**** ClubController GET /clubs/:id/modify - eventBoardForm : {}", eventBoardForm);
     eventBoardService.updateOneBoard(eventBoardForm);
     return "redirect:/clubs/{id}";
   }

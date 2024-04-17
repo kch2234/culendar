@@ -1,35 +1,481 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
-    <h1>게시글 상세 페이지 영역</h1>
+    <th:block th:fragment="content">
 
-    <div name="boardDetailHeader">  <!--  게시글 영역 헤더  -->
-        <span name="title"></span>  <!--  제목  -->
-        <span name="button">  <!--  버튼 영역  -->
-            <span name="editBoard-button"></span>  <!--  수정 버튼  -->
-            <span name="deleteBoard-button"></span>  <!--  삭제 버튼  -->
-            <span name="bookmark-button"></span>  <!--  북마크 버튼  -->
-        </span>
-    </div>  <!--  게시글 영역 헤더 END  -->
-    <div name="programInfoCard"></div>  <!--  작품 정보 영역 카드  -->
-    <div name="content"></div>  <!--  내용  -->
-    <div name="writerCard"></div>  <!--  작성자 영역 카드  -->
-    <div name="reply">  <!--  댓글 영역  -->
-        <div name="replyHeader">  <!--  댓글 영역 헤더  -->
-            <div name="heading">댓글</div>
-            <div name="horizon-line"></div>
-        </div>
-        <div name="replyApply">  <!--  댓글 작성 영역  -->
-            <span name="writer">작성자</span>
-            <span name="content">내용</span>
-            <span name="submit-button">등록</span>
-        </div>
-        <div name="replyList">  <!--  댓글 리스트 영역  -->
-            <span name="writer">작성자</span>
-            <span name="content">내용</span>
-            <span name="createDate">등록일시</span>
-        </div>
-    </div>
+    <div class="untree_co-section bg-light">  <!--  배경 영역  -->
 
+        <div class="form-group">  <!--  게시글 제목  -->
+            <label for="title"></label>
+            <input type="text" class="form-control" th:field="${board.title}" id="title" readonly>
+        </div>
+            <button type="button" class="btn btn-success" th:onclick="|location.href='@{/boards/{id}/modify(id=${board.id})}'|">수정</button>
+            <form action="" th:action="@{/boards/{id}/delete(id=${board.id})}" method="post">
+                <button type="submit" class="btn btn-danger">삭제</button>  <!--  TODO 삭제 확인 모달   -->
+            </form>
+
+        <div class="container">  <!--  포스터 + 작품 정보 카드  -->
+            <div class="row">
+                <div class="col-lg-7">  <!--  포스터 영역  -->
+                    <div class="img-shadow">
+                        <div class="owl-single no-dots owl-carousel owl-loaded">
+                            <div class="owl-stage-outer owl-height" style="height: 388.25px;">
+                                <div class="owl-stage" style="transform: translate3d(-1530px, 0px, 0px); transition: all 0s ease 0s; width: 3570px;">
+                                    <div class="owl-item cloned" style="width: 510px;">
+                                        <div class="owl-item active" style="width: 510px;">
+                                            <div class="item">
+                                                <img th:src="@{/sbadmin/images/dashboard.jpg}">
+                                            </div>  <!--  item  -->
+                                        </div>  <!--  owl-item active  -->
+                                    </div>  <!-- owl-item cloned   -->
+                                </div>  <!--  owl-stage  -->
+                            </div>  <!--  owl-single no-dots owl-carousel owl-loaded  -->
+                        </div>  <!--  img-shadow  썸네일 그림자 영역  -->
+
+                    </div> <!-- col-md-4 -->
+                </div> <!-- row 포스터 -->
+
+                <div class="col-md-6 mb-4 mb-lg-0 col-lg-3" data-aos="fade-up" data-aos-delay="0">
+                    <div class="service">
+                        <div class="service-contents">
+                            <span>
+                                <p>보통이에요 58%</p>  <!--  작품의 평균 문장형 평가  -->
+                                <form>  <!--  toggle todo DB연결  -->
+                                    <label for="schedule">캘린더 등록 toggle</label>
+                                    <input type="checkbox" name="schedule" value="unregister" id="schedule">
+                                    <label for="BKmark">북마크 toggle</label>
+                                    <input type="checkbox" name="BKmark" value="unBKmark" id="BKmark">
+                                </form>
+                            </span>  <!--  toggle  -->
+                            <div>  <!--  todo DB, 링크 연결  -->
+<!--                                <div class="form-group">  &lt;!&ndash;  게시글 내용  &ndash;&gt;-->
+<!--                                    <label for="programTitle">작품 제목</label>-->
+<!--                                    <span id="programTitle" th:text="${board.program.title}"></span>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">  &lt;!&ndash;  게시글 내용  &ndash;&gt;-->
+<!--                                    <label for="programStartDate">작품 제목</label>-->
+<!--                                    <span id="programStartDate" th:text="${board.program.programStartDate}"></span>-->
+<!--                                </div>-->
+                            </div>
+                            <div>  <!--  todo DB연결  -->
+                                <button type="button" class="btn btn-primary">좋아요</button>  <!--  todo 작품의 내 문장형 평가  -->
+                                <label for="rating">내 후기</label>
+                                <input type="checkbox" name="rating" value="notExist" id="rating">
+                            </div>
+                            <div>지도 영역</div>  <!--  todo 지도 연결  -->
+                        </div> <!-- service-contents -->
+                    </div> <!-- service -->
+                </div>  <!--  row 작품 정보  -->
+            </div>  <!--  row  -->
+        </div>  <!-- container 포스터 + 작품 정보 카드 -->
+
+        <div class="form-group">  <!--  게시글 내용  -->
+            <label for="content"></label>
+            <textarea class="form-control" th:field="${board.content}" id="content" rows="20" readonly></textarea>
+        </div>
+        
+        <div class="col-md-6 mb-4 mb-lg-0 col-lg-4">
+            <div class="news-item">  <!--  프로필 이미지 + 회원 정보 영역  -->
+                <div class="vcard d-flex mb-4">  <!--  프로필 이미지  -->
+                    <div class="img-wrap">
+                        <img th:src="@{/sbadmin/images/person_1.jpg}" alt="Image" class="img-fluid">
+                    </div>
+                    <div class="post-meta"></div>
+                </div>
+                <div class="news-contents mb-4">  <!--  회원 정보  -->
+                    <button type="button" class="btn btn-primary" th:onclick="">Follow</button>  <!--  todo 회원 팔로우  -->
+                    <div class="form-group">
+                        <label for="username">닉네임</label>
+                        <input type="text" class="form-control" th:value="${board.memberDTO.username}" id="username" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">지역</label>
+                        <input type="text" class="form-control" th:value="${board.memberDTO.location}" id="location" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="introduction">한줄소개</label>
+                        <input type="text" class="form-control" th:value="${board.memberDTO.introduction}" id="introduction" readonly>
+                    </div>
+                </div>  <!--  news-contents 회원 정보 영역  -->
+            </div>  <!--  news-item 프로필 이미지 + 회원 정보 영역  -->
+        </div>  <!--  col-md-6 mb-4 mb-lg-0 col-lg-4 작성자 영역 카드  -->
+
+        <!-- 댓글 Card todo 댓글  -->
+        <div class="card shadow mb-5">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Comments</h6>
+            </div>
+            <!-- 댓글 작성 폼 -->
+            <div class="card-body">
+                <form id="cmtForm">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="comment">
+                    </div>
+                    <button type="button" class="btn btn-primary" id="newCmtBtn">댓글등록</button>
+                </form>
+            </div>
+            <hr />
+            <!-- 댓글 리스트 : printReplyList 함수에서 동적으로 추가 -->
+            <div class="card-body" id="cmtListContainer">
+
+            </div>
+            <!-- 댓글 Pagination -->
+            <div class="card-body" id="cmtPagination">
+
+            </div>
+        </div>
+
+        <!-- 수정 모달 추가 -->
+        <div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="modifyModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modifyModalLabel">Comment Modify Modal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="modalCid" class="col-form-label">Comment Id</label>
+                                <input type="text" class="form-control" id="modalCid" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="modalCmt" class="col-form-label">Comment</label>
+                                <input type="text" class="form-control" id="modalCmt">
+                            </div>
+                            <div class="form-group">
+                                <label for="modalCmter" class="col-form-label">Commenter</label>
+                                <input type="text" class="form-control" id="modalCmter">
+                            </div>
+                            <div class="form-group">
+                                <label for="modalCmtDate" class="col-form-label">Comment Date</label>
+                                <input type="text" class="form-control" id="modalCmtDate" readonly>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="modalSaveBtn">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 답글 모달 추가 -->
+        <div class="modal fade" id="reCmtModal" tabindex="-1" aria-labelledby="reCmtModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reCmtModalLabel">Re-Comment Modal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="reCmt" class="col-form-label">Comment</label>
+                                <input type="text" class="form-control" id="reCmt">
+                            </div>
+                            <div class="form-group">
+                                <label for="reCmter" class="col-form-label">Commenter</label>
+                                <input type="text" class="form-control" id="reCmter">
+                            </div>
+                            <input type="hidden" id="reRefid"/>
+                            <input type="hidden" id="reStep"/>
+                            <input type="hidden" id="reLevel"/>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="reCmtSaveBtn">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>  <!--  untree_co-section bg-light 배경 영역  -->
+
+    <script th:inline="javascript">
+            $(document).ready(function(){
+              let boardIdVal = [[${board.id}]]; // 본문 글번호
+              let cmtListDiv = $("#cmtListContainer");  // 댓글 목록 컨테이너
+              let cmtPaginationDiv = $("#cmtPagination"); // 댓글 페이지네이션 컨테이너
+              let currPage = 1; // 현재 보고있는 댓글 페이지 번호 저장해둘 변수
+
+              getCommentList(1);  // 댓글 목록 요청 호출!
+
+
+              // ***** 댓글 목록 ********************
+              // 댓글 목록 요청 함수
+              function getCommentList(page) {
+                console.log("getCommentList! page: " + page);
+                currPage = page;
+                $.ajax({
+                  type: "get",
+                  url: "/comments/list/" + boardIdVal + "/" + page,
+                  success: function(result){
+                    console.log("댓글 목록 요청 성공!");
+                    console.log(result);
+                    // 댓글 목록 화면에 띄우기
+                    printCommentList(result.commentList);
+                    // 댓글 페이지네이션 화면에 띄우기
+                    printPagination(result.pageResponseDTO);
+                  },
+                  error: function(e){
+                    console.log("댓글 목록 요청 실패....");
+                    console.log(e);
+                  }
+                });
+              }
+              // 댓글 목록 화면에 출력하는 함수
+              function printCommentList(list) {
+                let html = '';
+                for(let i = 0; i < list.length; i++) {
+                  html += '<div class="row align-items-center p-2">';
+                  html += '<div>';
+                  let wid = 30 * list[i].level;
+                  html += '<img src="/comments/display/bgwhite.PNG" width="'+wid+'" height="16"/>';
+                  if(list[i].level > 0) {
+                    html += '<img src="/comments/display/arrow.PNG" width="30"/>';
+                  }
+                  html += '</div><div class="col mr-2">';
+                  html += '<div class="h5 mb-0 font-weight-bold text-gray-800">'+ list[i].comment +'</div>';
+                  html += '<div class="text-xs font-weight-bold text-primary mb-1">' + list[i].commenter;
+                  html += ' <span class="ml2 text-gray-500"> '+ displayTime(list[i].lastModifiedDate) +' </span></div></div>';
+                  html += '<div class="col-auto btn-group-sm">';
+                  html += '<button class="btn btn-info mr-1 reCmtBtn" data-refid="'+ list[i].refId +'" data-step="'+ list[i].step +'" data-level="'+ list[i].level +'">답글</button>';
+                  html += '<button class="btn btn-warning mr-1 cmtModifBtn" data-cmtid="'+ list[i].id +'">수정</button>';
+                  html += '<button class="btn btn-danger mr-1 cmtDelBtn" data-cmtid="'+ list[i].id +'" >삭제</button>';
+                  html += '</div></div><hr />';
+                }
+                cmtListDiv.html(html); // 목록 태그 컨테이너 안에 붙히기
+              }
+              // 댓글 Pagination 띄우는 함수
+              function printPagination(pageDTO) {
+                let html = '<nav aria-label="..."><ul class="pagination justify-content-end mb-5">';
+                // * prev
+                if(pageDTO.prev) {
+                  html += '<li class="page-item">';
+                }else {
+                  html += '<li class="page-item disabled">';
+                }
+                html += '<a class="page-link" href="'+ (pageDTO.startPage-1) +'">Previous</a></li>';
+                // * 페이지 번호 반복
+                for(let i = 0; i < pageDTO.pageNumList.length; i++) {
+                  if(pageDTO.pageNumList[i] == currPage) {
+                    html += '<li  class="page-item active">';
+                  }else {
+                    html += '<li  class="page-item">';
+                  }
+                  html += '<a class="page-link" href="'+ pageDTO.pageNumList[i] +'">'+ pageDTO.pageNumList[i] +'</a></li>';
+                }
+                // * next
+                if(pageDTO.next) {
+                  html += '<li class="page-item">';
+                }else {
+                  html += '<li class="page-item disabled">';
+                }
+                html += '<a class="page-link" href="'+ (pageDTO.endPage + 1) +'">Next</a>';
+                html += '</li></ul></nav>';
+
+                cmtPaginationDiv.html(html); // 부착!
+              }
+              // 댓글 페이지번호 클릭 이벤트 등록
+              cmtPaginationDiv.on("click", "a.page-link", function(e) {
+                e.preventDefault(); // a 태그의 기본이벤트가 href속성의 적힌 경로로 이동 -> 취소하기
+                let pageNum = $(this).attr("href");
+                console.log("페이지 번호 클릭 - pageNum : " + pageNum);
+                getCommentList(pageNum); // 클릭한 페이지 번호의 댓글 목록 요청
+              });
+
+              // ***** 댓글 등록 ********************
+              $("#newCmtBtn").on("click", function(e){
+                console.log("new comment button clicked!!");
+                let cmtTxt = $("#comment").val(); // 댓글 내용 가져오기
+                let cmterTxt = $("#commenter").val(); // 댓글 작성자 가져오기
+                let data = {
+                  comment: cmtTxt,
+                  commenter: cmterTxt,
+                  boardId: boardIdVal,
+                  refId: 0,
+                  step: 0,
+                  level: 0
+                };
+                console.log(data);
+                saveComment(data, function(){
+                  getCommentList(1); // 목록 호출
+                  $("#comment").val(""); // 댓글작성란 비우기
+                  $("#commenter").val("");
+                });
+              });
+              // 댓글 저장 처리 함수
+              function saveComment(data, callbackFn) { // 저장데이터와 성공시 실행할 콜백함수 전달받기
+                $.ajax({
+                  type: "post",
+                  url: "/comments/add",
+                  data: JSON.stringify(data),
+                  contentType: "application/json;charset=UTF-8",
+                  success: function(result){
+                    console.log("댓글 등록 성공!!");
+                    console.log(result);
+                    callbackFn();  // 콜백함수 호출
+                  },
+                  error: function(e){
+                    console.log("댓글 등록 실패....");
+                    console.log(e);
+                  }
+                });
+              }
+
+              // ***** 답글 버튼 이벤트 ****************
+              cmtListDiv.on("click", "button.reCmtBtn", function(e) {
+                console.log("답글 버튼 클릭!");
+                // 버튼에 숨겨둔  refId, step, level값 꺼내기
+                let refIdVal = $(this).data("refid");
+                let stepVal = $(this).data("step");
+                let levelVal = $(this).data("level");
+                console.log(refIdVal, stepVal, levelVal);
+                // 모달에 다시 심기
+                $("#reRefid").val(refIdVal);
+                $("#reStep").val(stepVal);
+                $("#reLevel").val(levelVal);
+                // 모달 띄우기
+                $("#reCmtModal").modal("show");
+              });
+              // 답글 저장 버튼 이벤트 등록
+              $("#reCmtSaveBtn").on("click", function(e){
+                console.log("답글 저장 버튼 클릭!");
+                // 답글 내용 꺼내서 JS 객체로 만들기
+                let cmtVal = $("#reCmt").val();
+                let cmterVal = $("#reCmter").val();
+                let refidVal = $("#reRefid").val();
+                let stepVal = $("#reStep").val();
+                let levelVal = $("#reLevel").val();
+                let data = {
+                  comment: cmtVal,
+                  commenter: cmterVal,
+                  boardId: boardIdVal,
+                  refId: refidVal,
+                  step: stepVal,
+                  level: levelVal
+                };
+                saveComment(data, function(){
+                  // 답글 모달의 입력란 비우기
+                  $("#reCmt").val("");
+                  $("#reCmter").val("");
+                  $("#reCmtModal").modal("hide"); // 모달 숨기기
+                  getCommentList(currPage); // 목록 요청 호출 -> currPage 보고있던 댓글 페이지 요청
+                });
+
+              });
+
+
+              // ***** 댓글 삭제 **********************
+              // 댓글 삭제 버튼 이벤트 등록
+              cmtListDiv.on("click", "button.cmtDelBtn", function(e){
+                let commentId = $(this).data("cmtid");
+                console.log("삭제버튼 클릭!!! commentId : " + commentId);
+                $.ajax({
+                  type: "delete",
+                  url: "/comments/" + commentId,
+                  success: function(result) {
+                    console.log("삭제 요청 성공!");
+                    console.log(result);
+                    getCommentList(currPage); // 목록 호출
+                  },
+                  error: function(e) {
+                    console.log("삭제 요청 실패...");
+                    console.log(e);
+                  }
+                });
+              });
+
+              // ***** 댓글 수정 **********************
+              // 수정 버튼 클릭 이벤트
+              cmtListDiv.on("click", "button.cmtModifBtn", function(e){
+                let cmtIdVal = $(this).data("cmtid");
+                console.log("수정 버튼 클릭!! cmtIdVal : " + cmtIdVal);
+                getOneComment(cmtIdVal);  // 댓글 정보 가져오기 함수 호출
+              });
+              // 댓글 정보 가져오는 함수
+              function getOneComment(cmtId) {
+                $.ajax({
+                  type: "get",
+                  url: "/comments/" + cmtId,
+                  success: function(result){
+                    console.log("댓글 한개 요청 성공!");
+                    console.log(result);
+                    showModifyModal(result); // 모달띄워라~
+                  },
+                  error: function(e){
+                    console.log("댓글 한개 요청 실패....");
+                    console.log(e);
+                  }
+                });
+              }
+              // 수정 모달 띄우는 함수
+              function showModifyModal(comment) {
+                // 모달에 댓글 내용 추가
+                $("#modalCid").val(comment.id);
+                $("#modalCmt").val(comment.comment);
+                $("#modalCmter").val(comment.commenter);
+                $("#modalCmtDate").val(displayTime(comment.lastModifiedDate));
+                $("#modifyModal").modal("show"); // 모달 보여주기
+              }
+              // 수정 모달의 save 버튼 이벤트 등록
+              $("#modalSaveBtn").on("click", function(e){
+                // 수정된 내용들 다 가져와서 수정 요청
+                let cidVal = $("#modalCid").val();
+                let cmtVal = $("#modalCmt").val();
+                let cmterVal = $("#modalCmter").val();
+                let data = {
+                  id: cidVal,
+                  comment: cmtVal,
+                  commenter: cmterVal
+                };
+                $.ajax({
+                  type: "patch",
+                  url: "/comments/" + cidVal,
+                  data: JSON.stringify(data),
+                  contentType: "application/json;charset=UTF-8",
+                  success: function(result){
+                    console.log("댓글 수정처리 성공!");
+                    console.log(result);
+                    $("#modifyModal").modal("hide"); // 모달 닫기
+                    getCommentList(currPage); // 댓글 목록 요청 호출
+                  },
+                  error: function(e){
+                    console.log("댓글 수정처리 실패...");
+                    console.log(e);
+                  }
+                });
+              });
+
+
+              // 화면에 뿌려주는 시간 포맷팅 함수
+              function displayTime(timeValue) {
+                let today = new Date();
+                let dateObj = new Date(timeValue);
+                let gap = today.getTime() - dateObj;
+                if(gap < (1000 * 60 * 60 * 24) && today.getDate() == dateObj.getDate()) {
+                  let hh = dateObj.getHours();
+                  let mi = dateObj.getMinutes();
+                  let ss = dateObj.getSeconds();
+                  return [(hh > 9 ? '':'0') + hh, ':', (mi > 9 ? '':'0') + mi, ':', (ss > 9 ? '':'0') + ss].join('');
+                }else {
+                  let yy = dateObj.getFullYear();
+                  let mm = dateObj.getMonth() + 1;
+                  let dd = dateObj.getDate();
+                  return [yy, '/', (mm > 9 ? '':'0') + mm, '/', (dd > 9 ? '':'0') + dd].join('');
+                }
+              }
+
+            }); // ready
+        </script>
+
+    </th:block>
 </th:block>
 </html>

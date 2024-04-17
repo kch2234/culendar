@@ -1,6 +1,7 @@
 package com.teamproject.culendar.service;
 
 import com.teamproject.culendar.domain.board.Board;
+import com.teamproject.culendar.domain.enumFiles.BoardType;
 import com.teamproject.culendar.dto.BoardDTO;
 import com.teamproject.culendar.dto.BoardForm;
 import com.teamproject.culendar.dto.PageRequestDTO;
@@ -13,9 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -33,16 +31,6 @@ public class BoardService {
     return savedBoard.getId();
   }
 
-//  // 게시글 목록 불러오기 (페이징 X)
-//  public List<BoardDTO> getList() {
-//    List<Board> all = boardRepository.findAll();
-//    List<BoardDTO> list = all.stream()
-//        .map(b -> new BoardDTO(b))
-//        .collect(Collectors.toList());
-//
-//    return list;
-//  }
-
   // 게시글 목록 불러오기
   public Page<Board> getListWithPaging(PageRequestDTO pageRequestDTO) {
     Pageable pageable = PageRequest.of(
@@ -55,12 +43,40 @@ public class BoardService {
     return result;
   }
 
+  // 게시글 카테고리 목록 불러오기
+  public Page<Board> getListWithCategory(PageRequestDTO pageRequestDTO, BoardType boardType){
+    Pageable pageable = PageRequest.of(
+        pageRequestDTO.getPage() - 1,
+        pageRequestDTO.getSize(),
+        Sort.by("id").descending());
+
+    Page<Board> result = boardRepository.findByBoardType(boardType, pageable);
+    return result;
+  }
+
+  // 게시글 인기순(북마크순) 목록 불러오기
+  public Page<Board> getListWithBkMark(PageRequestDTO pageRequestDTO){
+    Pageable pageable = PageRequest.of(
+        pageRequestDTO.getPage() - 1,
+        pageRequestDTO.getSize(),
+        Sort.by("id").descending());
+
+    Page<Board> result = boardRepository.findOrderByBkMark(pageable);
+    return result;
+  }
+
   // 게시글 조회
   public BoardDTO getOneBoard(Long id) {
     Board board = boardRepository.findById(id).orElse(null);
     board.setViewCount(board.getViewCount() + 1);
 
-    return new BoardDTO(board);
+    //BoardDTO 의 memberDTO 를 외부(getOneBoard)에서 변환하는 경우
+//    Member member = board.getMember(); // Board 에서 Member 엔티티만 꺼내기
+//    MemberDTO memberDTO = new MemberDTO(member); // Member entity -> MemberDTO 로 변환
+    BoardDTO boardDTO = new BoardDTO(board); // Board entity -> BoardDTO 변환
+//    boardDTO.setMemberDTO(memberDTO); // BoardDTO 에 부족한 MemberDTO 를 채우기
+
+    return boardDTO;
   }
 
   // 게시글 삭제

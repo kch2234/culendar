@@ -3,9 +3,11 @@ package com.teamproject.culendar.security.domain;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.MemberDTO;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,8 +22,9 @@ public class CustomMember extends User {
     }
 
     public CustomMember(Member member) {
-        super(member.getUsername(), member.getPassword(),
-                Arrays.asList(new SimpleGrantedAuthority(member.getRole().getValue())));
+        super(member.getUserid(), member.getPassword(),
+                Arrays.asList(new SimpleGrantedAuthority("ROLE_" + member.getRole().getValue())));
         this.member = new MemberDTO(member);
     }
+
 }
