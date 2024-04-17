@@ -11,11 +11,9 @@
                             <option value="">분류</option>
                             <option th:each="programType: ${programType}" th:value="${programType.name()}" th:text="${programType.value}"></option>
                         </select>
-
-                        <button type="button"
-                                class="btn btn-primary"
-                                th:onclick="|location.href='@{/clubs/add}'|">글 작성
-                        </button>
+                        <button type="button" class="btn btn-warning" id="btnAll">최신순</button>
+                        <button type="button" class="btn btn-warning" id="btnBest">인기순</button>
+                        <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/clubs/add}'|">글 작성</button>
                     </div>
                     <div class="row">
                         <div id="eventListContainer">
@@ -32,6 +30,7 @@
         <script th:inline="javascript">
             $(document).ready(function () {
                 let currPage = 1;
+                let selectProgramType = ""; // 프로그램 타입 셀렉터 저장
 
                 // 페이지 로딩 후 실행
                 getAllList("ALL", 1);
@@ -69,12 +68,13 @@
                     $("#eventListContainer").html(html);
                 }
 
-                // 모임 Pagination 띄우는 함수
+                // 댓글 Pagination 띄우는 함수
                 function printPagination(pageDTO, sort) {
                     let html = "";
+
                     html += '<span class="page-item"';
                     if (pageDTO.prev == false) {
-                        html += "disabled";
+                        html += 'disabled';
                     }
                     html += '><a href="' + (pageDTO.startPage - 1);
                     html += '" class="page-link" data-sort="' + sort + '">Previous</a></span>';
@@ -82,22 +82,23 @@
                     for (let i = 0; i < pageDTO.pageNumList.length; i++) {
                         html += '<span class="page-item ';
                         if (pageDTO.pageNumList[i] == currPage) {
-                            html += "active";
+                            html += 'active';
                         }
                         html += '"><a href="' + pageDTO.pageNumList[i];
-                        html += '" class="page-link" data-sort="' + sort + '">' + pageDTO.pageNumList[i] + "</a></span>";
+                        html += '" class="page-link" data-sort="' + sort + '">' + pageDTO.pageNumList[i] + '</a></span>';
                     }
 
                     html += '<span class="page-item"';
                     if (pageDTO.next == false) {
-                        html += "disabled";
+                        html += 'disabled';
                     }
                     html += '><a href="' + (pageDTO.endPage + 1);
                     html += '" class="page-link" data-sort="' + sort + '">Next</a></span>';
 
-                    $(".custom-pagination").html(html);
+                    $(".custom-pagination").html(html); // 부착!
                 }
 
+                // <a> 태그 페이지 이동 방지용
                 $(".custom-pagination").on("click", "a.page-link", function (e) {
                     e.preventDefault();
                     let pageNum = $(this).attr("href");
@@ -105,23 +106,40 @@
                     getAllList(sort, pageNum);
                 });
 
+                // 프로그램타입 셀렉터
                 $("#selectorProgramType").change(function() {
                     var selectedValue = $(this).val();
                     if(selectedValue === "DRAMA") {
-                        getAllList(selectedValue, 1);
+                        getAllList("DRAMA", 1);
                     }
                     else if(selectedValue === "CONCERT") {
-                        getAllList(selectedValue, 1);
+                        getAllList("CONCERT", 1);
                     }
                     else if(selectedValue === "EXHIBITION") {
-                        getAllList(selectedValue, 1);
+                        getAllList("EXHIBITION", 1);
                     }
                     else if(selectedValue === "MUSICAL") {
-                        getAllList(selectedValue, 1);
+                        getAllList("MUSICAL", 1);
                     }
                     else if(selectedValue === "ETC") {
-                        getAllList(selectedValue, 1);
+                        getAllList("ETC", 1);
                     }
+                    else if(selectedValue === "ALL") {
+                        getAllList("ALL", 1);
+                    }
+                });
+
+                // 정렬 버튼
+                $("#btnAll").on("click", function () {
+                    getAllList("ALL", 1);
+                });
+                $("#btnBest").on("click", function () {
+                    // 선택된 프로그램 타입에 대한 인기순으로 목록 불러오기
+                    if (selectedProgramType !== "") {
+                        getAllList(selectedProgramType, 1);
+                    } else {
+                        // 선택된 프로그램 타입이 없을 경우 기본적으로 모든 타입에 대한 인기순으로 목록 불러오기
+                        getAllList("BEST", 1);
                 });
 
             });

@@ -47,7 +47,7 @@ public class EventBoardService {
     return result;
   }
 
-  // 게시글 프로그램타입별 목록 불러오기
+  // 모임 프로그램타입별 목록 불러오기
   public Page<EventBoard> getListWithProgramType(PageRequestDTO pageRequestDTO, ProgramType programType) {
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
@@ -55,6 +55,17 @@ public class EventBoardService {
         Sort.by("id").descending());
 
     Page<EventBoard> result = eventBoardRepository.findByProgramType(programType, pageable);
+    return result;
+  }
+
+  // 모임 인기순(북마크순) 목록 불러오기
+  public Page<EventBoard> getListWithBkMark(PageRequestDTO pageRequestDTO) {
+    Pageable pageable = PageRequest.of(
+        pageRequestDTO.getPage() - 1,
+        pageRequestDTO.getSize(),
+        Sort.by("id").descending());
+
+    Page<EventBoard> result = eventBoardRepository.findOrderByBkMark(pageable);
     return result;
   }
 
