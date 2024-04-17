@@ -8,7 +8,16 @@
 
 #boardAddWrapper{
     width: 80%;
+}
 
+#boardDetailWrapper {
+    width: 60vw;
+}
+#content-wrapper{
+    align-items: center;
+    width: 90vw;
+    margin: 0 auto;
+    padding: 20px 0;
 }
 
 #searched-list {

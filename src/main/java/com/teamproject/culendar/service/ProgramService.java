@@ -200,7 +200,7 @@ public class ProgramService {
     public Location compareLocation(String locationText) {
 
         for (Location location : Location.values()) {
-            if (locationText.substring(0,2).contains(location.getValue())) {
+            if (locationText.substring(0, 2).contains(location.getValue())) {
                 return location;
             }
         }
@@ -268,6 +268,14 @@ public class ProgramService {
         return programDTOList;
     }
 
+    public ProgramDTO findById(Long id) {
+        Program programsById = programRepository.findProgramsById(id);
+        if (programsById != null) {
+            return new ProgramDTO(programsById);
+        }
+
+        return null;
+    }
 
 
 }

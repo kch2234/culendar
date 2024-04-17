@@ -37,7 +37,8 @@
                     </div>
                     <div class="modal-body" id="addRatingContainer">
                         <div th:each="rating : ${ratingType}">
-                            <button class="btn btn-primary" th:text="${rating.getValue()}" th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>
+                            <button class="btn btn-primary" th:text="${rating.getValue()}" th:data-rating="${rating}"
+                                    th:if="${rating.value !='평가 없음'}"></button>
                         </div>
                     </div>
                 </div>
@@ -99,7 +100,7 @@
                     <!-- 회원일 경우 문장형 후기 작성 버튼 및 좋아요, 후기, 체크박스 버튼 -->
                     <th:block th:if="${member != null}">
                         <div class="row" style="height: 10%">
-                            <div class="col-4" id= "addRating">
+                            <div class="col-4" id="addRating">
                                 <!--   회원 문장형 평가 위치-->
                             </div>
                             <div class="col"></div>
