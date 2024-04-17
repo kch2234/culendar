@@ -117,7 +117,8 @@
                     <!-- TODO 지도 API -->
                     <div class="row" style="height: 40%">
                         <div class="col-12 h-100">
-                            <div class="badge text-bg-secondary w-100 h-100" id="map" style="width:50%;height:50%;position:relative;overflow:hidden;">지도
+                            <div class="badge text-bg-secondary w-100 h-100" >지도
+                                <div id="staticMap" style="width:100%;height:100%;"></div>
                             </div>
                         </div>
 
@@ -374,19 +375,24 @@
 
         </script>
         <script>
-            var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-                mapOption = {
-                    center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-                    level: 3 // 지도의 확대 레벨
+            // 이미지 지도에서 마커가 표시될 위치
+            var markerPosition  = new kakao.maps.LatLng(33.450701, 126.570667);
+
+            // 이미지 지도에 표시할 마커
+            // 이미지 지도에 표시할 마커는 Object 형태
+            var marker = {
+                position: markerPosition
+                // TODO: text: '마커위 표시할 텍스트 입력' //텍스트 옵션 설정하면 마커위 텍스트 표시
+            };
+            var staticMapContainer  = document.getElementById('staticMap'), // 이미지 지도를 표시할 div
+                staticMapOption = {
+                    center: new kakao.maps.LatLng(33.450701, 126.570667), // 이미지 지도의 중심좌표
+                    level: 3, // 이미지 지도의 확대 레벨
+                    marker: marker
                 };
 
-            var map = new kakao.maps.Map(mapContainer, mapOption);
-            var maker = new kakao.maps.Marker({
-                position: position,
-                clickable: true
-            });
-            maker.setMap(map);
-
+            // 이미지 지도를 표시할 div와 옵션으로 이미지 지도를 생성
+            var staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
         </script>
     </th:block>
 </th:block>
