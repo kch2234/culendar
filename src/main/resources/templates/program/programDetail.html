@@ -117,9 +117,7 @@
                     <!-- TODO 지도 API -->
                     <div class="row" style="height: 40%">
                         <div class="col-12 h-100">
-                            <div class="badge text-bg-secondary w-100 h-100" >지도
-                                <div id="staticMap" style="width:100%;height:100%;"></div>
-                            </div>
+                            <div class="badge text-bg-secondary w-100 h-100" id="staticMap" style="width:100%;height:100%;">지도</div>
                         </div>
 
                     </div>
@@ -409,13 +407,15 @@
             };
             var staticMapContainer  = document.getElementById('staticMap'), // 이미지 지도를 표시할 div
                 staticMapOption = {
-                    center: new kakao.maps.LatLng(33.450701, 126.570667), // 이미지 지도의 중심좌표
+                    center: new kakao.maps.LatLng(37.55098077503385, 127.08808887625322), // 이미지 지도의 중심좌표
                     level: 3, // 이미지 지도의 확대 레벨
                     marker: marker
                 };
 
+
             // 이미지 지도를 표시할 div와 옵션으로 이미지 지도를 생성
             var staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
+            //end 지도 api
         </script>
     </th:block>
 </th:block>
