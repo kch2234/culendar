@@ -1,8 +1,6 @@
 package com.teamproject.culendar.config;
 
-import com.teamproject.culendar.repository.MemberRepository;
 import com.teamproject.culendar.security.CustomUserDetailsService;
-import com.teamproject.culendar.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,8 +60,9 @@ public class SecurityConfig {
                                 .invalidateHttpSession(true)) // 로그아웃 시 세션 무효화
                 .exceptionHandling(exception -> exception
                                 .accessDeniedHandler((request, response, accessDeniedException) ->
-                                        response.sendRedirect("/access-denied"))) // 권한 없음 페이지로 이동
-                ;
+                                        response.sendRedirect("/access-denied")
+                                )); // 권한 없음 에러 처리
+                //TODO: 세션 관리 설정
         return http.build();
     }
 

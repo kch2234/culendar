@@ -1,27 +1,45 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
-        <h1>게시글 수정 페이지 영역</h1>
-
         <!--  TODO 텍스트 에디터 API  -->
-        <form action="" th:action th:object="${boardForm}" method="post">
-            <div class="form-group">
-                <label for="title">제목</label>
-                <input type="text" th:field="*{title}" id="title">
-            </div>
-            <div name="program">작품 선택</div>  <!--  NOTE 전시, 콘서트  -->
-            <div name="category-dropdown">글 분류</div>  <!--  NOTE 후기, 정보  -->
-            <div name="image">이미지 첨부</div>
-            <div class="form-group">
-                <label for="content">내용</label>
-                <textarea class="form-control" th:field="*{content}" id="content" rows="3"></textarea>
-            </div>
-            <div class="button">
-                <button type="submit" class="btn btn-primary">등록</button>
-                <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/boards/list}'|">취소</button>
-            </div>
-        </form>  <!-- form action=""   -->
+
+        <div class="untree_co-hero py-5 mb-0" id="home-section">  <!--  배경 영역  -->
+            <div class="container pb-5 mb-5 border-bottom">  <!--  게시글 작성  -->
+                <div class="row">
+                    <div class="col-lg-7">
+                        <form action="" th:action th:object="${board}" method="post">
+                            <div class="form-group">
+                                <label class="text-blank" for="title">제목</label>
+                                <input type="text" th:field="*{title}" class="form-control" id="title">
+                            </div>
+                            <!--  NOTE 카테고리 수정 불가  -->
+                            <div class="form-group">
+                                <label class="text-blank" for="boardType">카테고리</label>
+                                <input type="text" th:field="*{boardType}" class="form-control" id="boardType" readonly>
+                            </div>
+                            <!--  NOTE 작품선택 수정 불가  -->
+                            <div class="form-group">
+                                <label class="text-blank" for="program">작품 선택</label>
+                                <input type="search" th:field="*{program}" class="form-control" id="program" readonly>
+                            </div>
+                            <!--  TODO 이미지 첨부 기능 예정  -->
+<!--                            <div class="form-group">-->
+<!--                                <label class="text-blank" for="file">이미지 첨부</label>-->
+<!--                                <input type="file" th:field="*{image}" class="form-control" id="file">-->
+<!--                            </div> -->
+                            <div class="form-group">
+                                <label class="text-blank" for="content">내용</label>
+                                <textarea th:field="*{content}" class="form-control" id="content" rows="10"></textarea>
+                            </div>
+                            <button type="button" class="btn btn-warning" th:onclick="history.go(-1)">취소</button>
+                            <button type="submit" class="btn btn-primary">등록</button>
+                        </form>
+                    </div>  <!--  col-lg-7  -->
+                </div>  <!--  row  -->
+            </div>  <!--  container 게시글 작성  -->
+        </div>  <!-- untree_co-hero py-5 mb-0 배경 영역   -->
     </th:block>
 </th:block>
 </html>

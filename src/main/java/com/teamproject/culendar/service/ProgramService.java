@@ -1,5 +1,6 @@
 package com.teamproject.culendar.service;
 
+import com.teamproject.culendar.domain.calendar.CalendarContent;
 import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.program.Program;
@@ -16,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -236,6 +239,34 @@ public class ProgramService {
         }
         save(program);
     }
+
+    public ProgramDTO getOneProgram(Long id) {
+        Optional<Program> program = programRepository.findById(id);
+        if (program.isPresent()) {
+            return new ProgramDTO(program.get());
+        }
+        return null;
+    }
+
+    public List<ProgramDTO> searchProgram(String keyword) {
+
+        log.info("******** ProgramService - searchProgram - keyword: {}", keyword);
+
+        // keyword를 포함하는 작품 리스트 최대 30개 가져오기
+        List<Program> programList = programRepository.findByTitleContaining(keyword);
+        // 리스트 최대 길이 30으로 자르기
+        if (programList.size() > 20) {
+            programList = programList.subList(0, 20);
+        }
+
+        // List<Program> to List<ProgramDTO>
+        List<ProgramDTO> programDTOList = programList.stream()
+                .map(ProgramDTO::new)
+                .collect(Collectors.toList());
+
+        return programDTOList;
+    }
+
 
 
 }

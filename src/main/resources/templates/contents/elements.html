@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--  note bootstrap 사용한 요소 관리  -->
 
+<!--  note 가이드 only  -->
 <!--  썸네일 카드  -->
 <div name="programCard">  <!--  작품 카드  -->
     <h1>작품 카드 영역</h1>
@@ -33,7 +35,7 @@
         </span>
     </div>
     <div name="title"></div>
-    <div name="period"></div>  <!--  프로그램 기간  -->
+    <div name="date"></div>  <!--  모임 날짜  -->
 </div>  <!--  모임 카드 END  -->
 
 <div name="boardCard">  <!--  게시글 카드  -->
@@ -45,7 +47,6 @@
     </div>
     <div name="pre-content"></div>  <!--  개요 프리뷰 2줄 정도  -->
 </div>  <!--  게시글 카드 END  -->
-
 
 <!--  상세 페이지 내 카드  -->
 <div name="programInfoCard">  <!--  작품 정보 영역 카드  -->
@@ -79,5 +80,46 @@
         <span name="introduce"></span>  <!--  자기소개  -->
     </div>
 </div>
+
+
+<!--  note 완료  -->
+<!--  썸네일 카드  -->
+<div class="col-md-6 mb-4 mb-lg-0 col-lg-4" data-aos="fade-up" data-aos-delay="0">
+    <div class="news-item">  <!--  게시글 카드 1  -->
+        <div class="vcard d-flex mb-4">
+            <div class="img-wrap">
+                <img th:src="@{/sbadmin/images/person_1.jpg}" alt="Image" class="img-fluid">
+            </div>
+            <div class="post-meta"></div>
+        </div>
+        <div class="news-contents mb-4">
+            <h3><a href="#">헤드윅 꿀팁 공유합니다</a></h3>
+            <span class="post-meta-2">이번주 재관람 30% 할인이라네요~~</span>
+        </div>
+        <div class="news-contents mb-4"></div>
+        <p class="mb-0"><a href="#" class="read-more-arrow">
+            <svg class="bi bi-arrow-right"
+                 width="1em"
+                 height="1em"
+                 viewBox="0 0 16 16"
+                 fill="currentColor"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M10.146 4.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L12.793 8l-2.647-2.646a.5.5 0 0 1 0-.708z" />
+                <path fill-rule="evenodd"
+                      d="M2 8a.5.5 0 0 1 .5-.5H13a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8z" />
+            </svg>
+        </a></p>
+    </div>  <!-- news-item 1 -->
+</div>  <!--  게시글 카드 애니메이션 속성  -->
+
+<!--  버튼  -->
+<button type="button" class="btn btn-primary" th:onclick="|location.href='@{/boards/add}'|">글 작성</button>
+
+<!--  셀렉터  -->
+<select class="custom-select" th:field="*{boardType}" id="boardType">
+    <option value="">선택</option>
+    <option th:each="boardType: ${boardType}" th:value="${boardType.name()}" th:text="${boardType.value}"></option>
+</select>
 
 </html>

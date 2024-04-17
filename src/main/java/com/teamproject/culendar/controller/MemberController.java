@@ -69,14 +69,69 @@ public class MemberController {
         model.addAttribute("member", member);
         return "profile/memberProfile";
     }
+*/
+
+    // 팔로우, 팔로워 조회
+    @GetMapping("/{id}/follow")
+    public String followings(@PathVariable("id") Long id, Model model){
+        log.info("********** MemberController GET /members/:userid/follow - userid : {}", id);
+        List<Member> memberList = memberRepository.findAll();
+        List<Follow> followList = followService.findByMemberId(id);// 팔로우한 사람들의 정보
+        List<MemberDTO> followings = new ArrayList<>();
+        for (Follow follow : followList) {
+            MemberDTO member = new MemberDTO(follow.getFollow()); // 팔로우한 사람들의 정보
+            followings.add(member); // 팔로우한 사람들의 정보를 리스트에 추가
+            log.info("********** MemberController GET /members/:userid/follow - followings : {}", followings);
+            log.info("********** MemberController GET /members/:userid/follow - member : {}", member);
+            model.addAttribute("followings", followings);// 팔로우한 사람들의 정보를 모델에 추가
+        }
+        model.addAttribute("memberList", memberList);
+        return "profile/follow";
+    }
+
+    @GetMapping("/{id}/follower")
+    public String followers(@PathVariable("id") Long id, Model model){
+        log.info("********** MemberController GET /members/:userid/follow - userid : {}", id);
+        List<Follow> followerList = followService.findByFollowId(id);
+        List<MemberDTO> followers = new ArrayList<>();
+        for (Follow follow : followerList) {
+            MemberDTO member = new MemberDTO(follow.getMember());
+            followers.add(member);
+            log.info("********** MemberController GET /members/:userid/follow - followers : {}", followers);
+            log.info("********** MemberController GET /members/:userid/follow - member : {}", member);
+            model.addAttribute("followers", followers);
+        }
+        return "profile/follower";
+    }
+
+    // 팔로우 처리
+    @PostMapping("/{followid}/follow")
+    public String follow (@PathVariable Long followid, @AuthenticationPrincipal CustomMember customMember){
+        Long id = customMember.getMember().getId();
+        log.info("********** MemberController POST /members/:id/follow - id : {}", id);
+        log.info("********** MemberController POST /members/:id/follow - followId : {}", followid);
+        FollowDTO followDTO = followService.follow(id, followid);
+        log.info("********** MemberController POST /members/:id/follow - followDTO : {}", followDTO);
+        return "redirect:/members/" + id + "/follow";
+    }
+    // 언팔로우 처리
+    @PostMapping("/{followid}/unfollow")
+    public String unfollow(@PathVariable Long followid, @AuthenticationPrincipal CustomMember customMember){
+        Long id = customMember.getMember().getId();
+        log.info("********** MemberController DELETE /members/:id/follow - id : {}", id);
+        log.info("********** MemberController DELETE /members/:id/follow - followId : {}", followid);
+        FollowDTO followDTO = followService.unfollow(id, followid);
+
+        return "redirect:/members/" + id + "/follow";
+    }
 
     // 회원 정보 수정
 //    @PreAuthorize("hasRole('MEMBER')")
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") Long id, InterestForm interestForm, Model model){
         log.info("********** MemberController GET /members/:id/edit - id : {}", id);
-        MemberDTO member = memberService.findById(id);
-        model.addAttribute("member", member);
+        MemberDTO memberDTO = memberService.findById(id);
+        model.addAttribute("member", memberDTO);
         model.addAttribute("interestForm", interestForm);
         return "profile/edit";
     }
@@ -90,7 +145,7 @@ public class MemberController {
         // 회원 정보
         Long updateId = memberService.updateMember(memberForm);
         // 수정된 회원 정보 조회
-        MemberDTO member = memberService.findById(updateId);
+        MemberDTO memberDTO = memberService.findById(updateId);
         // 기존 관심분야 삭제
         List<Interest> interestList = interestService.findByMemberId(updateId);
         for (Interest interest : interestList) {
@@ -99,7 +154,7 @@ public class MemberController {
         // 회원의 관심분야 수정
         for (ProgramType programType : interestForm.getInterestList()) {
             InterestForm interest = new InterestForm(programType);
-            interest.setMember(member.toEntity());
+            interest.setMember(memberDTO.toEntity());
             interestService.saveInterest(interest);
         }
         return "redirect:/members/{id}";
@@ -110,8 +165,8 @@ public class MemberController {
     @GetMapping("/{id}/setting")
     public String setting(@PathVariable("id") Long id, Model model){
         log.info("********** MemberController GET /members/:id/setting - id : {}", id);
-        MemberDTO member = memberService.findById(id);
-        model.addAttribute("member", member);
+        MemberDTO memberDTO = memberService.findById(id);
+        model.addAttribute("member", memberDTO);
         return "member/setting";
     }
 
@@ -127,8 +182,8 @@ public class MemberController {
     @GetMapping("/{id}/deactivate")
     public String deactivate(@PathVariable("id") Long id, Model model){
         log.info("********** MemberController GET /members/:id/deactivate - id : {}", id);
-        MemberDTO member = memberService.findById(id);
-        model.addAttribute("member", member);
+        MemberDTO memberDTO = memberService.findById(id);
+        model.addAttribute("member", memberDTO);
         return "member/withdrawal";
     }
 //    @PreAuthorize("hasRole('MEMBER')")

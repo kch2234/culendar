@@ -1,23 +1,48 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
-        <h1>게시글 작성 페이지 영역</h1>
-
         <!--  TODO 텍스트 에디터 API  -->
-        <form action="" th:action th:object="${boardForm}" method="post">
-            <input name="title" th:field="*{title}">제목</input>
-            <input name="category-dropdown">글 분류</input>  <!--  후기, 정보  -->
-            <input name="program">작품 선택</input>  <!--  전시, 콘서트  -->
-            <input name="image">이미지 첨부</input>
-            <input name="content-textbox">내용</input>
-            <input name="button">
-                <span name="cancel-button">취소</span>
-                <span name="submit-button">등록</span>
-            </input>
-        </form>
+
+        <div class="untree_co-hero py-5 mb-0" id="home-section">  <!--  배경 영역  -->
+            <div class="container pb-5 mb-5 border-bottom">  <!--  게시글 작성  -->
+                <div class="row">
+                    <div class="col-lg-7">
+                        <form action="" th:action th:object="${boardForm}" method="post">
+                            <div class="form-group">
+                                <label class="text-blank" for="title">제목</label>
+                                <input type="text" th:field="*{title}" class="form-control" id="title">
+                            </div>
+                            <div class="form-group">
+                                <label class="text-blank" for="boardType">카테고리</label>
+                                <select class="custom-select" th:field="*{boardType}" id="boardType">
+                                    <option value="">선택</option>
+                                    <option th:each="boardType: ${boardType}" th:value="${boardType.name()}" th:text="${boardType.value}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="text-blank" for="program">작품 선택</label>
+                                <input type="search" th:field="*{program}" class="form-control" id="program">
+                            </div>
+                            <!--  todo 작품 DB 연결  -->
+<!--                            <div class="form-group">-->
+<!--                                <label class="text-blank" for="file">이미지 첨부</label>-->
+<!--                                <input type="file" th:field="*{image}" class="form-control" id="file">-->
+<!--                            </div>  &lt;!&ndash;  todo 이미지 첨부 기능 예정  &ndash;&gt;-->
+                            <div class="form-group">
+                                <label class="text-blank" for="content">내용</label>
+                                <textarea th:field="*{content}" class="form-control" id="content" rows="10"></textarea>
+                            </div>
+                            <button type="button" class="btn btn-info" th:onclick="|location.href='@{/boards/list}'|">
+                                취소
+                            </button>
+                            <button type="submit" class="btn btn-primary">등록</button>
+                        </form>
+                    </div>  <!--  col-lg-7  -->
+                </div>  <!--  row  -->
+            </div>  <!--  container 게시글 작성  -->
+        </div>  <!-- untree_co-hero py-5 mb-0 배경 영역   -->
     </th:block>
 </th:block>
 </html>

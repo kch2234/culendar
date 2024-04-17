@@ -3,6 +3,9 @@ package com.teamproject.culendar.controller;
 import com.teamproject.culendar.domain.enumFiles.Gender;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.enumFiles.Role;
+import com.teamproject.culendar.dto.InterestForm;
+import com.teamproject.culendar.dto.MemberDTO;
+import com.teamproject.culendar.dto.MemberForm;
 import com.teamproject.culendar.domain.member.Interest;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.*;
@@ -49,11 +52,11 @@ public class LoginController {
         // 회원가입
         Long savedId = memberService.saveMember(memberForm); // TODO: savedId 활용 -> 홈에서 모달이나 alert 띄울때 필요하면 사용
         // 회원가입한 회원 조회
-        MemberDTO member = memberService.findById(savedId);
+        MemberDTO memberDTO = memberService.findById(savedId);
         // 회원가입한 회원의 관심분야 저장
         for (ProgramType programType : interestForm.getInterestList()) {
             InterestForm interest = new InterestForm(programType);
-            interest.setMember(member.toEntity());
+            interest.setMember(memberDTO.toEntity());
             interestService.saveInterest(interest);
         }
         return "redirect:/";

@@ -17,6 +17,7 @@ public class Board extends BaseEntityLastModifiedDate {
     private Long id;
 
     // 게시글 분류
+    @Enumerated(EnumType.STRING)
     private BoardType boardType;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,13 +1,63 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
-    <h1>메인 페이지 영역</h1>
+<th:block th:replace="~{/layouts/base :: base(~{this::content})}"> // 헤더 네브 푸터
 
     <th:block th:fragment="content">
-        <div name="calendar">캘린더 영역</div>
+
+        <!--                분류 모달-->
+        <div class="modal" id="type-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">분류 선택</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" th:each="pType : ${programType}" class="btn btn-primary pTypeBtn"
+                                th:text="${pType.value}" th:if="${pType.value !='기타'}"
+                                th:data-type="${pType.name()}"></button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--                지역 모달-->
+        <div class="modal" id="location-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">분류 선택</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" th:each="lType : ${locationType}" class="btn btn-primary lTypeBtn"
+                                th:text="${lType.value}" th:if="${lType.value !='기타'}"
+                                th:data-loc="${lType.name()}"></button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <li><a th:href="@{/signup}">Signup</a></li>
         <li><a th:href="@{/login}">Login</a></li>
+
+
+
+
+    <h1>메인 페이지 영역</h1>
+
+        <ul>
+            <li><a th:href="@{members/admin}">adminPage</a></li>
+            <!--  NOTE 임시 주석처리  -->
+            <!-- <li><a th:href="@{members/{id}(id=${member.id})}">memberPage</a></li> -->
+        </ul>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Logout</button>
+        </form>
+        <div id='calendar' style="width: 90%" class="m-auto mt-5"></div>
         <div name="favProgram">  <!-- 인기 작품 영역 -->
             <div>
                 <div name="heading">인기 작품</div>  <!--  제목  -->
@@ -34,14 +84,135 @@
                 <span name="meetingCard"></span>
             </div>
         </div> <!--  인기 모임 영역  -->
-      <!--TODO nav로 이동 예정
-            <li><a href="/">Home</a></li>
-    <li><a th:href="@{/signup}">Signup</a></li>
-    <li><a th:href="@{/login}">Login</a></li>
-    <li><a th:href="@{/members/admin}">adminPage</a></li>
-    <li><a th:href="@{/members/member}">memberPage</a></li>
 
-      -->
-</th:block>
+
+        <script>
+
+            // 달력
+            $(document).ready(function () {
+                var calendarEl = document.getElementById('calendar');
+                var modalProgramType = "DRAMA";
+                var modalLocationType = "SEOUL";
+                var modalProgramTypeName = "연극";
+                var modalLocationTypeName = "서울";
+
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+
+                    customButtons: {
+                        programType: {
+                            text: '분류',
+                            click: function () {
+                                // 모달 display block으로 변경
+                                $('#type-modal').css('display', 'block');
+                                // 이 버튼 이름 바꾸기
+                                console.log();
+
+
+                            }
+                        },
+                        location: {
+                            text: '지역',
+                            click: function () {
+                                // 모달로 카테고리 설정 예정
+                                $('#location-modal').css('display', 'block');
+
+
+                            }
+                        }
+                    },
+                    headerToolbar: {
+                        left: 'prev programType location',
+                        center: 'title',
+                        right: 'next'
+                    },
+                    initialView: 'dayGridMonth',
+                    locale: 'ko',
+                    navLinks: false,
+                    showNonCurrentDates: false,
+                    editable: false,
+                    dayMaxEvents: 4,
+                    displayEventTime: false,
+                    eventClick: function (info) {
+                        openProgramPage(info.event.id);
+
+                    },
+
+
+                    // 달력 날짜에 "일"을 제거
+                    dayCellContent: function (info) {
+                        var number = document.createElement("a");
+                        number.classList.add("fc-daygrid-day-number");
+                        number.innerHTML = info.dayNumberText.replace("일", " ");
+                        if (info.view.type === "dayGridMonth") {
+                            return {
+                                html: number.outerHTML
+                            };
+                        }
+                        return {
+                            domNodes: []
+                        };
+                    },
+                    datesSet: (info) => {
+                        // 현재 달력에 표시된 월 가져오기
+                        var startMonth = info.startStr;
+
+                    },
+                    // ajax 통신으로 fullcalendar 이벤트 가져오기
+                    events: {
+                        url: '/calendar/list', // 이벤트를 가져올 서버의 URL
+                        method: 'GET', // HTTP 요청 방식
+                        extraParams: function () { // 서버에 전달할 추가적인 파라미터
+                            return {
+                                programType: modalProgramType,
+                                location: modalLocationType,
+                            };
+                        },
+                        failure: function (e) { // 요청이 실패했을 때 호출되는 콜백 함수
+                            alert('there was an error while fetching events!');
+                            console.log(e);
+                        },
+                        textColor: 'black' // 이벤트의 글자색
+                    }
+
+
+                });
+
+                calendar.render();
+
+                // 모달 닫기
+                $(document).on('click', '.close', function () {
+                    $('#type-modal').css('display', 'none');
+                    $('#location-modal').css('display', 'none');
+                });
+
+                // 분류 모달 버튼 클릭시 데이터 받기
+                $(document).on('click', ".pTypeBtn", function () {
+                    modalProgramType = $(this).data('type');
+                    modalProgramTypeName = $(this).text();
+                    $('#type-modal').css('display', 'none');
+                    // $('#calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div:nth-child(1) > button.fc-programType-button.fc-button.fc-button-primary').text(modalProgramTypeName);
+                    calendar.refetchEvents();
+
+                });
+                $(document).on('click', ".lTypeBtn", function () {
+                    modalLocationType = $(this).data('loc');
+                    modalLocationTypeName = $(this).text();
+                    $('#location-modal').css('display', 'none');
+                    // $('#calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div:nth-child(1) > button.fc-location-button.fc-button.fc-button-primary').text(modalLocationTypeName);
+
+                    calendar.refetchEvents();
+
+                });
+
+                function openProgramPage(id) {
+                    location.href = "/program/" + id;
+                }
+            });
+
+
+        </script>
+
+
+    </th:block>
 </th:block>
 </html>
