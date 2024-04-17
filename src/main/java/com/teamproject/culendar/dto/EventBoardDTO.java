@@ -1,6 +1,8 @@
 package com.teamproject.culendar.dto;
 
 import com.teamproject.culendar.domain.enumFiles.Gender;
+import com.teamproject.culendar.domain.enumFiles.Location;
+import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.domain.board.EventBoard;
 import com.teamproject.culendar.domain.program.Program;
@@ -15,11 +17,11 @@ public class EventBoardDTO {
   private String title;
   private String content;
 //  private String image;  TODO 이미지 추가
-  private Member member;
-  private Program program;
+  private MemberDTO memberDTO;
+  private ProgramDTO programDTO;
   private LocalDateTime eventDate;  // 모임 날짜
   private Integer maxPeople;  // 최대 정원
-//  private Location location; TODO 지역 추가
+//  private Location location;
   private Gender filterGender;
   private Integer filterMinAge;
   private Integer filterMaxAge;
@@ -33,8 +35,8 @@ public class EventBoardDTO {
     this.id = eventBoard.getId();
     this.title = eventBoard.getTitle();
     this.content = eventBoard.getContent();
-    this.member = eventBoard.getMember();
-    this.program = eventBoard.getProgram();
+    this.memberDTO = new MemberDTO(eventBoard.getMember());
+    this.programDTO = new ProgramDTO(eventBoard.getProgram()); // ProgramDTO로 매핑
     this.eventDate = eventBoard.getEventDate();
     this.maxPeople = eventBoard.getMaxPeople();
     this.filterGender = eventBoard.getFilterGender();

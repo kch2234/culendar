@@ -1,9 +1,11 @@
 package com.teamproject.culendar.controller;
 
+import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.EventBoard;
 import com.teamproject.culendar.domain.enumFiles.BoardType;
 import com.teamproject.culendar.domain.enumFiles.Gender;
 import com.teamproject.culendar.domain.enumFiles.Location;
+import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.dto.*;
 import com.teamproject.culendar.security.domain.CustomMember;
 import com.teamproject.culendar.service.EventBoardService;
@@ -26,26 +28,28 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/clubs")
-public class ClubController {
+public class ClubController {  // NOTE ClubController == EventBoardController
 
   private final EventBoardService eventBoardService;
 
   // 모임 목록 (클럽)
   @GetMapping("/list")
-  public String list(Model model, PageRequestDTO pageRequestDTO) {
-    log.info("**** ClubController GET /clubs/list");
-    Page<EventBoard> result = eventBoardService.getListWithPaging(pageRequestDTO);
-    List<EventBoard> contents = result.getContent();
-    List<EventBoardDTO> list = new ArrayList<>();
-    for(int i = 0; i < contents.size(); i++) {
-      EventBoard eventBoard = contents.get(i);
-      EventBoardDTO dto = new EventBoardDTO(eventBoard);
-      list.add(dto);
-    }
-    PageResponseDTO pageResponseDTO = new PageResponseDTO(pageRequestDTO, result.getTotalElements());
+  public String list(Model model, ProgramType programType) {  //  PageRequestDTO pageRequestDTO
+//    log.info("**** ClubController GET /clubs/list");
+//    Page<EventBoard> result = eventBoardService.getListWithPaging(pageRequestDTO);
+//    List<EventBoard> contents = result.getContent();
+//    List<EventBoardDTO> list = new ArrayList<>();
+//    for(int i = 0; i < contents.size(); i++) {
+//      EventBoard eventBoard = contents.get(i);
+//      EventBoardDTO dto = new EventBoardDTO(eventBoard);
+//      list.add(dto);
+//    }
+//    PageResponseDTO pageResponseDTO = new PageResponseDTO(pageRequestDTO, result.getTotalElements());
 
-    model.addAttribute("list", list);
-    model.addAttribute("pageDTO", pageResponseDTO);
+//    model.addAttribute("list", list);
+//    model.addAttribute("pageDTO", pageResponseDTO);
+
+    model.addAttribute("programType", ProgramType.values());
 
     return "club/clubHome";
   }
@@ -54,25 +58,27 @@ public class ClubController {
   @GetMapping("/add")
   public String addForm(@ModelAttribute EventBoardForm eventBoardForm, Model model, @AuthenticationPrincipal CustomMember customMember) {
     log.info("***** ClubController GET /clubs/add");
-    model.addAttribute("locaton", Location.values());
-    model.addAttribute("filterLocaton", Location.values());
+//    model.addAttribute("location", Location.values());
+    model.addAttribute("filterGender", Gender.values());
 
     return "club/eventAdd";
   }
   @PostMapping("/add")
   public String addPRo(EventBoardForm eventBoardForm, @AuthenticationPrincipal CustomMember customMember) {
     log.info("**** ClubController POST /clubs/add - eventBoardForm : {}", eventBoardForm);
-    LocalDateTime eventDate = eventBoardForm.getEventDate().toInstant() // Date -> Instant
-                                                .atZone(ZoneId.systemDefault()) // Instant -> ZonedDateTime
-                                                .toLocalDateTime();
-    LocalDateTime deadlineDate = eventBoardForm.getDeadlineDate().toInstant() // Date -> Instant
-      .atZone(ZoneId.systemDefault()) // Instant -> ZonedDateTime
-      .toLocalDateTime();
+//    LocalDateTime eventDate = eventBoardForm.getEventDate().toInstant() // Date -> Instant
+//                                                          .atZone(ZoneId.systemDefault()) // Instant -> ZonedDateTime
+//                                                          .toLocalDateTime();
+//    LocalDateTime deadlineDate = eventBoardForm.getDeadlineDate().toInstant() // Date -> Instant
+//                                                          .atZone(ZoneId.systemDefault()) // Instant -> ZonedDateTime
+//                                                          .toLocalDateTime();
     MemberDTO member = customMember.getMember();
+    log.info("**** ClubController POST /clubs/add - member : {}", member);
     eventBoardForm.setMember(member.toEntity());
     Long save = eventBoardService.save(eventBoardForm);
+    log.info("**** ClubController POST /clubs/add - save : {}", save);
 
-    return "redirect:/club/clubHome";
+    return "redirect:/clubs/list";
   }
 
   // 모임 상세

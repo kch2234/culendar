@@ -21,6 +21,7 @@ public class PageResponseDTO {
   private int totalPage;
   private boolean lastPage;
   private List<BoardDTO> list; // 화면에 전달해줄 글 목록
+  private List<EventBoardDTO> eventList;  // 화면에 전달해줄 글 목록
 
   public PageResponseDTO(PageRequestDTO pageRequestDTO, Long totalCount) {
     this.pageRequestDTO = pageRequestDTO;
