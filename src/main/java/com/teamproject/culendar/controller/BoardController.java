@@ -3,9 +3,11 @@ package com.teamproject.culendar.controller;
 import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.enumFiles.BoardType;
 import com.teamproject.culendar.domain.member.Member;
+import com.teamproject.culendar.domain.program.Program;
 import com.teamproject.culendar.dto.*;
 import com.teamproject.culendar.security.domain.CustomMember;
 import com.teamproject.culendar.service.BoardService;
+import com.teamproject.culendar.service.ProgramService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,7 @@ import java.util.List;
 public class BoardController {
 
   private final BoardService boardService;
+  private final ProgramService programService;
 
 
   // 게시글 전체 목록 (커뮤니티)
@@ -58,12 +61,15 @@ public class BoardController {
   @PostMapping("/add")
   public String addPRo(BoardForm boardForm, @AuthenticationPrincipal CustomMember customMember) {
     log.info("**** BoardController POST /boards/add - boardForm : {}", boardForm);
+    ProgramDTO programDTO = programService.getOneProgram(boardForm.getProgramId());
+    boardForm.setProgram(programDTO.toEntity());
     MemberDTO member = customMember.getMember();
-    log.info("***** BoardController POST /boards/add - writer(member.username) : {}", member.getUsername());
     boardForm.setMember(member.toEntity());
 
-//    Long save = boardService.save(boardForm);
+    log.info("**** BoardController POST /boards/add - boardForm : {}", boardForm);
 
+    Long save = boardService.save(boardForm);
+    // TODO 게시글 작성시 완료 알림 띄우기
     return "redirect:/boards/list";
   }
 

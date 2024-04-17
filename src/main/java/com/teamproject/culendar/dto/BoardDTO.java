@@ -14,7 +14,7 @@ public class BoardDTO {
   private Long id;
   private MemberDTO memberDTO;  // member 직접 사용 X
   private BoardType boardType;
-  private Program program;
+  private ProgramDTO programDTO;
   private String title;
   private String content;
   private Long viewCount;
@@ -28,7 +28,7 @@ public class BoardDTO {
     this.id = board.getId();
     this.memberDTO = new MemberDTO(board.getMember());
     this.boardType = board.getBoardType();
-    this.program = board.getProgram();
+    this.programDTO = new ProgramDTO(board.getProgram());
     this.title = board.getTitle();
     this.content = board.getContent();
     this.viewCount = board.getViewCount();

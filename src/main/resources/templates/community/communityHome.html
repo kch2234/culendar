@@ -204,6 +204,9 @@
                 // 페이지 로딩 후 실행
                 getAllList("ALL", 1);
 
+                // 인기 게시글 불러오기
+                getBestList();
+
                 function getAllList(sort, page) {
                     console.log("getAllList! page: " + page);
                     currPage = page;
@@ -286,6 +289,23 @@
                 $("#btnReview").on("click", function () {
                     getAllList("REVIEW", 1);
                 });
+
+                // 각종 함수들
+                function getBestList() {
+                    $.ajax({
+                        type: "get",
+                        url: "/ajaxBoards/best",
+                        success: function (result) {
+                            console.log("인기글 목록 요청 성공!");
+                            console.log(result);
+                            // 인기글 목록 화면에 띄우기
+                        },
+                        error: function (e) {
+                            console.log("인기글 목록 요청 실패....");
+                            console.log(e);
+                        },
+                    });
+                }
 
 
             });
