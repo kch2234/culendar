@@ -70,7 +70,7 @@
                             <!-- 회원일 경우에만 북마크, 캘린더 추가 버튼 보이기 -->
                             <th:block th:if="${member != null}">
                                 <div class="col p-0">
-                                    <button id="bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>
+                                    <button id="bkMarkBtn" class="fa-solid fa-bookmark w-75 h-75"></button>
                                 </div>
                                 <div class="col p-0">
                                     <button class="fa-regular fa-clipboard w-75 h-75"></button>
@@ -141,8 +141,10 @@
                 var programId = [[${program.getId()}]];
 
                 // 페이지 로딩시 시작할 함수들
+
                 getAvgRating();
                 getMyRating();
+                checkBkmark();
 
                 // ********** 클릭시 이벤트들 **********
 
@@ -236,9 +238,11 @@
 
                             if (result === 'fail') {
                                 alert('북마크에서 삭제 되었습니다.');
+                                checkBkmark();
                                 return;
                             }
                             alert('북마크에 추가되었습니다.');
+                            checkBkmark();
                         },
                         error: function (error) {
                             console.log(error);
@@ -363,6 +367,25 @@
                             let html = '';
                             html += '<div class="badge text-bg-secondary w-100 h-100">' + data + '</div>';
                             $('#addRating').html(html);
+                        }
+                    });
+                }
+
+                function checkBkmark() {
+                    console.log("checkBkmark");
+                    $.ajax({
+                        url: '/bkmark/checkProgramBkmark/' + memberId + '/' + programId,
+                        type: 'GET',
+                        success: function (data) {
+                            if (data === true) {
+                                console.log(data);
+                                $('#bkMarkBtn').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
+                            }
+
+                            if (data === false) {
+                                console.log(data);
+                                $('#bkMarkBtn').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
+                            }
                         }
                     });
                 }
