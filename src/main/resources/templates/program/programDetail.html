@@ -117,7 +117,8 @@
                     <!-- TODO 지도 API -->
                     <div class="row" style="height: 40%">
                         <div class="col-12 h-100">
-                            <div class="badge text-bg-secondary w-100 h-100">지도</div>
+                            <div class="badge text-bg-secondary w-100 h-100" id="map" style="width:50%;height:50%;position:relative;overflow:hidden;">지도
+                            </div>
                         </div>
 
                     </div>
@@ -372,7 +373,21 @@
 
 
         </script>
+        <script>
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+                mapOption = {
+                    center : new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+                    level: 3 // 지도의 확대 레벨
+                };
 
+            var map = new kakao.maps.Map(mapContainer, mapOption);
+            var maker = new kakao.maps.Marker({
+                position: position,
+                clickable: true
+            });
+            maker.setMap(map);
+
+        </script>
     </th:block>
 </th:block>
 </html>
