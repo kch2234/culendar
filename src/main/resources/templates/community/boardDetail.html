@@ -53,9 +53,11 @@
                 <div class="col">
                     <h1 th:text="${board.title}"></h1>
                 </div>
-                <div class="col-2">
-                    <th:block sec:authorize="isAuthenticated()">
-                        <th:block th:if="${member.getId} == ${board.getMemberDTO().getId()}">
+                <!-- 회원 일 경우에만 북마크 또는 수정, 삭제 버튼 보이기 -->
+                <th:block sec:authorize="isAuthenticated()">
+                    <!-- 게시글 작성자 일 경우만 수정, 삭제 버튼 보이기 -->
+                    <th:block th:if="${member.getId} == ${board.getMemberDTO().getId()}">
+                        <div class="col-3">
                             <button type="button" class="btn btn-secondary mb-1"
                                     th:onclick="|location.href='@{/boards/{id}/modify(id=${board.id})}'|">수정
                             </button>
@@ -63,14 +65,19 @@
                                 <button type="submit" class="btn btn-outline-secondary">삭제</button>
                                 <!--  TODO 삭제 확인 모달   -->
                             </form>
-                        </th:block>
+                        </div>
                     </th:block>
-                </div>
-                <div class="col-2">
-                    <button sec:authorize="isAuthenticated()" id="boardBkMarkBtn" type="button"
-                            class="fa-regular fa-bookmark fa-3x">
-                    </button>
-                </div>
+                    <!-- 게시글 작성자가 아닐 경우 북마크 버튼 보이기 -->
+                    <th:block th:if="${member.getId} != ${board.getMemberDTO().getId()}">
+                        <div class="col-3">
+                            <button id="boardBkMarkBtn"
+                                    type="button"
+                                    class="fa-regular fa-bookmark fa-3x">
+                            </button>
+                        </div>
+                    </th:block>
+
+                </th:block>
 
             </div>
 
