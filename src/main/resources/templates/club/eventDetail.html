@@ -63,9 +63,9 @@
                     <th:block th:if="${member.getId} == ${eventBoard.getMemberDTO().getId()}">
                         <div class="col-3">
                             <button type="button" class="btn btn-secondary mb-1"
-                                    th:onclick="|location.href='@{/boards/{id}/modify(id=${eventBoard.id})}'|">수정
+                                    th:onclick="|location.href='@{/clubs/{id}/modify(id=${eventBoard.id})}'|">수정
                             </button>
-                            <form action="" th:action="@{/boards/{id}/delete(id=${eventBoard.id})}" method="post">
+                            <form action="" th:action="@{/clubs/{id}/delete(id=${eventBoard.id})}" method="post">
                                 <button type="submit" class="btn btn-outline-secondary">삭제</button>
                                 <!--  TODO 삭제 확인 모달   -->
                             </form>
@@ -214,7 +214,7 @@
                     </div>
 
                 </div>  <!--  col 작품 정보 영역  -->
-                
+
             </div>  <!--  row 작품 정보 카드  -->
 
             <!--  신청 버튼 TODO 모임 신청  -->
@@ -263,9 +263,7 @@
         <script th:inline="javascript">
             $(document).ready(function () {
                 let boardIdVal = [[${eventBoard.id}]]; // 본문 글번호
-                let cmtListDiv = $("#cmtListContainer");  // 댓글 목록 컨테이너
-                let cmtPaginationDiv = $("#cmtPagination"); // 댓글 페이지네이션 컨테이너
-                let currPage = 1; // 현재 보고있는 댓글 페이지 번호 저장해둘 변수
+
                 // 현재 로그인이 되어 있다면 회원 id를, 아니면 null을 저장
                 var member = [[${member}]]
                 var memberId
@@ -281,7 +279,6 @@
                 // 페이지 로딩시 시작할 함수들
                 getAvgRating(); // 평균 평가 가져오기
                 getMyRating(); // 내 평가 가져오기
-                getCommentList(1);  // 댓글 목록 요청 호출!
 
                 // ********** 클릭시 이벤트들 **********
 
@@ -524,264 +521,6 @@
                         return [yy, '/', (mm > 9 ? '' : '0') + mm, '/', (dd > 9 ? '' : '0') + dd].join('');
                     }
                 }
-
-
-                // ********* 댓글 관련 **********
-
-                // ***** 댓글 목록 ********************
-                // 댓글 목록 요청 함수
-                function getCommentList(page) {
-                    console.log("getCommentList! page: " + page);
-                    currPage = page;
-                    $.ajax({
-                        type: "get",
-                        url: "/comments/list/" + boardIdVal + "/" + page,
-                        success: function (result) {
-                            console.log("댓글 목록 요청 성공!");
-                            console.log(result);
-                            // 댓글 목록 화면에 띄우기
-                            printCommentList(result.commentList);
-                            // 댓글 페이지네이션 화면에 띄우기
-                            printPagination(result.pageResponseDTO);
-                        },
-                        error: function (e) {
-                            console.log("댓글 목록 요청 실패....");
-                            console.log(e);
-                        }
-                    });
-                }
-
-                // 댓글 목록 화면에 출력하는 함수
-                function printCommentList(list) {
-                    let html = '';
-                    for (let i = 0; i < list.length; i++) {
-                        html += '<div class="row align-items-center p-2">';
-                        html += '<div>';
-                        let wid = 30 * list[i].level;
-                        html += '<img src="/comments/display/bgwhite.PNG" width="' + wid + '" height="16"/>';
-                        if (list[i].level > 0) {
-                            html += '<img src="/comments/display/arrow.PNG" width="30"/>';
-                        }
-                        html += '</div><div class="col mr-2">';
-                        html += '<div class="h5 mb-0 font-weight-bold text-gray-800">' + list[i].comment + '</div>';
-                        html += '<div class="text-xs font-weight-bold text-primary mb-1">' + list[i].commenter;
-                        html += ' <span class="ml2 text-gray-500"> ' + displayTime(list[i].lastModifiedDate) + ' </span></div></div>';
-                        html += '<div class="col-auto btn-group-sm">';
-                        html += '<button class="btn btn-info mr-1 reCmtBtn" data-refid="' + list[i].refId + '" data-step="' + list[i].step + '" data-level="' + list[i].level + '">답글</button>';
-                        html += '<button class="btn btn-warning mr-1 cmtModifBtn" data-cmtid="' + list[i].id + '">수정</button>';
-                        html += '<button class="btn btn-danger mr-1 cmtDelBtn" data-cmtid="' + list[i].id + '" >삭제</button>';
-                        html += '</div></div><hr />';
-                    }
-                    cmtListDiv.html(html); // 목록 태그 컨테이너 안에 붙히기
-                }
-
-                // 댓글 Pagination 띄우는 함수
-                function printPagination(pageDTO) {
-                    let html = '<nav aria-label="..."><ul class="pagination justify-content-end mb-5">';
-                    // * prev
-                    if (pageDTO.prev) {
-                        html += '<li class="page-item">';
-                    } else {
-                        html += '<li class="page-item disabled">';
-                    }
-                    html += '<a class="page-link" href="' + (pageDTO.startPage - 1) + '">Previous</a></li>';
-                    // * 페이지 번호 반복
-                    for (let i = 0; i < pageDTO.pageNumList.length; i++) {
-                        if (pageDTO.pageNumList[i] == currPage) {
-                            html += '<li  class="page-item active">';
-                        } else {
-                            html += '<li  class="page-item">';
-                        }
-                        html += '<a class="page-link" href="' + pageDTO.pageNumList[i] + '">' + pageDTO.pageNumList[i] + '</a></li>';
-                    }
-                    // * next
-                    if (pageDTO.next) {
-                        html += '<li class="page-item">';
-                    } else {
-                        html += '<li class="page-item disabled">';
-                    }
-                    html += '<a class="page-link" href="' + (pageDTO.endPage + 1) + '">Next</a>';
-                    html += '</li></ul></nav>';
-
-                    cmtPaginationDiv.html(html); // 부착!
-                }
-
-                // 댓글 페이지번호 클릭 이벤트 등록
-                cmtPaginationDiv.on("click", "a.page-link", function (e) {
-                    e.preventDefault(); // a 태그의 기본이벤트가 href속성의 적힌 경로로 이동 -> 취소하기
-                    let pageNum = $(this).attr("href");
-                    console.log("페이지 번호 클릭 - pageNum : " + pageNum);
-                    getCommentList(pageNum); // 클릭한 페이지 번호의 댓글 목록 요청
-                });
-
-                // ***** 댓글 등록 ********************
-                $("#newCmtBtn").on("click", function (e) {
-                    console.log("new comment button clicked!!");
-                    let cmtTxt = $("#comment").val(); // 댓글 내용 가져오기
-                    let cmterTxt = $("#commenter").val(); // 댓글 작성자 가져오기
-                    let data = {
-                        comment: cmtTxt,
-                        commenter: cmterTxt,
-                        boardId: boardIdVal,
-                        refId: 0,
-                        step: 0,
-                        level: 0
-                    };
-                    console.log(data);
-                    saveComment(data, function () {
-                        getCommentList(1); // 목록 호출
-                        $("#comment").val(""); // 댓글작성란 비우기
-                        $("#commenter").val("");
-                    });
-                });
-
-                // 댓글 저장 처리 함수
-                function saveComment(data, callbackFn) { // 저장데이터와 성공시 실행할 콜백함수 전달받기
-                    $.ajax({
-                        type: "post",
-                        url: "/comments/add",
-                        data: JSON.stringify(data),
-                        contentType: "application/json;charset=UTF-8",
-                        success: function (result) {
-                            console.log("댓글 등록 성공!!");
-                            console.log(result);
-                            callbackFn();  // 콜백함수 호출
-                        },
-                        error: function (e) {
-                            console.log("댓글 등록 실패....");
-                            console.log(e);
-                        }
-                    });
-                }
-
-                // ***** 답글 버튼 이벤트 ****************
-                cmtListDiv.on("click", "button.reCmtBtn", function (e) {
-                    console.log("답글 버튼 클릭!");
-                    // 버튼에 숨겨둔  refId, step, level값 꺼내기
-                    let refIdVal = $(this).data("refid");
-                    let stepVal = $(this).data("step");
-                    let levelVal = $(this).data("level");
-                    console.log(refIdVal, stepVal, levelVal);
-                    // 모달에 다시 심기
-                    $("#reRefid").val(refIdVal);
-                    $("#reStep").val(stepVal);
-                    $("#reLevel").val(levelVal);
-                    // 모달 띄우기
-                    $("#reCmtModal").modal("show");
-                });
-
-                // 답글 저장 버튼 이벤트 등록
-                $("#reCmtSaveBtn").on("click", function (e) {
-                    console.log("답글 저장 버튼 클릭!");
-                    // 답글 내용 꺼내서 JS 객체로 만들기
-                    let cmtVal = $("#reCmt").val();
-                    let cmterVal = $("#reCmter").val();
-                    let refidVal = $("#reRefid").val();
-                    let stepVal = $("#reStep").val();
-                    let levelVal = $("#reLevel").val();
-                    let data = {
-                        comment: cmtVal,
-                        commenter: cmterVal,
-                        boardId: boardIdVal,
-                        refId: refidVal,
-                        step: stepVal,
-                        level: levelVal
-                    };
-                    saveComment(data, function () {
-                        // 답글 모달의 입력란 비우기
-                        $("#reCmt").val("");
-                        $("#reCmter").val("");
-                        $("#reCmtModal").modal("hide"); // 모달 숨기기
-                        getCommentList(currPage); // 목록 요청 호출 -> currPage 보고있던 댓글 페이지 요청
-                    });
-
-                });
-
-
-                // ***** 댓글 삭제 **********************
-                // 댓글 삭제 버튼 이벤트 등록
-                cmtListDiv.on("click", "button.cmtDelBtn", function (e) {
-                    let commentId = $(this).data("cmtid");
-                    console.log("삭제버튼 클릭!!! commentId : " + commentId);
-                    $.ajax({
-                        type: "delete",
-                        url: "/comments/" + commentId,
-                        success: function (result) {
-                            console.log("삭제 요청 성공!");
-                            console.log(result);
-                            getCommentList(currPage); // 목록 호출
-                        },
-                        error: function (e) {
-                            console.log("삭제 요청 실패...");
-                            console.log(e);
-                        }
-                    });
-                });
-
-                // ***** 댓글 수정 **********************
-                // 수정 버튼 클릭 이벤트
-                cmtListDiv.on("click", "button.cmtModifBtn", function (e) {
-                    let cmtIdVal = $(this).data("cmtid");
-                    console.log("수정 버튼 클릭!! cmtIdVal : " + cmtIdVal);
-                    getOneComment(cmtIdVal);  // 댓글 정보 가져오기 함수 호출
-                });
-
-                // 댓글 정보 가져오는 함수
-                function getOneComment(cmtId) {
-                    $.ajax({
-                        type: "get",
-                        url: "/comments/" + cmtId,
-                        success: function (result) {
-                            console.log("댓글 한개 요청 성공!");
-                            console.log(result);
-                            showModifyModal(result); // 모달띄워라~
-                        },
-                        error: function (e) {
-                            console.log("댓글 한개 요청 실패....");
-                            console.log(e);
-                        }
-                    });
-                }
-
-                // 수정 모달 띄우는 함수
-                function showModifyModal(comment) {
-                    // 모달에 댓글 내용 추가
-                    $("#modalCid").val(comment.id);
-                    $("#modalCmt").val(comment.comment);
-                    $("#modalCmter").val(comment.commenter);
-                    $("#modalCmtDate").val(displayTime(comment.lastModifiedDate));
-                    $("#modifyModal").modal("show"); // 모달 보여주기
-                }
-
-                // 수정 모달의 save 버튼 이벤트 등록
-                $("#modalSaveBtn").on("click", function (e) {
-                    // 수정된 내용들 다 가져와서 수정 요청
-                    let cidVal = $("#modalCid").val();
-                    let cmtVal = $("#modalCmt").val();
-                    let cmterVal = $("#modalCmter").val();
-                    let data = {
-                        id: cidVal,
-                        comment: cmtVal,
-                        commenter: cmterVal
-                    };
-                    $.ajax({
-                        type: "patch",
-                        url: "/comments/" + cidVal,
-                        data: JSON.stringify(data),
-                        contentType: "application/json;charset=UTF-8",
-                        success: function (result) {
-                            console.log("댓글 수정처리 성공!");
-                            console.log(result);
-                            $("#modifyModal").modal("hide"); // 모달 닫기
-                            getCommentList(currPage); // 댓글 목록 요청 호출
-                        },
-                        error: function (e) {
-                            console.log("댓글 수정처리 실패...");
-                            console.log(e);
-                        }
-                    });
-                });
-
 
             }); // ready
         </script>

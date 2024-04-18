@@ -5,120 +5,151 @@
     <th:block th:fragment="content">
         <!--  TODO 텍스트 에디터 API  -->
 
-        <div class="untree_co-hero py-5 mb-0" id="home-section">  <!--  배경 영역  -->
-            <div class="container pb-5 mb-5 border-bottom">  <!--  게시글 작성  -->
+        <div id="boardAddWrapper" class="mt-5">
+
+            <form class="container mt-4" th:object="${eventBoardForm}" method="post" action="" th:action >
+
+                <!-- 제목, 게시글 분류 선택 -->
+                <div class="row mb-4 ">
+
+                    <div class="col-12 input-group input-group-lg">
+
+                        <span class="input-group-text">제목</span>
+                        <input type="text" class="form-control" th:field="*{title}">
+
+                    </div>
+
+                </div>
+
+                <!-- 작품 선택 -->
+                <div class="row mb-4">
+
+                    <div class="col-12 input-group input-group-lg">
+
+                        <label for="search-text" class="input-group-text">작품 선택</label>
+                        <div class="input-group-text">
+                            <input class="form-check-input mt-0" id="programSelectCheck" type="checkbox" th:field="*{programId}" value="">
+                        </div>
+
+                        <input type="text" id="search-text" class="form-control dropdown-toggle search-input"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                        <ul class="dropdown-menu overflow-scroll" id="searched-list">
+                            <!-- 동적으로 드롭다운 검색 결과 -->
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <!--  모임 일정 / 모집 마감 일자  -->
+                <div class="row mb-4 ">
+
+                    <div class="col-12 input-group input-group-lg">
+
+                        <!--  모임 날짜  -->
+                        <div class="form-group">
+                            <span class="input-group-text">날짜</span>
+                            <input type="date" class="form-control" th:field="*{eventDate}" id="eventDate">
+                        </div>
+                        <!--  달력형 모집 마감 일자  -->
+                        <div class="form-group">
+                            <span class="input-group-text" >모집 마감 일자</span>
+                            <input type="date" class="form-control" th:field="*{deadlineDate}" id="deadlineDate">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--  인원  -->
+                <div class="row mb-4 ">
+
+                    <div class="col-12 input-group input-group-lg">
+
+                        <div class="form-group">
+                            <span class="input-group-text">최대 인원</span>
+                            <input type="number" class="form-control" th:field="*{maxPeople}" min="2" id="maxPeople">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--  모임 자동 수락 여부  -->
+                <div class="row mb-4 ">
+
+                    <div class="col-12 input-group input-group-lg">
+
+                        <label class="input-group-text">모임 참가 신청을 자동으로 수락합니다.</label>
+                        <div class="input-group-text">
+                            <input class="form-check-input mt-0" id="autoAccept" type="checkbox" value="true" checked>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--  필터링 영역  -->
+                <div class="row mb-4 ">
+
+                    <div class="col-12 input-group input-group-lg">
+
+                        <span class="input-group-text">성별</span>
+                        <select class="form-control" th:field="*{filterGender}" id="filterGender">
+                            <option th:each="filterGender: ${filterGender}"
+                                    th:value="${filterGender.name()}"
+                                    th:text="${filterGender.value}">  <!--  TODO selected 수정  -->
+                            </option>
+                        </select>
+
+                        <span class="input-group-text" for="filterMinAge">최소 연령</span>
+                        <input type="number" class="form-control" th:field="*{filterMinAge}" min="0" id="filterMinAge">
+
+                        <span class="input-group-text">최대 연령</span>
+                        <input type="number" class="form-control" th:field="*{filterMaxAge}" min="0" id="filterMaxAge">
+
+
+                    </div>
+
+                </div>
+
+<!--                <div class="form-group">-->
+<!--                    <label class="text-blank" for="thumbnail">썸네일 이미지</label>-->
+<!--                    <input type="file" th:field="*{thumbnail}" class="form-control" id="thumbnail">-->
+<!--                </div>  &lt;!&ndash;  todo 이미지 첨부 기능 예정  &ndash;&gt;-->
+<!--                <div class="form-group">-->
+<!--                    <label class="text-blank" for="image">본문 이미지 첨부</label>-->
+<!--                    <input type="file" th:field="*{image}" class="form-control" id="image">-->
+<!--                </div>  &lt;!&ndash;  todo 이미지 첨부 기능 예정  &ndash;&gt;-->
+
+                <!--  내용 영역  -->
+                <div class="row mb-4">
+                    <div class="input-group input-group-lg">
+
+                        <label for="content-textarea" class="input-group-text">내용</label>
+
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="input-group">
+
+                        <textarea th:field="*{content}" rows="30" class="form-control" id="content-textarea">
+
+                        </textarea>
+                    </div>
+                </div>
+
                 <div class="row">
-                    <div class="col-lg-7">
-                        <form action="" th:action th:object="${eventBoardForm}" method="post">
-                            <div class="form-group">
-                                <label class="text-blank" for="title">제목</label>
-                                <input type="text" th:field="*{title}" class="form-control" id="title">
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col-12 input-group input-group-lg">
+                    <div class="input-group">
+                        <button type="button" class="btn btn-info" th:onclick="|location.href='@{/clubs/list}'|">취소
+                        </button>
+                        <button type="submit" class="btn btn-primary">등록</button>
+                    </div>
+                </div>
 
-                                    <!-- 작품 선택 -->
-                                    <label for="search-text" class="input-group-text">작품 선택</label>
-                                    <!--  체크 박스  -->
-                                    <div class="input-group-text">
-                                        <input class="form-check-input mt-0"
-                                               id="programSelectCheck"
-                                               type="checkbox"
-                                               th:field="*{programId}"
-                                               value="">
-                                    </div>
-                                    <!--  검색창  -->
-                                    <input type="text"
-                                           id="search-text"
-                                           class="form-control dropdown-toggle search-input"
-                                           data-bs-toggle="dropdown"
-                                           aria-expanded="false">
-                                    <ul class="dropdown-menu overflow-scroll" id="searched-list">
-                                        <!-- 동적으로 드롭다운 검색 결과 -->
-                                    </ul>
+            </form>
 
-                                    <!--  모임 날짜  -->
-                                    <div class="form-group">
-                                        <label class="text-blank" for="eventDate">날짜</label>
-                                        <input type="date" th:field="*{eventDate}" class="form-control" id="eventDate">
-                                    </div>
-                                    <!--  모임 마감 일자  -->
-                                    <div class="form-group">
-                                        <label class="text-blank" for="deadlineDate">모집 마감 : </label>
-                                        <span>모임</span><input type="number" id="deadlineDate" th:field="*{deadlineDate}" min="2" max="31" value="2"><span>일 전</span>
-                                    </div>
-                                    <!--  달력형 모집 마감 일자  -->
-<!--                                    <div class="form-group">-->
-<!--                                        <label class="text-blank" for="deadlineDate">모집 마감 일자</label>-->
-<!--                                        <input type="date" th:field="*{deadlineDate}" class="form-control" id="deadlineDate">-->
-<!--                                    </div>-->
-
-                                    <div class="form-group">
-                                        <label class="text-blank" for="maxPeople">최대 인원</label>
-                                        <input type="number"
-                                               th:field="*{maxPeople}"
-                                               class="form-control"
-                                               min="2"
-                                               id="maxPeople">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="filter">필터링
-                                            <label class="text-blank" for="filterGender">성별</label>
-                                            <select class="custom-select" th:field="*{filterGender}" id="filterGender">
-                                                <!--                                        <option value="">성별 선택</option>-->
-                                                <option th:each="filterGender: ${filterGender}"
-                                                        th:value="${filterGender.name()}"
-                                                        th:text="${filterGender.value}"
-                                                        th:selected="${filterGender.name()} == 'ALL'">
-                                                    <!-- TODO 기본 선택값   -->
-                                                </option>
-                                            </select>
-                                            <label class="text-blank" for="filterMaxAge">최대나이</label>
-                                            <input type="number"
-                                                   th:field="*{filterMaxAge}"
-                                                   class="form-control"
-                                                   min="0"
-                                                   id="filterMaxAge">
-                                            <label class="text-blank" for="filterMinAge">최소나이</label>
-                                            <input type="number"
-                                                   th:field="*{filterMinAge}"
-                                                   class="form-control"
-                                                   min="0"
-                                                   id="filterMinAge">
-                                        </label>
-                                    </div>
-
-                                    <!--                            <input type="text" id="demo" name="demo" value=""/>  &lt;!&ndash;  TODO 기간 설정 시 date range picker 사용  &ndash;&gt;-->
-                                    <!--  toggle todo DB연결  -->
-                                    <label for="autoAccept">자동 수락 여부 toggle</label>
-                                    <input type="checkbox" name="autoAccept" value="true" id="autoAccept" checked>
-<!--                                    <div class="form-group">-->
-<!--                                        <label class="text-blank" for="thumbnail">썸네일 이미지</label>-->
-<!--                                        <input type="file" th:field="*{thumbnail}" class="form-control" id="thumbnail">-->
-<!--                                    </div>  &lt;!&ndash;  todo 이미지 첨부 기능 예정  &ndash;&gt;-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label class="text-blank" for="image">본문 이미지 첨부</label>-->
-<!--                                        <input type="file" th:field="*{image}" class="form-control" id="image">-->
-<!--                                    </div>  &lt;!&ndash;  todo 이미지 첨부 기능 예정  &ndash;&gt;-->
-                                    <div class="form-group">
-                                        <label class="text-blank" for="content">내용</label>
-                                        <textarea th:field="*{content}"
-                                                  class="form-control"
-                                                  id="content"
-                                                  rows="10"
-                                                  maxlength="4000"></textarea>
-                                    </div>
-                                    <button type="button"
-                                            class="btn btn-info"
-                                            th:onclick="|location.href='@{/clubs/list}'|">
-                                        취소
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">등록</button>
-                        </form>
-                    </div>  <!--  col-lg-7  -->
-                </div>  <!--  row  -->
-            </div>  <!--  container 게시글 작성  -->
-        </div>  <!-- untree_co-hero py-5 mb-0 배경 영역   -->
+        </div>
 
         <script th:inline="javascript">
             $(document).ready(function () {
@@ -214,17 +245,22 @@
                 var minEventDateISOString = minEventDate.toISOString().split("T")[0];
                 document.getElementById("eventDate").setAttribute("min", minEventDateISOString);
 
-<!--                // eventDate에 사용자 입력 값 지정-->
-<!--                document.getElementById("eventDate").addEventListener("change", function() {-->
-<!--                    var eventDateValue = this.value;-->
-<!--                    var eventDate = new Date(eventDateValue);-->
-<!---->
-<!--                    // minDeadlineDate = minEventDate + 2-->
-<!--                    var minDeadlineDate = new Date(eventDate);-->
-<!--                    minDeadlineDate.setDate(eventDate.getDate() + 2);-->
-<!--                    var minDeadlineDateISOString = minDeadlineDate.toISOString().split("T")[0];-->
-<!--                    document.getElementById("deadlineDate").setAttribute("min", minDeadlineDateISOString);-->
-<!--                });-->
+                // eventDate 입력 후
+                document.getElementById("eventDate").addEventListener("change", function() {
+                    var eventDateValue = this.value;
+                    var eventDate = new Date(eventDateValue);
+
+                    // minDeadlineDate = today
+                    var minDeadlineDate = new Date();
+                    var minDeadlineDateISOString = minDeadlineDate.toISOString().split("T")[0];
+                    document.getElementById("deadlineDate").setAttribute("min", minDeadlineDateISOString);
+
+                    // maxDeadlineDate = eventDate - 2
+                    var maxDeadlineDate = new Date(eventDate);
+                    maxDeadlineDate.setDate(eventDate.getDate() - 2);
+                    var maxDeadlineDateISOString = maxDeadlineDate.toISOString().split("T")[0];
+                    document.getElementById("deadlineDate").setAttribute("max", maxDeadlineDateISOString);
+                });
 
             });
         </script>
