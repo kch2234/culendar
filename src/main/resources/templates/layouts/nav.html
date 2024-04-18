@@ -10,7 +10,7 @@
         <div class="container-fluid">
 
             <div>
-                <a class="navbar-brand" th:href="@{/}">Culendar</a>
+                <a class="navbar-brand fs-2" th:href="@{/}">Culendar</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +19,7 @@
             </div>
 
             <div>
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-5">
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/myCalendar}">My Calendar</a>
                     </li>
@@ -42,8 +42,8 @@
 
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a th:href="@{/}" class="dropdown-item">프로필</a></li>
-                        <li><a th:href="@{/}" class="dropdown-item">설정</a></li>
+                        <li><a th:href="@{/members/{id}(id=${#authentication.name})}" class="dropdown-item">프로필</a></li>
+                        <li><a th:href="@{/members/{id}/setting(id=${#authentication.name})}" class="dropdown-item">설정</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
