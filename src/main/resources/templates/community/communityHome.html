@@ -4,7 +4,7 @@
     <th:block th:fragment="content">
 
         <!-- 커뮤니티 wrapper -->
-        <div id="community-wrapper">
+        <div id="community-wrapper" class="mt-5">
 
             <!-- 인기글 -->
             <div class="container mb-5">
@@ -14,18 +14,6 @@
                 <div class="row" id="BestListContainer">
 
                     <!-- 인기글 조회 해서 4개 띄우기 -->
-                    <!--<div class="col-3 ml-1 mr-1 ">
-                    <div>
-                        <img src="" class="card-img-top mb-1 img-thumbnail img-fluid" alt="...">
-                        <div class="card-body">
-                            <div class="row mb-2">
-                                <div class="col-auto card-title fs-4">제목</div>
-                                <div class="col-2 badge text-bg-secondary fs-6">정보</div>
-                            </div>
-                            <p class="card-text">lㅁㄴㅇㅁㄴㅇㄴㅁㅀㄴㅇㄴㅇㅀㅀㅇㅇㅀㅇㅀ</p>
-                            </div>
-                        </div>
-                    </div>-->
 
                 </div>
 
@@ -128,7 +116,7 @@
                         html += '<tr>';
                         html += '<th scope="row">' + list[i].id + '</th>';
                         html += '<td class="text-center">' + getBoardType(list[i].boardType) + '</td>';
-                        html += '<td> <a href="/boards/' + list[i].id + '" class="text-start">' + list[i].title + '</a></td>';
+                        html += '<td class="col-auto"> <a href="/boards/' + list[i].id + '" class="text-start">' + list[i].title + '</a></td>';
                         html += '<td class="text-center">' + list[i].memberDTO.username + '</td>';
                         html += '<td class="text-center">' + list[i].createDate.substring(0,10) + '</td>';
                         html += '</tr>';

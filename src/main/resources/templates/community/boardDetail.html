@@ -92,8 +92,8 @@
                     <!-- 문장형 평가, 캘린더 등록, 북마크 -->
                     <div class="d-flex flex-row">
 
-                        <div class="col-4">
-                            <div class="badge text-bg-secondary w-100 fs-6" id="AvgRating">
+                        <div class="col-auto">
+                            <div class="badge text-bg-secondary h-100 fs-4 d-flex justify-content-center align-items-center p-1" id="AvgRating">
                                 <!--    평균 문장형 평가 위치-->
                             </div>
                         </div>
@@ -118,7 +118,7 @@
                     <!-- 작품 제목 -->
                     <div class="">
                         <div class="col">
-                            <div class="fs-3" th:text="${board.getProgramDTO().getTitle()}"></div>
+                            <a th:href="@{/program/{seq}(seq=${board.getProgramDTO().seq})}" class="fs-3" th:text="${board.getProgramDTO().getTitle()}"></a>
                         </div>
                     </div>
 
@@ -136,16 +136,16 @@
 
                         <th:block sec:authorize="isAuthenticated()">
 
-                            <div class="col-4 fs-6" id="addRating">
+                            <div class="col-4" id="addRating">
                                 <!--   회원 문장형 평가 위치-->
                             </div>
                             <div class="col"></div>
                             <!-- TODO : 좋아요, 후기, 체크박스 버튼 -->
-                            <div class="col-2 fs-6">
-                                <div class="badge text-bg-secondary w-100 h-100">내후기</div>
+                            <div class="col-3 p-0">
+                                <div class="d-flex justify-content-end align-items-center fs-5 w-100 h-100">내후기</div>
                             </div>
-                            <div class="col-2 fs-6">
-                                <div class="badge text-bg-secondary w-100 h-100">체크박스</div>
+                            <div class="col-2 d-flex justify-content-center align-items-center">
+                                <button class="fa-regular fa-circle-check fa-2x"></button>
                             </div>
 
                         </th:block>
@@ -177,24 +177,24 @@
                     <!-- 프로필 이미지 -->
                     <div class="row mb-3 justify-content-center">
                         <div class="col-4">
-                            <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid">
+                            <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid rounded">
                         </div>
                     </div>
 
                     <!-- TODO 닉네임, 팔로우 버튼 -->
-                    <div class="row text-center mb-3">
-                        <div class="col-6 text-end">
+                    <div class="row text-center mb-3 d-flex justify-content-center">
+                        <div class="col-auto text-center">
                             <div class="badge text-bg-secondary fs-4 d-inline-block"
                                  th:text="${board.getMemberDTO().getUsername()}"></div>
                         </div>
-                        <div class="col-6 text-start">
-                            <div sec:authorize="isAuthenticated()" class="badge text-bg-primary fs-6">Follow</div>
+                        <div sec:authorize="isAuthenticated()" class="col-auto p-0">
+                            <div class="badge text-bg-primary fs-6">Follow</div>
                         </div>
                     </div>
 
                     <!-- 지역, 소개 -->
                     <div class="row text-center justify-content-center">
-                        <div class="col-3 text-end">
+                        <div class="col-auto text-end">
                             <div class="badge text-bg-secondary fs-6"
                                  th:text="${board.getMemberDTO().getLocation().value}"></div>
                         </div>
@@ -206,7 +206,6 @@
                     </div>
 
                 </div>
-
 
             </div>
 
@@ -594,7 +593,7 @@
                         success: function (data) {
                             console.log(data);
                             let html = '';
-                            html += '<div class="badge text-bg-secondary w-100 h-100">' + data + '</div>';
+                            html += '<div class="badge text-bg-secondary d-flex justify-content-center align-items-center fs-5 h-100">' + data + '</div>';
                             $('#addRating').html(html);
                         }
                     });
