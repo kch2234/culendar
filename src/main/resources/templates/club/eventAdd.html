@@ -14,10 +14,12 @@
                                 <label class="text-blank" for="title">제목</label>
                                 <input type="text" th:field="*{title}" class="form-control" id="title">
                             </div>
-                            <div class="row mb-4"> <!-- 작품 선택 -->
-
+                            <div class="row mb-4">
                                 <div class="col-12 input-group input-group-lg">
+
+                                    <!-- 작품 선택 -->
                                     <label for="search-text" class="input-group-text">작품 선택</label>
+                                    <!--  체크 박스  -->
                                     <div class="input-group-text">
                                         <input class="form-check-input mt-0"
                                                id="programSelectCheck"
@@ -25,7 +27,7 @@
                                                th:field="*{programId}"
                                                value="">
                                     </div>
-
+                                    <!--  검색창  -->
                                     <input type="text"
                                            id="search-text"
                                            class="form-control dropdown-toggle search-input"
@@ -34,10 +36,23 @@
                                     <ul class="dropdown-menu overflow-scroll" id="searched-list">
                                         <!-- 동적으로 드롭다운 검색 결과 -->
                                     </ul>
+
+                                    <!--  모임 날짜  -->
                                     <div class="form-group">
                                         <label class="text-blank" for="eventDate">날짜</label>
                                         <input type="date" th:field="*{eventDate}" class="form-control" id="eventDate">
                                     </div>
+                                    <!--  모임 마감 일자  -->
+                                    <div class="form-group">
+                                        <label class="text-blank" for="deadlineDate">모집 마감 : </label>
+                                        <span>모임</span><input type="number" id="deadlineDate" th:field="*{deadlineDate}" min="2" max="31" value="2"><span>일 전</span>
+                                    </div>
+                                    <!--  달력형 모집 마감 일자  -->
+<!--                                    <div class="form-group">-->
+<!--                                        <label class="text-blank" for="deadlineDate">모집 마감 일자</label>-->
+<!--                                        <input type="date" th:field="*{deadlineDate}" class="form-control" id="deadlineDate">-->
+<!--                                    </div>-->
+
                                     <div class="form-group">
                                         <label class="text-blank" for="maxPeople">최대 인원</label>
                                         <input type="number"
@@ -72,13 +87,7 @@
                                                    id="filterMinAge">
                                         </label>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="text-blank" for="deadlineDate">모집 마감 일자</label>
-                                        <input type="date"
-                                               th:field="*{deadlineDate}"
-                                               class="form-control"
-                                               id="deadlineDate">
-                                    </div>
+
                                     <!--                            <input type="text" id="demo" name="demo" value=""/>  &lt;!&ndash;  TODO 기간 설정 시 date range picker 사용  &ndash;&gt;-->
                                     <!--  toggle todo DB연결  -->
                                     <label for="autoAccept">자동 수락 여부 toggle</label>
@@ -205,17 +214,17 @@
                 var minEventDateISOString = minEventDate.toISOString().split("T")[0];
                 document.getElementById("eventDate").setAttribute("min", minEventDateISOString);
 
-                // eventDate에 사용자 입력 값 지정
-                document.getElementById("eventDate").addEventListener("change", function() {
-                    var eventDateValue = this.value;
-                    var eventDate = new Date(eventDateValue);
-
-                    // minDeadlineDate = minEventDate + 2
-                    var minDeadlineDate = new Date(eventDate);
-                    minDeadlineDate.setDate(eventDate.getDate() + 2);
-                    var minDeadlineDateISOString = minDeadlineDate.toISOString().split("T")[0];
-                    document.getElementById("deadlineDate").setAttribute("min", minDeadlineDateISOString);
-                });
+<!--                // eventDate에 사용자 입력 값 지정-->
+<!--                document.getElementById("eventDate").addEventListener("change", function() {-->
+<!--                    var eventDateValue = this.value;-->
+<!--                    var eventDate = new Date(eventDateValue);-->
+<!---->
+<!--                    // minDeadlineDate = minEventDate + 2-->
+<!--                    var minDeadlineDate = new Date(eventDate);-->
+<!--                    minDeadlineDate.setDate(eventDate.getDate() + 2);-->
+<!--                    var minDeadlineDateISOString = minDeadlineDate.toISOString().split("T")[0];-->
+<!--                    document.getElementById("deadlineDate").setAttribute("min", minDeadlineDateISOString);-->
+<!--                });-->
 
             });
         </script>

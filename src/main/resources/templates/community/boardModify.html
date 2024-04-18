@@ -4,42 +4,114 @@
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
         <!--  TODO 텍스트 에디터 API  -->
+        <!-- TODO 유효성 검사, 이미지 첨부 -->
 
-        <div class="untree_co-hero py-5 mb-0" id="home-section">  <!--  배경 영역  -->
-            <div class="container pb-5 mb-5 border-bottom">  <!--  게시글 작성  -->
+        <!--<div class="untree_co-hero py-5 mb-0" id="home-section">  &lt;!&ndash;  배경 영역  &ndash;&gt;
+            <div class="container pb-5 mb-5 border-bottom">  &lt;!&ndash;  게시글 작성  &ndash;&gt;
                 <div class="row">
                     <div class="col-lg-7">
-                        <form action="" th:action th:object="${board}" method="post">
+                        <form action="" th:action th:object="${boardForm}" method="post">
                             <div class="form-group">
                                 <label class="text-blank" for="title">제목</label>
                                 <input type="text" th:field="*{title}" class="form-control" id="title">
                             </div>
-                            <!--  NOTE 카테고리 수정 불가  -->
                             <div class="form-group">
                                 <label class="text-blank" for="boardType">카테고리</label>
-                                <input type="text" th:field="*{boardType}" class="form-control" id="boardType" readonly>
+                                <select class="custom-select" th:field="*{boardType}" id="boardType">
+                                    <option value="">선택</option>
+                                    <option th:each="boardType: ${boardType}" th:value="${boardType.name()}"
+                                            th:text="${boardType.value}"></option>
+                                </select>
                             </div>
-                            <!--  NOTE 작품선택 수정 불가  -->
                             <div class="form-group">
                                 <label class="text-blank" for="program">작품 선택</label>
-                                <input type="search" th:field="*{program}" class="form-control" id="program" readonly>
+                                <input type="search" th:field="*{program}" class="form-control" id="program">
                             </div>
-                            <!--  TODO 이미지 첨부 기능 예정  -->
-<!--                            <div class="form-group">-->
-<!--                                <label class="text-blank" for="file">이미지 첨부</label>-->
-<!--                                <input type="file" th:field="*{image}" class="form-control" id="file">-->
-<!--                            </div> -->
+                            &lt;!&ndash;  todo 작품 DB 연결  &ndash;&gt;
+                            &lt;!&ndash;                            <div class="form-group">&ndash;&gt;
+                            &lt;!&ndash;                                <label class="text-blank" for="file">이미지 첨부</label>&ndash;&gt;
+                            &lt;!&ndash;                                <input type="file" th:field="*{image}" class="form-control" id="file">&ndash;&gt;
+                            &lt;!&ndash;                            </div>  &lt;!&ndash;  todo 이미지 첨부 기능 예정  &ndash;&gt;&ndash;&gt;
                             <div class="form-group">
                                 <label class="text-blank" for="content">내용</label>
                                 <textarea th:field="*{content}" class="form-control" id="content" rows="10"></textarea>
                             </div>
-                            <button type="button" class="btn btn-warning" th:onclick="history.go(-1)">취소</button>
+                            <button type="button" class="btn btn-info" th:onclick="|location.href='@{/boards/list}'|">
+                                취소
+                            </button>
                             <button type="submit" class="btn btn-primary">등록</button>
                         </form>
-                    </div>  <!--  col-lg-7  -->
-                </div>  <!--  row  -->
-            </div>  <!--  container 게시글 작성  -->
-        </div>  <!-- untree_co-hero py-5 mb-0 배경 영역   -->
+                    </div>  &lt;!&ndash;  col-lg-7  &ndash;&gt;
+                </div>  &lt;!&ndash;  row  &ndash;&gt;
+            </div>  &lt;!&ndash;  container 게시글 작성  &ndash;&gt;
+        </div> --> <!-- untree_co-hero py-5 mb-0 배경 영역   -->
+
+        <div id="boardAddWrapper" class="mt-5">
+
+            <form class="container mt-4" th:object="${board}" method="post" action="" th:action >
+
+                <div class="row mb-4 "> <!-- 제목, 게시글 분류 선택 -->
+
+                    <div class="col-12 input-group input-group-lg">
+
+                        <span class="input-group-text">제목</span>
+
+                        <button class="btn-secondary" th:text="${board.getBoardType().value}"></button>
+
+                        <input type="text" class="form-control" th:field="*{title}">
+
+                    </div>
+
+                </div>
+
+                <div class="row mb-4"> <!-- 작품 선택 -->
+
+                    <div class="col-12 input-group input-group-lg">
+
+                        <label for="search-text" class="input-group-text">작품 선택</label>
+                        <div class="input-group-text">
+                            <input class="form-check-input mt-0" id="programSelectCheck" type="checkbox" th:checked="${true}" readonly>
+                        </div>
+                        <input type="text" id="search-text" class="form-control dropdown-toggle search-input"
+                               th:value="${board.getProgramDTO().getTitle()}" disabled>
+                    </div>
+
+                </div>
+
+                <div class="row mb-4">
+                    <div class="input-group input-group-lg">
+
+                        <label for="content-textarea" class="input-group-text">내용</label>
+
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="input-group">
+
+                        <textarea th:field="*{content}" rows="30" class="form-control" id="content-textarea">
+
+                        </textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-group">
+                        <button type="button" class="btn btn-outline-secondary" th:onclick="history.go(-1)">
+                            취소
+                        </button>
+                        <button type="submit" class="btn btn-secondary">수정</button>
+                    </div>
+                </div>
+
+
+            </form>
+
+        </div>
+
+        <script th:inline="javascript">
+            
+        </script>
     </th:block>
 </th:block>
 </html>
