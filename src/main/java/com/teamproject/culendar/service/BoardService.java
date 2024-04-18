@@ -101,6 +101,10 @@ public class BoardService {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime weekAgo = now.minusDays(7);
         List<Board> result = boardRepository.findBestByBkMark();
+        // 리스트 4개만 남기기
+        if(result.size() > 4) {
+            result = result.subList(0, 4);
+        }
         log.info("**** BoardService getBestList - result : {}", result);
         return result;
     }
