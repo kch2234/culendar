@@ -4,39 +4,7 @@
     <th:block th:fragment="content">
 
         <div class="untree_co-section bg-light">  <!--  todo 반응형 패딩 안 맞음  -->
-            <div class="container">  <!--  커뮤니티홈  -->
-
-                <div class="row mb-5">  <!--  제목  -->
-                    <div class="col-12 mb-5 aos-init aos-animate" data-aos="fade-up">
-                        <h2 class="heading">인기글</h2>
-                    </div>
-
-                </div>  <!--  row mb-5 제목 영역  -->
-
-                <div class="col-12 mb-5 aos-init aos-animate" data-aos="fade-up">
-                    <div class="row">  <!--  카테고리  -->
-                        <!--  TODO 북마크 데이터로 인기글 조건 걸어서 필터링 버튼  -->
-                        <button type="button" class="btn btn-warning" id="btnBest">인기순</button>
-                        <button type="button" class="btn btn-warning" id="btnAll">전체글</button>
-                        <button type="button" class="btn btn-secondary" id="btnInfo">정보</button>
-                        <button type="button" class="btn btn-secondary" id="btnReview">후기</button>
-                        <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/boards/add}'|">글
-                            작성
-                        </button>
-                    </div>  <!--  row 카테고리 영역  -->
-                </div>  <!--  col-12 mb-5 aos-init aos-animate 카테고리  -->
-                <table class="row">  <!--  row 리스트 제목  -->
-                    <thead class="col-12">
-                    <tr>
-                        <th>Category</th>
-                        <th>Title</th>
-                        <th>Writer</th>
-                    </tr>
-                    </thead>
-                    <tbody class="col-12" id="listContainer">  <!--  게시글 리스트  -->
-                        <!--  NOTE 동적으로 추가  -->
-                    </tbody>  <!--  row 게시글 리스트  -->
-                </table>  <!--  row 리스트 헤더 영역  -->
+            <div class="container">  <!--  커뮤니티홈  --><!--  row mb-5 제목 영역  -->
 
                     <div class="row text-start pt-5 border-top">  <!--  페이징 영역  -->
                         <div class="col-mb-12">
@@ -51,13 +19,13 @@
             </div>  <!--  container 커뮤니티홈 영역  -->
         </div>  <!--  untree_co-section 배경 영역  -->
 
-        <div id="community-wrapper"> <!-- 커뮤니티 wrapper -->
+        <!-- 커뮤니티 wrapper -->
+        <div id="community-wrapper">
 
-            <div class="container"> <!-- 인기글 -->
+            <!-- 인기글 -->
+            <div class="container mb-5">
 
-                <div>
-                    <span class="badge text-bg-secondary fs-4 mb-3">인기글</span>
-                </div>
+                <div><span class="badge text-bg-secondary fs-4 mb-3">인기글</span></div>
 
                 <div class="row" id="BestListContainer">
 
@@ -74,6 +42,47 @@
                             </div>
                         </div>
                     </div>-->
+
+                </div>
+
+            </div>
+
+            <!-- 전체 게시글 컨테이너 -->
+            <div id="boardListContainer" class="container">
+
+                <!-- 게시글 필터, 작성 버튼 -->
+                <div class="row">
+                    <div class="col-3">
+                        <div class="d-flex flex-row justify-content-between">
+
+                            <!--  TODO 북마크 데이터로 인기글 조건 걸어서 필터링 버튼  -->
+                            <div class="badge text-bg-secondary fs-6 p-2" id="btnAll">전체글</div>
+                            <div class="badge text-bg-secondary fs-6 p-2" id="btnBest">인기글</div>
+                            <div class="badge text-bg-secondary fs-6 p-2" id="btnInfo">정보</div>
+                            <div class="badge text-bg-secondary fs-6 p-2" id="btnReview">후기</div>
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                    <button type="button" class="col-auto badge text-bg-secondary fs-6 p-2" th:onclick="|location.href='@{/boards/add}'|">글작성</button>
+                </div>
+
+                <!-- 게시글 리스트 -->
+                <div class="row mt-5">
+
+                    <table class="table">
+                        <thead>
+                        <tr class="text-center">
+                            <th scope="col">번호</th>
+                            <th scope="col">분류</th>
+                            <th scope="col" class="col-auto">제목</th>
+                            <th scope="col">작성자</th>
+                            <th scope="col">작성일자</th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-group-divider" id="listContainer">
+
+                        </tbody>
+                    </table>
 
                 </div>
 
@@ -116,10 +125,13 @@
                 function printBoardList(list) {
                     var html = '';
                     for (let i = 0; i < list.length; i++) {
-                        html += '<tr>'
-                        html += '<td><a>' + list[i].boardType + '</a></td>';
-                        html += '<td><a href="/boards/' + list[i].id + '">' + list[i].title + '</a></td>';
-                        html += '<td><a>' + list[i].memberDTO.username + '</a></td>';
+
+                        html += '<tr>';
+                        html += '<th scope="row">' + list[i].id + '</th>';
+                        html += '<td class="text-center">' + getBoardType(list[i].boardType) + '</td>';
+                        html += '<td> <a href="/boards/' + list[i].id + '" class="text-start">' + list[i].title + '</a></td>';
+                        html += '<td class="text-center">' + list[i].memberDTO.username + '</td>';
+                        html += '<td class="text-center">' + list[i].createDate.substring(0,10) + '</td>';
                         html += '</tr>';
                     }
                     $('#listContainer').html(html);
