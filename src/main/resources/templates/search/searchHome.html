@@ -2,45 +2,102 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
-        <h1>탐색 페이지 영역</h1>
-        <!--TODO: 카카오 지도 API -->
-        <div name="search-box">
-            <span name="mapWithModal">  <!--  지도+검색결과 작품  -->
-                <span name="map">
-                    <div class="map_wrap">
-                        <div id="map" style="width:75%;height:600px;position:relative;overflow:hidden;"></div>
-                        <div id="menu_wrap" class="bg_white">
-                            <div class="option">
-                                <div>
-                                    <form onsubmit="searchPlaces(); return false">
-                                        키워드 : <input type="text" value="" id="keyword" size="15">
-                                        <button type="submit">검색하기</button>
-                                    </form>
-                                </div>
-                            </div>
-                            <hr>
-                            <ul id="placesList"></ul>
-                            <div id="pagination"></div>
-                        </div>
+
+
+        <!--                분류 모달-->
+        <div class="modal" id="type-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">분류 선택</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
+                    <div class="modal-body">
+                        <button type="button" th:each="pType : ${programType}" class="btn btn-primary pTypeBtn"
+                                th:text="${pType.value}" th:if="${pType.value !='기타'}"
+                                th:data-type="${pType.name()}"></button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--                지역 모달-->
+        <div class="modal" id="location-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">분류 선택</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" th:each="lType : ${locationType}" class="btn btn-primary lTypeBtn"
+                                th:text="${lType.value}" th:if="${lType.value !='기타'}"
+                                th:data-loc="${lType.name()}"></button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 메인 컨테이너 영역 -->
+        <div class="w-75 container m-auto">
+            <div class="row">
+                <!-- 달력 영역 -->
+                <div class="col-9">
+                    <div id="map" style="width:100%;height:100%;"></div>
+                </div>
+                <!-- TODO 사이드 검색창 -->
+                <div class="col ml-2 h-100" id="side-search">
+                    <form class="container p-0">
+                        <!-- TODO 검색창 -->
+                        <div class="row p-0" style="height: 10%">
+                            <!-- 버튼 비활성화 -->
+                            <div class="col-3 p-0">
+                                <button type="submit" id="search-btn"
+                                        class="w-100 h-100 btn-dark fa-solid fa-magnifying-glass"></button>
+                            </div>
+                            <div class="dropdown col-8 p-0">
+                                <input type="text" id="search-text" class="p-0 w-100 form-control col dropdown-toggle"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                <ul class="dropdown-menu overflow-scroll" id="searched-list">
+                                    <!-- 동적으로 드롭다운 검색 결과 -->
+                                </ul>
+                            </div>
+
+                        </div>
+                        <!-- TODO 검색 결과 -->
+                        <div class="row p-0">
+                            <!-- 검색 결과 양식 -->
+                            <div class="card p-0 overflow-scroll" id="search-info-box">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+<!--
+        <div class="content-wrapper" name="search-box">
+            <span name="mapWithModal">  &lt;!&ndash;  지도+검색결과 작품  &ndash;&gt;
+                <span name="map">
+
                 </span>
-                <span name="searchResult-box">  <!--  검색결과 작품  -->
+                <span name="searchResult-box">  &lt;!&ndash;  검색결과 작품  &ndash;&gt;
                     <div name="programCard"></div>
-                    <div name="programDetail-button">자세히</div>  <!--  TODO programDetail에 개요가 없다면 페이지 넘겨도 더 보여줄 게 없을 듯..  -->
+                    <div name="programDetail-button">자세히</div>  &lt;!&ndash;  TODO programDetail에 개요가 없다면 페이지 넘겨도 더 보여줄 게 없을 듯..  &ndash;&gt;
                 </span>
-            </span>  <!--  mapWithModal  -->
+            </span>  &lt;!&ndash;  mapWithModal  &ndash;&gt;
             <span name="sideInfo-box">
                 <div>
                     <div name="heading">인기 작품</div>
-                    <div name="programCard"></div>  <!--  NOTE 검색 전) 현재 위치의 인기작품 노출 / 검색 후) 검색 결과 작품 노출  -->
+                    <div name="programCard"></div>  &lt;!&ndash;  NOTE 검색 전) 현재 위치의 인기작품 노출 / 검색 후) 검색 결과 작품 노출  &ndash;&gt;
                 </div>
-                <hr />  <!--  horizonBar  -->
+                <hr />  &lt;!&ndash;  horizonBar  &ndash;&gt;
                 <div>
                     <div name="heading">인기 모임</div>
-                    <div name="eventCard"></div>  <!--  NOTE 검색 전) 현재 위치의 인기모임 노출 / 검색 후) 검색 결과 모임 노출  -->
+                    <div name="eventCard"></div>  &lt;!&ndash;  NOTE 검색 전) 현재 위치의 인기모임 노출 / 검색 후) 검색 결과 모임 노출  &ndash;&gt;
                 </div>
-            </span>  <!--  sideInfo-box  -->
-        </div>  <!--  search-box  -->
+            </span>  &lt;!&ndash;  sideInfo-box  &ndash;&gt;
+        </div>  &lt;!&ndash;  search-box  &ndash;&gt;-->
         <div name="favLocationProgram">
             <div name="favLocaionProgramHeader">
                 <div>
