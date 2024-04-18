@@ -1,17 +1,62 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<h1>Please sign in</h1>
-<form class="user" action="" th:action th:object="${memberForm}" method="post">
-    <input type="text" th:field="*{userid}" placeholder="아이디">
-    <input type="password" th:field="*{password}" placeholder="비밀번호">
-    <input type="checkbox" name="remember-me" id="customCheck">
-    <label for="customCheck">Remember Me</label>
-    <button type="submit">
-        Login
-    </button>
-</form>
+<th:block th:replace="~{/layouts/baseNoMenu :: base(~{this::content})}">
+    <th:block th:fragment="content">
+
+        <!-- 로그인 컨테이너 -->
+        <div class="container mt-5 w-25" id="loginContainer">
+
+            <!-- 로그인 제목 -->
+            <div class="row text-center mt-5 mb-5">
+                <div class="col">
+                    <div class="fs-2">Login</div>
+                </div>
+            </div>
+
+            <!-- 로그인 폼 -->
+            <form class="user" action="" th:action th:object="${memberForm}" method="post">
+
+                <!-- 아이디 입력 -->
+                <div class="row input-group input-group-lg mb-3">
+                    <div class="col-4">
+                        <label class="input-group-text d-flex justify-content-center align-items-center" for="userid">아이디</label>
+                    </div>
+                    <div class="col">
+                        <input class="form-control" type="text" th:field="*{userid}" id="userid">
+                    </div>
+                </div>
+
+                <!-- 비밀번호 입력 -->
+                <div class="row input-group input-group-lg">
+                    <div class="col-4">
+                        <label class="input-group-text text-center d-flex justify-content-center align-items-center"
+                               for="password">비밀번호</label>
+                    </div>
+                    <div class="col">
+                        <input class="form-control" type="password" th:field="*{password}" id="password">
+                    </div>
+                </div>
+
+                <div class="row input-group input-group-lg">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0" name="remember-me" id="customCheck">
+                    </div>
+                    <label class="input-group-text text-center d-flex justify-content-center align-items-center"
+                           for="customCheck">Remember Me</label>
+                </div>
+
+                <div class="row input-group input-group-lg">
+                    <button type="submit">
+                        Login
+                    </button>
+                </div>
+            </form>
+
+
+        </div>
+
+    </th:block>
+</th:block>
+
 </html>
+
