@@ -9,6 +9,7 @@ import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.dto.*;
 import com.teamproject.culendar.security.domain.CustomMember;
 import com.teamproject.culendar.service.EventBoardService;
+import com.teamproject.culendar.service.ProgramService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -31,6 +32,7 @@ import java.util.List;
 public class ClubController {  // NOTE ClubController == EventBoardController
 
   private final EventBoardService eventBoardService;
+  private final ProgramService programService;
 
   // 모임 목록 (클럽)
   @GetMapping("/list")
@@ -56,7 +58,7 @@ public class ClubController {  // NOTE ClubController == EventBoardController
 
   // 모임 작성
   @GetMapping("/add")
-  public String addForm(@ModelAttribute EventBoardForm eventBoardForm, Model model, @AuthenticationPrincipal CustomMember customMember) {
+  public String addForm(@ModelAttribute("eventBoardForm") EventBoardForm eventBoardForm, Model model) {  // @AuthenticationPrincipal CustomMember customMember
     log.info("***** ClubController GET /clubs/add");
 //    model.addAttribute("location", Location.values());
     model.addAttribute("filterGender", Gender.values());
@@ -72,22 +74,31 @@ public class ClubController {  // NOTE ClubController == EventBoardController
 //    LocalDateTime deadlineDate = eventBoardForm.getDeadlineDate().toInstant() // Date -> Instant
 //                                                          .atZone(ZoneId.systemDefault()) // Instant -> ZonedDateTime
 //                                                          .toLocalDateTime();
+    ProgramDTO programDTO = programService.findById(eventBoardForm.getProgramId());
+    eventBoardForm.setProgram(programDTO.toEntity());
     MemberDTO member = customMember.getMember();
-    log.info("**** ClubController POST /clubs/add - member : {}", member);
     eventBoardForm.setMember(member.toEntity());
+    log.info("**** ClubController POST /clubs/add - member : {}", member);
+    log.info("**** ClubController POST /clubs/add - eventBoardForm : {}", eventBoardForm);
     Long save = eventBoardService.save(eventBoardForm);
-    log.info("**** ClubController POST /clubs/add - save : {}", save);
 
     return "redirect:/clubs/list";
   }
 
   // 모임 상세
   @GetMapping("/{id}")
-  public String detail(@PathVariable("id") Long id, Model model) {
+  public String detail(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal CustomMember customMember) {
     log.info("***** ClubController GET /community/boardDetail - bid : {}", id);
     EventBoardDTO eventBoard = eventBoardService.getOneBoard(id);
     log.info("***** ClubController GET /community/boardDetail - eventBoard : {}", eventBoard);
     model.addAttribute("eventBoard", eventBoard);
+    if (customMember != null) {
+      model.addAttribute("member", customMember.getMember());
+      log.info("***** BoardController GET /boards/detail - member : {}", customMember.getMember());
+    }
+    else {
+      model.addAttribute("member", null);
+    }
 
     return "club/eventDetail";
 

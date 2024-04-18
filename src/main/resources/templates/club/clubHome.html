@@ -11,8 +11,8 @@
                             <option value="">분류</option>
                             <option th:each="programType: ${programType}" th:value="${programType.name()}" th:text="${programType.value}"></option>
                         </select>
-                        <button type="button" class="btn btn-warning" id="btnAll">최신순</button>
-                        <button type="button" class="btn btn-warning" id="btnBest">인기순</button>
+                        <button type="button" class="btn btn-warning" id="btnAll">최신순 </button>
+                        <button type="button" class="btn btn-warning" id="btnBest">인기순 </button>
                         <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/clubs/add}'|">글 작성</button>
                     </div>
                     <div class="row">
@@ -30,7 +30,6 @@
         <script th:inline="javascript">
             $(document).ready(function () {
                 let currPage = 1;
-                let selectProgramType = ""; // 프로그램 타입 셀렉터 저장
 
                 // 페이지 로딩 후 실행
                 getAllList("ALL", 1);
@@ -130,16 +129,11 @@
                 });
 
                 // 정렬 버튼
+                $("#btnBest").on("click", function () {
+                    getAllList("BEST", 1);
+                });
                 $("#btnAll").on("click", function () {
                     getAllList("ALL", 1);
-                });
-                $("#btnBest").on("click", function () {
-                    // 선택된 프로그램 타입에 대한 인기순으로 목록 불러오기
-                    if (selectedProgramType !== "") {
-                        getAllList(selectedProgramType, 1);
-                    } else {
-                        // 선택된 프로그램 타입이 없을 경우 기본적으로 모든 타입에 대한 인기순으로 목록 불러오기
-                        getAllList("BEST", 1);
                 });
 
             });

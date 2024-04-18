@@ -27,3 +27,4 @@ public interface EventBoardRepository extends JpaRepository<EventBoard, Long> {
       "ORDER BY COUNT(bb) DESC")
   Page<EventBoard> findOrderByBkMark(Pageable pageable);
 }
+

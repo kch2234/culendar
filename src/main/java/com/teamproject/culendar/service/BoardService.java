@@ -32,6 +32,7 @@ public class BoardService {
   public Long save(BoardForm boardForm) {
     Board entity = boardForm.toEntity();
     Board savedBoard = boardRepository.save(entity);
+    log.info("**** BoardService save - entity : {}", entity);
 
     return savedBoard.getId();
   }

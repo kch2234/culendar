@@ -60,7 +60,6 @@ public class BoardController {
 
         return "community/boardAdd";
     }
-
     @PostMapping("/add")
     public String addPRo(BoardForm boardForm, @AuthenticationPrincipal CustomMember customMember) {
         log.info("**** BoardController POST /boards/add - boardForm : {}", boardForm);
