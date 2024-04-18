@@ -44,11 +44,11 @@
                     <table class="table">
                         <thead>
                         <tr class="text-center">
-                            <th scope="col">번호</th>
-                            <th scope="col">분류</th>
-                            <th scope="col" class="col-auto">제목</th>
-                            <th scope="col">작성자</th>
-                            <th scope="col">작성일자</th>
+                            <th width="7%">번호</th>
+                            <th width="10%">분류</th>
+                            <th width="63%">제목</th>
+                            <th width="10%">작성자</th>
+                            <th width="10%">작성일자</th>
                         </tr>
                         </thead>
                         <tbody class="table-group-divider" id="listContainer">
@@ -114,9 +114,9 @@
                     for (let i = 0; i < list.length; i++) {
 
                         html += '<tr>';
-                        html += '<th scope="row">' + list[i].id + '</th>';
+                        html += '<th>' + list[i].id + '</th>';
                         html += '<td class="text-center">' + getBoardType(list[i].boardType) + '</td>';
-                        html += '<td class="col-auto"> <a href="/boards/' + list[i].id + '" class="text-start">' + list[i].title + '</a></td>';
+                        html += '<td> <a href="/boards/' + list[i].id + '" class="text-start">' + list[i].title + '</a></td>';
                         html += '<td class="text-center">' + list[i].memberDTO.username + '</td>';
                         html += '<td class="text-center">' + list[i].createDate.substring(0,10) + '</td>';
                         html += '</tr>';

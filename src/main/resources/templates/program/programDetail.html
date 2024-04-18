@@ -131,7 +131,18 @@
 
                 <div>
                     <!-- TODO : 인기 후기, 인기 일정 모임 -->
-                    <div>인기 후기</div>
+                    <!-- 인기 후기 -->
+                    <div class="container mb-5">
+
+                        <div><span class="badge text-bg-secondary fs-4 mb-3">인기 후기</span></div>
+
+                        <div class="row" id="BestReviewListContainer">
+
+                            <!-- 인기글 조회 해서 4개 띄우기 -->
+
+                        </div>
+
+                    </div>
                     <div>인기 일정 모임</div>
                 </div>
 
@@ -151,6 +162,8 @@
                 getAvgRating();
                 getMyRating();
                 checkBkmark();
+                // 인기 게시글 불러오기
+                getBestReviewList();
 
                 // ********** 클릭시 이벤트들 **********
 
@@ -377,6 +390,7 @@
                     });
                 }
 
+                // 작품 북마크 체크 함수
                 function checkBkmark() {
                     console.log("checkBkmark");
                     $.ajax({
@@ -394,6 +408,66 @@
                             }
                         }
                     });
+                }
+
+                // 인기 후기 목록 불러오기
+                function getBestReviewList() {
+                    $.ajax({
+                        type: "get",
+                        url: "/ajaxBoards/best",
+                        success: function (result) {
+                            console.log("인기글 목록 요청 성공!");
+                            console.log(result);
+
+                            changeBestReviewList(result);
+                            // 인기글 목록 화면에 띄우기
+                        },
+                        error: function (e) {
+                            console.log("인기글 목록 요청 실패....");
+                            console.log(e);
+                        },
+                    });
+                }
+
+                // 인기글 목록 화면에 띄우기
+                function changeBestReviewList(list) {
+
+                    var html = '';
+                    for (let i = 0; i < list.length; i++) {
+
+                        html += '<div class="col-3 ml-1 mr-1 bestBoardListContainer">';
+                        html += '<div hidden="hidden" class="boardId">' + list[i].id+ '</div>';
+                        html += '<div>';
+                        html += '<img src="' + list[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid" style="height: 30vw" alt="...">';
+                        html += '<div class="card-body">';
+                        html += '<div class="row mb-2">';
+                        // 제목 길이가 11자 이상이면 11자로 자르기
+                        var title = list[i].title;
+                        if (title.length > 10) {
+                            title = title.substring(0, 10) + '...';
+                        }
+                        html += '<div class="col-auto card-title fs-4">' + title + '</div>';
+                        html += '<div class="col-2 badge text-bg-secondary fs-6 d-flex justify-content-center align-items-center">' + getBoardType(list[i].boardType) + '</div>';
+                        html += '</div>';
+                        html += '<p class="card-text">' + list[i].content + '</p>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                    }
+                    $('#BestReviewListContainer').html(html);
+                }
+
+                // 게시글 타입에 따른 한글로 변환
+                function getBoardType(type) {
+                    if (type === 'FREE') {
+                        return '자유';
+                    } else if (type === 'REVIEW') {
+                        return '후기';
+                    } else if (type === 'QNA') {
+                        return 'QnA';
+                    } else if (type === 'NOTICE') {
+                        return '공지';
+                    }
                 }
 
                 var locationX = [[${program.getLocationX()}]];
