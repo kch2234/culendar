@@ -3,22 +3,6 @@
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
-        <div class="untree_co-section bg-light">  <!--  todo 반응형 패딩 안 맞음  -->
-            <div class="container">  <!--  커뮤니티홈  --><!--  row mb-5 제목 영역  -->
-
-                    <div class="row text-start pt-5 border-top">  <!--  페이징 영역  -->
-                        <div class="col-mb-12">
-                            <div class="custom-pagination">
-                                <!--  NOTE 동적으로 추가  -->
-                            </div>  <!--  custom-pagination  -->
-                        </div>  <!-- col-mb-12   -->
-                    </div>  <!-- row text-start pt-5 border-top 검색창+페이징 영역   -->
-
-                <!--  todo 검색 기능 추가  -->
-
-            </div>  <!--  container 커뮤니티홈 영역  -->
-        </div>  <!--  untree_co-section 배경 영역  -->
-
         <!-- 커뮤니티 wrapper -->
         <div id="community-wrapper">
 
@@ -86,6 +70,19 @@
 
                 </div>
 
+                <!-- TODO 페이징, 검색창 -->
+                <div class="row">
+
+                    <!--  페이징 영역  -->
+                    <div class="col">
+
+                            <div class="custom-pagination">
+                                <!--  NOTE 동적으로 추가  -->
+                            </div>
+
+                    </div>
+                </div>
+
             </div>
 
 
@@ -101,6 +98,7 @@
                 // 인기 게시글 불러오기
                 getBestList();
 
+                // 게시글 목록 불러오기
                 function getAllList(sort, page) {
                     console.log("getAllList! page: " + page);
                     currPage = page;
@@ -122,6 +120,7 @@
                     });
                 }
 
+                // 게시글 목록 화면에 띄우기
                 function printBoardList(list) {
                     var html = '';
                     for (let i = 0; i < list.length; i++) {
