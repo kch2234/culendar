@@ -49,6 +49,17 @@ public class ProgramRestController {
         return ResponseEntity.ok(programDTO);
     }
 
+    @GetMapping("bestProgramList")
+    public ResponseEntity<List<ProgramDTO>> bestProgramList(){
+        log.info("** ProgramController GET /program/bestProgramList");
+        List<ProgramDTO> programDTOList = programService.bestProgramList();
+        // 리스트 첫번째 꺼내기
+        ProgramDTO programDTO = programDTOList.get(0);
+        log.info("** ProgramController GET /program/bestProgramList - programDTO: {}", programDTO.getSeq());
+
+        return ResponseEntity.ok(programDTOList);
+    }
+
 
 
 }

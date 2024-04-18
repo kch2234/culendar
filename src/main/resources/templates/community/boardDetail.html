@@ -6,8 +6,6 @@
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
-        <!--  untree_co-section bg-light 배경 영역  -->
-
         <!-- 게시글 상세 페이지 컨테이너 -->
         <div class="container" id="boardDetailWrapper">
 
@@ -53,9 +51,11 @@
                 <div class="col">
                     <h1 th:text="${board.title}"></h1>
                 </div>
-                <div class="col-2">
-                    <th:block sec:authorize="isAuthenticated()">
-                        <th:block th:if="${member.getId} == ${board.getMemberDTO().getId()}">
+                <!-- 회원 일 경우에만 북마크 또는 수정, 삭제 버튼 보이기 -->
+                <th:block sec:authorize="isAuthenticated()">
+                    <!-- 게시글 작성자 일 경우만 수정, 삭제 버튼 보이기 -->
+                    <th:block th:if="${member.getId} == ${board.getMemberDTO().getId()}">
+                        <div class="col-3">
                             <button type="button" class="btn btn-secondary mb-1"
                                     th:onclick="|location.href='@{/boards/{id}/modify(id=${board.id})}'|">수정
                             </button>
@@ -63,13 +63,19 @@
                                 <button type="submit" class="btn btn-outline-secondary">삭제</button>
                                 <!--  TODO 삭제 확인 모달   -->
                             </form>
-                        </th:block>
+                        </div>
                     </th:block>
-                </div>
-                <div class="col-2">
-                    <button sec:authorize="isAuthenticated()" type="button" class="btn btn-outline-secondary">북마크
-                    </button>
-                </div>
+                    <!-- 게시글 작성자가 아닐 경우 북마크 버튼 보이기 -->
+                    <th:block th:if="${member.getId} != ${board.getMemberDTO().getId()}">
+                        <div class="col-3">
+                            <button id="boardBkMarkBtn"
+                                    type="button"
+                                    class="fa-regular fa-bookmark fa-3x">
+                            </button>
+                        </div>
+                    </th:block>
+
+                </th:block>
 
             </div>
 
@@ -175,10 +181,11 @@
                         </div>
                     </div>
 
-                    <!-- 닉네임, 팔로우 버튼 -->
+                    <!-- TODO 닉네임, 팔로우 버튼 -->
                     <div class="row text-center mb-3">
                         <div class="col-6 text-end">
-                            <div class="badge text-bg-secondary fs-4 d-inline-block" th:text="${board.getMemberDTO().getUsername()}"></div>
+                            <div class="badge text-bg-secondary fs-4 d-inline-block"
+                                 th:text="${board.getMemberDTO().getUsername()}"></div>
                         </div>
                         <div class="col-6 text-start">
                             <div sec:authorize="isAuthenticated()" class="badge text-bg-primary fs-6">Follow</div>
@@ -188,10 +195,12 @@
                     <!-- 지역, 소개 -->
                     <div class="row text-center justify-content-center">
                         <div class="col-3 text-end">
-                            <div class="badge text-bg-secondary fs-6" th:text="${board.getMemberDTO().getLocation().value}"></div>
+                            <div class="badge text-bg-secondary fs-6"
+                                 th:text="${board.getMemberDTO().getLocation().value}"></div>
                         </div>
                         <div class="col-auto text-start">
-                            <div class="badge text-bg-secondary fs-6" th:text="${board.getMemberDTO().getIntroduction()}"></div>
+                            <div class="badge text-bg-secondary fs-6"
+                                 th:text="${board.getMemberDTO().getIntroduction()}"></div>
 
                         </div>
                     </div>
@@ -309,6 +318,9 @@
                 let cmtListDiv = $("#cmtListContainer");  // 댓글 목록 컨테이너
                 let cmtPaginationDiv = $("#cmtPagination"); // 댓글 페이지네이션 컨테이너
                 let currPage = 1; // 현재 보고있는 댓글 페이지 번호 저장해둘 변수
+                let boardType = [[${board.boardType}]]; // 게시글 타입
+
+
                 // 현재 로그인이 되어 있다면 회원 id를, 아니면 null을 저장
                 var member = [[${member}]]
                 var memberId
@@ -325,6 +337,8 @@
                 getAvgRating(); // 평균 평가 가져오기
                 getMyRating(); // 내 평가 가져오기
                 getCommentList(1);  // 댓글 목록 요청 호출!
+                checkBoardBkmark(); // 게시글 북마크 체크
+                checkProgramBkmark(); // 작품 북마크 체크
 
                 // ********** 클릭시 이벤트들 **********
 
@@ -400,7 +414,7 @@
 
                 });
 
-                // 북마크 버튼 클릭시 이벤트
+                // 작품 북마크 버튼 클릭시 이벤트
                 $('#addBtnContainer').on('click', '#bkMarkBtn', function () {
 
                     let data = {
@@ -418,9 +432,11 @@
 
                             if (result === 'fail') {
                                 alert('북마크에서 삭제 되었습니다.');
+                                checkProgramBkmark();
                                 return;
                             }
                             alert('북마크에 추가되었습니다.');
+                            checkProgramBkmark();
                         },
                         error: function (error) {
                             console.log(error);
@@ -428,6 +444,40 @@
                         }
                     });
 
+                });
+
+                // 게시글 북마크 버튼 클릭시
+                $('#boardBkMarkBtn').on('click', function () {
+                    let data = {
+                        memberId: memberId,
+                        boardId: boardIdVal,
+                        boardType: boardType,
+                        programId: programId
+                    };
+
+                    console.log(data);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/bkmark/addBoardBkmark',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (result, status) {
+                            console.log(result);
+
+                            if (result === 'fail') {
+                                alert('북마크에서 삭제 되었습니다.');
+                                checkBoardBkmark();
+                                return;
+                            }
+                            alert('북마크에 추가되었습니다.');
+                            checkBoardBkmark();
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('북마크 추가에 실패했습니다.');
+                        }
+                    });
                 });
 
                 // 일정 아이콘 클릭시 이벤트
@@ -566,6 +616,48 @@
                         let dd = dateObj.getDate();
                         return [yy, '/', (mm > 9 ? '' : '0') + mm, '/', (dd > 9 ? '' : '0') + dd].join('');
                     }
+                }
+
+                // 게시글 북마크 여부 확인 함수
+                function checkBoardBkmark() {
+
+                    console.log("checkBoardBkmark");
+                    $.ajax({
+                        url: '/bkmark/checkBoardBkmark/' + memberId + '/' + boardIdVal,
+                        type: 'GET',
+                        success: function (data) {
+                            if (data === true) {
+                                console.log(data);
+                                $('#boardBkMarkBtn').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
+                            }
+
+                            if (data === false) {
+                                console.log(data);
+                                $('#boardBkMarkBtn').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
+                            }
+                        }
+                    });
+
+                }
+
+                // 작품 북마크 여부 확인 이벤트
+                function checkProgramBkmark() {
+                    console.log("checkProgramBkmark");
+                    $.ajax({
+                        url: '/bkmark/checkProgramBkmark/' + memberId + '/' + programId,
+                        type: 'GET',
+                        success: function (data) {
+                            if (data === true) {
+                                console.log(data);
+                                $('#bkMarkBtn').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
+                            }
+
+                            if (data === false) {
+                                console.log(data);
+                                $('#bkMarkBtn').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
+                            }
+                        }
+                    });
                 }
 
 

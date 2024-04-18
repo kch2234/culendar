@@ -1,5 +1,6 @@
 package com.teamproject.culendar.controller;
 
+import com.teamproject.culendar.dto.BoardBkMarkDTO;
 import com.teamproject.culendar.dto.ProgramBkMarkDTO;
 import com.teamproject.culendar.service.BkMarkService;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,9 @@ public class BkMarkController {
 
     private final BkMarkService bkMarkService;
 
+    // 작품 북마크 추가
     @PostMapping("addProgramBkmark")
-    public ResponseEntity<String> addNewCalendar(@RequestBody ProgramBkMarkDTO programBkMarkDTO) {
-        log.info("** BkMarkController POST /addProgramBkmark 요청");
+    public ResponseEntity<String> addProgramBkMark(@RequestBody ProgramBkMarkDTO programBkMarkDTO) {
         log.info("** programBkMarkDTO: {}", programBkMarkDTO);
 
         boolean result = bkMarkService.addProgramBkmark(programBkMarkDTO);
@@ -29,6 +30,23 @@ public class BkMarkController {
         if (!result) {
 
             bkMarkService.deleteProgramBkmark(programBkMarkDTO);
+            return new ResponseEntity<>("fail", HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("success", HttpStatus.OK);
+    }
+
+    // 게시글 북마크 추가
+    @PostMapping("addBoardBkmark")
+    public ResponseEntity<String> addBoardBkMark(@RequestBody BoardBkMarkDTO boardBkMarkDTO) {
+        log.info("** boardBkMarkDTO: {}", boardBkMarkDTO);
+
+
+        boolean result = bkMarkService.addBoardBkmark(boardBkMarkDTO);
+
+        if (!result) {
+
+            bkMarkService.deleteBoardBkmark(boardBkMarkDTO);
             return new ResponseEntity<>("fail", HttpStatus.OK);
         }
 

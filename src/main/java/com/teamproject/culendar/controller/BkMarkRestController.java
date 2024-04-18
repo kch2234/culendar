@@ -18,6 +18,15 @@ public class BkMarkRestController {
 
     @GetMapping("/checkProgramBkmark/{memberId}/{programId}")
     public boolean checkProgramBkmark(@PathVariable("memberId") Long memberId, @PathVariable("programId") Long programId) {
-        return bkMarkService.checkProgramBkmark(memberId, programId);
+        boolean checkProgramBkmark = bkMarkService.checkProgramBkmark(memberId, programId);
+        log.info("checkProgramBkmark: {}", checkProgramBkmark);
+        return checkProgramBkmark;
+    }
+
+    @GetMapping("/checkBoardBkmark/{memberId}/{boardId}")
+    public boolean checkBoardBkmark(@PathVariable("memberId") Long memberId, @PathVariable("boardId") Long boardId) {
+        boolean checkBoardBkmark = bkMarkService.checkBoardBkmark(memberId, boardId);
+        log.info("checkBoardBkmark: {}", checkBoardBkmark);
+        return checkBoardBkmark;
     }
 }
