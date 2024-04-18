@@ -277,5 +277,22 @@ public class ProgramService {
         return null;
     }
 
+    // 인기 작품 리스트 가져오기
+    public List<ProgramDTO> bestProgramList() {
+        List<Program> programList = programRepository.findProgramsOrderByBkMarkCount();
+        // 리스트 최대 길이 4로 자르기
+        if (programList.size() > 4) {
+            programList = programList.subList(0, 4);
+        }
+        // List<Program> to List<ProgramDTO>
+        List<ProgramDTO> programDTOList = programList.stream()
+                .map(ProgramDTO::new)
+                .collect(Collectors.toList());
+        // 리스트 길이 출력
+        log.info("******** ProgramService - bestProgramList - programDTOList: {}", programDTOList);
+
+        return programDTOList;
+    }
+
 
 }

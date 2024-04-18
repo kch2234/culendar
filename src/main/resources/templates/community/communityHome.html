@@ -294,6 +294,8 @@
                 });
 
                 // 각종 함수들
+
+                // 인기글 목록 불러오기
                 function getBestList() {
                     $.ajax({
                         type: "get",
@@ -312,19 +314,9 @@
                     });
                 }
 
+                // 인기글 목록 화면에 띄우기
                 function changeBestList(list) {
-                    /*<div class="col-3 ml-1 mr-1 ">
-                        <div>
-                            <img src="" class="card-img-top mb-1 img-thumbnail img-fluid" alt="...">
-                                <div class="card-body">
-                                    <div class="row mb-2">
-                                        <div class="col-auto card-title fs-4">제목</div>
-                                        <div class="col-2 badge text-bg-secondary fs-6">정보</div>
-                                    </div>
-                                    <p class="card-text">lㅁㄴㅇㅁㄴㅇㄴㅁㅀㄴㅇㄴㅇㅀㅀㅇㅇㅀㅇㅀ</p>
-                                </div>
-                        </div>
-                    </div>*/
+
                     var html = '';
                     for (let i = 0; i < list.length; i++) {
 
@@ -333,8 +325,13 @@
                         html += '<img src="' + list[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid" style="height: 30vw" alt="...">';
                         html += '<div class="card-body">';
                         html += '<div class="row mb-2">';
-                        html += '<div class="col-auto card-title fs-4">' + list[i].title + '</div>';
-                        html += '<div class="col-2 badge text-bg-secondary fs-6">' + getBoardType(list[i].boardType) + '</div>';
+                        // 제목 길이가 11자 이상이면 11자로 자르기
+                        var title = list[i].title;
+                        if (title.length > 10) {
+                            title = title.substring(0, 10) + '...';
+                        }
+                        html += '<div class="col-auto card-title fs-4">' + title + '</div>';
+                        html += '<div class="col-2 badge text-bg-secondary fs-6 d-flex justify-content-center align-items-center">' + getBoardType(list[i].boardType) + '</div>';
                         html += '</div>';
                         html += '<p class="card-text">' + list[i].content + '</p>';
                         html += '</div>';

@@ -1,9 +1,11 @@
 package com.teamproject.culendar.repository;
 
+import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.program.Program;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,4 +24,14 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
     List<Program> findProgramsByProgramType(ProgramType programType);
 
     List<Program> findByTitleContaining(String keyword);
+
+    // 최근 일주일 동안 북마크 최고 작품 4개 조회
+    @Query("SELECT p " +
+            "FROM Program p " +
+            "LEFT JOIN ProgramBkmark pb ON p.id = pb.program.id " +
+            "WHERE pb.createDate >= CURRENT_DATE - 7 " +
+            "GROUP BY p " +
+            "ORDER BY COUNT(pb) DESC")
+    List<Program> findProgramsOrderByBkMarkCount();
+
 }
