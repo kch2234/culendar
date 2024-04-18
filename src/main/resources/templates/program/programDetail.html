@@ -414,9 +414,9 @@
                 function getBestReviewList() {
                     $.ajax({
                         type: "get",
-                        url: "/ajaxBoards/best",
+                        url: "/ajaxBoards/bestReviewList/" + programId,
                         success: function (result) {
-                            console.log("인기글 목록 요청 성공!");
+                            console.log("인기 리뷰 목록 요청 성공!");
                             console.log(result);
 
                             changeBestReviewList(result);
@@ -429,13 +429,13 @@
                     });
                 }
 
-                // 인기글 목록 화면에 띄우기
+                // 인기 후기 목록 화면에 띄우기
                 function changeBestReviewList(list) {
 
                     var html = '';
                     for (let i = 0; i < list.length; i++) {
 
-                        html += '<div class="col-3 ml-1 mr-1 bestBoardListContainer">';
+                        html += '<div class="col-3 ml-1 mr-1 bestReviewListContainer">';
                         html += '<div hidden="hidden" class="boardId">' + list[i].id+ '</div>';
                         html += '<div>';
                         html += '<img src="' + list[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid" style="height: 30vw" alt="...">';
@@ -449,7 +449,11 @@
                         html += '<div class="col-auto card-title fs-4">' + title + '</div>';
                         html += '<div class="col-2 badge text-bg-secondary fs-6 d-flex justify-content-center align-items-center">' + getBoardType(list[i].boardType) + '</div>';
                         html += '</div>';
-                        html += '<p class="card-text">' + list[i].content + '</p>';
+                        var content = list[i].content;
+                        if (content.length > 30) {
+                            content = content.substring(0, 30) + '...';
+                        }
+                        html += '<p class="card-text">' + content + '</p>';
                         html += '</div>';
                         html += '</div>';
                         html += '</div>';
@@ -457,16 +461,18 @@
                     $('#BestReviewListContainer').html(html);
                 }
 
+                // 인기글 클릭시 해당 게시글로 이동
+                $(document).on("click", ".bestReviewListContainer", function () {
+                    var boardId = $(this).find(".boardId").text();
+                    location.href = "/boards/" + boardId;
+                });
+
                 // 게시글 타입에 따른 한글로 변환
                 function getBoardType(type) {
-                    if (type === 'FREE') {
-                        return '자유';
+                    if (type === 'INFO') {
+                        return '정보';
                     } else if (type === 'REVIEW') {
                         return '후기';
-                    } else if (type === 'QNA') {
-                        return 'QnA';
-                    } else if (type === 'NOTICE') {
-                        return '공지';
                     }
                 }
 

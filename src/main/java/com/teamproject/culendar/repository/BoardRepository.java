@@ -32,4 +32,13 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
         "GROUP BY b " +
         "ORDER BY COUNT(bb) DESC")
     List<Board> findBestByBkMark();
+
+    // 작품의 programType Review 들중 최근 일주일 동안 가장 많이 북마크된 리뷰 4개 조회
+    @Query("SELECT b " +
+        "FROM Board b " +
+        "LEFT JOIN BoardBkmark bb ON b.id = bb.board.id " +
+        "WHERE b.program.id = :programId AND b.boardType = 'REVIEW' AND b.createDate >= CURRENT_DATE - 7 " +
+        "GROUP BY b " +
+        "ORDER BY COUNT(bb) DESC")
+    List<Board> findBestReviewByBkMark(Long programId);
 }

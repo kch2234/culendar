@@ -98,14 +98,23 @@ public class BoardService {
 
   // 최근 일주일 동안 최고 인기글 4개 조회
     public List<Board> getBestList() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime weekAgo = now.minusDays(7);
         List<Board> result = boardRepository.findBestByBkMark();
         // 리스트 4개만 남기기
         if(result.size() > 4) {
             result = result.subList(0, 4);
         }
         log.info("**** BoardService getBestList - result : {}", result);
+        return result;
+    }
+
+    // 최근 일주일 동안 해당 작품의 최고 인기 리뷰글 4개 조회
+    public List<Board> getBestReviewList(Long id) {
+        List<Board> result = boardRepository.findBestReviewByBkMark(id);
+        // 리스트 4개만 남기기
+        if(result.size() > 4) {
+            result = result.subList(0, 4);
+        }
+        log.info("**** BoardService getBestReviewList - result : {}", result);
         return result;
     }
 

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
@@ -35,7 +37,7 @@
                         </div>
                     </div>
                     <div class="col"></div>
-                    <button type="button" class="col-auto badge text-bg-secondary fs-6 p-2" th:onclick="|location.href='@{/boards/add}'|">글작성</button>
+                    <button sec:authorize="isAuthenticated()" type="button" class="col-auto badge text-bg-secondary fs-6 p-2" th:onclick="|location.href='@{/boards/add}'|">글작성</button>
                 </div>
 
                 <!-- 게시글 리스트 -->
@@ -215,7 +217,11 @@
                         html += '<div class="col-auto card-title fs-4">' + title + '</div>';
                         html += '<div class="col-2 badge text-bg-secondary fs-6 d-flex justify-content-center align-items-center">' + getBoardType(list[i].boardType) + '</div>';
                         html += '</div>';
-                        html += '<p class="card-text">' + list[i].content + '</p>';
+                        var content = list[i].content;
+                        if (content.length > 30) {
+                            content = content.substring(0, 30) + '...';
+                        }
+                        html += '<p class="card-text">' + content + '</p>';
                         html += '</div>';
                         html += '</div>';
                         html += '</div>';
