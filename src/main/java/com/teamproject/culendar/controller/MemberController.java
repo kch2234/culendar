@@ -58,14 +58,20 @@ public class MemberController {
     @GetMapping("/{id}")
     public String myProfile(@PathVariable("id") Long id, @AuthenticationPrincipal CustomMember customMember, Model model){
         log.info("********** MemberController GET /members/:id (myProfile) - id : {}", id);
-        MemberDTO member = customMember.getMember();
+        MemberDTO member = memberService.findById(id);
+        model.addAttribute("member", member);
+        if (customMember != null) {
+            model.addAttribute("customMember", customMember.getMember());
+        }
+        else {
+            model.addAttribute("customMember", null);
+        }
         /*Follow follow = followService.findById(id);
         FollowDTO followDTO = new FollowDTO(follow);*/
         // TODO: 팔로우, 팔로워 수
         /*long followerCount = followDTO.getFollowerCount();
         long followingCount = followDTO.getFollowingCount();*/
 //        model.addAttribute("follow", followDTO);
-        model.addAttribute("member", member);
         return "profile/memberProfile";
     }
 
