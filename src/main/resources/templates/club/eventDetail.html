@@ -5,749 +5,786 @@
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
-    <!-- 게시글 상세 페이지 컨테이너 -->
-    <div class="container" id="boardDetailWrapper">
+        <!-- 모임 상세 페이지 컨테이너 -->
+        <div class="container" id="boardDetailWrapper">
 
-        <!--        일정 추가 모달-->
-        <div class="modal" id="addMyCalendar-modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">달력 선택</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body" id="addMyCalContainer">
-                        <div id="addMyCalendarBtnContainer">
-                            <!--    내 캘린더 목록 및 캘린더 추가 버튼 위치 -->
+            <!--        일정 추가 모달-->
+            <div class="modal" id="addMyCalendar-modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">달력 선택</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--    문장형 평가 추가 모달-->
-        <div class="modal" id="addRating-modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">문장형 평가 추가</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body" id="addRatingContainer">
-                        <div th:each="rating : ${ratingType}">
-                            <button class="btn btn-primary" th:text="${rating.getValue()}"
-                                    th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>
+                        <div class="modal-body" id="addMyCalContainer">
+                            <div id="addMyCalendarBtnContainer">
+                                <!--    내 캘린더 목록 및 캘린더 추가 버튼 위치 -->
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <h3>Thumbnail</h3>  <!--  TODO 썸네일 이미지  -->
-        <div class="eventDetailHeader">  <!--  모임 영역 헤더  -->
-            <div class="eventDetailTitle">  <!-- 모임 상세 제목 영역   -->
-                <div class="eventDetailTitleTop">  <!--  모임 상세 제목 영역 상단  -->
-                    <span class="form-group">  <!--  모임 제목  -->
-                    <label for="title"></label>
-                    <input type="text" class="form-control" th:field="${eventBoard.title}" id="title" readonly>
-                </span>
-                                                   <!-- 게시글 제목, 수정 / 삭제 버튼, 북마크 버튼 -->
-                    <div class="row mt-5 text-center align-items-center">
-                        <div class="col-3"></div>
-                        <div class="col">
-                            <h1 th:text="${eventBoard.title}"></h1>
+            <!--    문장형 평가 추가 모달-->
+            <div class="modal" id="addRating-modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">문장형 평가 추가</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
-                        <div class="col-2">
-                            <th:block sec:authorize="isAuthenticated()">
-                                <th:block th:if="${member.getId} == ${eventBoard.getMemberDTO().getId()}">
-                                    <button type="button" class="btn btn-secondary mb-1"
-                                            th:onclick="|location.href='@{/clubs/{id}/modify(id=${eventBoard.id})}'|">수정
-                                    </button>
-                                    <form action="" th:action="@{/clubs/{id}/delete(id=${eventBoard.id})}" method="post">
-                                        <button type="submit" class="btn btn-outline-secondary">삭제</button>
-                                        <!--  TODO 삭제 확인 모달   -->
-                                    </form>
-                                </th:block>
-                            </th:block>
+                        <div class="modal-body" id="addRatingContainer">
+                            <div th:each="rating : ${ratingType}">
+                                <button class="btn btn-primary" th:text="${rating.getValue()}"
+                                        th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>
+                            </div>
                         </div>
-                        <div class="col-2">
-                            <button sec:authorize="isAuthenticated()" type="button" class="btn btn-outline-secondary">
-                                북마크
+                    </div>
+                </div>
+            </div>
+
+            <!--  TODO 썸네일 이미지  -->
+            <div class="badge text-bg-secondary fs-1">썸네일</div>
+
+            <!-- 게시글 제목, 수정 / 삭제 버튼, 북마크 버튼 -->
+            <div class="row mt-5 text-center align-items-center">
+                <div class="col-3"></div>
+
+                <div class="col">
+                    <!--  게시글 제목  -->
+                    <h1 th:text="${eventBoard.title}"></h1>
+                    <!--  작품 제목 (모임 상세 제목 하단)  -->
+                    <p th:text="${eventBoard.getProgramDTO().getTitle()}"></p>
+                </div>
+
+                <!-- 회원 일 경우에만 북마크 또는 수정, 삭제 버튼 보이기 -->
+                <th:block sec:authorize="isAuthenticated()">
+                    <!-- 게시글 작성자 일 경우만 수정, 삭제 버튼 보이기 -->
+                    <th:block th:if="${member.getId} == ${eventBoard.getMemberDTO().getId()}">
+                        <div class="col-3">
+                            <button type="button" class="btn btn-secondary mb-1"
+                                    th:onclick="|location.href='@{/boards/{id}/modify(id=${eventBoard.id})}'|">수정
+                            </button>
+                            <form action="" th:action="@{/boards/{id}/delete(id=${eventBoard.id})}" method="post">
+                                <button type="submit" class="btn btn-outline-secondary">삭제</button>
+                                <!--  TODO 삭제 확인 모달   -->
+                            </form>
+                        </div>
+                    </th:block>
+                    <!-- 게시글 작성자가 아닐 경우 북마크 버튼 보이기 -->
+                    <th:block th:if="${member.getId} != ${eventBoard.getMemberDTO().getId()}">
+                        <div class="col-3">
+                            <button id="boardBkMarkBtn"
+                                    type="button"
+                                    class="fa-regular fa-bookmark fa-3x">
                             </button>
                         </div>
-                    </div>
-                </div>  <!--  eventDetailTitleTop 모임 상세 제목 영역 상단 END  -->
-                <div class="program.title"></div>  <!--  작품 제목 (모임 상세 제목 하단)  -->
-            </div>  <!--  eventDetailTitle 모임 상세 제목 영역 END   -->
+                    </th:block>
+
+                </th:block>
+
+            </div>
+
             <div class="eventDetailInfo">  <!--  모임 상세 정보 영역  -->
                 <div class="eventDetailInfoTop">  <!--  모임 상세 정보 영역 상단  -->
-                    <span>eventDate</span>  <!--  모임 날짜  -->
-                    <span>location</span>  <!--  모임 장소  note 지역!=장소  -->
-                    <span>확정인원/maxPeople</span>  <!--  eventMemberStatus 모임 인원 현황  -->
-                    <button type="submit" class="btn btn-primary">신청</button>  <!--  신청자용 신청 버튼  -->
-                    <button type="button" class="btn btn-primary" th:onclick="">인원 관리 modal</button>
-                                                  <!--  모임리더용 신청자 관리 버튼  -->
+
+                    <!--  모임 날짜  -->
+                    <div class="badge text-bg-secondary" th:text="|${#temporals.format(eventBoard.eventDate, 'yyyy-MM-dd')}|"></div>
+                    <!--  모임 지역  -->
+                    <div class="badge text-bg-secondary" th:text="${eventBoard.getProgramDTO().getLocation().value}"></div>
+                    <!--  TODO 확정인원/최대인원  -->
+                    <div class="badge text-bg-secondary" th:text="${'' + '/' + eventBoard.maxPeople}"></div>
+
+                    <!--  신청 버튼 TODO 모임 신청  -->
+                    <form action="" th:action method="post">
+                        <button type="submit" class="btn btn-primary">신청</button>
+                        <!--  TODO 신청 완료 모달   -->
+                    </form>
+                    <!--  인원 관리 버튼 TODO 인원관리 modal  -->
+                    <button type="button" class="btn btn-primary" id>
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">모임 확정 인원</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body" id>
+                                    <div id>
+                                        <!--  TODO 모임 확정 인원 리스트  -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+
                 <div class="eventDetailInfoBottom">  <!-- 모임 상세 정보 영역 하단   -->
-                    <button type="button" class="btn btn-secondary">연령대</button>
-                    <button type="button" class="btn btn-secondary">지역</button>
-                    <button type="button" class="btn btn-secondary">성별</button>
+                        <!--  필터링 연령대 TODO if문으로 전연령/10대/20대 등..  -->
+                    <div class="badge text-bg-secondary"
+                         th:text="${eventBoard.filterMinAge + ' ~ ' + eventBoard.filterMaxAge}"></div>
+                        <!--  필터링 연령대 TODO if문으로 성별무관/남자/여자  -->
+                    <div class="badge text-bg-secondary" th:text="${eventBoard.filterGender.value + ' ONLY'}"></div>
                 </div>
 
             </div>  <!--  eventDetailInfo 모임 상세 정보 영역 END  -->
-        </div>  <!--  eventDetailHeader 모임 영역 헤더 END  -->
 
-        <div class="form-group">  <!--  게시글 내용  -->
-            <label for="content"></label>
-            <textarea class="form-control" th:field="${eventBoard.content}" id="content" rows="20" readonly></textarea>
-        </div>
-
-        <!-- 작품 정보 카드 -->
-        <div class="row mt-4">
-
-            <!-- 포스터 영역 -->
-            <div class="col mr-2">
-                <img class="w-100" th:src="${eventBoard.getProgramDTO().getThumbnail()}" alt="썸네일 이미지">
+            <!--  게시글 내용  -->
+            <div class="form-group">
+                <label for="content"></label>
+                <textarea class="form-control" th:field="${eventBoard.content}" id="content" rows="20" readonly></textarea>
             </div>
 
-            <!-- 작품 정보 영역 -->
-            <div class="col d-flex flex-column justify-content-between">
-                <!-- 문장형 평가, 캘린더 등록, 북마크 -->
-                <div class="d-flex flex-row">
+            <!-- 작품 정보 카드 -->
+            <div class="row mt-4">
 
-                    <div class="col-4">
-                        <div class="badge text-bg-secondary w-100 fs-6" id="AvgRating">
-                            <!--    평균 문장형 평가 위치-->
+                <!-- 포스터 영역 -->
+                <div class="col mr-2">
+                    <img class="w-100" th:src="${eventBoard.getProgramDTO().getThumbnail()}" alt="썸네일 이미지">
+                </div>
+
+                <!-- 작품 정보 영역 -->
+                <div class="col d-flex flex-column justify-content-between">
+                    <!-- 문장형 평가, 캘린더 등록, 북마크 -->
+                    <div class="d-flex flex-row">
+
+                        <div class="col-4">
+                            <div class="badge text-bg-secondary w-100 fs-6" id="AvgRating">
+                                <!--    평균 문장형 평가 위치-->
+                            </div>
+                        </div>
+                        <div class="col "></div>
+
+                        <!-- 북마크, 캘린더 추가 버튼 -->
+                        <div class="col-4 row" id="addBtnContainer">
+                            <!-- 회원일 경우에만 북마크, 캘린더 추가 버튼 보이기 -->
+                            <th:block sec:authorize="isAuthenticated()">
+                                <div class="col p-0 fs-4">
+                                    <button id="bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>
+                                </div>
+                                <div class="col p-0 fs-4">
+                                    <button class="fa-regular fa-clipboard w-75 h-75"></button>
+                                </div>
+                            </th:block>
                         </div>
                     </div>
-                    <div class="col "></div>
 
-                    <!-- 북마크, 캘린더 추가 버튼 -->
-                    <div class="col-4 row" id="addBtnContainer">
-                        <!-- 회원일 경우에만 북마크, 캘린더 추가 버튼 보이기 -->
+                    <!-- 작품 제목 -->
+                    <div class="">
+                        <div class="col">
+                            <div class="fs-3" th:text="${eventBoard.getProgramDTO().getTitle()}"></div>
+                        </div>
+                    </div>
+
+                    <!-- 작품 시작일 -->
+                    <div class="">
+                        <div class="col-10 h-100">
+                            <div class="w-100 fs-5"
+                                 th:text="|${#temporals.format(eventBoard.getProgramDTO().getStartDate(), 'yyyy-MM-dd')} ~ ${#temporals.format(eventBoard.getProgramDTO().getEndDate(), 'yyyy-MM-dd')}|"
+                            ></div>
+                        </div>
+                    </div>
+
+                    <!-- 좋아요 버튼, 내 후기 -->
+                    <div class="d-flex flex-row" id="ratingAndReviewContainer">
+
                         <th:block sec:authorize="isAuthenticated()">
-                            <div class="col p-0 fs-4">
-                                <button id="bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>
+
+                            <div class="col-4 fs-6" id="addRating">
+                                <!--   회원 문장형 평가 위치-->
                             </div>
-                            <div class="col p-0 fs-4">
-                                <button class="fa-regular fa-clipboard w-75 h-75"></button>
+                            <div class="col"></div>
+                            <!-- TODO : 좋아요, 후기, 체크박스 버튼 -->
+                            <div class="col-2 fs-6">
+                                <div class="badge text-bg-secondary w-100 h-100">내후기</div>
                             </div>
+                            <div class="col-2 fs-6">
+                                <div class="badge text-bg-secondary w-100 h-100">체크박스</div>
+                            </div>
+
                         </th:block>
 
-                    </div>
+                    </div>  <!--  좋아요 버튼, 내 후기  -->
 
-                </div>
-
-                <!-- 작품 제목 -->
-                <div class="">
-                    <div class="col">
-                        <div class="fs-3" th:text="${eventBoard.getProgramDTO().getTitle()}"></div>
-                    </div>
-                </div>
-
-                <!-- 작품 시작일 -->
-                <div class="">
-                    <div class="col-10 h-100">
-                        <div class="w-100 fs-5"
-                             th:text="|${#temporals.format(eventBoard.getProgramDTO().getStartDate(), 'yyyy-MM-dd')} ~ ${#temporals.format(eventBoard.getProgramDTO().getEndDate(), 'yyyy-MM-dd')}|"
-                        ></div>
-                    </div>
-                </div>
-
-                <!-- 좋아요 버튼, 내 후기 -->
-                <div class="d-flex flex-row" id="ratingAndReviewContainer">
-
-                    <th:block sec:authorize="isAuthenticated()">
-
-                        <div class="col-4 fs-6" id="addRating">
-                            <!--   회원 문장형 평가 위치-->
+                    <!-- TODO 지도 영역 -->
+                    <div style="height: 40%">
+                        <div class="col h-100">
+                            <div class="badge text-bg-secondary w-100 h-100 fs-1">지도</div>
                         </div>
-                        <div class="col"></div>
-                        <!-- TODO : 좋아요, 후기, 체크박스 버튼 -->
-                        <div class="col-2 fs-6">
-                            <div class="badge text-bg-secondary w-100 h-100">내후기</div>
+                    </div>
+
+                </div>  <!--  col 작품 정보 영역  -->
+                
+            </div>  <!--  row 작품 정보 카드  -->
+
+            <!--  신청 버튼 TODO 모임 신청  -->
+            <form action="" th:action method="post">
+                <button type="submit" class="btn btn-secondary">신청</button>
+                <!--  TODO 신청 완료 모달   -->
+            </form>
+
+            <!--  프로필 이미지 + 회원 정보 영역  -->
+            <div class="row d-flex justify-content-center mt-5 mb-5">
+                <div class="col-6">
+                    <!-- 프로필 이미지 -->
+                    <div class="row mb-3 justify-content-center">
+                        <div class="col-4">
+                            <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid">
                         </div>
-                        <div class="col-2 fs-6">
-                            <div class="badge text-bg-secondary w-100 h-100">체크박스</div>
+                    </div>
+
+                    <!-- 닉네임, 팔로우 버튼 -->
+                    <div class="row text-center mb-3">
+                        <div class="col-6 text-end">
+                            <div class="badge text-bg-secondary fs-4 d-inline-block"
+                                 th:text="${eventBoard.getMemberDTO().getUsername()}"></div>
                         </div>
-
-                    </th:block>
-
-                </div>
-
-                <!-- TODO 지도 영역 -->
-                <div style="height: 40%">
-                    <div class="col h-100">
-                        <div class="badge text-bg-secondary w-100 h-100 fs-1">지도</div>
+                        <div class="col-6 text-start">
+                            <div sec:authorize="isAuthenticated()" class="badge text-bg-primary fs-6">Follow</div>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-        </div>
-
-        <!--  프로필 이미지 + 회원 정보 영역  -->
-        <div class="row d-flex justify-content-center mt-5 mb-5">
-            <div class="col-6">
-                <!-- 프로필 이미지 -->
-                <div class="row mb-3 justify-content-center">
-                    <div class="col-4">
-                        <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid">
-                    </div>
-                </div>
-
-                <!-- 닉네임, 팔로우 버튼 -->
-                <div class="row text-center mb-3">
-                    <div class="col-6 text-end">
-                        <div class="badge text-bg-secondary fs-4 d-inline-block"
-                             th:text="${eventBoard.getMemberDTO().getUsername()}"></div>
-                    </div>
-                    <div class="col-6 text-start">
-                        <div sec:authorize="isAuthenticated()" class="badge text-bg-primary fs-6">Follow</div>
-                    </div>
-                </div>
-
-                <!-- 지역, 소개 -->
-                <div class="row text-center justify-content-center">
-                    <div class="col-3 text-end">
-                        <div class="badge text-bg-secondary fs-6"
-                             th:text="${eventBoard.getMemberDTO().getLocation().value}"></div>
-                    </div>
-                    <div class="col-auto text-start">
-                        <div class="badge text-bg-secondary fs-6"
-                             th:text="${eventBoard.getMemberDTO().getIntroduction()}"></div>
+                    <!-- 지역, 소개 -->
+                    <div class="row text-center justify-content-center">
+                        <div class="col-3 text-end">
+                            <div class="badge text-bg-secondary fs-6"
+                                 th:text="${eventBoard.getMemberDTO().getLocation().value}"></div>
+                        </div>
+                        <div class="col-auto text-start">
+                            <div class="badge text-bg-secondary fs-6"
+                                 th:text="${eventBoard.getMemberDTO().getIntroduction()}"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    </div>
+        </div>  <!--  container boardDetailWrapper  -->
 
-    <script th:inline="javascript">
-        $(document).ready(function () {
-            let boardIdVal = [[${eventBoard.id}]]; // 본문 글번호
-            let cmtListDiv = $("#cmtListContainer");  // 댓글 목록 컨테이너
-            let cmtPaginationDiv = $("#cmtPagination"); // 댓글 페이지네이션 컨테이너
-            let currPage = 1; // 현재 보고있는 댓글 페이지 번호 저장해둘 변수
-            // 현재 로그인이 되어 있다면 회원 id를, 아니면 null을 저장
-            var member = [[${member}]]
-            var memberId
-            if (member == null) {
-                memberId = 0;
-            } else {
-                memberId = member.id;
-            }
-            console.log("memberId : " + memberId);
-
-            var programId = [[${eventBoard.getProgramDTO.getId()}]]; // 현재 게시글의 작품 id
-
-            // 페이지 로딩시 시작할 함수들
-            getAvgRating(); // 평균 평가 가져오기
-            getMyRating(); // 내 평가 가져오기
-            getCommentList(1);  // 댓글 목록 요청 호출!
-
-            // ********** 클릭시 이벤트들 **********
-
-            // 모달 닫기 버튼 클릭시
-            $('.close').click(function () {
-                // close modal
-                $('#addRating-modal').modal('hide');
-                $('#addMyCalendar-modal').modal('hide');
-            });
-
-            // 회원의 문장형 평가 클릭시 모달 띄우기
-            $('#ratingAndReviewContainer').on('click', '#addRating', function () {
-
-                let data = {
-                    memberId: memberId,
-                    programId: programId
-                };
-
-                $('#addRating-modal').modal('show');
-
-
-            });
-
-            // 문장형 평가 모달내에 버튼 클릭시 이벤트
-            $('#addRatingContainer').on('click', 'button', function () {
-                let rating = $(this).data('rating');
-                console.log(rating);
-                let ratingNum = 0;
-
-                if (rating === 'VERYGOOD') {
-                    ratingNum = 5;
-                } else if (rating === 'GOOD') {
-                    ratingNum = 4;
-                } else if (rating === 'NORMAL') {
-                    ratingNum = 3;
-                } else if (rating === 'BAD') {
-                    ratingNum = 2;
-                } else if (rating === 'VERYBAD') {
-                    ratingNum = 1;
-                }
-                console.log(ratingNum);
-
-                let data = {
-                    memberId: memberId,
-                    programId: programId,
-                    rating: ratingNum
-                };
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/rating/addRating',
-                    data: JSON.stringify(data),
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (result, status) {
-                        console.log(result);
-                        $('#addRating-modal').modal('hide');
-                        if (result === 'fail') {
-                            alert('평가가 수정 되었습니다.');
-                            getMyRating();
-                            getAvgRating();
-                            return;
-                        }
-                        alert('평가가 등록되었습니다.');
-                        getMyRating();
-                        getAvgRating();
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        alert('평가 등록에 실패했습니다.');
-                    }
-
-                });
-
-            });
-
-            // 북마크 버튼 클릭시 이벤트
-            $('#addBtnContainer').on('click', '#bkMarkBtn', function () {
-
-                let data = {
-                    memberId: memberId,
-                    programId: programId
-                };
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/bkmark/addProgramBkmark',
-                    data: JSON.stringify(data),
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (result, status) {
-                        console.log(result);
-
-                        if (result === 'fail') {
-                            alert('북마크에서 삭제 되었습니다.');
-                            return;
-                        }
-                        alert('북마크에 추가되었습니다.');
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        alert('북마크 추가에 실패했습니다.');
-                    }
-                });
-
-            });
-
-            // 일정 아이콘 클릭시 이벤트
-            $('#addBtnContainer').on('click', '.fa-clipboard', function () {
-
-                // ajax로 내 달력 목록 가져오기
-                $.ajax({
-                    url: '/calendar/myCalendarNameList/' + memberId,
-                    type: 'GET',
-                    success: function (data) {
-                        console.log(data);
-                        let html = '';
-                        data.forEach(function (myCalendar) {
-                            html += '<button class="btn btn-primary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
-                        });
-                        html += '<br><input type="text" id="newCalendarName" placeholder="새로운 캘린더 이름"><button id="addNewCalendarBtn" class="btn btn-primary">추가</button>';
-                        $('#addMyCalContainer').html(html);
-
-                        $('#addMyCalendar-modal').modal('show');
-                    }
-                });
-            });
-
-            // 일정 모달 내에 달력 버튼 클릭시
-            $('#addMyCalContainer').on('click', '.cal-name', function () {
-                let myCalId = $(this).data('mycalid');
-                console.log(myCalId);
-                console.log(programId);
-                // ajax로 내 달력에 일정 추가 POST방식
-                let data = {
-                    calendarId: myCalId,
-                    programId: programId
-                };
-
-                console.log(data);
-                $.ajax({
-                    type: 'POST',
-                    url: '/calendar/addProgramToCalendar',
-                    data: JSON.stringify(data),
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (result, status) {
-                        console.log(result);
-
-                        if (result === 'fail') {
-                            alert('이미 추가된 일정입니다.');
-                            return;
-                        }
-                        alert('일정이 추가되었습니다.');
-                        $('#addMyCalendar-modal').modal('hide');
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        alert('일정 추가에 실패했습니다.');
-                    }
-                });
-
-            });
-
-            // 일정 모달 내에 새로운 캘린더 추가 버튼 클릭시
-            $('#addMyCalContainer').on('click', '#addNewCalendarBtn', function () {
-                let newCalendarName = $('#newCalendarName').val();
-                console.log(newCalendarName);
-                if (newCalendarName === '') {
-                    alert('캘린더 이름을 입력해주세요.');
-                    return;
+        <script th:inline="javascript">
+            $(document).ready(function () {
+                let boardIdVal = [[${eventBoard.id}]]; // 본문 글번호
+                let cmtListDiv = $("#cmtListContainer");  // 댓글 목록 컨테이너
+                let cmtPaginationDiv = $("#cmtPagination"); // 댓글 페이지네이션 컨테이너
+                let currPage = 1; // 현재 보고있는 댓글 페이지 번호 저장해둘 변수
+                // 현재 로그인이 되어 있다면 회원 id를, 아니면 null을 저장
+                var member = [[${member}]]
+                var memberId
+                if (member == null) {
+                    memberId = 0;
                 } else {
+                    memberId = member.id;
+                }
+                console.log("memberId : " + memberId);
+
+                var programId = [[${eventBoard.getProgramDTO.getId()}]]; // 현재 게시글의 작품 id
+
+                // 페이지 로딩시 시작할 함수들
+                getAvgRating(); // 평균 평가 가져오기
+                getMyRating(); // 내 평가 가져오기
+                getCommentList(1);  // 댓글 목록 요청 호출!
+
+                // ********** 클릭시 이벤트들 **********
+
+                // 모달 닫기 버튼 클릭시
+                $('.close').click(function () {
+                    // close modal
+                    $('#addRating-modal').modal('hide');
+                    $('#addMyCalendar-modal').modal('hide');
+                });
+
+                // 회원의 문장형 평가 클릭시 모달 띄우기
+                $('#ratingAndReviewContainer').on('click', '#addRating', function () {
 
                     let data = {
                         memberId: memberId,
-                        name: newCalendarName
+                        programId: programId
                     };
+
+                    $('#addRating-modal').modal('show');
+
+
+                });
+
+                // 문장형 평가 모달내에 버튼 클릭시 이벤트
+                $('#addRatingContainer').on('click', 'button', function () {
+                    let rating = $(this).data('rating');
+                    console.log(rating);
+                    let ratingNum = 0;
+
+                    if (rating === 'VERYGOOD') {
+                        ratingNum = 5;
+                    } else if (rating === 'GOOD') {
+                        ratingNum = 4;
+                    } else if (rating === 'NORMAL') {
+                        ratingNum = 3;
+                    } else if (rating === 'BAD') {
+                        ratingNum = 2;
+                    } else if (rating === 'VERYBAD') {
+                        ratingNum = 1;
+                    }
+                    console.log(ratingNum);
+
+                    let data = {
+                        memberId: memberId,
+                        programId: programId,
+                        rating: ratingNum
+                    };
+
                     $.ajax({
                         type: 'POST',
-                        url: '/calendar/addNewCalendar',
+                        url: '/rating/addRating',
                         data: JSON.stringify(data),
                         contentType: 'application/json; charset=utf-8',
                         success: function (result, status) {
                             console.log(result);
+                            $('#addRating-modal').modal('hide');
                             if (result === 'fail') {
-                                alert('이미 존재하는 캘린더 이름입니다.');
+                                alert('평가가 수정 되었습니다.');
+                                getMyRating();
+                                getAvgRating();
                                 return;
                             }
-                            alert('새로운 캘린더가 추가되었습니다.');
+                            alert('평가가 등록되었습니다.');
+                            getMyRating();
+                            getAvgRating();
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('평가 등록에 실패했습니다.');
+                        }
+
+                    });
+
+                });
+
+                // 북마크 버튼 클릭시 이벤트
+                $('#addBtnContainer').on('click', '#bkMarkBtn', function () {
+
+                    let data = {
+                        memberId: memberId,
+                        programId: programId
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/bkmark/addProgramBkmark',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (result, status) {
+                            console.log(result);
+
+                            if (result === 'fail') {
+                                alert('북마크에서 삭제 되었습니다.');
+                                return;
+                            }
+                            alert('북마크에 추가되었습니다.');
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('북마크 추가에 실패했습니다.');
+                        }
+                    });
+
+                });
+
+                // 일정 아이콘 클릭시 이벤트
+                $('#addBtnContainer').on('click', '.fa-clipboard', function () {
+
+                    // ajax로 내 달력 목록 가져오기
+                    $.ajax({
+                        url: '/calendar/myCalendarNameList/' + memberId,
+                        type: 'GET',
+                        success: function (data) {
+                            console.log(data);
+                            let html = '';
+                            data.forEach(function (myCalendar) {
+                                html += '<button class="btn btn-primary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
+                            });
+                            html += '<br><input type="text" id="newCalendarName" placeholder="새로운 캘린더 이름"><button id="addNewCalendarBtn" class="btn btn-primary">추가</button>';
+                            $('#addMyCalContainer').html(html);
+
+                            $('#addMyCalendar-modal').modal('show');
+                        }
+                    });
+                });
+
+                // 일정 모달 내에 달력 버튼 클릭시
+                $('#addMyCalContainer').on('click', '.cal-name', function () {
+                    let myCalId = $(this).data('mycalid');
+                    console.log(myCalId);
+                    console.log(programId);
+                    // ajax로 내 달력에 일정 추가 POST방식
+                    let data = {
+                        calendarId: myCalId,
+                        programId: programId
+                    };
+
+                    console.log(data);
+                    $.ajax({
+                        type: 'POST',
+                        url: '/calendar/addProgramToCalendar',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (result, status) {
+                            console.log(result);
+
+                            if (result === 'fail') {
+                                alert('이미 추가된 일정입니다.');
+                                return;
+                            }
+                            alert('일정이 추가되었습니다.');
                             $('#addMyCalendar-modal').modal('hide');
                         },
                         error: function (error) {
                             console.log(error);
-                            alert('캘린더 추가에 실패했습니다.');
+                            alert('일정 추가에 실패했습니다.');
+                        }
+                    });
+
+                });
+
+                // 일정 모달 내에 새로운 캘린더 추가 버튼 클릭시
+                $('#addMyCalContainer').on('click', '#addNewCalendarBtn', function () {
+                    let newCalendarName = $('#newCalendarName').val();
+                    console.log(newCalendarName);
+                    if (newCalendarName === '') {
+                        alert('캘린더 이름을 입력해주세요.');
+                        return;
+                    } else {
+
+                        let data = {
+                            memberId: memberId,
+                            name: newCalendarName
+                        };
+                        $.ajax({
+                            type: 'POST',
+                            url: '/calendar/addNewCalendar',
+                            data: JSON.stringify(data),
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (result, status) {
+                                console.log(result);
+                                if (result === 'fail') {
+                                    alert('이미 존재하는 캘린더 이름입니다.');
+                                    return;
+                                }
+                                alert('새로운 캘린더가 추가되었습니다.');
+                                $('#addMyCalendar-modal').modal('hide');
+                            },
+                            error: function (error) {
+                                console.log(error);
+                                alert('캘린더 추가에 실패했습니다.');
+                            }
+                        });
+                    }
+
+                });
+
+
+                // ********** 각종 함수들 **********
+
+                // 평균 문장형 평가 가져는 함수
+                function getAvgRating() {
+                    $.ajax({
+                        url: '/rating/getAvgRating/' + programId,
+                        type: 'GET',
+                        success: function (data) {
+                            $('#AvgRating').text(data);
                         }
                     });
                 }
 
-            });
-
-
-            // ********** 각종 함수들 **********
-
-            // 평균 문장형 평가 가져는 함수
-            function getAvgRating() {
-                $.ajax({
-                    url: '/rating/getAvgRating/' + programId,
-                    type: 'GET',
-                    success: function (data) {
-                        $('#AvgRating').text(data);
-                    }
-                });
-            }
-
-            // 회원 문장형 평가 가져오기
-            function getMyRating() {
-                $.ajax({
-                    url: '/rating/getRating/' + memberId + '/' + programId,
-                    type: 'GET',
-                    success: function (data) {
-                        console.log(data);
-                        let html = '';
-                        html += '<div class="badge text-bg-secondary w-100 h-100">' + data + '</div>';
-                        $('#addRating').html(html);
-                    }
-                });
-            }
-
-            // 화면에 뿌려주는 시간 포맷팅 함수
-            function displayTime(timeValue) {
-                let today = new Date();
-                let dateObj = new Date(timeValue);
-                let gap = today.getTime() - dateObj;
-                if (gap < (1000 * 60 * 60 * 24) && today.getDate() == dateObj.getDate()) {
-                    let hh = dateObj.getHours();
-                    let mi = dateObj.getMinutes();
-                    let ss = dateObj.getSeconds();
-                    return [(hh > 9 ? '' : '0') + hh, ':', (mi > 9 ? '' : '0') + mi, ':', (ss > 9 ? '' : '0') + ss].join('');
-                } else {
-                    let yy = dateObj.getFullYear();
-                    let mm = dateObj.getMonth() + 1;
-                    let dd = dateObj.getDate();
-                    return [yy, '/', (mm > 9 ? '' : '0') + mm, '/', (dd > 9 ? '' : '0') + dd].join('');
+                // 회원 문장형 평가 가져오기
+                function getMyRating() {
+                    $.ajax({
+                        url: '/rating/getRating/' + memberId + '/' + programId,
+                        type: 'GET',
+                        success: function (data) {
+                            console.log(data);
+                            let html = '';
+                            html += '<div class="badge text-bg-secondary w-100 h-100">' + data + '</div>';
+                            $('#addRating').html(html);
+                        }
+                    });
                 }
-            }
 
-
-            // ********* 댓글 관련 **********
-
-            // ***** 댓글 목록 ********************
-            // 댓글 목록 요청 함수
-            function getCommentList(page) {
-                console.log("getCommentList! page: " + page);
-                currPage = page;
-                $.ajax({
-                    type: "get",
-                    url: "/comments/list/" + boardIdVal + "/" + page,
-                    success: function (result) {
-                        console.log("댓글 목록 요청 성공!");
-                        console.log(result);
-                        // 댓글 목록 화면에 띄우기
-                        printCommentList(result.commentList);
-                        // 댓글 페이지네이션 화면에 띄우기
-                        printPagination(result.pageResponseDTO);
-                    },
-                    error: function (e) {
-                        console.log("댓글 목록 요청 실패....");
-                        console.log(e);
-                    }
-                });
-            }
-
-            // 댓글 목록 화면에 출력하는 함수
-            function printCommentList(list) {
-                let html = '';
-                for (let i = 0; i < list.length; i++) {
-                    html += '<div class="row align-items-center p-2">';
-                    html += '<div>';
-                    let wid = 30 * list[i].level;
-                    html += '<img src="/comments/display/bgwhite.PNG" width="' + wid + '" height="16"/>';
-                    if (list[i].level > 0) {
-                        html += '<img src="/comments/display/arrow.PNG" width="30"/>';
-                    }
-                    html += '</div><div class="col mr-2">';
-                    html += '<div class="h5 mb-0 font-weight-bold text-gray-800">' + list[i].comment + '</div>';
-                    html += '<div class="text-xs font-weight-bold text-primary mb-1">' + list[i].commenter;
-                    html += ' <span class="ml2 text-gray-500"> ' + displayTime(list[i].lastModifiedDate) + ' </span></div></div>';
-                    html += '<div class="col-auto btn-group-sm">';
-                    html += '<button class="btn btn-info mr-1 reCmtBtn" data-refid="' + list[i].refId + '" data-step="' + list[i].step + '" data-level="' + list[i].level + '">답글</button>';
-                    html += '<button class="btn btn-warning mr-1 cmtModifBtn" data-cmtid="' + list[i].id + '">수정</button>';
-                    html += '<button class="btn btn-danger mr-1 cmtDelBtn" data-cmtid="' + list[i].id + '" >삭제</button>';
-                    html += '</div></div><hr />';
-                }
-                cmtListDiv.html(html); // 목록 태그 컨테이너 안에 붙히기
-            }
-
-            // 댓글 Pagination 띄우는 함수
-            function printPagination(pageDTO) {
-                let html = '<nav aria-label="..."><ul class="pagination justify-content-end mb-5">';
-                // * prev
-                if (pageDTO.prev) {
-                    html += '<li class="page-item">';
-                } else {
-                    html += '<li class="page-item disabled">';
-                }
-                html += '<a class="page-link" href="' + (pageDTO.startPage - 1) + '">Previous</a></li>';
-                // * 페이지 번호 반복
-                for (let i = 0; i < pageDTO.pageNumList.length; i++) {
-                    if (pageDTO.pageNumList[i] == currPage) {
-                        html += '<li  class="page-item active">';
+                // 화면에 뿌려주는 시간 포맷팅 함수
+                function displayTime(timeValue) {
+                    let today = new Date();
+                    let dateObj = new Date(timeValue);
+                    let gap = today.getTime() - dateObj;
+                    if (gap < (1000 * 60 * 60 * 24) && today.getDate() == dateObj.getDate()) {
+                        let hh = dateObj.getHours();
+                        let mi = dateObj.getMinutes();
+                        let ss = dateObj.getSeconds();
+                        return [(hh > 9 ? '' : '0') + hh, ':', (mi > 9 ? '' : '0') + mi, ':', (ss > 9 ? '' : '0') + ss].join('');
                     } else {
-                        html += '<li  class="page-item">';
+                        let yy = dateObj.getFullYear();
+                        let mm = dateObj.getMonth() + 1;
+                        let dd = dateObj.getDate();
+                        return [yy, '/', (mm > 9 ? '' : '0') + mm, '/', (dd > 9 ? '' : '0') + dd].join('');
                     }
-                    html += '<a class="page-link" href="' + pageDTO.pageNumList[i] + '">' + pageDTO.pageNumList[i] + '</a></li>';
                 }
-                // * next
-                if (pageDTO.next) {
-                    html += '<li class="page-item">';
-                } else {
-                    html += '<li class="page-item disabled">';
+
+
+                // ********* 댓글 관련 **********
+
+                // ***** 댓글 목록 ********************
+                // 댓글 목록 요청 함수
+                function getCommentList(page) {
+                    console.log("getCommentList! page: " + page);
+                    currPage = page;
+                    $.ajax({
+                        type: "get",
+                        url: "/comments/list/" + boardIdVal + "/" + page,
+                        success: function (result) {
+                            console.log("댓글 목록 요청 성공!");
+                            console.log(result);
+                            // 댓글 목록 화면에 띄우기
+                            printCommentList(result.commentList);
+                            // 댓글 페이지네이션 화면에 띄우기
+                            printPagination(result.pageResponseDTO);
+                        },
+                        error: function (e) {
+                            console.log("댓글 목록 요청 실패....");
+                            console.log(e);
+                        }
+                    });
                 }
-                html += '<a class="page-link" href="' + (pageDTO.endPage + 1) + '">Next</a>';
-                html += '</li></ul></nav>';
 
-                cmtPaginationDiv.html(html); // 부착!
-            }
-
-            // 댓글 페이지번호 클릭 이벤트 등록
-            cmtPaginationDiv.on("click", "a.page-link", function (e) {
-                e.preventDefault(); // a 태그의 기본이벤트가 href속성의 적힌 경로로 이동 -> 취소하기
-                let pageNum = $(this).attr("href");
-                console.log("페이지 번호 클릭 - pageNum : " + pageNum);
-                getCommentList(pageNum); // 클릭한 페이지 번호의 댓글 목록 요청
-            });
-
-            // ***** 댓글 등록 ********************
-            $("#newCmtBtn").on("click", function (e) {
-                console.log("new comment button clicked!!");
-                let cmtTxt = $("#comment").val(); // 댓글 내용 가져오기
-                let cmterTxt = $("#commenter").val(); // 댓글 작성자 가져오기
-                let data = {
-                    comment: cmtTxt,
-                    commenter: cmterTxt,
-                    boardId: boardIdVal,
-                    refId: 0,
-                    step: 0,
-                    level: 0
-                };
-                console.log(data);
-                saveComment(data, function () {
-                    getCommentList(1); // 목록 호출
-                    $("#comment").val(""); // 댓글작성란 비우기
-                    $("#commenter").val("");
-                });
-            });
-
-            // 댓글 저장 처리 함수
-            function saveComment(data, callbackFn) { // 저장데이터와 성공시 실행할 콜백함수 전달받기
-                $.ajax({
-                    type: "post",
-                    url: "/comments/add",
-                    data: JSON.stringify(data),
-                    contentType: "application/json;charset=UTF-8",
-                    success: function (result) {
-                        console.log("댓글 등록 성공!!");
-                        console.log(result);
-                        callbackFn();  // 콜백함수 호출
-                    },
-                    error: function (e) {
-                        console.log("댓글 등록 실패....");
-                        console.log(e);
+                // 댓글 목록 화면에 출력하는 함수
+                function printCommentList(list) {
+                    let html = '';
+                    for (let i = 0; i < list.length; i++) {
+                        html += '<div class="row align-items-center p-2">';
+                        html += '<div>';
+                        let wid = 30 * list[i].level;
+                        html += '<img src="/comments/display/bgwhite.PNG" width="' + wid + '" height="16"/>';
+                        if (list[i].level > 0) {
+                            html += '<img src="/comments/display/arrow.PNG" width="30"/>';
+                        }
+                        html += '</div><div class="col mr-2">';
+                        html += '<div class="h5 mb-0 font-weight-bold text-gray-800">' + list[i].comment + '</div>';
+                        html += '<div class="text-xs font-weight-bold text-primary mb-1">' + list[i].commenter;
+                        html += ' <span class="ml2 text-gray-500"> ' + displayTime(list[i].lastModifiedDate) + ' </span></div></div>';
+                        html += '<div class="col-auto btn-group-sm">';
+                        html += '<button class="btn btn-info mr-1 reCmtBtn" data-refid="' + list[i].refId + '" data-step="' + list[i].step + '" data-level="' + list[i].level + '">답글</button>';
+                        html += '<button class="btn btn-warning mr-1 cmtModifBtn" data-cmtid="' + list[i].id + '">수정</button>';
+                        html += '<button class="btn btn-danger mr-1 cmtDelBtn" data-cmtid="' + list[i].id + '" >삭제</button>';
+                        html += '</div></div><hr />';
                     }
-                });
-            }
+                    cmtListDiv.html(html); // 목록 태그 컨테이너 안에 붙히기
+                }
 
-            // ***** 답글 버튼 이벤트 ****************
-            cmtListDiv.on("click", "button.reCmtBtn", function (e) {
-                console.log("답글 버튼 클릭!");
-                // 버튼에 숨겨둔  refId, step, level값 꺼내기
-                let refIdVal = $(this).data("refid");
-                let stepVal = $(this).data("step");
-                let levelVal = $(this).data("level");
-                console.log(refIdVal, stepVal, levelVal);
-                // 모달에 다시 심기
-                $("#reRefid").val(refIdVal);
-                $("#reStep").val(stepVal);
-                $("#reLevel").val(levelVal);
-                // 모달 띄우기
-                $("#reCmtModal").modal("show");
-            });
-
-            // 답글 저장 버튼 이벤트 등록
-            $("#reCmtSaveBtn").on("click", function (e) {
-                console.log("답글 저장 버튼 클릭!");
-                // 답글 내용 꺼내서 JS 객체로 만들기
-                let cmtVal = $("#reCmt").val();
-                let cmterVal = $("#reCmter").val();
-                let refidVal = $("#reRefid").val();
-                let stepVal = $("#reStep").val();
-                let levelVal = $("#reLevel").val();
-                let data = {
-                    comment: cmtVal,
-                    commenter: cmterVal,
-                    boardId: boardIdVal,
-                    refId: refidVal,
-                    step: stepVal,
-                    level: levelVal
-                };
-                saveComment(data, function () {
-                    // 답글 모달의 입력란 비우기
-                    $("#reCmt").val("");
-                    $("#reCmter").val("");
-                    $("#reCmtModal").modal("hide"); // 모달 숨기기
-                    getCommentList(currPage); // 목록 요청 호출 -> currPage 보고있던 댓글 페이지 요청
-                });
-
-            });
-
-
-            // ***** 댓글 삭제 **********************
-            // 댓글 삭제 버튼 이벤트 등록
-            cmtListDiv.on("click", "button.cmtDelBtn", function (e) {
-                let commentId = $(this).data("cmtid");
-                console.log("삭제버튼 클릭!!! commentId : " + commentId);
-                $.ajax({
-                    type: "delete",
-                    url: "/comments/" + commentId,
-                    success: function (result) {
-                        console.log("삭제 요청 성공!");
-                        console.log(result);
-                        getCommentList(currPage); // 목록 호출
-                    },
-                    error: function (e) {
-                        console.log("삭제 요청 실패...");
-                        console.log(e);
+                // 댓글 Pagination 띄우는 함수
+                function printPagination(pageDTO) {
+                    let html = '<nav aria-label="..."><ul class="pagination justify-content-end mb-5">';
+                    // * prev
+                    if (pageDTO.prev) {
+                        html += '<li class="page-item">';
+                    } else {
+                        html += '<li class="page-item disabled">';
                     }
-                });
-            });
-
-            // ***** 댓글 수정 **********************
-            // 수정 버튼 클릭 이벤트
-            cmtListDiv.on("click", "button.cmtModifBtn", function (e) {
-                let cmtIdVal = $(this).data("cmtid");
-                console.log("수정 버튼 클릭!! cmtIdVal : " + cmtIdVal);
-                getOneComment(cmtIdVal);  // 댓글 정보 가져오기 함수 호출
-            });
-
-            // 댓글 정보 가져오는 함수
-            function getOneComment(cmtId) {
-                $.ajax({
-                    type: "get",
-                    url: "/comments/" + cmtId,
-                    success: function (result) {
-                        console.log("댓글 한개 요청 성공!");
-                        console.log(result);
-                        showModifyModal(result); // 모달띄워라~
-                    },
-                    error: function (e) {
-                        console.log("댓글 한개 요청 실패....");
-                        console.log(e);
+                    html += '<a class="page-link" href="' + (pageDTO.startPage - 1) + '">Previous</a></li>';
+                    // * 페이지 번호 반복
+                    for (let i = 0; i < pageDTO.pageNumList.length; i++) {
+                        if (pageDTO.pageNumList[i] == currPage) {
+                            html += '<li  class="page-item active">';
+                        } else {
+                            html += '<li  class="page-item">';
+                        }
+                        html += '<a class="page-link" href="' + pageDTO.pageNumList[i] + '">' + pageDTO.pageNumList[i] + '</a></li>';
                     }
-                });
-            }
-
-            // 수정 모달 띄우는 함수
-            function showModifyModal(comment) {
-                // 모달에 댓글 내용 추가
-                $("#modalCid").val(comment.id);
-                $("#modalCmt").val(comment.comment);
-                $("#modalCmter").val(comment.commenter);
-                $("#modalCmtDate").val(displayTime(comment.lastModifiedDate));
-                $("#modifyModal").modal("show"); // 모달 보여주기
-            }
-
-            // 수정 모달의 save 버튼 이벤트 등록
-            $("#modalSaveBtn").on("click", function (e) {
-                // 수정된 내용들 다 가져와서 수정 요청
-                let cidVal = $("#modalCid").val();
-                let cmtVal = $("#modalCmt").val();
-                let cmterVal = $("#modalCmter").val();
-                let data = {
-                    id: cidVal,
-                    comment: cmtVal,
-                    commenter: cmterVal
-                };
-                $.ajax({
-                    type: "patch",
-                    url: "/comments/" + cidVal,
-                    data: JSON.stringify(data),
-                    contentType: "application/json;charset=UTF-8",
-                    success: function (result) {
-                        console.log("댓글 수정처리 성공!");
-                        console.log(result);
-                        $("#modifyModal").modal("hide"); // 모달 닫기
-                        getCommentList(currPage); // 댓글 목록 요청 호출
-                    },
-                    error: function (e) {
-                        console.log("댓글 수정처리 실패...");
-                        console.log(e);
+                    // * next
+                    if (pageDTO.next) {
+                        html += '<li class="page-item">';
+                    } else {
+                        html += '<li class="page-item disabled">';
                     }
+                    html += '<a class="page-link" href="' + (pageDTO.endPage + 1) + '">Next</a>';
+                    html += '</li></ul></nav>';
+
+                    cmtPaginationDiv.html(html); // 부착!
+                }
+
+                // 댓글 페이지번호 클릭 이벤트 등록
+                cmtPaginationDiv.on("click", "a.page-link", function (e) {
+                    e.preventDefault(); // a 태그의 기본이벤트가 href속성의 적힌 경로로 이동 -> 취소하기
+                    let pageNum = $(this).attr("href");
+                    console.log("페이지 번호 클릭 - pageNum : " + pageNum);
+                    getCommentList(pageNum); // 클릭한 페이지 번호의 댓글 목록 요청
                 });
-            });
+
+                // ***** 댓글 등록 ********************
+                $("#newCmtBtn").on("click", function (e) {
+                    console.log("new comment button clicked!!");
+                    let cmtTxt = $("#comment").val(); // 댓글 내용 가져오기
+                    let cmterTxt = $("#commenter").val(); // 댓글 작성자 가져오기
+                    let data = {
+                        comment: cmtTxt,
+                        commenter: cmterTxt,
+                        boardId: boardIdVal,
+                        refId: 0,
+                        step: 0,
+                        level: 0
+                    };
+                    console.log(data);
+                    saveComment(data, function () {
+                        getCommentList(1); // 목록 호출
+                        $("#comment").val(""); // 댓글작성란 비우기
+                        $("#commenter").val("");
+                    });
+                });
+
+                // 댓글 저장 처리 함수
+                function saveComment(data, callbackFn) { // 저장데이터와 성공시 실행할 콜백함수 전달받기
+                    $.ajax({
+                        type: "post",
+                        url: "/comments/add",
+                        data: JSON.stringify(data),
+                        contentType: "application/json;charset=UTF-8",
+                        success: function (result) {
+                            console.log("댓글 등록 성공!!");
+                            console.log(result);
+                            callbackFn();  // 콜백함수 호출
+                        },
+                        error: function (e) {
+                            console.log("댓글 등록 실패....");
+                            console.log(e);
+                        }
+                    });
+                }
+
+                // ***** 답글 버튼 이벤트 ****************
+                cmtListDiv.on("click", "button.reCmtBtn", function (e) {
+                    console.log("답글 버튼 클릭!");
+                    // 버튼에 숨겨둔  refId, step, level값 꺼내기
+                    let refIdVal = $(this).data("refid");
+                    let stepVal = $(this).data("step");
+                    let levelVal = $(this).data("level");
+                    console.log(refIdVal, stepVal, levelVal);
+                    // 모달에 다시 심기
+                    $("#reRefid").val(refIdVal);
+                    $("#reStep").val(stepVal);
+                    $("#reLevel").val(levelVal);
+                    // 모달 띄우기
+                    $("#reCmtModal").modal("show");
+                });
+
+                // 답글 저장 버튼 이벤트 등록
+                $("#reCmtSaveBtn").on("click", function (e) {
+                    console.log("답글 저장 버튼 클릭!");
+                    // 답글 내용 꺼내서 JS 객체로 만들기
+                    let cmtVal = $("#reCmt").val();
+                    let cmterVal = $("#reCmter").val();
+                    let refidVal = $("#reRefid").val();
+                    let stepVal = $("#reStep").val();
+                    let levelVal = $("#reLevel").val();
+                    let data = {
+                        comment: cmtVal,
+                        commenter: cmterVal,
+                        boardId: boardIdVal,
+                        refId: refidVal,
+                        step: stepVal,
+                        level: levelVal
+                    };
+                    saveComment(data, function () {
+                        // 답글 모달의 입력란 비우기
+                        $("#reCmt").val("");
+                        $("#reCmter").val("");
+                        $("#reCmtModal").modal("hide"); // 모달 숨기기
+                        getCommentList(currPage); // 목록 요청 호출 -> currPage 보고있던 댓글 페이지 요청
+                    });
+
+                });
 
 
-        }); // ready
-    </script>
+                // ***** 댓글 삭제 **********************
+                // 댓글 삭제 버튼 이벤트 등록
+                cmtListDiv.on("click", "button.cmtDelBtn", function (e) {
+                    let commentId = $(this).data("cmtid");
+                    console.log("삭제버튼 클릭!!! commentId : " + commentId);
+                    $.ajax({
+                        type: "delete",
+                        url: "/comments/" + commentId,
+                        success: function (result) {
+                            console.log("삭제 요청 성공!");
+                            console.log(result);
+                            getCommentList(currPage); // 목록 호출
+                        },
+                        error: function (e) {
+                            console.log("삭제 요청 실패...");
+                            console.log(e);
+                        }
+                    });
+                });
 
-</th:block>
+                // ***** 댓글 수정 **********************
+                // 수정 버튼 클릭 이벤트
+                cmtListDiv.on("click", "button.cmtModifBtn", function (e) {
+                    let cmtIdVal = $(this).data("cmtid");
+                    console.log("수정 버튼 클릭!! cmtIdVal : " + cmtIdVal);
+                    getOneComment(cmtIdVal);  // 댓글 정보 가져오기 함수 호출
+                });
+
+                // 댓글 정보 가져오는 함수
+                function getOneComment(cmtId) {
+                    $.ajax({
+                        type: "get",
+                        url: "/comments/" + cmtId,
+                        success: function (result) {
+                            console.log("댓글 한개 요청 성공!");
+                            console.log(result);
+                            showModifyModal(result); // 모달띄워라~
+                        },
+                        error: function (e) {
+                            console.log("댓글 한개 요청 실패....");
+                            console.log(e);
+                        }
+                    });
+                }
+
+                // 수정 모달 띄우는 함수
+                function showModifyModal(comment) {
+                    // 모달에 댓글 내용 추가
+                    $("#modalCid").val(comment.id);
+                    $("#modalCmt").val(comment.comment);
+                    $("#modalCmter").val(comment.commenter);
+                    $("#modalCmtDate").val(displayTime(comment.lastModifiedDate));
+                    $("#modifyModal").modal("show"); // 모달 보여주기
+                }
+
+                // 수정 모달의 save 버튼 이벤트 등록
+                $("#modalSaveBtn").on("click", function (e) {
+                    // 수정된 내용들 다 가져와서 수정 요청
+                    let cidVal = $("#modalCid").val();
+                    let cmtVal = $("#modalCmt").val();
+                    let cmterVal = $("#modalCmter").val();
+                    let data = {
+                        id: cidVal,
+                        comment: cmtVal,
+                        commenter: cmterVal
+                    };
+                    $.ajax({
+                        type: "patch",
+                        url: "/comments/" + cidVal,
+                        data: JSON.stringify(data),
+                        contentType: "application/json;charset=UTF-8",
+                        success: function (result) {
+                            console.log("댓글 수정처리 성공!");
+                            console.log(result);
+                            $("#modifyModal").modal("hide"); // 모달 닫기
+                            getCommentList(currPage); // 댓글 목록 요청 호출
+                        },
+                        error: function (e) {
+                            console.log("댓글 수정처리 실패...");
+                            console.log(e);
+                        }
+                    });
+                });
+
+
+            }); // ready
+        </script>
+
+    </th:block>
 </html>

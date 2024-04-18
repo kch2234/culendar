@@ -337,8 +337,6 @@
                 getAvgRating(); // 평균 평가 가져오기
                 getMyRating(); // 내 평가 가져오기
                 getCommentList(1);  // 댓글 목록 요청 호출!
-                checkBoardBkmark(); // 게시글 북마크 체크
-                checkProgramBkmark(); // 작품 북마크 체크
 
                 // ********** 클릭시 이벤트들 **********
 
@@ -414,7 +412,7 @@
 
                 });
 
-                // 작품 북마크 버튼 클릭시 이벤트
+                // 북마크 버튼 클릭시 이벤트
                 $('#addBtnContainer').on('click', '#bkMarkBtn', function () {
 
                     let data = {
@@ -432,11 +430,9 @@
 
                             if (result === 'fail') {
                                 alert('북마크에서 삭제 되었습니다.');
-                                checkProgramBkmark();
                                 return;
                             }
                             alert('북마크에 추가되었습니다.');
-                            checkProgramBkmark();
                         },
                         error: function (error) {
                             console.log(error);
@@ -444,40 +440,6 @@
                         }
                     });
 
-                });
-
-                // 게시글 북마크 버튼 클릭시
-                $('#boardBkMarkBtn').on('click', function () {
-                    let data = {
-                        memberId: memberId,
-                        boardId: boardIdVal,
-                        boardType: boardType,
-                        programId: programId
-                    };
-
-                    console.log(data);
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '/bkmark/addBoardBkmark',
-                        data: JSON.stringify(data),
-                        contentType: 'application/json; charset=utf-8',
-                        success: function (result, status) {
-                            console.log(result);
-
-                            if (result === 'fail') {
-                                alert('북마크에서 삭제 되었습니다.');
-                                checkBoardBkmark();
-                                return;
-                            }
-                            alert('북마크에 추가되었습니다.');
-                            checkBoardBkmark();
-                        },
-                        error: function (error) {
-                            console.log(error);
-                            alert('북마크 추가에 실패했습니다.');
-                        }
-                    });
                 });
 
                 // 일정 아이콘 클릭시 이벤트
@@ -616,48 +578,6 @@
                         let dd = dateObj.getDate();
                         return [yy, '/', (mm > 9 ? '' : '0') + mm, '/', (dd > 9 ? '' : '0') + dd].join('');
                     }
-                }
-
-                // 게시글 북마크 여부 확인 함수
-                function checkBoardBkmark() {
-
-                    console.log("checkBoardBkmark");
-                    $.ajax({
-                        url: '/bkmark/checkBoardBkmark/' + memberId + '/' + boardIdVal,
-                        type: 'GET',
-                        success: function (data) {
-                            if (data === true) {
-                                console.log(data);
-                                $('#boardBkMarkBtn').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
-                            }
-
-                            if (data === false) {
-                                console.log(data);
-                                $('#boardBkMarkBtn').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
-                            }
-                        }
-                    });
-
-                }
-
-                // 작품 북마크 여부 확인 이벤트
-                function checkProgramBkmark() {
-                    console.log("checkProgramBkmark");
-                    $.ajax({
-                        url: '/bkmark/checkProgramBkmark/' + memberId + '/' + programId,
-                        type: 'GET',
-                        success: function (data) {
-                            if (data === true) {
-                                console.log(data);
-                                $('#bkMarkBtn').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
-                            }
-
-                            if (data === false) {
-                                console.log(data);
-                                $('#bkMarkBtn').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
-                            }
-                        }
-                    });
                 }
 
 
