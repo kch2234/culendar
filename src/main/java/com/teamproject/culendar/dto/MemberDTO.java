@@ -23,7 +23,7 @@ public class MemberDTO {
     private String userid;
     private String username;
     private String password;
-    private int phone;
+    private Long phone;
 //    @Email(message = "이메일 형식이 아닙니다.")
     private String email;
     //지역 ENUM
