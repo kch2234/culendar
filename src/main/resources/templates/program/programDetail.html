@@ -6,8 +6,8 @@
     <th:block th:fragment="content">
 
         <!--        일정 추가 모달-->
-        <div class="modal" id="addMyCalendar-modal">
-            <div class="modal-dialog">
+        <div class="modal" id="addMyCalendar-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">달력 선택</h4>
@@ -15,7 +15,7 @@
                             <div id="memberId" class="hidden-true"
                                  th:data-memberId="${member.getMember().getId()}"></div>
                         </div>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="addMyCalContainer">
                         <div id="addMyCalendarBtnContainer">
@@ -28,17 +28,17 @@
         </div>
 
         <!--    문장형 평가 추가 모달-->
-        <div class="modal" id="addRating-modal">
-            <div class="modal-dialog">
+        <div class="modal" id="addRating-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">문장형 평가 추가</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body" id="addRatingContainer">
-                        <div th:each="rating : ${ratingType}">
-                            <button class="btn btn-primary" th:text="${rating.getValue()}" th:data-rating="${rating}"
-                                    th:if="${rating.value !='평가 없음'}"></button>
+                    <div class="modal-body container" id="addRatingContainer">
+                        <div class="row d-flex justify-content-center mt-2 mb-2" th:each="rating : ${ratingType}">
+                            <button class="col-auto btn btn-outline-secondary" th:text="${rating.getValue()}"
+                                    th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>
                         </div>
                     </div>
                 </div>
@@ -76,7 +76,8 @@
                                     <button id="bkMarkBtn" class="fa-solid fa-bookmark fa-2x"></button>
                                 </div>
                                 <div class="col p-0 d-flex justify-content-center align-items-center">
-                                    <button class="fa-regular fa-clipboard fa-2x"></button>
+                                    <button class="fa-regular fa-clipboard fa-2x" type="button" data-bs-toggle="modal" data-bs-target="#addMyCalendar-modal"></button>
+
                                 </div>
                             </th:block>
                             <!-- 비회원일 경우에는 북마크, 캘린더 추가 버튼 보이지 않기 -->
@@ -106,8 +107,9 @@
                     <!-- 회원일 경우 문장형 후기 작성 버튼 및 좋아요, 후기, 체크박스 버튼 -->
                     <th:block th:if="${member != null}">
                         <div class="row" style="height: 10%">
-                            <div class="col-4" id="addRating">
+                            <div class="col-4">
                                 <!--   회원 문장형 평가 위치-->
+                                <button class="btn btn-outline-secondary" id="addRating" type="button" data-bs-toggle="modal" data-bs-target="#addRating-modal"></button>
                             </div>
                             <div class="col"></div>
                             <!-- TODO : 좋아요, 후기, 체크박스 버튼 -->
@@ -129,9 +131,21 @@
                     </div>
                 </div> <!-- end of 작품 정보 -->
 
+                <!-- 인기 후기, 인기 일정 모임 -->
                 <div>
-                    <!-- TODO : 인기 후기, 인기 일정 모임 -->
-                    <div>인기 후기</div>
+                    <!-- 인기 후기 -->
+                    <div class="container mb-5">
+
+                        <div><span class="badge text-bg-secondary fs-4 mb-3">인기 후기</span></div>
+
+                        <div class="row" id="BestReviewListContainer">
+
+                            <!-- 인기글 조회 해서 4개 띄우기 -->
+
+                        </div>
+
+                    </div>
+                    <!-- todo 인기 일정 모임 -->
                     <div>인기 일정 모임</div>
                 </div>
 
@@ -151,28 +165,10 @@
                 getAvgRating();
                 getMyRating();
                 checkBkmark();
+                // 인기 게시글 불러오기
+                getBestReviewList();
 
                 // ********** 클릭시 이벤트들 **********
-
-                // 모달 닫기 버튼 클릭시
-                $('.close').click(function () {
-                    // close modal
-                    $('#addRating-modal').modal('hide');
-                    $('#addMyCalendar-modal').modal('hide');
-                });
-
-                // 회원의 문장형 평가 클릭시 모달 띄우기
-                $('#programContainer').on('click', '#addRating', function () {
-
-                    let data = {
-                        memberId: memberId,
-                        programId: programId
-                    };
-
-                    $('#addRating-modal').modal('show');
-
-
-                });
 
                 // 문장형 평가 모달내에 버튼 클릭시 이벤트
                 $('#addRatingContainer').on('click', 'button', function () {
@@ -268,15 +264,26 @@
                         success: function (data) {
                             console.log(data);
                             let html = '';
+                            html += '<div class="row">';
                             data.forEach(function (myCalendar) {
-                                html += '<button class="btn btn-primary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
+                                html += '<div class="col-auto mt-2 mb-2">';
+                                html += '<button class="btn btn-outline-secondary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
+                                html += '</div>';
                             });
-                            html += '<br><input type="text" id="newCalendarName" placeholder="새로운 캘린더 이름"><button id="addNewCalendarBtn" class="btn btn-primary">추가</button>';
+                            html += '</div>';
+                            html += '<br>';
+                            html += '<div class="row">';
+                            html += '<div class="col input-group mb-3">';
+                            html += '<input class="form-control" type="text" id="newCalendarName" placeholder="새로운 캘린더 이름">';
+                            html += '<button id="addNewCalendarBtn" class="btn btn-outline-secondary">추가</button>';
+                            html += '</div>';
+                            html += '</div>';
+
                             $('#addMyCalContainer').html(html);
 
-                            $('#addMyCalendar-modal').modal('show');
                         }
                     });
+
                 });
 
                 // 일정 모달 내에 달력 버튼 클릭시
@@ -369,14 +376,12 @@
                         url: '/rating/getRating/' + memberId + '/' + programId,
                         type: 'GET',
                         success: function (data) {
-                            console.log(data);
-                            let html = '';
-                            html += '<div class="badge text-bg-secondary d-flex justify-content-center align-items-center fs-5 h-100">' + data + '</div>';
-                            $('#addRating').html(html);
+                            $('#addRating').text(data);
                         }
                     });
                 }
 
+                // 작품 북마크 체크 함수
                 function checkBkmark() {
                     console.log("checkBkmark");
                     $.ajax({
@@ -394,6 +399,72 @@
                             }
                         }
                     });
+                }
+
+                // 인기 후기 목록 불러오기
+                function getBestReviewList() {
+                    $.ajax({
+                        type: "get",
+                        url: "/ajaxBoards/bestReviewList/" + programId,
+                        success: function (result) {
+                            console.log("인기 리뷰 목록 요청 성공!");
+                            console.log(result);
+
+                            changeBestReviewList(result);
+                            // 인기글 목록 화면에 띄우기
+                        },
+                        error: function (e) {
+                            console.log("인기글 목록 요청 실패....");
+                            console.log(e);
+                        },
+                    });
+                }
+
+                // 인기 후기 목록 화면에 띄우기
+                function changeBestReviewList(list) {
+
+                    var html = '';
+                    for (let i = 0; i < list.length; i++) {
+
+                        html += '<div class="col-3 ml-1 mr-1 bestReviewListContainer">';
+                        html += '<div hidden="hidden" class="boardId">' + list[i].id+ '</div>';
+                        html += '<div>';
+                        html += '<img src="' + list[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid" style="" alt="...">';
+                        html += '<div class="card-body">';
+                        html += '<div class="row mb-2">';
+                        // 제목 길이가 11자 이상이면 11자로 자르기
+                        var title = list[i].title;
+                        if (title.length > 10) {
+                            title = title.substring(0, 10) + '...';
+                        }
+                        html += '<div class="col-auto card-title fs-4">' + title + '</div>';
+                        html += '<div class="col-2 badge text-bg-secondary fs-6 d-flex justify-content-center align-items-center">' + getBoardType(list[i].boardType) + '</div>';
+                        html += '</div>';
+                        var content = list[i].content;
+                        if (content.length > 30) {
+                            content = content.substring(0, 30) + '...';
+                        }
+                        html += '<p class="card-text">' + content + '</p>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                    }
+                    $('#BestReviewListContainer').html(html);
+                }
+
+                // 인기글 클릭시 해당 게시글로 이동
+                $(document).on("click", ".bestReviewListContainer", function () {
+                    var boardId = $(this).find(".boardId").text();
+                    location.href = "/boards/" + boardId;
+                });
+
+                // 게시글 타입에 따른 한글로 변환
+                function getBoardType(type) {
+                    if (type === 'INFO') {
+                        return '정보';
+                    } else if (type === 'REVIEW') {
+                        return '후기';
+                    }
                 }
 
                 var locationX = [[${program.getLocationX()}]];

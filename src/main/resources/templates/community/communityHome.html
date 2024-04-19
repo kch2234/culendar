@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
         <!-- 커뮤니티 wrapper -->
-        <div id="community-wrapper">
+        <div id="community-wrapper" class="mt-5">
 
             <!-- 인기글 -->
             <div class="container mb-5">
@@ -14,18 +16,6 @@
                 <div class="row" id="BestListContainer">
 
                     <!-- 인기글 조회 해서 4개 띄우기 -->
-                    <!--<div class="col-3 ml-1 mr-1 ">
-                    <div>
-                        <img src="" class="card-img-top mb-1 img-thumbnail img-fluid" alt="...">
-                        <div class="card-body">
-                            <div class="row mb-2">
-                                <div class="col-auto card-title fs-4">제목</div>
-                                <div class="col-2 badge text-bg-secondary fs-6">정보</div>
-                            </div>
-                            <p class="card-text">lㅁㄴㅇㅁㄴㅇㄴㅁㅀㄴㅇㄴㅇㅀㅀㅇㅇㅀㅇㅀ</p>
-                            </div>
-                        </div>
-                    </div>-->
 
                 </div>
 
@@ -47,7 +37,7 @@
                         </div>
                     </div>
                     <div class="col"></div>
-                    <button type="button" class="col-auto badge text-bg-secondary fs-6 p-2" th:onclick="|location.href='@{/boards/add}'|">글작성</button>
+                    <button sec:authorize="isAuthenticated()" type="button" class="col-auto badge text-bg-secondary fs-6 p-2" th:onclick="|location.href='@{/boards/add}'|">글작성</button>
                 </div>
 
                 <!-- 게시글 리스트 -->
@@ -56,11 +46,11 @@
                     <table class="table">
                         <thead>
                         <tr class="text-center">
-                            <th scope="col">번호</th>
-                            <th scope="col">분류</th>
-                            <th scope="col" class="col-auto">제목</th>
-                            <th scope="col">작성자</th>
-                            <th scope="col">작성일자</th>
+                            <th width="7%">번호</th>
+                            <th width="10%">분류</th>
+                            <th width="63%">제목</th>
+                            <th width="10%">작성자</th>
+                            <th width="10%">작성일자</th>
                         </tr>
                         </thead>
                         <tbody class="table-group-divider" id="listContainer">
@@ -126,7 +116,7 @@
                     for (let i = 0; i < list.length; i++) {
 
                         html += '<tr>';
-                        html += '<th scope="row">' + list[i].id + '</th>';
+                        html += '<th>' + list[i].id + '</th>';
                         html += '<td class="text-center">' + getBoardType(list[i].boardType) + '</td>';
                         html += '<td> <a href="/boards/' + list[i].id + '" class="text-start">' + list[i].title + '</a></td>';
                         html += '<td class="text-center">' + list[i].memberDTO.username + '</td>';
@@ -216,7 +206,7 @@
                         html += '<div class="col-3 ml-1 mr-1 bestBoardListContainer">';
                         html += '<div hidden="hidden" class="boardId">' + list[i].id+ '</div>';
                         html += '<div>';
-                        html += '<img src="' + list[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid" style="height: 30vw" alt="...">';
+                        html += '<img src="' + list[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid w-100" style="" alt="...">';
                         html += '<div class="card-body">';
                         html += '<div class="row mb-2">';
                         // 제목 길이가 11자 이상이면 11자로 자르기
@@ -227,7 +217,11 @@
                         html += '<div class="col-auto card-title fs-4">' + title + '</div>';
                         html += '<div class="col-2 badge text-bg-secondary fs-6 d-flex justify-content-center align-items-center">' + getBoardType(list[i].boardType) + '</div>';
                         html += '</div>';
-                        html += '<p class="card-text">' + list[i].content + '</p>';
+                        var content = list[i].content;
+                        if (content.length > 30) {
+                            content = content.substring(0, 30) + '...';
+                        }
+                        html += '<p class="card-text">' + content + '</p>';
                         html += '</div>';
                         html += '</div>';
                         html += '</div>';

@@ -29,6 +29,10 @@
     display: none;
 }
 
+#signUpContainer{
+    width: 60vw;
+}
+
 textarea{
     resize: none;
 }

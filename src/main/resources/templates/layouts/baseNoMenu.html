@@ -3,20 +3,27 @@
 <th:block th:fragment="base(content)">
 
     <!--  헤더  -->
-    <h1>헤더 영역</h1>
     <th:block th:replace="~{/layouts/header :: headerFrg}"></th:block>
 
-<!--    &lt;!&ndash;  네브  &ndash;&gt;-->
-<!--    <h1>네브 영역</h1>-->
-<!--    <th:block th:replace="~{/layouts/nav :: navFrg}"></th:block>-->
+    <body>
 
-    <!--  컨텐트  -->
-    <h1>컨텐트 영역</h1>
-    <th:block th:replace="${content}"></th:block>
+    <!--  페이지 래퍼  -->
+    <div id="content-wrapper" class="d-flex flex-column">
 
-<!--    &lt;!&ndash; 푸터  &ndash;&gt;-->
-<!--    <h1>푸터 영역</h1>-->
-<!--    <th:block th:replace="~{/layouts/footer :: footerFrg}"></th:block>-->
+        <!--  컨텐트  -->
+        <th:block th:replace="${content}"></th:block>
+
+        <!-- 푸터  -->
+        <th:block th:replace="~{/layouts/footer :: footerFrg}"></th:block>
+    </div>
+
+
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+
+    </body>
+
 
 </th:block>
 </html>

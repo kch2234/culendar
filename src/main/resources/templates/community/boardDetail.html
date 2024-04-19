@@ -10,16 +10,17 @@
         <div class="container" id="boardDetailWrapper">
 
             <!--        일정 추가 모달-->
-            <div class="modal" id="addMyCalendar-modal">
-                <div class="modal-dialog">
+            <div class="modal" id="addMyCalendar-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title">달력 선택</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body" id="addMyCalContainer">
-                            <div id="addMyCalendarBtnContainer">
+                            <div class="container" id="addMyCalendarBtnContainer">
                                 <!--    내 캘린더 목록 및 캘린더 추가 버튼 위치 -->
+
                             </div>
 
                         </div>
@@ -28,16 +29,16 @@
             </div>
 
             <!--    문장형 평가 추가 모달-->
-            <div class="modal" id="addRating-modal">
-                <div class="modal-dialog">
+            <div class="modal" id="addRating-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title">문장형 평가 추가</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body" id="addRatingContainer">
-                            <div th:each="rating : ${ratingType}">
-                                <button class="btn btn-primary" th:text="${rating.getValue()}"
+                        <div class="modal-body container" id="addRatingContainer">
+                            <div class="row d-flex justify-content-center mt-2 mb-2" th:each="rating : ${ratingType}">
+                                <button class="col-auto btn btn-outline-secondary" th:text="${rating.getValue()}"
                                         th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>
                             </div>
                         </div>
@@ -92,8 +93,8 @@
                     <!-- 문장형 평가, 캘린더 등록, 북마크 -->
                     <div class="d-flex flex-row">
 
-                        <div class="col-4">
-                            <div class="badge text-bg-secondary w-100 fs-6" id="AvgRating">
+                        <div class="col-auto">
+                            <div class="badge text-bg-secondary h-100 fs-4 d-flex justify-content-center align-items-center p-1" id="AvgRating">
                                 <!--    평균 문장형 평가 위치-->
                             </div>
                         </div>
@@ -107,7 +108,7 @@
                                     <button id="bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>
                                 </div>
                                 <div class="col p-0 fs-4">
-                                    <button class="fa-regular fa-clipboard w-75 h-75"></button>
+                                    <button class="fa-regular fa-clipboard w-75 h-75" type="button" data-bs-toggle="modal" data-bs-target="#addMyCalendar-modal"></button>
                                 </div>
                             </th:block>
 
@@ -118,7 +119,7 @@
                     <!-- 작품 제목 -->
                     <div class="">
                         <div class="col">
-                            <div class="fs-3" th:text="${board.getProgramDTO().getTitle()}"></div>
+                            <a th:href="@{/program/{seq}(seq=${board.getProgramDTO().seq})}" class="fs-3" th:text="${board.getProgramDTO().getTitle()}"></a>
                         </div>
                     </div>
 
@@ -136,16 +137,18 @@
 
                         <th:block sec:authorize="isAuthenticated()">
 
-                            <div class="col-4 fs-6" id="addRating">
+                            <div class="col-4">
                                 <!--   회원 문장형 평가 위치-->
+                                <button class="btn btn-outline-secondary" id="addRating" type="button" data-bs-toggle="modal" data-bs-target="#addRating-modal"></button>
                             </div>
+
                             <div class="col"></div>
                             <!-- TODO : 좋아요, 후기, 체크박스 버튼 -->
-                            <div class="col-2 fs-6">
-                                <div class="badge text-bg-secondary w-100 h-100">내후기</div>
+                            <div class="col-3 p-0">
+                                <div class="d-flex justify-content-end align-items-center fs-5 w-100 h-100">내후기</div>
                             </div>
-                            <div class="col-2 fs-6">
-                                <div class="badge text-bg-secondary w-100 h-100">체크박스</div>
+                            <div class="col-2 d-flex justify-content-center align-items-center">
+                                <button class="fa-regular fa-circle-check fa-2x"></button>
                             </div>
 
                         </th:block>
@@ -177,24 +180,24 @@
                     <!-- 프로필 이미지 -->
                     <div class="row mb-3 justify-content-center">
                         <div class="col-4">
-                            <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid">
+                            <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid rounded">
                         </div>
                     </div>
 
                     <!-- TODO 닉네임, 팔로우 버튼 -->
-                    <div class="row text-center mb-3">
-                        <div class="col-6 text-end">
+                    <div class="row text-center mb-3 d-flex justify-content-center">
+                        <div class="col-auto text-center">
                             <div class="badge text-bg-secondary fs-4 d-inline-block"
                                  th:text="${board.getMemberDTO().getUsername()}"></div>
                         </div>
-                        <div class="col-6 text-start">
-                            <div sec:authorize="isAuthenticated()" class="badge text-bg-primary fs-6">Follow</div>
+                        <div sec:authorize="isAuthenticated()" class="col-auto p-0">
+                            <div class="badge text-bg-primary fs-6">Follow</div>
                         </div>
                     </div>
 
                     <!-- 지역, 소개 -->
                     <div class="row text-center justify-content-center">
-                        <div class="col-3 text-end">
+                        <div class="col-auto text-end">
                             <div class="badge text-bg-secondary fs-6"
                                  th:text="${board.getMemberDTO().getLocation().value}"></div>
                         </div>
@@ -206,7 +209,6 @@
                     </div>
 
                 </div>
-
 
             </div>
 
@@ -309,7 +311,6 @@
                 </div>
             </div>
 
-
         </div>
 
         <script th:inline="javascript">
@@ -339,26 +340,6 @@
                 getCommentList(1);  // 댓글 목록 요청 호출!
 
                 // ********** 클릭시 이벤트들 **********
-
-                // 모달 닫기 버튼 클릭시
-                $('.close').click(function () {
-                    // close modal
-                    $('#addRating-modal').modal('hide');
-                    $('#addMyCalendar-modal').modal('hide');
-                });
-
-                // 회원의 문장형 평가 클릭시 모달 띄우기
-                $('#ratingAndReviewContainer').on('click', '#addRating', function () {
-
-                    let data = {
-                        memberId: memberId,
-                        programId: programId
-                    };
-
-                    $('#addRating-modal').modal('show');
-
-
-                });
 
                 // 문장형 평가 모달내에 버튼 클릭시 이벤트
                 $('#addRatingContainer').on('click', 'button', function () {
@@ -452,13 +433,23 @@
                         success: function (data) {
                             console.log(data);
                             let html = '';
+                            html += '<div class="row">';
                             data.forEach(function (myCalendar) {
-                                html += '<button class="btn btn-primary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
+                                html += '<div class="col-auto mt-2 mb-2">';
+                                html += '<button class="btn btn-outline-secondary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
+                                html += '</div>';
                             });
-                            html += '<br><input type="text" id="newCalendarName" placeholder="새로운 캘린더 이름"><button id="addNewCalendarBtn" class="btn btn-primary">추가</button>';
+                            html += '</div>';
+                            html += '<br>';
+                            html += '<div class="row">';
+                            html += '<div class="col input-group mb-3">';
+                            html += '<input class="form-control" type="text" id="newCalendarName" placeholder="새로운 캘린더 이름">';
+                            html += '<button id="addNewCalendarBtn" class="btn btn-outline-secondary">추가</button>';
+                            html += '</div>';
+                            html += '</div>';
+
                             $('#addMyCalContainer').html(html);
 
-                            $('#addMyCalendar-modal').modal('show');
                         }
                     });
                 });
@@ -555,9 +546,10 @@
                         type: 'GET',
                         success: function (data) {
                             console.log(data);
-                            let html = '';
-                            html += '<div class="badge text-bg-secondary w-100 h-100">' + data + '</div>';
-                            $('#addRating').html(html);
+                            // let html = '';
+                            // html += '<div class="badge text-bg-secondary d-flex justify-content-center align-items-center fs-5 h-100">' + data + '</div>';
+                            // $('#addRating').html(html);
+                            $('#addRating').text(data);
                         }
                     });
                 }

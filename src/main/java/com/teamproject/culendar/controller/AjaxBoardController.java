@@ -76,4 +76,19 @@ public class AjaxBoardController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    // 해당 작품 최고 인기 리뷰 4개 조회
+    @GetMapping("/bestReviewList/{id}")
+    public ResponseEntity<List<BoardDTO>> bestList(@PathVariable("id") Long id) {
+        log.info("**** AjaxBoardController GET /ajaxBoards/bestReviewList/{}", id);
+        List<Board> result = boardService.getBestReviewList(id);
+        List<BoardDTO> list = new ArrayList<>();
+        for(int i = 0; i < result.size(); i++) {
+            Board board = result.get(i);  // Board 주소(정보) 1개
+            BoardDTO dto = new BoardDTO(board);  // BoardDTO 정보 1개 - MemberDTO 포함
+            list.add(dto);  // 리스트에 추가
+        }
+        log.info("**** AjaxBoardController GET /ajaxBoards/best - list : {}", list);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
 }
