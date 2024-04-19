@@ -18,6 +18,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @Slf4j
 @Transactional
@@ -83,8 +85,23 @@ public class EventBoardService {
   // 모임 수정
   public void updateOneBoard(EventBoardForm eventBoardForm) {
     EventBoard findEventBoard = eventBoardRepository.findById(eventBoardForm.getId()).orElse(null);
+
     findEventBoard.setTitle(eventBoardForm.getTitle());
     findEventBoard.setContent(eventBoardForm.getContent());
+
+    LocalDateTime eventDateLocalDateTime = LocalDateTime.parse(eventBoardForm.getEventDate() + "T00:00:00");
+    LocalDateTime deadlineDateLocalDateTime = LocalDateTime.parse(eventBoardForm.getDeadlineDate() + "T00:00:00");
+
+    findEventBoard.setEventDate(eventDateLocalDateTime);
+    findEventBoard.setDeadlineDate(deadlineDateLocalDateTime);
+
+    findEventBoard.setMaxPeople(eventBoardForm.getMaxPeople());
+
+    findEventBoard.setAutoAccept(eventBoardForm.getAutoAccept());
+
+    findEventBoard.setFilterGender(eventBoardForm.getFilterGender());
+    findEventBoard.setFilterMinAge(eventBoardForm.getFilterMinAge());
+    findEventBoard.setFilterMaxAge(eventBoardForm.getFilterMaxAge());
   }
 
 

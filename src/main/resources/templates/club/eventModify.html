@@ -28,7 +28,7 @@
 
                         <label for="search-text" class="input-group-text">작품 선택</label>
                         <div class="input-group-text">
-                            <input class="form-check-input mt-0" id="programSelectCheck" type="checkbox" th:checked="${true}" readonly>
+                            <input class="form-check-input mt-0" id="programSelectCheck" type="checkbox" checked disabled>
                         </div>
                         <input type="text" id="search-text" class="form-control dropdown-toggle search-input"
                                th:value="${eventBoard.getProgramDTO().getTitle()}" disabled>
@@ -44,12 +44,12 @@
                         <!--  모임 날짜  -->
                         <div class="form-group">
                             <span class="input-group-text">날짜</span>
-                            <input type="date" class="form-control" th:field="*{eventDate}" id="eventDate">
+                            <input type="date" class="form-control" th:value="${eventDateString}" name="eventDate" id="eventDate">
                         </div>
                         <!--  달력형 모집 마감 일자  -->
                         <div class="form-group">
                             <span class="input-group-text" >모집 마감 일자</span>
-                            <input type="date" class="form-control" th:field="*{deadlineDate}" id="deadlineDate">
+                            <input type="date" class="form-control" th:value="${deadlineDateString}" name="deadlineDate" id="deadlineDate">
                         </div>
 
                     </div>
@@ -78,7 +78,7 @@
                         <!--  TODO DB 연결  -->
                         <label class="input-group-text">모임 참가 신청을 자동으로 수락합니다.</label>
                         <div class="input-group-text">
-                            <input class="form-check-input mt-0" id="autoAccept" type="checkbox" value="true" checked>
+                            <input class="form-check-input mt-0" type="checkbox" th:checked="${autoAccept}" th:field="*{autoAccept}">
                         </div>
 
                     </div>
@@ -90,13 +90,20 @@
 
                     <div class="col-12 input-group input-group-lg">
 
-                        <span class="input-group-text">성별</span>
-                        <select class="form-control" th:field="*{filterGender}" id="filterGender">
-                            <option th:each="filterGender: ${filterGender}"
-                                    th:value="${filterGender.name()}"
-                                    th:text="${filterGender.value}">  <!--  TODO selected 수정  -->
+                        <label class="input-group-text" for="filterGender">성별</label>
+                        <select class="form-control" th:field="*{filterGender}">
+                            <option th:each="filterGender: ${filterGender}" th:value="${filterGender.name()}" th:text="${filterGender.value}">
+                                <!--  TODO 버튼 누르면 드롭다운 되도록 연결  -->
                             </option>
                         </select>
+                        <input id="filterGender" hidden="hidden" th:field="*{filterGender}">
+<!--                        <ul class="dropdown-menu">-->
+<!--                            <li th:each="filterGender: ${filterGender}">-->
+<!--                                <select class="form-control" th:value="*{filterGender.name()}" id="filterGender">-->
+<!--                                    <button class="dropdown-item filterGender" th:text="${filterGender.value}" th:data-type="${filterGender.name()}"></button>-->
+<!--                                </select>-->
+<!--                            </li>-->
+<!--                        </ul>-->
 
                         <span class="input-group-text" for="filterMinAge">최소 연령</span>
                         <input type="number" class="form-control" th:field="*{filterMinAge}" min="0" id="filterMinAge">

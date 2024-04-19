@@ -78,10 +78,11 @@ public class BoardController {
     // 게시글 상세
     @GetMapping("/{id}")
     public String detail(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal CustomMember customMember) {
-        log.info("***** BoardController GET /boards/detail - id : {}", id);
-        BoardDTO board = boardService.getOneBoard(id);
+        log.info("***** BoardController GET /boards/detail - id : {}", id);BoardDTO board = boardService.getOneBoard(id);
+
         log.info("***** BoardController GET /boards/detail - board : {}", board);
         model.addAttribute("board", board);
+
         log.info("***** BoardController GET /boards/detail - customMember : {}", customMember);
         if (customMember != null) {
             model.addAttribute("member", customMember.getMember());
@@ -111,7 +112,6 @@ public class BoardController {
         model.addAttribute("board", board);
         return "community/boardModify";
     }
-
     @PostMapping("/{id}/modify")
     public String modifyPro(@PathVariable("id") Long id, BoardForm boardForm) {
         log.info("**** BoardController GET /boards/:id/modify - id : {}", id);
