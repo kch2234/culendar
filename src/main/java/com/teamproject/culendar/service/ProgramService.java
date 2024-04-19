@@ -294,5 +294,12 @@ public class ProgramService {
         return programDTOList;
     }
 
+    public List<ProgramDTO> searchProgramList() {
+        List<Program> programList = programRepository.findAll();
+        List<ProgramDTO> programDTOList = programList.stream()
+                .map(ProgramDTO::new)
+                .collect(Collectors.toList());
+        return programDTOList;
+    }
 
 }
