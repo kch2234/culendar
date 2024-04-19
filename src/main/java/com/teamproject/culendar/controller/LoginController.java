@@ -1,6 +1,7 @@
 package com.teamproject.culendar.controller;
 
 import com.teamproject.culendar.domain.enumFiles.Gender;
+import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.enumFiles.Role;
 import com.teamproject.culendar.dto.InterestForm;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.beans.PropertyEditorSupport;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -66,5 +68,11 @@ public class LoginController {
     public String login(@ModelAttribute MemberForm memberForm) {
         log.info("********** HomeController GET /login ");
         return "member/login";
+    }
+
+    @ModelAttribute("locationType") // 작품 종류 데이터를 뷰에 전달
+    public Location[] locations() {
+        List<Location> programTypes = new ArrayList<>();
+        return Location.values();
     }
 }

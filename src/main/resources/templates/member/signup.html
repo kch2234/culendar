@@ -1,169 +1,339 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <th:block th:replace="~{/layouts/baseNoMenu :: base(~{this::content})}">
     <th:block th:fragment="content">
-    <h1>회원가입 페이지 영역</h1>
-    <div> <!--  회원가입 영역 START -->
-        <form action="" th:action th:object="${memberForm}" method="post">
-        <div name="profile">  <!--  회원 프로필 영역 START  -->
-            <span name="memberInfo">  <!--  회원 프로필 사진 영역 START  -->
-                <div name="memberImage">  <!--  회원 프로필 사진  -->
-                    <!-- TODO: 추가예정
-                    <input type="file" th:field="*{profileImage}" name="profileImage">
-                    -->
+
+        <!--<div> &lt;!&ndash;  회원가입 영역 START &ndash;&gt;
+            <form action="" th:action th:object="${memberForm}" method="post">
+            <div name="profile">  &lt;!&ndash;  회원 프로필 영역 START  &ndash;&gt;
+                <span name="memberInfo">  &lt;!&ndash;  회원 프로필 사진 영역 START  &ndash;&gt;
+                    <div name="memberImage">  &lt;!&ndash;  회원 프로필 사진  &ndash;&gt;
+                        &lt;!&ndash; TODO: 추가예정
+                        <input type="file" th:field="*{profileImage}" name="profileImage">
+                        &ndash;&gt;
+                    </div>
+                    <div name="gernder-radio">  &lt;!&ndash;  버튼 영역  &ndash;&gt;
+                        <input type="radio" th:field="*{gender}" th:value="MALE">
+                        <span name="male-gender-radio">남성</span>
+                        <input type="radio" th:field="*{gender}" th:value="FEMALE">
+                        <span name="female-gender-radio">여성</span>
+                    </div>
+                    <div name="location">  &lt;!&ndash;  위치 영역  &ndash;&gt;
+                        <span name="location-dropdown">
+                                <select th:field="*{location}" th:value="SEOUL">
+                                    <option th:value="SEOUL">서울</option>
+                                    <option th:value="BUSAN">부산</option>
+                                    <option th:value="DAEGU">대구</option>
+                                    <option th:value="INCHEON">인천</option>
+                                    <option th:value="GWANGJU">광주</option>
+                                    <option th:value="DAEJEON">대전</option>
+                                    <option th:value="ULSAN">울산</option>
+                                    <option th:value="SEJONG">세종</option>
+                                    <option th:value="GYEONGGI">경기</option>
+                                    <option th:value="GANGWON">강원</option>
+                                    <option th:value="CHUNGBUK">충북</option>
+                                    <option th:value="CHUNGNAM">충남</option>
+                                    <option th:value="JEONBUK">전북</option>
+                                    <option th:value="JEONNAM">전남</option>
+                                    <option th:value="GYEONGBUK">경북</option>
+                                    <option th:value="GYEONGNAM">경남</option>
+                                    <option th:value="JEJU">제주</option>
+                                    <option th:value="ETC">기타</option>
+                                </select>
+                        </span>
+                        <span name="location-checkbox">
+                            &lt;!&ndash; 활동 지역 외 게시글, 작품 미노출 &ndash;&gt;
+                            <input type="checkbox" >
+                        </span>
+                    </div>
+                </span>  &lt;!&ndash;  회원 프로필 사진 영역 END  &ndash;&gt;
+                <span name="memberInfo-textbox">  &lt;!&ndash;  회원 정보 영역 START  &ndash;&gt;
+                    <div name="userId">
+                        <span name="userId-textbox"></span>
+                            <input type="text" th:field="*{userid}" placeholder="아이디">
+                        <span name="submit-button">
+                            <button type="button" id="checkUserIdBtn">중복확인</button>
+                        </span>
+                    </div>
+                    <div name="username">
+                        <span name="username-textbox"></span>
+                            <input type="text" th:field="*{username}" placeholder="닉네임">
+                        <span name="submit-button">
+                            <button type="button" id="checkUsernameBtn">중복확인</button>
+                        </span>
+                    </div>
+                    <div name="email">
+                        <span name="email-textbox"></span>
+                            <input type="email" th:field="*{email}" placeholder="이메일">
+                        <span name="submit-button">
+                            <button type="button" id="checkEmailBtn">중복확인</button>
+                        </span>
+                    </div>
+                    <div name="password">
+                        <span name="password-textbox"></span>
+                            <input type="password" th:field="*{password}" placeholder="비밀번호">
+                        <span name="password-textbox">
+                            <input type="password" id="" placeholder="비밀번호 재입력">
+                        </span>
+                    </div>
+                    <div name="phone">
+                        <span name="phone-textbox"></span>
+                            <input type="text" th:field="*{phone}" placeholder="전화번호">
+                        <span name="username-textbox">인증번호 입력</span>
+                            <input type="text" placeholder="인증번호 입력">
+                        <span name="submit-button">인증번호 확인
+                        </span>
+                    </div>
+                    <div name="birth">
+                        <span name="birth-textbox"></span>
+                            <input type="date" th:field="*{birth}" placeholder="생년월일">
+                        <span name="submit-button">중복확인</span>
+                    </div>
+                </span>  &lt;!&ndash;  회원 정보 영역 END  &ndash;&gt;
+                <div name="introduce">
+                    <input type="text" th:field="*{introduction}" placeholder="자기소개">
                 </div>
-                <div name="gernder-radio">  <!--  버튼 영역  -->
-                    <input type="radio" th:field="*{gender}" th:value="MALE">
-                    <span name="male-gender-radio">남성</span>
-                    <input type="radio" th:field="*{gender}" th:value="FEMALE">
-                    <span name="female-gender-radio">여성</span>
+            </div>  &lt;!&ndash;  회원 프로필 영역 END  &ndash;&gt;
+        <div name="genre">  &lt;!&ndash; 관심사 영역 START &ndash;&gt;
+            <div name="heading">관심사</div>  &lt;!&ndash;  제목  &ndash;&gt;
+            <form action="" th:action th:object="${interestForm}" method="post">
+            <div name="cards">  &lt;!&ndash;  관심사 카드 영역 상단 START  &ndash;&gt;
+                <h1>카드 영역</h1>
+                <span name="card">
+                    <input type="checkbox" th:field="*{interestList}" th:value="DRAMA">
+                    <div name="image"></div>
+                    <div name="title">연극</div>
+                </span>
+                <span name="card">
+                    <input type="checkbox" th:field="*{interestList}" th:value="CONCERT">
+                    <div name="image"></div>
+                    <div name="title">음악/콘서트</div>
+                </span>
+                <span name="card">
+                    <input type="checkbox" th:field="*{interestList}" th:value="EXHIBITION">
+                    <div name="image"></div>
+                    <div name="title">전시</div>
+                </span>
+                <span name="card">
+                    <input type="checkbox" th:field="*{interestList}" th:value="MUSICAL">
+                    <div name="image"></div>
+                    <div name="title">뮤지컬/오페라</div>
+                </span>
+                <span name="card">
+                    <input type="checkbox" th:field="*{interestList}" th:value="ETC">
+                    <div name="image"></div>
+                    <div name="title">기타</div>
+                </span>
+            </div>  &lt;!&ndash;  관심사 카드 영역 상단 END  &ndash;&gt;
+           &lt;!&ndash; <div name="cards">  &lt;!&ndash;  관심사 카드 영역 하단 START  &ndash;&gt;
+                <h1>카드 영역</h1>
+                <span name="card">
+                    <div name="image"></div>
+                    <div name="title"></div>
+                </span>
+                <span name="card">
+                    <div name="image"></div>
+                    <div name="title"></div>
+                </span>
+                <span name="card">
+                    <div name="image"></div>
+                    <div name="title"></div>
+                </span>
+                <span name="card">
+                    <div name="image"></div>
+                    <div name="title"></div>
+                </span>
+            </div>  &lt;!&ndash;  관심사 카드 영역 하단 END  &ndash;&gt;&ndash;&gt;
+                <div name="submit-button">
+                    <button type="submit">회원가입</button>
                 </div>
-                <div name="location">  <!--  위치 영역  -->
-                    <span name="location-dropdown">
-                            <select th:field="*{location}" th:value="SEOUL">
-                                <option th:value="SEOUL">서울</option>
-                                <option th:value="BUSAN">부산</option>
-                                <option th:value="DAEGU">대구</option>
-                                <option th:value="INCHEON">인천</option>
-                                <option th:value="GWANGJU">광주</option>
-                                <option th:value="DAEJEON">대전</option>
-                                <option th:value="ULSAN">울산</option>
-                                <option th:value="SEJONG">세종</option>
-                                <option th:value="GYEONGGI">경기</option>
-                                <option th:value="GANGWON">강원</option>
-                                <option th:value="CHUNGBUK">충북</option>
-                                <option th:value="CHUNGNAM">충남</option>
-                                <option th:value="JEONBUK">전북</option>
-                                <option th:value="JEONNAM">전남</option>
-                                <option th:value="GYEONGBUK">경북</option>
-                                <option th:value="GYEONGNAM">경남</option>
-                                <option th:value="JEJU">제주</option>
-                                <option th:value="ETC">기타</option>
-                            </select>
-                    </span>
-                    <span name="location-checkbox">
-                        <!-- 활동 지역 외 게시글, 작품 미노출 -->
-                        <input type="checkbox" >
-                    </span>
+            </form>
+            </form>
+        </div>-->
+
+<!--        </div>-->
+
+        <!-- 지역 선택 모달 -->
+        <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">지역 선택</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="locationModalContainer">
+                        <div class="row">
+                            <div class="col-auto mt-2 mb-2" th:each="lType : ${locationType}">
+                                <button type="button" class=" btn btn-outline-secondary lTypeBtn"
+                                        th:text="${lType.value}" th:if="${lType.value !='기타'}"
+                                        th:data-loc="${lType.name()}"></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </span>  <!--  회원 프로필 사진 영역 END  -->
-            <span name="memberInfo-textbox">  <!--  회원 정보 영역 START  -->
-                <div name="userId">
-                    <span name="userId-textbox"></span>
-                        <input type="text" th:field="*{userid}" placeholder="아이디">
-                    <span name="submit-button">
-                        <button type="button" id="checkUserIdBtn">중복확인</button>
-                    </span>
-                </div>
-                <div name="username">
-                    <span name="username-textbox"></span>
-                        <input type="text" th:field="*{username}" placeholder="닉네임">
-                    <span name="submit-button">
-                        <button type="button" id="checkUsernameBtn">중복확인</button>
-                    </span>
-                </div>
-                <div name="email">
-                    <span name="email-textbox"></span>
-                        <input type="email" th:field="*{email}" placeholder="이메일">
-                    <span name="submit-button">
-                        <button type="button" id="checkEmailBtn">중복확인</button>
-                    </span>
-                </div>
-                <div name="password">
-                    <span name="password-textbox"></span>
-                        <input type="password" th:field="*{password}" placeholder="비밀번호">
-                    <span name="password-textbox">
-                        <input type="password" id="repeatPassword" placeholder="비밀번호 재입력">
-                    </span>
-                </div>
-                <div name="phone">
-                    <span name="phone-textbox"></span>
-                        <input type="text" th:field="*{phone}" placeholder="전화번호">
-                    <span name="username-textbox">인증번호 입력</span>
-                        <input type="text" placeholder="인증번호 입력">
-                    <span name="submit-button">인증번호 확인
-                    </span>
-                </div>
-                <div name="birth">
-                    <span name="birth-textbox"></span>
-                        <input type="date" th:field="*{birth}" placeholder="생년월일">
-                    <span name="submit-button">중복확인</span>
-                </div>
-            </span>  <!--  회원 정보 영역 END  -->
-            <div name="introduce">
-                <input type="text" th:field="*{introduction}" placeholder="자기소개">
             </div>
-        </div>  <!--  회원 프로필 영역 END  -->
-    <div name="genre">  <!-- 관심사 영역 START -->
-        <div name="heading">관심사</div>  <!--  제목  -->
-        <form action="" th:action th:object="${interestForm}" method="post">
-        <div name="cards">  <!--  관심사 카드 영역 상단 START  -->
-            <h1>카드 영역</h1>
-            <span name="card">
-                <input type="checkbox" th:field="*{interestList}" th:value="DRAMA">
-                <div name="image"></div>
-                <div name="title">연극</div>
-            </span>
-            <span name="card">
-                <input type="checkbox" th:field="*{interestList}" th:value="CONCERT">
-                <div name="image"></div>
-                <div name="title">음악/콘서트</div>
-            </span>
-            <span name="card">
-                <input type="checkbox" th:field="*{interestList}" th:value="EXHIBITION">
-                <div name="image"></div>
-                <div name="title">전시</div>
-            </span>
-            <span name="card">
-                <input type="checkbox" th:field="*{interestList}" th:value="MUSICAL">
-                <div name="image"></div>
-                <div name="title">뮤지컬/오페라</div>
-            </span>
-            <span name="card">
-                <input type="checkbox" th:field="*{interestList}" th:value="ETC">
-                <div name="image"></div>
-                <div name="title">기타</div>
-            </span>
-        </div>  <!--  관심사 카드 영역 상단 END  -->
-       <!-- <div name="cards">  &lt;!&ndash;  관심사 카드 영역 하단 START  &ndash;&gt;
-            <h1>카드 영역</h1>
-            <span name="card">
-                <div name="image"></div>
-                <div name="title"></div>
-            </span>
-            <span name="card">
-                <div name="image"></div>
-                <div name="title"></div>
-            </span>
-            <span name="card">
-                <div name="image"></div>
-                <div name="title"></div>
-            </span>
-            <span name="card">
-                <div name="image"></div>
-                <div name="title"></div>
-            </span>
-        </div>  &lt;!&ndash;  관심사 카드 영역 하단 END  &ndash;&gt;-->
-            <div name="submit-button">
-                <button type="submit">회원가입</button>
-            </div>
-        </form>
-        </form>
-    </div>  <!-- 관심사 영역 End -->
-    </div><!--  회원가입 영역 END -->
+        </div>
+        <!-- 회원 가입 영역 -->
+        <div class="container mt-5" id="signUpContainer">
+
+            <form action="" th:action th:object="${memberForm}" method="post">
+                <!-- 페이지 제목 -->
+                <div class="row mt-5">
+                    <div class="col d-flex align-items-center justify-content-center">
+                        <div class="fs-1">Sign up</div>
+                    </div>
+                </div>
+
+                <!-- 회원 정보 입력 -->
+                <div class="row mt-5">
+
+                    <!-- 프로필 이미지, 성별, 지역,생년월일 -->
+                    <div class="col-5">
+
+                        <!-- 프로필 이미지 -->
+                        <div class="row h-50 mb-3">
+                            <i class="fa-solid fa-circle-user fa-10x d-flex justify-content-center align-items-center"></i>
+                        </div>
+
+                        <!-- 성별 -->
+                        <div class="row d-flex justify-content-between mb-3">
+                            <div class="col input-group">
+                                <label class="input-group-text" for="male">남성</label>
+                                <div class="input-group-text">
+                                    <input class="form-check-input mt-0" type="radio" th:field="*{gender}" th:value="MALE" id="male">
+                                </div>
+                            </div>
+                            <div class="col input-group d-flex justify-content-end">
+                                <label class="input-group-text" for="female">여성</label>
+                                <div class="input-group-text">
+                                    <input class="form-check-input mt-0" type="radio" th:field="*{gender}" th:value="FEMALE" id="female">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 지역 -->
+                        <div class="row">
+                            <div class="col input-group mb-3">
+                                <span class="input-group-text">지역</span>
+                                <button class="btn btn-outline-secondary" type="button" id="locationModalBtn" data-bs-toggle="modal" data-bs-target="#locationModal">선택</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- 아이디, 닉네임, 이메일, 비밀번호, 전화번호, 자기소개 -->
+                    <div class="col-7">
+                        <!-- 아이디 -->
+                        <div class="row mb-2">
+                            <div class="col">
+                                <!-- 아이디 입력 -->
+                                <div class="input-group">
+                                    <span class="input-group-text d-flex justify-content-center align-items-center p-2"
+                                          style="width: 40%">아이디</span>
+                                    <input type="text" th:field="*{userid}" class="form-control" id="userIdInput">
+                                </div>
+                                <!-- 중복체크 결과값 -->
+                                <div class="form-text" id="userIdCheckResult"></div>
+                            </div>
+                        </div>
+
+                        <!-- 닉네임 -->
+                        <div class="row mb-2">
+                            <div class="col">
+                                <!-- 닉네임 입력 -->
+                                <div class="input-group">
+                                    <span class="input-group-text d-flex justify-content-center align-items-center p-2"
+                                          style="width: 40%">닉네임</span>
+                                    <input type="text" th:field="*{username}" class="form-control" id="usernameInput">
+                                </div>
+                                <!-- 중복체크 결과값 -->
+                                <div class="form-text" id="userNameCheckResult"></div>
+                            </div>
+                        </div>
+
+                        <!-- 이메일 -->
+                        <div class="row mb-2">
+                            <div class="col">
+                                <!-- 이메일 입력 -->
+                                <div class="input-group">
+                                    <span class="input-group-text d-flex justify-content-center align-items-center p-2"
+                                          style="width: 40%">이메일</span>
+                                    <input type="email" th:field="*{email}" class="form-control" id="emailInput">
+                                </div>
+                                <!-- 중복체크 결과값 -->
+                                <div class="form-text" id="emailCheckResult"></div>
+                            </div>
+                        </div>
+
+                        <!-- 비밀번호 -->
+                        <div class="row mb-2">
+                            <div class="col">
+                                <!-- 비밀번호 입력 -->
+                                <div class="input-group">
+                                    <span class="input-group-text d-flex justify-content-center align-items-center p-2"
+                                          style="width: 40%">비밀번호</span>
+                                    <input type="password" th:field="*{password}" class="form-control" id="password">
+                                </div>
+                                <!-- 중복체크 결과값 -->
+                                <div class="form-text" id="passwordCheckResult"></div>
+
+                            </div>
+                        </div>
+
+                        <!-- 비밀번호 확인 -->
+                        <div class="row mb-2">
+                            <div class="col">
+                                <!-- 비밀번호 확인 입력 -->
+                                <div class="input-group">
+                                    <span class="input-group-text d-flex justify-content-center align-items-center p-2"
+                                          style="width: 40%">비밀번호 확인</span>
+                                    <input type="password" class="form-control" id="repeatPassword">
+                                </div>
+                                <!-- 중복체크 결과값 -->
+                                <div class="form-text" id="repeatPasswordCheckResult"></div>
+
+                            </div>
+                        </div>
+
+                        <!-- 전화번호 -->
+                        <div class="row">
+                            <div class="col">
+                                <!-- 전화번호 입력 -->
+                                <div class="input-group">
+                                    <span class="input-group-text d-flex justify-content-center align-items-center p-2"
+                                          style="width: 40%">전화번호</span>
+                                    <input type="number" class="form-control" id="phoneNumFirst">
+                                    <span class="input-group-text d-flex justify-content-center align-items-center">-</span>
+                                    <input type="number" class="form-control" id="phoneNumSecond">
+                                    <span class="input-group-text d-flex justify-content-center align-items-center">-</span>
+                                    <input type="number" class="form-control" id="phoneNumThird">
+                                </div>
+                                <!-- 중복체크 결과값 -->
+                                <div class="form-text" id="phoneCheckResult"></div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- 한줄 소개 입력 -->
+                <div class="row"></div>
+
+                <!-- 관심사 선택 -->
+                <div class="row"></div>
+
+            </form>
+
+        </div>
     </th:block>
 </th:block>
-<!-- jQuery, Popper.js, 부트스트랩 JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    $(document).ready(function(){
-        let checkIdResult = null;
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        /*let checkIdResult = null;
         let checkNameResult = null;
         let checkEmailResult = null;
-
         // id속성값이 userid인 input태그에 change이벤트 등록
         $("#userid").change(function(){
             let userid = $(this).val(); // 사용자가 작성한 값 꺼내기
@@ -239,18 +409,245 @@
             } else {
                 alert("이메일 중복확인을 해주세요.");
             }
+        });*/
+
+        // ********** 변수 선언 **********
+        let userIdCheck = false;
+        let usernameCheck = false;
+        let emailCheck = false;
+        let passwordCheck = false;
+
+
+        // ********** 유효성 검사 함수 **********
+
+        // 아이디 중복확인
+        $("#userIdInput").change(function () {
+            let userId = $(this).val();
+            $.ajax({
+                type: "post",
+                url: "/useridCheck",
+                data: {userid: userId},
+                success: function (result) {
+                    if (result === true) {
+
+                        console.log(result);
+                        // 글자색 토글 변경하기
+                        $("#userIdCheckResult").text("이미 사용중인 아이디입니다.")
+                        $('#userIdCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+                        userIdCheck = false;
+                    } else {
+                        $("#userIdCheckResult").text("사용 가능한 아이디입니다.")
+                        $('#userIdCheckResult').toggleClass('text-danger', false).toggleClass('text-success', true);
+                        userIdCheck = true;
+                    }
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        });
+
+        // 닉네임 중복확인
+        $("#usernameInput").change(function () {
+            let username = $(this).val();
+            $.ajax({
+                type: "post",
+                url: "/usernameCheck",
+                data: {username: username},
+                success: function (result) {
+                    if (result === true) {
+                        console.log("닉네임 중복확인 결과");
+                        console.log(result);
+                        // 글자색 토글 변경하기
+                        $("#userNameCheckResult").text("이미 사용중인 닉네임입니다.")
+                        $('#userNameCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+                        usernameCheck = false;
+                    } else {
+                        $("#userNameCheckResult").text("사용 가능한 닉네임입니다.")
+                        $('#userNameCheckResult').toggleClass('text-danger', false).toggleClass('text-success', true);
+                        usernameCheck = true;
+                    }
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        });
+
+        // 이메일 중복확인
+        $("#emailInput").change(function () {
+            let email = $(this).val();
+            // 이메일 형식 체크
+
+            if (!email.includes("@")) {
+                $("#emailCheckResult").text("이메일 형식이 올바르지 않습니다.")
+                $('#emailCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+                emailCheck = false;
+            } else if (!email.includes(".")) {
+                $("#emailCheckResult").text("이메일 형식이 올바르지 않습니다.")
+                $('#emailCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+                emailCheck = false;
+            } else {
+                $.ajax({
+                    type: "post",
+                    url: "/emailCheck",
+                    data: {email: email},
+                    success: function (result) {
+                        if (result === true) {
+                            console.log(result);
+                            // 글자색 토글 변경하기
+                            $("#emailCheckResult").text("이미 사용중인 이메일입니다.")
+                            $('#emailCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+                            emailCheck = false;
+                        } else {
+                            $("#emailCheckResult").text("사용 가능한 이메일입니다.")
+                            $('#emailCheckResult').toggleClass('text-danger', false).toggleClass('text-success', true);
+                            emailCheck = true;
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            }
+        });
+
+        // 비밀번호 일치 확인
+        $("#repeatPassword").change(function () {
+            let password = $("#password").val();
+            let repeatPassword = $(this).val();
+            if (password === null || password === "") {
+                $('#repeatPasswordCheckResult').text("비밀번호를 먼저 입력해주세요.");
+                $('#repeatPasswordCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+                passwordCheck = false;
+            } else if (password !== repeatPassword) {
+                $('#repeatPasswordCheckResult').text("비밀번호가 일치하지 않습니다.");
+                $('#repeatPasswordCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+                passwordCheck = false;
+            } else {
+                $('#repeatPasswordCheckResult').text("비밀번호가 일치합니다.");
+                $('#repeatPasswordCheckResult').toggleClass('text-danger', false).toggleClass('text-success', true);
+                passwordCheck = true;
+            }
+        });
+
+        // 비밀번호 일치 확인
+        $("#password").change(function () {
+            let password = $(this).val();
+            let repeatPassword = $("#repeatPassword").val();
+            if (repeatPassword !== null && repeatPassword !== "") {
+                if (password !== repeatPassword) {
+                    $('#repeatPasswordCheckResult').text("비밀번호가 일치하지 않습니다.");
+                    $('#repeatPasswordCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+                    passwordCheck = false;
+                } else {
+                    $('#repeatPasswordCheckResult').text("비밀번호가 일치합니다.");
+                    $('#repeatPasswordCheckResult').toggleClass('text-danger', false).toggleClass('text-success', true);
+                    passwordCheck = true;
+                }
+            }
+        });
+
+        // 전화번호 중복 확인
+        $("#phoneNumFirst").change(function () {
+            checkPhone();
+        });
+        $("#phoneNumSecond").change(function () {
+            checkPhone();
+        });
+        $("#phoneNumThird").change(function () {
+            checkPhone();
+        });
+
+        // 전화번호 중복 확인 함수
+        function checkPhone() {
+
+            console.log("전화번호 변경");
+            let phoneNumFirst = $("#phoneNumFirst").val();
+            let phoneNumSecond = $("#phoneNumSecond").val();
+            let phoneNumThird = $("#phoneNumThird").val();
+
+            if (phoneNumFirst === null || phoneNumFirst === "" || phoneNumSecond === null || phoneNumSecond === "" || phoneNumThird === null || phoneNumThird === "" || phoneNumFirst.length !== 3 || phoneNumSecond.length !== 4 || phoneNumThird.length !== 4) {
+                $('#phoneCheckResult').text("정확한 전화번호를 입력해주세요.");
+                $('#phoneCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+            } else {
+                let phone = 0;
+                phone = phoneNumFirst + phoneNumSecond + phoneNumThird;
+                $.ajax({
+                    type: "post",
+                    url: "/phoneCheck",
+                    data: {phone: phone},
+                    success: function (result) {
+                        if (result === true) {
+                            console.log(result);
+                            // 글자색 토글 변경하기
+                            $("#phoneCheckResult").text("이미 사용중인 전화번호입니다.")
+                            $('#phoneCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+                        } else {
+                            $("#phoneCheckResult").text("사용 가능한 전화번호입니다.")
+                            $('#phoneCheckResult').toggleClass('text-danger', false).toggleClass('text-success', true);
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            }
+
+        }
+
+        // submit 버튼 클릭 시 유효성 검사
+        $("button[type=submit]").click(function () {
+            // 아이디 중복확인
+            let userId = $("#userIdInput").val();
+            if (userId === null || userId === "") {
+                alert("아이디를 입력해주세요.");
+                return false;
+            }
+            // 닉네임 중복확인
+            let username = $("#usernameInput").val();
+            if (username === null || username === "") {
+                alert("닉네임을 입력해주세요.");
+                return false;
+            }
+            // 이메일 중복확인
+            let email = $("#emailInput").val();
+            if (email === null || email === "") {
+                alert("이메일을 입력해주세요.");
+                return false;
+            }
+            // 비밀번호 확인
+            let password = $("#password").val();
+            let repeatPassword = $("#repeatPassword").val();
+            if (password === null || password === "") {
+                alert("비밀번호를 입력해주세요.");
+                return false;
+            }
+            if (password !== repeatPassword) {
+                alert("비밀번호가 일치하지 않습니다.");
+                return false;
+            }
+            // 전화번호
+            let phone = $("#phoneInput").val();
+            if (phone === null || phone === "") {
+                alert("전화번호를 입력해주세요.");
+                return false;
+            }
+            // 자기소개
+            let introduction = $("#introductionInput").val();
+            if (introduction === null || introduction === "") {
+                alert("자기소개를 입력해주세요.");
+                return false;
+            }
+            // 관심사
+            let interest = $("input[name=interest]:checked").val();
+            if (interest === null || interest === "") {
+                alert("관심사를 선택해주세요.");
+                return false;
+            }
         });
     });
 
-    $("#repeatPassword").change(function(){
-        let password = $("#password").val();
-        let repeatPassword = $(this).val();
-        if (password === null || password === "") {
-            alert("비밀번호를 먼저 입력해주세요.");
-        }
-        if(password !== repeatPassword){
-            alert("비밀번호가 일치하지 않습니다.");
-        }
-    });
+
 </script>
 </html>

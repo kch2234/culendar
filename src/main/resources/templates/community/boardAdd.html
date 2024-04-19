@@ -6,46 +6,6 @@
         <!--  TODO 텍스트 에디터 API  -->
         <!-- TODO 유효성 검사, 이미지 첨부 -->
 
-        <!--<div class="untree_co-hero py-5 mb-0" id="home-section">  &lt;!&ndash;  배경 영역  &ndash;&gt;
-            <div class="container pb-5 mb-5 border-bottom">  &lt;!&ndash;  게시글 작성  &ndash;&gt;
-                <div class="row">
-                    <div class="col-lg-7">
-                        <form action="" th:action th:object="${boardForm}" method="post">
-                            <div class="form-group">
-                                <label class="text-blank" for="title">제목</label>
-                                <input type="text" th:field="*{title}" class="form-control" id="title">
-                            </div>
-                            <div class="form-group">
-                                <label class="text-blank" for="boardType">카테고리</label>
-                                <select class="custom-select" th:field="*{boardType}" id="boardType">
-                                    <option value="">선택</option>
-                                    <option th:each="boardType: ${boardType}" th:value="${boardType.name()}"
-                                            th:text="${boardType.value}"></option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="text-blank" for="program">작품 선택</label>
-                                <input type="search" th:field="*{program}" class="form-control" id="program">
-                            </div>
-                            &lt;!&ndash;  todo 작품 DB 연결  &ndash;&gt;
-                            &lt;!&ndash;                            <div class="form-group">&ndash;&gt;
-                            &lt;!&ndash;                                <label class="text-blank" for="file">이미지 첨부</label>&ndash;&gt;
-                            &lt;!&ndash;                                <input type="file" th:field="*{image}" class="form-control" id="file">&ndash;&gt;
-                            &lt;!&ndash;                            </div>  &lt;!&ndash;  todo 이미지 첨부 기능 예정  &ndash;&gt;&ndash;&gt;
-                            <div class="form-group">
-                                <label class="text-blank" for="content">내용</label>
-                                <textarea th:field="*{content}" class="form-control" id="content" rows="10"></textarea>
-                            </div>
-                            <button type="button" class="btn btn-info" th:onclick="|location.href='@{/boards/list}'|">
-                                취소
-                            </button>
-                            <button type="submit" class="btn btn-primary">등록</button>
-                        </form>
-                    </div>  &lt;!&ndash;  col-lg-7  &ndash;&gt;
-                </div>  &lt;!&ndash;  row  &ndash;&gt;
-            </div>  &lt;!&ndash;  container 게시글 작성  &ndash;&gt;
-        </div> --> <!-- untree_co-hero py-5 mb-0 배경 영역   -->
-
         <div id="boardAddWrapper" class="mt-5">
 
             <form class="container mt-4" th:object="${boardForm}" method="post" action="" th:action >

@@ -32,7 +32,7 @@ public class Member extends BaseEntityCreatedDate {
   @Column(nullable = false, length = 500)
   private String password;
 
-  private int phone = 0;
+  private Long phone = 0L;
   private String email = "";
 
   // 지역 ENUM

@@ -36,29 +36,29 @@ public class MemberService {
         return new MemberDTO(member);
     }
     // 아이디 중복 체크
-    public CustomMember findByUserid(String userid) {
+    public MemberDTO findByUserid(String userid) {
         log.info("********** MemberService findByUserid - userId : {}", userid);
         Optional<Member> member = memberRepository.findByUserid(userid);
         if(member.isPresent()) {
-            return new CustomMember(member.get());
+            return new MemberDTO(member.get());
         }
         return null;
     }
     // 닉네임 중복 체크
-    public CustomMember findByUsername(String username) {
+    public MemberDTO findByUsername(String username) {
         log.info("********** MemberService findByUsername - username : {}", username);
         Optional<Member> member = memberRepository.findByUsername(username);
         if(member.isPresent()) {
-            return new CustomMember(member.get());
+            return new MemberDTO(member.get());
         }
         return null;
     }
     // 이메일 중복 체크
-    public CustomMember findByEmail(String email) {
+    public MemberDTO findByEmail(String email) {
         log.info("********** MemberService findByEmail - email : {}", email);
         Optional<Member> member = memberRepository.findByEmail(email);
         if(member.isPresent()) {
-            return new CustomMember(member.get());
+            return new MemberDTO(member.get());
         }
         return null;
     }
@@ -86,6 +86,16 @@ public class MemberService {
         Member saved = memberRepository.save(memberForm.toEntity());
         log.info("********** MemberService saveMember - saved : {}", saved);
         return saved.getId();
+    }
+
+    // 전화번호 중복 확인
+    public MemberDTO findByPhone(Long phone) {
+        log.info("********** MemberService findByPhone - phone : {}", phone);
+        Optional<Member> member = memberRepository.findByPhone(phone);
+        if(member.isPresent()) {
+            return new MemberDTO(member.get());
+        }
+        return null;
     }
 
     public Member getMember(Long id) {
