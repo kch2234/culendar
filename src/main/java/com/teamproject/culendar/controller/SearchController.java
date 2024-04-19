@@ -24,7 +24,7 @@ public class SearchController {
 
     @GetMapping("/searchProgramList")
     public ResponseEntity<List<ProgramDTO>> searchProgramList() {
-        log.info("** SearchController GET /list 요청");
+        log.info("*** SearchController GET /list 요청");
         List<ProgramDTO> ListProgramAll = programService.searchProgramList();
         return ResponseEntity.ok(ListProgramAll);
     }

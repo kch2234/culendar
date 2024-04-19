@@ -294,6 +294,7 @@ public class ProgramService {
         return programDTOList;
     }
 
+    // 작품 리스트 가져오기
     public List<ProgramDTO> searchProgramList() {
         List<Program> programList = programRepository.findAll();
         List<ProgramDTO> programDTOList = programList.stream()
