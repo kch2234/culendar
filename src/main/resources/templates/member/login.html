@@ -17,29 +17,33 @@
             <form class="user" action="" th:action th:object="${memberForm}" method="post">
 
                 <!-- 아이디 입력 -->
-                <div class="row input-group input-group-lg mb-3">
-                    <div class="col-5">
-                        <label class="input-group-text d-flex justify-content-center align-items-center" for="userid">아이디</label>
+                <div class="row mb-3">
+
+                    <div class="col">
+                        <div class="input-group input-group-lg ">
+                            <span class="input-group-text d-flex justify-content-center align-items-center" style="width: 35%">아이디</span>
+                            <input class="form-control" type="text" th:field="*{userid}" id="userid">
+                        </div>
                     </div>
-                    <div class="col p-0">
-                        <input class="form-control" type="text" th:field="*{userid}" id="userid">
-                    </div>
+
                 </div>
 
                 <!-- 비밀번호 입력 -->
-                <div class="row input-group input-group-lg mb-3">
-                    <div class="col-5">
-                        <label class="input-group-text text-center d-flex justify-content-center align-items-center"
-                               for="password">비밀번호</label>
+                <div class="row mb-3">
+
+                    <div class="col">
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text d-flex justify-content-center align-items-center" style="width: 35%">비밀번호</span>
+                            <input class="form-control" type="password" th:field="*{password}" id="password">
+                        </div>
                     </div>
-                    <div class="col p-0">
-                        <input class="form-control" type="password" th:field="*{password}" id="password">
-                    </div>
+
                 </div>
 
-                <div class="row input-group input-group-lg">
-                        <div class="col input-group mb-3 w-100">
-                            <label class="input-group-text text-center d-flex justify-content-center align-items-center">Remember Me</label>
+                <div class="row">
+                        <div class="col input-group input-group-lg mb-3 w-100">
+<!--                            <label class="input-group-text text-center d-flex justify-content-center align-items-center">Remember Me</label>-->
+                            <span class="input-group-text">Remember Me</span>
                             <div class="input-group-text">
                                 <input class="form-check-input mt-0" type="checkbox" name="remember-me" id="customCheck">
                             </div>
