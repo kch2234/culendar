@@ -78,7 +78,8 @@ public class BoardController {
     // 게시글 상세
     @GetMapping("/{id}")
     public String detail(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal CustomMember customMember) {
-        log.info("***** BoardController GET /boards/detail - id : {}", id);BoardDTO board = boardService.getOneBoard(id);
+        log.info("***** BoardController GET /boards/detail - id : {}", id);
+        BoardDTO board = boardService.getOneBoard(id);
 
         log.info("***** BoardController GET /boards/detail - board : {}", board);
         model.addAttribute("board", board);

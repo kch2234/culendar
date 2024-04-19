@@ -37,8 +37,8 @@ public class BoardService {
     return savedBoard.getId();
   }
 
-  // 게시글 목록 불러오기
-  public Page<Board> getListWithPaging(PageRequestDTO pageRequestDTO) {
+  // 전체 게시글 최신순 목록 불러오기
+  public Page<Board> getListWithPaging(PageRequestDTO pageRequestDTO) {  // ALL>NEW
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
         pageRequestDTO.getSize(),
@@ -49,8 +49,20 @@ public class BoardService {
     return result;
   }
 
-  // 게시글 카테고리 목록 불러오기
-  public Page<Board> getListWithCategory(PageRequestDTO pageRequestDTO, BoardType boardType){
+  //  전체 게시글 인기순(북마크순) 목록 불러오기
+  public Page<Board> getListWithBkMark(PageRequestDTO pageRequestDTO){  // ALL>BEST
+    Pageable pageable = PageRequest.of(
+        pageRequestDTO.getPage() - 1,
+        pageRequestDTO.getSize(),
+        Sort.by("id").descending());
+
+    Page<Board> result = boardRepository.findOrderByBkMark(pageable);
+    log.info("서비스 - 전체>인기글 조회 getListWithBkMark : {}", result);
+    return result;
+  }
+
+  // 카테고리 게시글 최신순 목록 불러오기
+  public Page<Board> getListWithCategory(PageRequestDTO pageRequestDTO, BoardType boardType){  // INFO>NEW, REVIEW>NEW
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
         pageRequestDTO.getSize(),
@@ -60,14 +72,14 @@ public class BoardService {
     return result;
   }
 
-  // 게시글 인기순(북마크순) 목록 불러오기
-  public Page<Board> getListWithBkMark(PageRequestDTO pageRequestDTO){
+  // 카테고리 게시글 인기순 목록 불러오기
+  public Page<Board> getCategoryListWithBkMark(PageRequestDTO pageRequestDTO, BoardType boardType){
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
         pageRequestDTO.getSize(),
         Sort.by("id").descending());
 
-    Page<Board> result = boardRepository.findOrderByBkMark(pageable);
+    Page<Board> result = boardRepository.findOrderByBoardType(boardType, pageable);
     return result;
   }
 
@@ -75,12 +87,7 @@ public class BoardService {
   public BoardDTO getOneBoard(Long id) {
     Board board = boardRepository.findById(id).orElse(null);
     board.setViewCount(board.getViewCount() + 1);
-
-    //BoardDTO 의 memberDTO 를 외부(getOneBoard)에서 변환하는 경우
-//    Member member = board.getMember(); // Board 에서 Member 엔티티만 꺼내기
-//    MemberDTO memberDTO = new MemberDTO(member); // Member entity -> MemberDTO 로 변환
-    BoardDTO boardDTO = new BoardDTO(board); // Board entity -> BoardDTO 변환
-//    boardDTO.setMemberDTO(memberDTO); // BoardDTO 에 부족한 MemberDTO 를 채우기
+    BoardDTO boardDTO = new BoardDTO(board);
 
     return boardDTO;
   }

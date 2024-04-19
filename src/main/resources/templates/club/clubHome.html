@@ -1,28 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
-        <div class="untree_co-section bg-light">
-            <div class="container">
-                <div class="col-12 mb-5 aos-init aos-animate" data-aos="fade-up">
-                    <div class="row">
-                        <select class="custom-select" id="selectorProgramType">
-                            <option value="">분류</option>
-                            <option th:each="programType: ${programType}" th:value="${programType.name()}" th:text="${programType.value}"></option>
-                        </select>
-                        <button type="button" class="btn btn-warning" id="btnAll">최신순 </button>
-                        <button type="button" class="btn btn-warning" id="btnBest">인기순 </button>
-                        <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/clubs/add}'|">글 작성</button>
+        <!-- 커뮤니티 wrapper -->
+        <div id="community-wrapper" class="mt-5">
+
+            <!-- 전체 게시글 컨테이너 -->
+            <div id="eventBoardListContainer" class="container">
+
+                <!--  모임 필터, 작성 버튼  -->
+                <select class="custom-select" id="selectorProgramType">
+                    <option value="">분류</option>
+                    <option th:each="programType: ${programType}"
+                            th:value="${programType.name()}"
+                            th:text="${programType.value}"></option>
+                </select>
+                <button type="button" class="btn btn-warning" id="btnAll">최신순</button>
+                <button type="button" class="btn btn-warning" id="btnBest">인기순</button>
+                <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/clubs/add}'|">글 작성</button>
+
+                <!--  모임(카드)  -->
+                <div class="container mb-5">
+
+                    <div class="row" id="CardContainer">
+
+                        <!-- NOTE 동적으로 추가 -->
+
                     </div>
-                    <div class="row">
-                        <div id="eventListContainer">
-                            <!--  NOTE 동적으로 추가  -->
-                        </div>
-                        <div class="custom-pagination">
-                            <!--  NOTE 동적으로 추가  -->
-                        </div>
+                    <div class="custom-pagination">
+
+                        <!--  NOTE 동적으로 추가  -->
+
                     </div>
+
                 </div>
             </div>
         </div>
@@ -31,9 +44,67 @@
             $(document).ready(function () {
                 let currPage = 1;
 
-                // 페이지 로딩 후 실행
-                getAllList("ALL", 1);
+                // 모임 카드 호출
+                getCardList("ALL", 1);
 
+                <!--  TODO 여기서부터 재수정  -->
+                // 모임 카드 불러오기
+                function getCardList(sort, page) {
+                    $.ajax({
+                        type: "get",
+                        url: "/ajaxBoards/best",
+                        success: function (result) {
+                            console.log("인기글 목록 요청 성공!");
+                            console.log(result);
+
+                            changeBestList(result);
+                            // 인기글 목록 화면에 띄우기
+                        },
+                        error: function (e) {
+                            console.log("인기글 목록 요청 실패....");
+                            console.log(e);
+                        },
+                    });
+                }
+
+                function changeBestList(list) {
+
+                    var html = '';
+                    for (let i = 0; i < list.length; i++) {
+
+                        html += '<div class="col-3 ml-1 mr-1 bestBoardListContainer">';
+                        html += '<div hidden="hidden" class="boardId">' + list[i].id+ '</div>';
+                        html += '<div>';
+                        html += '<img src="' + list[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid w-100" style="" alt="...">';
+                        html += '<div class="card-body">';
+                        html += '<div class="row mb-2">';
+                        // 제목 길이가 11자 이상이면 11자로 자르기
+                        var title = list[i].title;
+                        if (title.length > 10) {
+                            title = title.substring(0, 10) + '...';
+                        }
+                        html += '<div class="col-auto card-title fs-4">' + title + '</div>';
+                        html += '<div class="col-2 badge text-bg-secondary fs-6 d-flex justify-content-center align-items-center">' + getBoardType(list[i].boardType) + '</div>';
+                        html += '</div>';
+                        var content = list[i].content;
+                        if (content.length > 30) {
+                            content = content.substring(0, 30) + '...';
+                        }
+                        html += '<p class="card-text">' + content + '</p>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                    }
+                    $('#BestListContainer').html(html);
+                }
+
+                // 인기글 클릭시 해당 게시글로 이동
+                $(document).on("click", ".bestBoardListContainer", function () {
+                    var boardId = $(this).find(".boardId").text();
+                    location.href = "/boards/" + boardId;
+                });
+
+                // 게시글 목록 불러오기
                 function getAllList(sort, page) {
                     console.log("getAllList! page: " + page);
                     currPage = page;

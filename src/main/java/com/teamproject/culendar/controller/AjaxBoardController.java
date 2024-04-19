@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -28,13 +29,15 @@ public class AjaxBoardController {
   private final BoardService boardService;
 
   // 게시글 전체 목록 (커뮤니티)
-  @GetMapping("/list/{sort}/{page}")
-  public ResponseEntity<PageResponseDTO> list(@PathVariable("sort") String sort, @PathVariable("page") int page){
-    log.info("**** AjaxBoardController GET /ajaxBoards/list/{} : ", page);
+  @GetMapping("/list/{sort}/{align}/{page}")
+  public ResponseEntity<PageResponseDTO> list(@PathVariable("sort") String sort, @PathVariable("align") String align, @PathVariable("page") int page){
+    log.info("**** AjaxBoardController GET /ajaxBoards/list/{}/{}/{} 요청", sort, align, page);
     PageRequestDTO pageRequestDTO = new PageRequestDTO(page, 10);
-      Page<Board> result = null;
-    if (sort.equals("ALL")){
-      result = boardService.getListWithPaging(pageRequestDTO);  // 페이징
+
+    Page<Board> result = null;
+
+/*      if (sort.equals("ALL")){
+      result = boardService.getListWithPaging(pageRequestDTO);
     }
     else if(sort.equals("INFO")){
       result = boardService.getListWithCategory(pageRequestDTO, BoardType.INFO);
@@ -44,6 +47,27 @@ public class AjaxBoardController {
     }
     else if(sort.equals("BEST")){
       result = boardService.getListWithBkMark(pageRequestDTO);
+    }*/
+
+
+    if (sort.equals("ALL")){
+      if(align.equals("BEST")){
+        result = boardService.getListWithBkMark(pageRequestDTO);  // 전체>인기글
+        log.info("컨트롤러 - 전체>인기글 조회 : {}", result.getContent());
+      }
+      result = boardService.getListWithPaging(pageRequestDTO);  // 페이지 첫 로드 -- 전체>최신글
+    }
+    else if(sort.equals("INFO")){
+      if(align.equals("BEST")){
+        result = boardService.getCategoryListWithBkMark(pageRequestDTO, BoardType.INFO);  // 정보>인기글
+      }
+      result = boardService.getListWithCategory(pageRequestDTO, BoardType.INFO);  // 정보 카테고리 첫 로드 -- 정보>최신글
+    }
+    else if(sort.equals("REVIEW")){
+      if(align.equals("BEST")){
+        result = boardService.getCategoryListWithBkMark(pageRequestDTO, BoardType.REVIEW);  // 후기>인기글
+      }
+      result = boardService.getListWithCategory(pageRequestDTO, BoardType.REVIEW);  // 후기 카테고리 첫 로드 -- 후기>최신글
     }
 
     List<Board> contents = result.getContent();  // Board 주소(정보)들

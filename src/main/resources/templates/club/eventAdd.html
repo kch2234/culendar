@@ -94,7 +94,7 @@
 
                     <div class="col-12 input-group input-group-lg">
 
-                        <span class="input-group-text">성별</span>
+                        <span class="input-group-text dropdown-toggle">성별</span>
                         <select class="form-control" th:field="*{filterGender}" id="filterGender">
                             <option th:each="filterGender: ${filterGender}"
                                     th:value="${filterGender.name()}"
