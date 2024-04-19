@@ -47,10 +47,8 @@
             </div>
 
             <!-- 게시글 제목, 수정 / 삭제 버튼, 북마크 버튼 -->
-            <div class="row mt-5 text-center align-items-center">
-                <div class="col-3"></div>
-                <div class="col">
-                    <h1 th:text="${board.title}"></h1>
+            <div class="row mt-5 text-center d-flex justify-content-center align-items-center">
+                <div class="col-9 fs-3 overflow-auto d-flex justify-content-center align-items-center" th:text="${board.title}">
                 </div>
                 <!-- 회원 일 경우에만 북마크 또는 수정, 삭제 버튼 보이기 -->
                 <th:block sec:authorize="isAuthenticated()">
@@ -180,7 +178,9 @@
                     <!-- 프로필 이미지 -->
                     <div class="row mb-3 justify-content-center">
                         <div class="col-4">
-                            <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid rounded">
+<!--                            <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid rounded">-->
+                            <i class="fa-solid fa-circle-user fa-7x d-flex justify-content-center align-items-center"></i>
+
                         </div>
                     </div>
 

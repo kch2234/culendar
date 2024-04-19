@@ -37,30 +37,31 @@ public class LoginController {
     private final InterestService interestService;
 
     @GetMapping("/signup")
-    public String signupForm(@ModelAttribute MemberForm memberForm, @ModelAttribute InterestForm interestForm, Model model) {
+    public String signupForm(@ModelAttribute MemberForm memberForm) {
         log.info("********** HomeController GET /signup ");
         // 회원가입 페이지에서 사용할 Role enum 값 전달
-        /*model.addAttribute("roleType", Role.values());
-        model.addAttribute("genderType", Gender.values());
-        model.addAttribute("programType", ProgramType.values());
-        model.addAttribute("interestForm", interestForm);*/
+
         return "member/signup";
     }
 
     @PostMapping("/signup")
-    public String signupPro(InterestForm interestForm, MemberForm memberForm) {
+    public String signupPro(MemberForm memberForm) {
         log.info("********** HomeController POST /signup - memberForm : {}", memberForm);
-        log.info("********** HomeController POST /signup - interestList : {}", interestForm.getInterestList());
-        // 회원가입
-        Long savedId = memberService.saveMember(memberForm); // TODO: savedId 활용 -> 홈에서 모달이나 alert 띄울때 필요하면 사용
-        // 회원가입한 회원 조회
-        MemberDTO memberDTO = memberService.findById(savedId);
-        // 회원가입한 회원의 관심분야 저장
-        for (ProgramType programType : interestForm.getInterestList()) {
-            InterestForm interest = new InterestForm(programType);
-            interest.setMember(memberDTO.toEntity());
-            interestService.saveInterest(interest);
+
+        log.info("********** HomeController POST /signup - member Birth : {}", memberForm.getBirth());
+
+        Long savedMember = memberService.saveMember(memberForm);// TODO: savedId 활용 -> 홈에서 모달이나 alert 띄울때 필요하면 사용
+// 회원가입한 회원의 관심분야 저장
+        MemberDTO byId = memberService.findById(savedMember);
+        List<ProgramType> interestType = memberForm.getInterestType();
+        if (interestType != null) {
+            for (ProgramType programType : interestType) {
+                InterestForm interestForm = new InterestForm(programType);
+                interestForm.setMember(byId.toEntity());
+                interestService.saveInterest(interestForm);
+            }
         }
+
         return "redirect:/";
     }
 
@@ -74,5 +75,11 @@ public class LoginController {
     public Location[] locations() {
         List<Location> programTypes = new ArrayList<>();
         return Location.values();
+    }
+
+    @ModelAttribute("interestType") // 작품 종류 데이터를 뷰에 전달
+    public ProgramType[] programTypes() {
+        List<ProgramType> programTypes = new ArrayList<>();
+        return ProgramType.values();
     }
 }

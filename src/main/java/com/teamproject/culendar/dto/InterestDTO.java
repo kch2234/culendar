@@ -19,4 +19,12 @@ public class InterestDTO {
         this.member = memberDTO.toEntity();
         this.interest = interest.getInterest();
     }
+
+    // DTO -> Entity
+    public Interest toEntity() {
+        Interest entity = new Interest();
+        entity.setMember(member);
+        entity.setInterest(interest);
+        return entity;
+    }
 }
