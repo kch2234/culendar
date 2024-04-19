@@ -19,12 +19,12 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
   Page<Board> findByBoardType(BoardType boardType, Pageable pageable);
 
   // 전체 인기글 조회
-  @Query("SELECT b " +
-      "FROM Board b " +
-      "LEFT JOIN BoardBkmark bb ON b.id = bb.board.id " +
-      "GROUP BY b " +
-      "ORDER BY COUNT(bb) DESC")
-  Page<Board> findOrderByBkMark(Pageable pageable);
+    @Query("SELECT b " +
+        "FROM Board b " +
+        "LEFT JOIN BoardBkmark bb ON b.id = bb.board.id " +
+        "GROUP BY b " +
+        "ORDER BY COUNT(bb) DESC")
+    Page<Board> findOrderByBkMark(Pageable pageable);
 
   // 카테고리별 인기글 조회
   @Query("SELECT b " +
