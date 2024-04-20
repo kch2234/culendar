@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
       "WHERE b.boardType = :boardType " +
       "GROUP BY b " +
       "ORDER BY COUNT(bb) DESC")
-  Page<Board> findOrderByBoardType(BoardType boardType, Pageable pageable);
+  Page<Board> findOrderByBoardType(@Param("boardType") BoardType boardType, Pageable pageable);
 
   // 최근 일주일 동안 최고 인기글 4개 조회
     @Query("SELECT b " +

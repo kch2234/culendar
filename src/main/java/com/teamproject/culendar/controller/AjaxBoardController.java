@@ -53,8 +53,6 @@ public class AjaxBoardController {
     if (sort.equals("ALL")){
       if(align.equals("BEST")){
         result = boardService.getListWithBkMark(pageRequestDTO);
-        log.info("**** TEST AjaxBoardController GET / sort : {}, align : {}, page : {}", sort, align, page);
-        log.info("**** AjaxBoardController GET / result : {}", result);
       } else {
           result = boardService.getListWithPaging(pageRequestDTO);  // 페이지 첫 로드 -- 전체>최신글
       }

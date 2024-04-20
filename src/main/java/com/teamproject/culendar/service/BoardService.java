@@ -38,7 +38,8 @@ public class BoardService {
   }
 
   // 전체 게시글 최신순 목록 불러오기
-  public Page<Board> getListWithPaging(PageRequestDTO pageRequestDTO) {  // ALL>NEW
+  public Page<Board> getListWithPaging(PageRequestDTO pageRequestDTO) {
+    log.info("**** BoardService getListWithPaging - /ALL/NEW/1");
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
         pageRequestDTO.getSize(),
@@ -50,19 +51,20 @@ public class BoardService {
   }
 
   //  전체 게시글 인기순(북마크순) 목록 불러오기
-  public Page<Board> getListWithBkMark(PageRequestDTO pageRequestDTO){  // ALL>BEST
+  public Page<Board> getListWithBkMark(PageRequestDTO pageRequestDTO){
+    log.info("**** BoardService getListWithBkMark - /ALL/BEST/1");
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
         pageRequestDTO.getSize(),
         Sort.by("id").descending());
 
     Page<Board> result = boardRepository.findOrderByBkMark(pageable);
-    log.info("서비스 - 전체>인기글 조회 getListWithBkMark : {}", result);
     return result;
   }
 
   // 카테고리 게시글 최신순 목록 불러오기
-  public Page<Board> getListWithCategory(PageRequestDTO pageRequestDTO, BoardType boardType){  // INFO>NEW, REVIEW>NEW
+  public Page<Board> getListWithCategory(PageRequestDTO pageRequestDTO, BoardType boardType){
+    log.info("**** BoardService getListWithCategory - /{}/NEW/1", boardType);
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
         pageRequestDTO.getSize(),
@@ -74,6 +76,7 @@ public class BoardService {
 
   // 카테고리 게시글 인기순 목록 불러오기
   public Page<Board> getCategoryListWithBkMark(PageRequestDTO pageRequestDTO, BoardType boardType){
+    log.info("**** BoardService getCategoryListWithBkMark - /{}/BEST/1", boardType);
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
         pageRequestDTO.getSize(),

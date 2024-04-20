@@ -98,7 +98,7 @@
 
                 // 게시글 목록 불러오기
                 function getAllList(sort, align, page) {
-                    console.log("getAllList --> " + sort +  "/" + align +  "/" + page);
+                    console.log("getAllList /" + sort +  "/" + align +  "/" + page + " 요청");
                     currPage = page;
                     $.ajax({
                         type: "get",
@@ -171,17 +171,43 @@
                     getAllList(sort, pageNum);
                 });
 
-                $("#btnBest").on("click", function () {
-                    getAllList("ALL", "BEST", 1);
-                });
+                let currentSort = "ALL";
+                let currentAlign = "NEW";
+
+                function handleButtonClick(sort, align) {
+                	getAllList(sort, align, 1);
+                }
+
                 $("#btnAll").on("click", function () {
-                    getAllList("ALL", "NEW", 1);
+                    console.log("btnAll 클릭");
+                    currentSort = "ALL";
+                    console.log('handleButtonClick ALL/' + currentAlign + '/1 요청');
+                	handleButtonClick("ALL", currentAlign)
                 });
                 $("#btnInfo").on("click", function () {
-                    getAllList("INFO", "NEW", 1);
+                    console.log("btnInfo 클릭");
+                    currentSort = "INFO";
+                    console.log('handleButtonClick INFO/' + currentAlign + '/1 요청');
+                	handleButtonClick("INFO", currentAlign)
                 });
                 $("#btnReview").on("click", function () {
-                    getAllList("REVIEW", "NEW", 1);
+                    console.log("btnReview 클릭");
+                    currentSort = "REVIEW";
+                    console.log('handleButtonClick REVIEW/' + currentAlign + '/1 요청');
+                	handleButtonClick("REVIEW", currentAlign)
+                });
+
+                $("#btnNew").on("click", function () {
+                    console.log("btnNew 클릭");
+                    currentAlign = "NEW";
+                    console.log('handleButtonClick /' + currentSort + '/NEW/1 요청');
+                	handleButtonClick(currentSort, "NEW")
+                });
+                $("#btnBest").on("click", function () {
+                    console.log("btnBest 클릭");
+                    currentAlign = "BEST";
+                    console.log('handleButtonClick /' + currentSort + '/BEST/1 요청');
+                	handleButtonClick(currentSort, "BEST")
                 });
 
                 // 각종 함수들
