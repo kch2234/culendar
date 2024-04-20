@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.beans.PropertyEditorSupport;
 import java.util.ArrayList;
@@ -45,12 +46,13 @@ public class LoginController {
     }
 
     @PostMapping("/signup")
-    public String signupPro(MemberForm memberForm) {
+    public String signupPro(MemberForm memberForm, RedirectAttributes rttr) {
         log.info("********** HomeController POST /signup - memberForm : {}", memberForm);
 
         log.info("********** HomeController POST /signup - member Birth : {}", memberForm.getBirth());
 
-        Long savedMember = memberService.saveMember(memberForm);// TODO: savedId 활용 -> 홈에서 모달이나 alert 띄울때 필요하면 사용
+        Long savedMember = memberService.saveMember(memberForm);
+        rttr.addFlashAttribute("result", true);
 // 회원가입한 회원의 관심분야 저장
         MemberDTO byId = memberService.findById(savedMember);
         List<ProgramType> interestType = memberForm.getInterestType();
