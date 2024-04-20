@@ -99,6 +99,7 @@ public class BoardController {
     // 게시글 삭제
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable("id") Long id) {
+        log.info("게시글 삭제");
         log.info("**** BoardController POST /boards/:id/delete - id : {}", id);
         boardService.deleteOneBoard(id);
         return "redirect:/boards/list";
