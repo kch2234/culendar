@@ -107,7 +107,7 @@
                     <!-- 회원일 경우 문장형 후기 작성 버튼 및 좋아요, 후기, 체크박스 버튼 -->
                     <th:block th:if="${member != null}">
                         <div class="row" style="height: 10%">
-                            <div class="col-4">
+                            <div class="col-4 d-flex justify-content-start align-items-center">
                                 <!--   회원 문장형 평가 위치-->
                                 <button class="btn btn-outline-secondary" id="addRating" type="button" data-bs-toggle="modal" data-bs-target="#addRating-modal"></button>
                             </div>
@@ -116,6 +116,8 @@
                             <div class="col-3 p-0">
                                 <div class="d-flex justify-content-end align-items-center fs-5 w-100 h-100">내후기</div>
                             </div>
+
+                            <!-- TODO 내 후기 버튼 -->
                             <div class="col-2 d-flex justify-content-center align-items-center">
                                 <button class="fa-regular fa-circle-check fa-2x"></button>
                             </div>
@@ -167,6 +169,8 @@
                 checkBkmark();
                 // 인기 게시글 불러오기
                 getBestReviewList();
+                // 해당 작품 후기 작성 여부 확인 함수
+                getThisProgramReview();
 
                 // ********** 클릭시 이벤트들 **********
 
@@ -466,6 +470,33 @@
                         return '후기';
                     }
                 }
+
+                // 해당 작품 후기 작성 여부 확인 함수
+                function getThisProgramReview() {
+
+                    if (memberId !== null) {
+
+                        console.log("getThisProgramReview");
+
+                        $.ajax({
+                            url: '/boards/findReview/' + memberId + '/' + programId,
+                            type: 'GET',
+                            success: function (data) {
+                                console.log(data);
+                                if (data === true) {
+                                    console.log(data);
+                                    $('#addRating').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
+                                }
+
+                                if (data === false) {
+                                    console.log(data);
+                                    $('#addRating').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
+                                }
+                            }
+                        });
+                    }
+                }
+
 
                 var locationX = [[${program.getLocationX()}]];
                 var locationY = [[${program.getLocationY()}]];

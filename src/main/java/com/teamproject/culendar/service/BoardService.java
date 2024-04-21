@@ -115,5 +115,18 @@ public class BoardService {
         return result;
     }
 
+    // 특정 작품에 대해 작성된 회원의 리뷰글 조회
+    public Boolean findProgramReviewByMemberId(Long memberId, Long programId) {
+        Board result = boardRepository.findProgramReviewByMemberId(memberId, programId);
+
+        if (result == null) {
+            log.info("**** BoardService findProgramReviewByMemberId - result : null");
+            return false;
+        } else {
+            log.info("**** BoardService findProgramReviewByMemberId - result : {}", result);
+            return true;
+        }
+    }
+
 
 }
