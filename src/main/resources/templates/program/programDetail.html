@@ -5,6 +5,54 @@
 
     <th:block th:fragment="content">
 
+        <!-- 내후기 등록 모달 -->
+        <div class="modal fade" id="addReview-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">등록된 후기가 없습니다.</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <span>후기를 등록 하시겠습니까?</span>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
+                        <!-- TODO 등록 작품 연동 -->
+                        <form action="" th:action="@{/boards/add}" method="get">
+                            <button type="submit" class="btn btn-secondary">등록</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 내후기 수정 모달 -->
+        <div class="modal fade" id="modifyReview-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">등록된 후기가 있습니다.</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <span>후기를 수정 하시겠습니까?</span>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
+                        <!-- TODO 수정 연동 -->
+                        <form action="" th:action="@{/boards/add}" method="get">
+                            <button type="submit" class="btn btn-secondary">수정</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!--        일정 추가 모달-->
         <div class="modal" id="addMyCalendar-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -112,14 +160,13 @@
                                 <button class="btn btn-outline-secondary" id="addRating" type="button" data-bs-toggle="modal" data-bs-target="#addRating-modal"></button>
                             </div>
                             <div class="col"></div>
-                            <!-- TODO : 좋아요, 후기, 체크박스 버튼 -->
                             <div class="col-3 p-0">
                                 <div class="d-flex justify-content-end align-items-center fs-5 w-100 h-100">내후기</div>
                             </div>
 
                             <!-- TODO 내 후기 버튼 -->
                             <div class="col-2 d-flex justify-content-center align-items-center">
-                                <button class="fa-regular fa-circle-check fa-2x"></button>
+                                <button type="button" class="fa-regular fa-circle-check fa-2x" id="myReview" data-bs-toggle="modal" data-bs-target="#addReview-modal"></button>
                             </div>
 
                         </div>
@@ -134,7 +181,7 @@
                 </div> <!-- end of 작품 정보 -->
 
                 <!-- 인기 후기, 인기 일정 모임 -->
-                <div>
+                <div class="mt-5">
                     <!-- 인기 후기 -->
                     <div class="container mb-5">
 
@@ -169,6 +216,7 @@
                 checkBkmark();
                 // 인기 게시글 불러오기
                 getBestReviewList();
+
                 // 해당 작품 후기 작성 여부 확인 함수
                 getThisProgramReview();
 
@@ -474,6 +522,12 @@
                 // 해당 작품 후기 작성 여부 확인 함수
                 function getThisProgramReview() {
 
+                    console.log("후기 여부 확인 함수")
+
+                    // 회원 아이디 Long 출력
+                    console.log(memberId);
+
+
                     if (memberId !== null) {
 
                         console.log("getThisProgramReview");
@@ -485,12 +539,17 @@
                                 console.log(data);
                                 if (data === true) {
                                     console.log(data);
-                                    $('#addRating').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
+                                    $('#myReview').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
+                                    // data-bs-target 변경
+                                    $('#myReview').attr('data-bs-target', '#modifyReview-modal');
+
                                 }
 
                                 if (data === false) {
                                     console.log(data);
-                                    $('#addRating').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
+                                    $('#myReview').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
+                                    // data-bs-target 변경
+                                    $('#myReview').attr('data-bs-target', '#addReview-modal');
                                 }
                             }
                         });

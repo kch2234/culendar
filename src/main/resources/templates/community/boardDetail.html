@@ -159,17 +159,14 @@
                                 <!--   회원 문장형 평가 위치-->
                                 <button class="btn btn-outline-secondary" id="addRating" type="button" data-bs-toggle="modal" data-bs-target="#addRating-modal"></button>
                             </div>
+                            <div class="col"></div>
 
                             <!-- TODO : 좋아요, 후기, 체크박스 버튼 -->
-                            <div class="col-auto">
-                                <div class="row">
-                                    <div class="col-auto p-0">
-                                        <div class="d-flex justify-content-end align-items-center fs-5 w-100 h-100">내후기</div>
-                                    </div>
-                                    <div class="col-2 d-flex justify-content-center align-items-center">
-                                        <button class="fa-regular fa-circle-check fa-2x"></button>
-                                    </div>
-                                </div>
+                            <div class="col-3 p-0">
+                                <div class="d-flex justify-content-end align-items-center fs-5 w-100 h-100">내후기</div>
+                            </div>
+                            <div class="col-2 d-flex justify-content-center align-items-center">
+                                <button class="fa-regular fa-circle-check fa-2x" id="myReview"></button>
                             </div>
 
                         </th:block>
@@ -363,6 +360,9 @@
                 getCommentList(1);  // 댓글 목록 요청 호출!
                 checkBoardBkmark(); // 게시글 북마크 체크
                 checkProgramBkmark(); // 작품 북마크 체크
+
+                // 내 후기 여부 확인
+                getThisProgramReview();
 
                 // ********** 클릭시 이벤트들 **********
 
@@ -678,6 +678,38 @@
                             }
                         }
                     });
+                }
+
+                // 해당 작품 후기 작성 여부 확인 함수
+                function getThisProgramReview() {
+
+                    console.log("후기 여부 확인 함수")
+
+                    // 회원 아이디 Long 출력
+                    console.log(memberId);
+
+
+                    if (memberId !== null) {
+
+                        console.log("getThisProgramReview");
+
+                        $.ajax({
+                            url: '/boards/findReview/' + memberId + '/' + programId,
+                            type: 'GET',
+                            success: function (data) {
+                                console.log(data);
+                                if (data === true) {
+                                    console.log(data);
+                                    $('#myReview').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
+                                }
+
+                                if (data === false) {
+                                    console.log(data);
+                                    $('#myReview').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
+                                }
+                            }
+                        });
+                    }
                 }
 
 
