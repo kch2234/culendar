@@ -125,6 +125,15 @@ public class BoardController {
         return "redirect:/boards/{id}";
     }
 
+    @GetMapping("/addReview/{programId}")
+    public String addReview(RedirectAttributes rttr, @PathVariable("programId") Long programId) {
+        log.info("***** BoardController GET /boards/addReview");
+
+        rttr.addFlashAttribute("reviewProgramId", programId);
+
+        return "redirect:/boards/add";
+    }
+
     // programType 보내기
     @ModelAttribute("boardTypes")
     public BoardType[] boardType() {

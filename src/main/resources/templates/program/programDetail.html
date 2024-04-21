@@ -6,7 +6,8 @@
     <th:block th:fragment="content">
 
         <!-- 내후기 등록 모달 -->
-        <div class="modal fade" id="addReview-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addReview-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -21,16 +22,15 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
                         <!-- TODO 등록 작품 연동 -->
-                        <form action="" th:action="@{/boards/add}" method="get">
-                            <button type="submit" class="btn btn-secondary">등록</button>
-                        </form>
+                        <button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${program.getId})}'|">등록</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- 내후기 수정 모달 -->
-        <div class="modal fade" id="modifyReview-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modifyReview-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -54,7 +54,8 @@
         </div>
 
         <!--        일정 추가 모달-->
-        <div class="modal" id="addMyCalendar-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal" id="addMyCalendar-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -111,7 +112,8 @@
                     <div class="d-flex flex-row" style="height: 10%">
                         <!-- 평균 문장형 평가 -->
                         <div class="col-4">
-                            <div class="badge text-bg-secondary h-100 fs-4 d-flex justify-content-center align-items-center" id="AvgRating">
+                            <div class="badge text-bg-secondary h-100 fs-4 d-flex justify-content-center align-items-center"
+                                 id="AvgRating">
                                 <!--    평균 문장형 평가 위치-->
                             </div>
                         </div>
@@ -124,7 +126,8 @@
                                     <button id="bkMarkBtn" class="fa-solid fa-bookmark fa-2x"></button>
                                 </div>
                                 <div class="col p-0 d-flex justify-content-center align-items-center">
-                                    <button class="fa-regular fa-clipboard fa-2x" type="button" data-bs-toggle="modal" data-bs-target="#addMyCalendar-modal"></button>
+                                    <button class="fa-regular fa-clipboard fa-2x" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#addMyCalendar-modal"></button>
 
                                 </div>
                             </th:block>
@@ -139,7 +142,8 @@
                     <!-- 작품 제목 -->
                     <div class="h-25">
                         <div class="col-12 h-100" th:if="${program != null}">
-                            <div class="fs-2 d-flex justify-content-start align-items-center h-100" th:text="${program.getTitle()}"></div>
+                            <div class="fs-2 d-flex justify-content-start align-items-center h-100"
+                                 th:text="${program.getTitle()}"></div>
                         </div>
                     </div>
 
@@ -157,7 +161,8 @@
                         <div class="row" style="height: 10%">
                             <div class="col-4 d-flex justify-content-start align-items-center">
                                 <!--   회원 문장형 평가 위치-->
-                                <button class="btn btn-outline-secondary" id="addRating" type="button" data-bs-toggle="modal" data-bs-target="#addRating-modal"></button>
+                                <button class="btn btn-outline-secondary" id="addRating" type="button"
+                                        data-bs-toggle="modal" data-bs-target="#addRating-modal"></button>
                             </div>
                             <div class="col"></div>
                             <div class="col-3 p-0">
@@ -166,7 +171,8 @@
 
                             <!-- TODO 내 후기 버튼 -->
                             <div class="col-2 d-flex justify-content-center align-items-center">
-                                <button type="button" class="fa-regular fa-circle-check fa-2x" id="myReview" data-bs-toggle="modal" data-bs-target="#addReview-modal"></button>
+                                <button type="button" class="fa-regular fa-circle-check fa-2x" id="myReview"
+                                        data-bs-toggle="modal" data-bs-target="#addReview-modal"></button>
                             </div>
 
                         </div>
@@ -174,7 +180,9 @@
                     <!-- TODO 지도 API -->
                     <div class style="height: 40%">
                         <div class="col-12 h-100">
-                            <div class="badge text-bg-secondary w-100 h-100" id="map" style="width:100%;height:100%;">지도</div>
+                            <div class="badge text-bg-secondary w-100 h-100" id="map" style="width:100%;height:100%;">
+                                지도
+                            </div>
                         </div>
 
                     </div>
@@ -479,7 +487,7 @@
                     for (let i = 0; i < list.length; i++) {
 
                         html += '<div class="col-3 ml-1 mr-1 bestReviewListContainer">';
-                        html += '<div hidden="hidden" class="boardId">' + list[i].id+ '</div>';
+                        html += '<div hidden="hidden" class="boardId">' + list[i].id + '</div>';
                         html += '<div>';
                         html += '<img src="' + list[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid" style="" alt="...">';
                         html += '<div class="card-body">';
@@ -568,7 +576,7 @@
                 map.setCenter(new kakao.maps.LatLng(locationY, locationX)); // 지도의 중심을 이동
                 map.setDraggable(false); // 지도를 드래그 불가능하게 설정
                 map.setZoomable(false); // 지도를 확대 축소 불가능하게 설정
-                var markerPosition  = new kakao.maps.LatLng(locationY, locationX);
+                var markerPosition = new kakao.maps.LatLng(locationY, locationX);
                 var marker = new kakao.maps.Marker({
                     position: markerPosition
                 });
