@@ -1,6 +1,5 @@
 package com.teamproject.culendar.service;
 
-import com.teamproject.culendar.domain.calendar.CalendarContent;
 import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.program.Program;
@@ -18,7 +17,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +26,7 @@ import java.util.stream.Collectors;
 public class ProgramService {
 
     private final ProgramRepository programRepository;
+    private final SearchService searchService;
 
     // 작품 하나 DB에 저장
     public Long save(ProgramDTO programDTO) {
@@ -294,13 +293,19 @@ public class ProgramService {
         return programDTOList;
     }
 
-    // 작품 리스트 가져오기
-    public List<ProgramDTO> searchProgramList() {
-        List<Program> programList = programRepository.findAll();
-        List<ProgramDTO> programDTOList = programList.stream()
+    // programType, location을 받아서 해당하는 인기 작품들 리스트를 반환
+    public List<ProgramDTO> getBestProgramLocList(String programType, String locationType) {
+        log.info("******** ProgramService - getBestProgramLocList - programType: {}, location: {}", programType, locationType);
+        ProgramType programTypeENUM = ProgramType.valueOf(programType);
+        Location locationENUM = Location.valueOf(locationType);
+        List<Program> findPrograms = programRepository.findBestProgramsByProgramTypeAndLocation(programTypeENUM, locationENUM);
+        log.info("******** ProgramService - getBestProgramLocList - findPrograms: {},{}", findPrograms.get(0).getProgramType(), findPrograms.get(0).getLocation());
+        if (findPrograms.size() > 4) {
+            findPrograms = findPrograms.subList(0, 4);
+        }
+        List<ProgramDTO> programDTOList = findPrograms.stream()
                 .map(ProgramDTO::new)
                 .collect(Collectors.toList());
         return programDTOList;
     }
-
 }

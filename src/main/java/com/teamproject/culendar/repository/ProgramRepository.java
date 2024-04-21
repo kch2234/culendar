@@ -6,6 +6,7 @@ import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.program.Program;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,4 +35,13 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
             "ORDER BY COUNT(pb) DESC")
     List<Program> findProgramsOrderByBkMarkCount();
 
+    // 사용자 위치 기반으로 추천하는 작품 리스트
+    @Query("SELECT p FROM Program p " +
+            "LEFT JOIN ProgramBkmark pb ON p.id = pb.program.id " +
+            "WHERE (:programType IS NULL OR p.programType = :programType) " +
+            "AND (:locationType IS NULL OR p.location = :locationType) " +
+            "AND pb.createDate >= CURRENT_DATE - 7 " +
+            "GROUP BY p " +
+            "ORDER BY COUNT(pb) DESC")
+    List<Program> findBestProgramsByProgramTypeAndLocation(ProgramType programType, Location locationType);
 }

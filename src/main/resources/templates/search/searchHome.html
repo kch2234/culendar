@@ -3,7 +3,6 @@
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
-
         <!--                분류 모달-->
         <div class="modal" id="type-modal">
             <div class="modal-dialog">
@@ -13,14 +12,19 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <button type="button" th:each="pType : ${programType}" class="btn btn-primary pTypeBtn"
-                                th:text="${pType.value}" th:if="${pType.value !='기타'}"
-                                th:data-type="${pType.name()}"></button>
+                        <div class="row">
+                            <div class="col-auto mt-2 mb-2" th:each="pType : ${programType}">
+                                <button type="button" class="btn btn-outline-secondary pTypeBtn"
+                                        th:text="${pType.value}" th:if="${pType.value !='기타'}"
+                                        th:data-type="${pType.name()}"></button>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
             </div>
         </div>
+
         <!--                지역 모달-->
         <div class="modal" id="location-modal">
             <div class="modal-dialog">
@@ -29,11 +33,15 @@
                         <h4 class="modal-title">분류 선택</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body">
-                        <button type="button" th:each="lType : ${locationType}" class="btn btn-primary lTypeBtn"
-                                th:text="${lType.value}" th:if="${lType.value !='기타'}"
-                                th:data-loc="${lType.name()}"></button>
+                    <div class="modal-body container">
 
+                        <div class="row">
+                            <div class="col-auto mt-2 mb-2" th:each="lType : ${locationType}">
+                                <button type="button" class=" btn btn-outline-secondary lTypeBtn"
+                                        th:text="${lType.value}" th:if="${lType.value !='기타'}"
+                                        th:data-loc="${lType.name()}"></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -42,9 +50,10 @@
         <!-- 메인 컨테이너 영역 -->
         <div class="w-75 container m-auto">
             <div class="row">
-                <!-- 달력 영역 -->
+                <!-- 지도 영역 -->
                 <div class="col-9">
-                    <div id="map" style="width:100%;height:650px;"></div>
+                    <div id="map" style="width:100%;height:450px;"></div>
+                    <div id="setMap" class="btn btn-primary">현재 위치로 이동</div>
                 </div>
                 <!-- TODO 사이드 검색창 -->
                 <div class="col ml-2 h-100" id="side-search">
@@ -98,160 +107,408 @@
                 </div>
             </span>  &lt;!&ndash;  sideInfo-box  &ndash;&gt;
         </div>  &lt;!&ndash;  search-box  &ndash;&gt;-->
-        <div name="favLocationProgram">
-            <div name="favLocaionProgramHeader">
-                <div>
-                    <span name="heading">지역별 인기작품</span>
-                    <span name="genre-dropdown">
-                        <select name="programType">
-                            <option value="EXHIBITION">전시</option>
-                            <option value="CONCERT">음악/콘서트</option>
-                            <option value="DRAMA">연극</option>
-                            <option value="MUSICAL">뮤지컬/오페라</option>
-                            <option value="ETC">기타</option>
-                        </select>
-                    </span>
-                    <span name="location-dropdown">
-                        <select name="location">
-                            <option value="SEOUL">서울</option>
-                            <option value="BUSAN">부산</option>
-                            <option value="DAEGU">대구</option>
-                            <option value="INCHEON">인천</option>
-                            <option value="GWANGJU">광주</option>
-                            <option value="DAEJEON">대전</option>
-                            <option value="ULSAN">울산</option>
-                            <option value="SEJONG">세종</option>
-                            <option value="GYEONGGI">경기</option>
-                            <option value="GANGWON">강원</option>
-                            <option value="CHUNGBUK">충북</option>
-                            <option value="CHUNGNAM">충남</option>
-                            <option value="JEONBUK">전북</option>
-                            <option value="JEONNAM">전남</option>
-                            <option value="GYEONGBUK">경북</option>
-                            <option value="GYEONGNAM">경남</option>
-                            <option value="JEJU">제주</option>
-                            <option value="ETC">기타</option>
-                        </select>
-                    </span>
+        <div id="favLocaionProgram" class="container">  <!--  좌우 스크롤  -->
+            <div class="row mt-5 mb-3">
+                <div class="col-auto">
+                    <div class="fs-3 badge text-bg-secondary">지역별 인기 작품</div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#type-modal">분류 선택</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#location-modal">지역 선택</button>
                 </div>
-                <hr />
-            </div>  <!--  favLocaionProgramHeader  -->
-            <div name="favLocaionProgram">  <!--  좌우 스크롤  -->
-                <span name="programCard"></span>
-                <span name="programCard"></span>
-                <span name="programCard"></span>
-                <span name="programCard"></span>
             </div>
+                <div class="row mb-5" id="BestProgramContainer"></div>
         </div>  <!--  favLocationProgram  -->
-        <div name="favLocationEvent">
-            <div name="favLocaionEventHeader">
-                <div>
-                    <span name="heading">지역별 인기모임</span>
-                    <span name="genre-dropdown"></span>
-                    <span name="location-dropdown"></span>
+        <div id="favLocationEvent" class="container">  <!--  좌우 스크롤  -->
+            <div class="row mt-5 mb-3">
+                <div class="col-auto">
+                    <div class="fs-3 badge text-bg-secondary">지역별 인기 모임</div>
                 </div>
-                <hr />
-            </div>  <!--  favLocaionProgramHeader  -->
-            <div name="favLocaionEvent">  <!--  좌우 스크롤  -->
-                <span name="eventCard"></span>
-                <span name="eventCard"></span>
-                <span name="eventCard"></span>
-                <span name="eventCard"></span>
             </div>
+            <div class="row mb-5" id="BestClubContainer"></div>
         </div>  <!--  favLocationEvent  -->
     </th:block>
 </th:block>
 <script th:inline="javascript">
-    $(document).ready(function () {
-        getSearchProgramList();
-        function getSearchProgramList() {
+    $(document).ready(function() {
+        var map;
+        var clusterer;
+        var userMarker; // 사용자 위치 마커
+        var modalProgramType = "DRAMA";
+        var modalLocationType = "SEOUL";
+        var modalProgramTypeName;
+        var modalLocationTypeName;
+        var programId;
+
+        // ********** 페이지 로딩시 실행할 함수들 **********
+        getBestProgramList();
+        kakaoMap();
+
+        // 검색창에 값변경시
+        $('#search-text').on('keyup', function () {
+            console.log($(this).val());
             $.ajax({
-                url: "/search/searchProgramList",
+                url: '/program/search/' + $(this).val(),
                 type: 'GET',
+                success: function (data) {
+                    console.log(data);
+                    changeDropdown(data);
+                    programId = null;
+                    // 드롭다운 보여주기
+                    $('#searched-list').css('display', 'block')
+                }
+            });
+        });
+
+        // 인기 작품 리스트 불러오기
+        function getBestProgramList() {
+            $.ajax({
+                type: "get",
+                url: "/search/bestProgramTypeList",
+                data: {
+                    programType: modalProgramType,
+                    locationType: modalLocationType
+                },
                 success: function (result) {
-                    console.log("작품 목록 요청 성공!");
+                    console.log("인기 작품 목록 요청 성공!");
                     console.log(result);
-                    // 카카오맵 띄우기
-                    kakaoMap(result);
+                    // 인기작품 목록 화면에 띄우기
+                    changeBestProgramList(result);
                 },
                 error: function (e) {
-                    console.log("작품 목록 요청 실패....");
+                    console.log("인기글 목록 요청 실패....");
                     console.log(e);
                 },
-            })
+            });
         }
 
-        // 지도 띄우기
-        function kakaoMap(result) {
-            console.log("카카오맵 호출!!");
-            var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-                mapOption = {
-                    center: new kakao.maps.LatLng(37.566826, 126.978656), // 지도의 중심좌표
-                    level: 14 // 지도의 확대 레벨
-                };
-            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-            var clusterer = new kakao.maps.MarkerClusterer({
-                map: map,
-                averageCenter: true,
-                minLevel: 10,
-                disableClickZoom: true
-            });
-            // 마커를 표시할 위치와 title 객체 배열
-            var positions = [];
-            var markers = [];
+        // 인기 작품 목록 화면에 띄우기
+        function changeBestProgramList(list) {
+            var html = '';
+            for (let i = 0; i < list.length; i++) {
 
-            for (var i = 0; i < result.length; i++) {
-                positions.push({
-                    content: '<div class="wrap"><div class="info">' +
-                        '<div class="title">' + result[i].title +
-                        '<div class="close" onclick="closeOverlay" title="닫기"></div></div>' +
-                            '<div class="body">'+
-                            '<div class="img">'+
-                            '<img src="'+result[i].thumbnail+'" width="73" height="70"></div>'+
-                        '<div class="desc">' +
-                        '<div class="ellipsis">'+result[i].location+'</div>' +
-                        '<div class="jibun ellipsis">'+result[i].programTime+'</div>' +
-                        '<div><a href="/program/'+ result[i].seq +'" class="link">자세히</a></div>' +
-                        '</div></div></div></div>',
-                    latlng: new kakao.maps.LatLng(result[i].locationY, result[i].locationX)
-                });
+                html += '<div class="col-3 ml-1 mr-1 bestProgramCard">';
+                html += '<div hidden="hidden" class="programSeq">' + list[i].seq + '</div>';
+                html += '<div>';
+                html += '<img src="' + list[i].thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid" style="height: 30vw" alt="...">';
+                html += '<div class="card-body">';
+                html += '<div class="row mb-2">';
+                var title = list[i].title;
+                if (title.length > 8) {
+                    title = title.substring(0, 8) + "...";
+                }
+                html += '<div class="col-auto card-title fs-4">' + title + '</div>';
+                html += '</div>';
+                html += '<div class="row">';
+                html += '<div class="col-auto badge text-bg-secondary fs-6 d-flex justify-content-center align-items-center">';
+                html += getProgramType(list[i].programType);
+                html += '</div>';
+                html += '</div>';
+                html += '<div class="row">';
+                html += '<div class="col-12">';
+                html += '<div class="fs-5">' + list[i].startDate.substring(0,10) + ' ~ </div>';
+                html += '<div class="fs-5">' + list[i].endDate.substring(0,10) + '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+            }
+            $('#BestProgramContainer').html(html);
+        }
+
+        function changeDropdown(data) {
+            console.log(data);
+            let html = '';
+            data.forEach(function (program) {
+                html += '<li><a class="dropdown-item" href="#" data-programId="' + program.id + '">' + program.title + '</a></li>';
+            });
+            $('#searched-list').html(html);
+        }
+
+        // 사이드 검색창 상세 정보 바꾸기
+        function changeSideInfo(data) {
+
+            // ENUM으로 바꾸기
+            var programType = data.programType;
+            var location = data.location;
+
+            if (programType === 'DRAMA') {
+                programType = '연극';
+            } else if (programType === 'MUSICAL') {
+                programType = '뮤지컬/오페라';
+            } else if (programType === 'EXHIBITION') {
+                programType = '전시';
+            } else if (programType === 'CONCERT') {
+                programType = '음악/콘서트';
+            } else if (programType === 'ETC') {
+                programType = '기타';
             }
 
-            positions.forEach(function (position) {
-                var marker = new kakao.maps.Marker({
-                    map: map,
-                    position: position.latlng
-                });
-                markers.push(marker); // 마커를 배열에 추가
-                // 마커 위에 커스텀오버레이를 표시
-                var overlay = new kakao.maps.CustomOverlay({
-                    content: position.content,
-                    position: marker.getPosition(),
-                    removable : true
-                });
-                overlay.setMap(null); // 처음에는 안보이게
-                // 마커에 클릭이벤트를 등록
-                kakao.maps.event.addListener(marker, 'click', function () {
-                    if (overlay.getMap()) { // 이미 오버레이가 표시중이면
-                        overlay.setMap(null);
-                    } else {
-                        overlay.setMap(map);
-                    }
-                });
-                $(document).on('click', '.close', function() {
-                    overlay.setMap(null);
-                });
+            if (location === 'SEOUL') {
+                location = '서울';
+            } else if (location === 'GYEONGGI') {
+                location = '경기';
+            } else if (location === 'INCHEON') {
+                location = '인천';
+            } else if (location === 'DAEJEON') {
+                location = '대전';
+            } else if (location === 'GWANGJU') {
+                location = '광주';
+            } else if (location === 'DAEGU') {
+                location = '대구';
+            } else if (location === 'BUSAN') {
+                location = '부산';
+            } else if (location === 'ULSAN') {
+                location = '울산';
+            } else if (location === 'SEJONG') {
+                location = '세종';
+            } else if (location === 'JEJU') {
+                location = '제주';
+            } else if (location === 'GANGWON') {
+                location = '강원';
+            } else if (location === 'CHUNGBUK') {
+                location = '충북';
+            } else if (location === 'CHUNGNAM') {
+                location = '충남';
+            } else if (location === 'JEONBUK') {
+                location = '전북';
+            } else if (location === 'JEONNAM') {
+                location = '전남';
+            } else if (location === 'GYEONGBUK') {
+                location = '경북';
+            } else if (location === 'GYEONGNAM') {
+                location = '경남';
+            }
+
+            var programDate = data.startDate.substring(0, 10) + ' ~ ' + data.endDate.substring(0, 10);
+
+            let html = '';
+            html += '<img src="' + data.thumbnail + '" class="card-img-top" alt="...">';
+            html += '<div class="card-body">';
+            html += '<h5 class="card-title">' + data.title + '</h5>';
+            html += '<p class="card-text">지도 예정</p>';
+            html += '</div>';
+            html += '<ul class="list-group list-group-flush">';
+            html += '<li class="list-group-item">' + programType + '</li>';
+            html += '<li class="list-group-item">' + location + '</li>';
+            html += '<li class="list-group-item">' + programDate + '</li>';
+            html += '</ul>';
+            html += '<div class="card-body">';
+            html += '<div class="col p-0">';
+            html += '<button id="#bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>';
+            html += '</div>';
+            html += '<div class="col p-0">';
+            html += '<button class="fa-regular fa-clipboard w-75 h-75"></button>';
+            html += '</div>';
+            html += '</div>';
+
+            $('#search-info-box').html(html);
+        }
+
+        // 작품 타입 가져오기
+        function getProgramType(type) {
+            if (type == "DRAMA") {
+                return "연극";
+            } else if (type == "MUSICAL") {
+                return "뮤지컬/오페라";
+            } else if (type == "CONCERT") {
+                return "음악/콘서트";
+            } else if (type == "EXHIBITION") {
+                return "전시";
+            } else if (type == "ETC") {
+                return "기타";
+            }
+        }
+
+        // 카카오맵
+        function kakaoMap() {
+            console.log("kakaoMap 호출!");
+            var mapContainer = document.getElementById('map'),
+                mapOption = {
+                    center: new kakao.maps.LatLng(37.566826, 126.9786567),
+                    level: 3
+                };
+            map = new kakao.maps.Map(mapContainer, mapOption);
+
+            clusterer = new kakao.maps.MarkerClusterer({
+                map: map,
+                averageCenter: true,
+                minLevel: 5
             });
-            // 클러스터러에 마커들을 추가
-            clusterer.addMarkers(markers);
-            // 클러스터 클릭 이벤트
-            kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
-                // 현재 지도 레벨에서 1레벨 확대한 레벨
-                var level = map.getLevel()-1;
-                // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대
-                map.setLevel(level, {anchor: cluster.getCenter()});
+            getCurrentLocationAndWorks();
+        }
+
+        // 현재 위치와 인기 작품 가져오기
+        function getCurrentLocationAndWorks() {
+            console.log("getCurrentLocationAndWorks 호출!");
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    // 사용자의 현재 위치에 마커 생성
+                    userMarker = new kakao.maps.Marker({
+                        position: new kakao.maps.LatLng(lat, lng),
+                        map: map,
+                        title: "현재 위치"
+                    });
+                    map.setCenter(new kakao.maps.LatLng(lat, lng));
+                    reverseGeocode(lat, lng, function(location) {
+                        getLocationBestList(location);
+                    });
+                }, function(error) {
+                    console.error('Geolocation error:', error);
+                    alert('위치 정보를 가져오는 데 실패했습니다.');
+                });
+            } else {
+                alert('이 브라우저는 위치 추적을 지원하지 않습니다.');
+            }
+        }
+
+        // 사용자 위치를 주소로 변환
+        function reverseGeocode(lat, lng, callback) {
+            console.log("reverseGeocode 호출!");
+            console.log(lat, lng);
+            $.ajax({
+                url: 'https://dapi.kakao.com/v2/local/geo/coord2address.json',
+                type: 'GET',
+                data: {
+                    x: lng,
+                    y: lat
+                },
+                headers: {
+                    'Authorization': 'KakaoAK d9cba248832f4faec5a2780994bcebdd' // 발급받은 REST API 키
+                },
+                success: function(response) {
+                    if (response && response.documents && response.documents.length > 0) {
+                        const addressInfo = response.documents[0].address;
+                        const location = addressInfo.region_1depth_name;
+                        callback(location);
+                    } else {
+                        console.error('No address found for the given coordinates.');
+                        callback(null);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Geocoding error:', error);
+                    callback(null);
+                }
             });
         }
+
+        // 현재 위치 주변의 인기 작품 가져오기
+        function getLocationBestList(location) {
+            console.log("getLocationBestList 호출!");
+            console.log(location);
+            $.ajax({
+                url: '/search/locationBestList',
+                type: 'GET',
+                data: { location: location },
+                success: function(data) {
+                    var markers = data.map(function(result) {
+                        var marker = new kakao.maps.Marker({
+                            position: new kakao.maps.LatLng(result.locationY, result.locationX),
+                            title: result.title
+                        });
+                        kakao.maps.event.addListener(marker, 'click', function() {
+                            changeSideInfo(result);
+                        });
+                        return marker;
+                    });
+                    clusterer.addMarkers(markers);
+                },
+                error: function(xhr, status, error) {
+                    console.error('작품 정보 로드 실패:', error);
+                }
+            });
+        }
+
+        // 작품 검색 결과 지도에 표시와 맵 이동
+        function changeSetMap(data) {
+            var marker = new kakao.maps.Marker({
+                position: new kakao.maps.LatLng(data.locationY, data.locationX),
+                title: data.title
+            });
+            marker.setMap(map);
+            map.setCenter(new kakao.maps.LatLng(data.locationY, data.locationX));
+            map.setLevel(3);
+        }
+
+
+        // ********** 클릭시 이벤트들 **********
+
+        // 모달 닫기
+        $(document).on('click', '.close', function () {
+            $('#type-modal').css('display', 'none');
+            $('#location-modal').css('display', 'none');
+        });
+
+        // 검색 버튼 클릭시 기본 이벤트 제거
+        $('#search-btn').click(function (e) {
+            e.preventDefault();
+        });
+
+        // 드롭다운 외부 클릭시 드롭다운 숨기기
+        $(document).mouseup(function (e) {
+            var container = $(".dropdown");
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                container.find('.dropdown-menu').css('display', 'none');
+            }
+        });
+
+        // 드롭다운 내부 클릭시 input에 값 넣기
+        $(document).on('click', '.dropdown-item', function () {
+            $('#search-text').val($(this).text());
+            programId = $(this).data('programid');
+            $('.dropdown-menu').css('display', 'none');
+        });
+
+        // 검색 버튼 클릭시 카드 내부 변경
+        $('#search-btn').click(function () {
+            console.log(programId);
+            if (programId === undefined) {
+                alert('검색 결과를 선택해주세요.');
+                return;
+            } else if (programId === null) {
+                alert('검색 결과가 없습니다.');
+                return;
+            } else if (programId !== null) {
+                $.ajax({
+                    url: '/program/find/' + programId,
+                    type: 'GET',
+                    success: function (data) {
+                        console.log(data);
+                        changeSetMap(data);
+                        changeSideInfo(data);
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+
+        // 모달 닫기
+        $(document).on('click', '.close', function () {
+            $('#type-modal').css('display', 'none');
+            $('#location-modal').css('display', 'none');
+        });
+        // 분류 모달과 지역 모달에서 선택시 값 변경
+        $(document).on('click', ".pTypeBtn", function () {
+            modalProgramType = $(this).data('type');
+            modalProgramTypeName = $(this).text();
+            $('#type-modal').modal('hide');
+            getBestProgramList()
+        });
+        $(document).on('click', ".lTypeBtn", function () {
+            modalLocationType = $(this).data('loc');
+            modalLocationTypeName = $(this).text();
+            $('#location-modal').modal('hide');
+            getBestProgramList()
+        });
+
+        $("#setMap").on('click', function () {
+            getCurrentLocationAndWorks();
+        });
     });
 </script>
 </html>
