@@ -30,7 +30,7 @@ public class SearchController {
         log.info("** SearchController GET /locationList 요청");
         log.info("** programType: {}", programType);
         log.info("** location: {}", locationType);
-        // programType, location에 해당하는 작품들 리스트를 가져옴
+        // programType, location에 해당하는 인기 있는 작품리스트를 가져옴
         List<ProgramDTO> programDTOList = programService.getBestProgramLocList(programType, locationType);
         return ResponseEntity.ok(programDTOList);
     }

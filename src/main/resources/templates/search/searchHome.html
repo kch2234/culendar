@@ -129,6 +129,9 @@
 </th:block>
 <script th:inline="javascript">
     $(document).ready(function() {
+
+        // ********** 변수 선언 **********
+
         var map;
         var clusterer;
         var userMarker; // 사용자 위치 마커
@@ -334,12 +337,12 @@
                 averageCenter: true,
                 minLevel: 5
             });
-            getCurrentLocationAndWorks();
+            getCurrentLocationAndPrograms();
         }
 
         // 현재 위치와 인기 작품 가져오기
-        function getCurrentLocationAndWorks() {
-            console.log("getCurrentLocationAndWorks 호출!");
+        function getCurrentLocationAndPrograms() {
+            console.log("getCurrentLocationAndPrograms 호출!");
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     const lat = position.coords.latitude;
@@ -363,7 +366,7 @@
             }
         }
 
-        // 사용자 위치를 주소로 변환
+        // 사용자 위치를 주소로 변환 - 사용자 위치기반 인기 작품 가져오기 위해
         function reverseGeocode(lat, lng, callback) {
             console.log("reverseGeocode 호출!");
             console.log(lat, lng);

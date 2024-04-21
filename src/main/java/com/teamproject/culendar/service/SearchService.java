@@ -10,6 +10,7 @@ import java.util.List;
 @Slf4j
 public class SearchService {
 
+    // 사용자 현위치 지역명을 Location enum으로 변환
     public Location mapStringToLocation(String locationString) {
         log.info("***** SearchService - mapStringToLocation ***** :{}", locationString);
         String normalizedLocation = normalizeLocationString(locationString);
@@ -22,7 +23,6 @@ public class SearchService {
             return Location.ETC;  //매핑할 수 없는 경우 기타로 처리
         }
     }
-
     private String normalizeLocationString(String locationString) {
         log.info("***** SearchService - normalizeLocationString ***** :{}", locationString);
         switch(locationString) {
