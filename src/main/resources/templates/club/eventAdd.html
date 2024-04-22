@@ -7,7 +7,7 @@
 
         <div id="boardAddWrapper" class="mt-5">
 
-            <form class="container mt-4" th:object="${eventBoardForm}" method="post" action="" th:action >
+            <form class="container mt-4" th:object="${eventBoardForm}" method="post" action="" th:action>
 
                 <!-- 제목, 게시글 분류 선택 -->
                 <div class="row mb-4 ">
@@ -28,7 +28,8 @@
 
                         <label for="search-text" class="input-group-text">작품 선택</label>
                         <div class="input-group-text">
-                            <input class="form-check-input mt-0" id="programSelectCheck" type="checkbox" th:field="*{programId}" value="">
+                            <input class="form-check-input mt-0" id="programSelectCheck" type="checkbox"
+                                   th:field="*{programId}" value="">
                         </div>
 
                         <input type="text" id="search-text" class="form-control dropdown-toggle search-input"
@@ -44,76 +45,68 @@
                 <!--  모임 일정 / 모집 마감 일자  -->
                 <div class="row mb-4 ">
 
-                    <div class="col-12 input-group input-group-lg">
+                    <!--  모임 날짜  -->
+                    <div class="col input-group input-group-lg">
+                        <span class="input-group-text">날짜</span>
+                        <input type="date" class="form-control" th:field="*{eventDate}" id="eventDate">
+                    </div>
 
-                        <!--  모임 날짜  -->
-                        <div class="form-group">
-                            <span class="input-group-text">날짜</span>
-                            <input type="date" class="form-control" th:field="*{eventDate}" id="eventDate">
-                        </div>
-                        <!--  달력형 모집 마감 일자  -->
-                        <div class="form-group">
-                            <span class="input-group-text" >모집 마감 일자</span>
-                            <input type="date" class="form-control" th:field="*{deadlineDate}" id="deadlineDate">
-                        </div>
-
+                    <!--  달력형 모집 마감 일자  -->
+                    <div class="col input-group input-group-lg">
+                        <span class="input-group-text">모집 마감 일자</span>
+                        <input type="number" class="form-control" min="2" max="21"
+                               id="deadlineDateNum">
+                        <span class="input-group-text">일 전</span>
+                        <input hidden="hidden" class="form-control" th:field="*{deadlineDate}" id="deadlineDate">
+                        <!--                        <input type="date" class="form-control" th:field="*{deadlineDate}" id="deadlineDate">-->
+                    </div>
+                    <!--  인원  -->
+                    <div class="col input-group input-group-lg">
+                        <span class="input-group-text">최대 인원</span>
+                        <input type="number" class="form-control" th:field="*{maxPeople}" min="2" max="30"
+                               id="maxPeople">
                     </div>
 
                 </div>
 
-                <!--  인원  -->
-                <div class="row mb-4 ">
-
-                    <div class="col-12 input-group input-group-lg">
-
-                        <div class="form-group">
-                            <span class="input-group-text">최대 인원</span>
-                            <input type="number" class="form-control" th:field="*{maxPeople}" min="2" id="maxPeople">
-                        </div>
-
-                    </div>
-
-                </div>
 
                 <!--  모임 자동 수락 여부  -->
-                <div class="row mb-4 ">
+                <div class="row mb-4 d-flex justify-content-between align-items-center">
 
-                    <div class="col-12 input-group input-group-lg">
+                    <div class="col-2">
+                        <div class="input-group"><span class="input-group-text dropdown-toggle">성별</span>
+                            <select class="form-control" th:field="*{filterGender}" id="filterGender">
+                                <option th:each="filterGender: ${filterGender}"
+                                        th:value="${filterGender.name()}"
+                                        th:text="${filterGender.value}">  <!--  TODO selected 수정  -->
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="input-group input-group-lg"><span class="input-group-text" for="filterMinAge">최소 연령</span>
+                            <input type="number" class="form-control" th:field="*{filterMinAge}" min="15" max="99"
+                                   id="filterMinAge">
+                            <span class="input-group-text">최대 연령</span>
+                            <input type="number" class="form-control" th:field="*{filterMaxAge}" min="0" max="99"
+                                   id="filterMaxAge">
+                        </div>
+                    </div>
 
-                        <label class="input-group-text">모임 참가 신청을 자동으로 수락합니다.</label>
-                        <div class="input-group-text">
-                            <input class="form-check-input mt-0" type="checkbox" th:field="*{autoAccept}" checked>
+                    <div class="col-6">
+
+                        <div class="input-group input-group-lg">
+                            <label class="input-group-text">신청을 자동으로 수락합니다.</label>
+                            <div class="input-group-text">
+                                <input class="form-check-input mt-0" type="checkbox" th:field="*{autoAccept}" checked>
+                            </div>
                         </div>
 
                     </div>
 
                 </div>
 
-                <!--  필터링 영역  -->
-                <div class="row mb-4 ">
-
-                    <div class="col-12 input-group input-group-lg">
-
-                        <span class="input-group-text dropdown-toggle">성별</span>
-                        <select class="form-control" th:field="*{filterGender}" id="filterGender">
-                            <option th:each="filterGender: ${filterGender}"
-                                    th:value="${filterGender.name()}"
-                                    th:text="${filterGender.value}">  <!--  TODO selected 수정  -->
-                            </option>
-                        </select>
-
-                        <span class="input-group-text" for="filterMinAge">최소 연령</span>
-                        <input type="number" class="form-control" th:field="*{filterMinAge}" min="0" id="filterMinAge">
-
-                        <span class="input-group-text">최대 연령</span>
-                        <input type="number" class="form-control" th:field="*{filterMaxAge}" min="0" id="filterMaxAge">
-
-
-                    </div>
-
-                </div>
-
-                <!--  내용 영역  -->
+                <!--  내용 아이콘  -->
                 <div class="row mb-4">
                     <div class="input-group input-group-lg">
 
@@ -121,6 +114,8 @@
 
                     </div>
                 </div>
+
+                <!-- 내용  -->
                 <div class="row mb-4">
                     <div class="input-group">
 
@@ -130,11 +125,12 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <!--  버튼  -->
+                <div class="row mb-5">
                     <div class="input-group">
-                        <button type="button" class="btn btn-info" th:onclick="|location.href='@{/clubs/list}'|">취소
+                        <button type="button" class="btn btn-outline-secondary" th:onclick="|location.href='@{/clubs/list}'|">취소
                         </button>
-                        <button type="submit" class="btn btn-primary">등록</button>
+                        <button type="submit" class="btn btn-dark" id="eventAddSubmitBtn">등록</button>
                     </div>
                 </div>
 
@@ -146,16 +142,47 @@
             $(document).ready(function () {
                 var programId = null;
 
+                // 현재 날짜 계산
+                var now_utc = Date.now();
+                var timeOff = new Date().getTimezoneOffset() * 60000;
+                var today = new Date(now_utc - timeOff);
+
+                // minEventDate = today + 2
+                var minEventDate = new Date(today);
+                minEventDate.setDate(today.getDate() + 3);
+                var minEventDateISOString = minEventDate.toISOString().split("T")[0];
+
+                var deadlineDate = new Date();
+
+                document.getElementById("eventDate").setAttribute("min", minEventDateISOString);
+
+                // eventDate 입력 후
+                document.getElementById("eventDate").addEventListener("change", function () {
+                    var eventDateValue = this.value;
+                    var eventDate = new Date(eventDateValue);
+
+                    // minDeadlineDate = today
+                    var minDeadlineDate = new Date();
+                    var minDeadlineDateISOString = minDeadlineDate.toISOString().split("T")[0];
+                    document.getElementById("deadlineDate").setAttribute("min", minDeadlineDateISOString);
+
+                    // maxDeadlineDate = eventDate - 2
+                    var maxDeadlineDate = new Date(eventDate);
+                    maxDeadlineDate.setDate(eventDate.getDate() - 2);
+                    var maxDeadlineDateISOString = maxDeadlineDate.toISOString().split("T")[0];
+                    document.getElementById("deadlineDate").setAttribute("max", maxDeadlineDateISOString);
+                });
+
                 // 작품 분류 선택시 값 변경
                 $('.dropdown-menu').on('click', '.boardTypeValue', function () {
                     // 버튼 기본 기능 비활성화
                     event.preventDefault();
-                // #dropdown-menu 값 변경
-                $('#boardTypeValue').val($(this).data('type'));
-                // 버튼 텍스트 변경
-                $('.bTypeBtn').text($(this).text());
-                // #boardType 값 변경
-                $('#boardType').val($(this).data('type'));
+                    // #dropdown-menu 값 변경
+                    $('#boardTypeValue').val($(this).data('type'));
+                    // 버튼 텍스트 변경
+                    $('.bTypeBtn').text($(this).text());
+                    // #boardType 값 변경
+                    $('#boardType').val($(this).data('type'));
                 });
 
                 // 검색창에 값변경시
@@ -192,6 +219,13 @@
                     $('#searched-list').css('display', 'none');
                 });
 
+                // 최대인원 값 변경시
+                $('#maxPeople').on('change', function () {
+                    if ($(this).val() < 2 || $(this).val() > 30) {
+                        alert('최대 인원은 2명 이상 30명 이하로 설정해주세요.');
+                        $(this).val('');
+                    }
+                });
 
                 // #search-list 외부 클릭과 #search-text 포커스 아웃시 드롭다운 숨기기
                 $(document).on('click', function (e) {
@@ -225,35 +259,111 @@
                     }
                 });
 
+                // 등록 버튼 클릭시
+                $('#eventAddSubmitBtn').on('click', function () {
 
+                    event.preventDefault();
 
-                // 현재 날짜 계산
-                var now_utc = Date.now();
-                var timeOff = new Date().getTimezoneOffset() * 60000;
-                var today = new Date(now_utc - timeOff);
-
-                // minEventDate = today + 2
-                var minEventDate = new Date(today);
-                minEventDate.setDate(today.getDate() + 2);
-                var minEventDateISOString = minEventDate.toISOString().split("T")[0];
-                document.getElementById("eventDate").setAttribute("min", minEventDateISOString);
-
-                // eventDate 입력 후
-                document.getElementById("eventDate").addEventListener("change", function() {
-                    var eventDateValue = this.value;
-                    var eventDate = new Date(eventDateValue);
-
-                    // minDeadlineDate = today
-                    var minDeadlineDate = new Date();
-                    var minDeadlineDateISOString = minDeadlineDate.toISOString().split("T")[0];
-                    document.getElementById("deadlineDate").setAttribute("min", minDeadlineDateISOString);
-
-                    // maxDeadlineDate = eventDate - 2
-                    var maxDeadlineDate = new Date(eventDate);
-                    maxDeadlineDate.setDate(eventDate.getDate() - 2);
-                    var maxDeadlineDateISOString = maxDeadlineDate.toISOString().split("T")[0];
-                    document.getElementById("deadlineDate").setAttribute("max", maxDeadlineDateISOString);
+                    // 제목 입력 여부 확인
+                    if ($('input[name="title"]').val() == '') {
+                        alert('제목을 입력해주세요.');
+                        return;
+                    }
+                    // 작품 선택 여부 확인
+                    if ($('#programSelectCheck').val() == '') {
+                        alert('작품을 선택해주세요.');
+                        return;
+                    }
+                    // 이벤트 날짜 입력 여부 확인
+                    if ($('#eventDate').val() == '') {
+                        alert('이벤트 날짜를 입력해주세요.');
+                        return;
+                    }
+                    // 모집 마감 일자 입력 여부 확인
+                    if ($('#deadlineDate').val() == '') {
+                        alert('모집 마감 일자를 입력해주세요.');
+                        return;
+                    }
+                    // 최대 인원 입력 여부 확인
+                    if ($('#maxPeople').val() == '') {
+                        alert('최대 인원을 입력해주세요.');
+                        return;
+                    }
+                    // 최소 연령 입력 여부 확인
+                    if ($('#filterMinAge').val() == '') {
+                        alert('최소 연령을 입력해주세요.');
+                        return;
+                    }
+                    // 최대 연령 입력 여부 확인
+                    if ($('#filterMaxAge').val() == '') {
+                        alert('최대 연령을 입력해주세요.');
+                        return;
+                    }
+                    // 내용 입력 여부 확인
+                    if ($('#content-textarea').val() == '') {
+                        alert('내용을 입력해주세요.');
+                        return;
+                    }
+                    // form 제출
+                    $('form').submit();
                 });
+
+                // ********** 각종 함수들 **********
+
+                // 마감 일자 숫자 입력 시
+                $('#deadlineDateNum').on('change', function () {
+
+                    // 이벤트 날짜 입력 전이라면
+                    if ($('#eventDate').val() == '') {
+                        alert('이벤트 날짜를 먼저 입력해주세요.');
+                        $(this).val('');
+                        return;
+                    }
+                    if ($(this).val() < 2 || $(this).val() > 21) {
+                        alert('모집 마감 일자는 일정 날짜 기준 최소 2일전 최대 21일 이하로 설정해주세요.');
+                        $(this).val('');
+                        return;
+                    }
+
+                    var eventDate = new Date($('#eventDate').val());
+                    deadlineDate = new Date(eventDate);
+                    deadlineDate.setDate(eventDate.getDate() - $(this).val());
+                    $('#deadlineDate').val(deadlineDate.toISOString().split('T')[0]);
+
+                    console.log('eventDate: ' + eventDate);
+                    console.log($('#deadlineDate').val());
+
+                    if (deadlineDate < today) {
+                        alert('모집 마감 일자는 오늘 이후로 설정해주세요.');
+                        $(this).val('');
+                        return;
+                    }
+                });
+
+                // 최소 연령 입력시
+                $('#filterMinAge').on('change', function () {
+                    if ($(this).val() < 15 || $(this).val() > 99) {
+                        alert('최소 연령은 15세 이상 99세 이하로 설정해주세요.');
+                        $(this).val('');
+                    }
+                });
+
+                // 최대 연령 입력시
+                $('#filterMaxAge').on('change', function () {
+                    // 최소 연령 입력 전이라면
+                    if ($('#filterMinAge').val() == '') {
+                        alert('최소 연령을 먼저 입력해주세요.');
+                        $(this).val('');
+                        return;
+                    }
+
+                    // 최소 연령보다 값이 작을시
+                    if ($(this).val() < $('#filterMinAge').val()) {
+                        alert('최대 연령은 최소 연령보다 작을 수 없습니다.');
+                        $(this).val('');
+                    }
+                });
+
 
             });
         </script>
