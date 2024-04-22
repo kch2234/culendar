@@ -12,13 +12,18 @@
             <div id="eventBoardListContainer" class="container">
 
                 <!--  모임 필터, 작성 버튼  -->
-                <select class="custom-select" id="selectorProgramType">
+                <button class="badge text-bg-secondary fs-6 p-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">카테고리</button>
+                <ul class="dropdown-menu" id="selectorProgramType">
+                    <li>
+                        <button class="dropdown-item" th:each="programType: ${programType}" th:value="${programType.name()}" th:text="${programType.value}"></button>
+                    </li>
+                </ul>
+
+                <!--<select class="custom-select" id="selectorProgramType">
                     <option value="">분류</option>
-                    <option th:each="programType: ${programType}"
-                            th:value="${programType.name()}"
-                            th:text="${programType.value}"></option>
-                </select>
-                <button type="button" class="btn btn-warning" id="btnAll">최신순</button>
+                    <option th:each="programType: ${programType}" th:value="${programType.name()}" th:text="${programType.value}"></option>
+                </select>-->
+                <button type="button" class="btn btn-warning" id="btnNew">최신순</button>
                 <button type="button" class="btn btn-warning" id="btnBest">인기순</button>
                 <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/clubs/add}'|">글 작성</button>
 
@@ -142,52 +147,33 @@
                 });
 
                 // 프로그램타입 셀렉터 + 정렬 버튼 이벤트
+
                 let currentSort = "ALL";
                 let currentAlign = "NEW";
 
                 function handleButtonClick(sort, align) {
-                	getCardList(sort, align, 1);
+                    currentSort = sort;
+                    currentAlign = align;
+                    getCardList(currentSort, currentAlign, 1);
                 }
 
-                $("#selectorProgramType").change(function() {
-                    var selectedValue = $(this).val();
-
-                    if(selectedValue === "DRAMA") {
-                        console.log("연극 DRAMA 클릭");
-                        handleButtonClick("DRAMA", currentAlign)
-                    }
-                    else if(selectedValue === "CONCERT") {
-                        console.log("음악/콘서트 CONCERT 클릭");
-                        handleButtonClick("CONCERT", currentAlign)
-                    }
-                    else if(selectedValue === "EXHIBITION") {
-                        console.log("전시 EXHIBITION 클릭");
-                        handleButtonClick("EXHIBITION", currentAlign)
-                    }
-                    else if(selectedValue === "MUSICAL") {
-                    console.log("뮤지컬 MUSICAL 클릭");
-                        handleButtonClick("MUSICAL", currentAlign)
-                    }
-                    else if(selectedValue === "ETC") {
-                    console.log("기타 ETC 클릭");
-                        handleButtonClick("ETC", currentAlign)
-                    }
-                    else if(selectedValue === "ALL") {
-                    console.log("전체 ALL 클릭");
-                        handleButtonClick("ALL", currentAlign)
-                    }
+                // 프로그램 타입 셀렉터
+                document.querySelectorAll('.dropdown-item').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        var programType = button.getAttribute('value');
+                        handleButtonClick(programType, currentAlign);
+                    });
                 });
+
                 // 정렬 버튼
                 $("#btnBest").on("click", function () {
-                    console.log("btnBest 클릭");
-                    currentAlign = "BEST";
-                	handleButtonClick(currentSort, "BEST")
+                    handleButtonClick(currentSort, "BEST");
                 });
                 $("#btnNew").on("click", function () {
-                    console.log("btnNew 클릭");
-                    currentAlign = "NEW";
-                	handleButtonClick(currentSort, "NEW")
+                    handleButtonClick(currentSort, "NEW");
                 });
+
+
 
             });
         </script>
