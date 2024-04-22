@@ -25,7 +25,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
-                            <!-- TODO 등록 작품 연동 -->
+                            <!-- 등록 작품 연동 -->
                             <button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${board.programDTO.getId})}'|">등록</button>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
-                            <!-- TODO 수정 연동 -->
+                            <!-- 수정 연동 -->
                             <button type="button" class="btn btn-secondary" id="reviewModifyBtn" th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${board.programDTO.getId})}'|">수정</button>
                         </div>
                     </div>
@@ -207,7 +207,7 @@
                             </div>
                             <div class="col"></div>
 
-                            <!-- TODO : 좋아요, 후기, 체크박스 버튼 -->
+                            <!-- 좋아요, 후기, 체크박스 버튼 -->
                             <div class="col-3 p-0">
                                 <div class="d-flex justify-content-end align-items-center fs-5 w-100 h-100">내후기</div>
                             </div>
