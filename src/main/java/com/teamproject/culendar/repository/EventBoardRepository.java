@@ -3,8 +3,10 @@ package com.teamproject.culendar.repository;
 import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.EventBoard;
 import com.teamproject.culendar.domain.enumFiles.BoardType;
+import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.program.Program;
+import com.teamproject.culendar.dto.EventBoardDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,6 +37,11 @@ public interface EventBoardRepository extends JpaRepository<EventBoard, Long> {
   Page<EventBoard> findOrderByProgramType(@Param("programType") ProgramType programType, Pageable pageable);
 
 
-
+  // 지역별 모임 조회
+  @Query("SELECT b FROM EventBoard b " +
+        "LEFT JOIN Program p ON b.program.id = p.id " +
+        "WHERE p.programType = :programType " +
+        "AND p.location = :location " +
+        "GROUP BY b order by COUNT(b) DESC")
+  List<EventBoard> findBestByProgramTypeAndLocList(@Param("programType") ProgramType programType, @Param("location") Location locationType);
 }
-

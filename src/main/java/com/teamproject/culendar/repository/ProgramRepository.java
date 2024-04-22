@@ -38,8 +38,8 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
     // programType, locationType 해당하는 인기 있는 작품리스트를 가져옴
     @Query("SELECT p FROM Program p " +
             "LEFT JOIN ProgramBkmark pb ON p.id = pb.program.id " +
-            "WHERE (:programType IS NULL OR p.programType = :programType) " +
-            "AND (:locationType IS NULL OR p.location = :locationType) " +
+            "WHERE (p.programType = :programType) " +
+            "AND (p.location = :locationType) " +
             "AND pb.createDate >= CURRENT_DATE - 7 " +
             "GROUP BY p " +
             "ORDER BY COUNT(pb) DESC")

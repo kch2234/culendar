@@ -1,10 +1,8 @@
 package com.teamproject.culendar.service;
 
-import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.EventBoard;
-import com.teamproject.culendar.domain.enumFiles.BoardType;
+import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
-import com.teamproject.culendar.domain.program.Program;
 import com.teamproject.culendar.dto.EventBoardDTO;
 import com.teamproject.culendar.dto.EventBoardForm;
 import com.teamproject.culendar.dto.PageRequestDTO;
@@ -20,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -116,5 +115,18 @@ public class EventBoardService {
     findEventBoard.setFilterMaxAge(eventBoardForm.getFilterMaxAge());
   }
 
+  // 지역별 모임 인기순 목록 불러오기
+    public List<EventBoardDTO> getBestEventBoardLocList(String programType, String locationType) {
+      log.info("** EventBoardService - getBestEventBoardLocList - programType : {}, location : {}", programType, locationType);
+      ProgramType programTypeENUM = ProgramType.valueOf(programType);
+      Location locationENUM = Location.valueOf(locationType);
+      List<EventBoard> findBestEventBoard = eventBoardRepository.findBestByProgramTypeAndLocList(programTypeENUM, locationENUM);
+      log.info("** EventBoardService - getBestEventBoardLocList - getBestProgramTypeAndLocList : {}", findBestEventBoard.get(0).getTitle());
+      List<EventBoardDTO> eventBoardDTOList = findBestEventBoard.stream()
+              .map(EventBoardDTO::new)
+              .collect(java.util.stream.Collectors.toList());
+      log.info("** EventBoardService - getBestEventBoardLocList - eventBoardDTOList : {}", eventBoardDTOList.get(0).getTitle());
+      return eventBoardDTOList;
+    }
 
 }
