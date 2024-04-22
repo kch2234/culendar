@@ -36,20 +36,6 @@ public class AjaxBoardController {
 
     Page<Board> result = null;
 
-/*      if (sort.equals("ALL")){
-      result = boardService.getListWithPaging(pageRequestDTO);
-    }
-    else if(sort.equals("INFO")){
-      result = boardService.getListWithCategory(pageRequestDTO, BoardType.INFO);
-    }
-    else if(sort.equals("REVIEW")){
-      result = boardService.getListWithCategory(pageRequestDTO, BoardType.REVIEW);
-    }
-    else if(sort.equals("BEST")){
-      result = boardService.getListWithBkMark(pageRequestDTO);
-    }*/
-
-
     if (sort.equals("ALL")){
       if(align.equals("BEST")){
         result = boardService.getListWithBkMark(pageRequestDTO);
