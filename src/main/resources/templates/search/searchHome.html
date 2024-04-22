@@ -2,198 +2,539 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
-        <h1>탐색 페이지 영역</h1>
-        <!--TODO: 카카오 지도 API -->
-        <div name="search-box">
-            <span name="mapWithModal">  <!--  지도+검색결과 작품  -->
-                <span name="map">
-                    <div class="map_wrap">
-                        <div id="map" style="width:75%;height:600px;position:relative;overflow:hidden;"></div>
-                        <div id="menu_wrap" class="bg_white">
-                            <div class="option">
-                                <div>
-                                    <form onsubmit="searchPlaces(); return false">
-                                        키워드 : <input type="text" value="" id="keyword" size="15">
-                                        <button type="submit">검색하기</button>
-                                    </form>
-                                </div>
+
+        <!--                분류 모달-->
+        <div class="modal" id="type-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">분류 선택</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-auto mt-2 mb-2" th:each="pType : ${programType}">
+                                <button type="button" class="btn btn-outline-secondary pTypeBtn"
+                                        th:text="${pType.value}" th:if="${pType.value !='기타'}"
+                                        th:data-type="${pType.name()}"></button>
                             </div>
-                            <hr>
-                            <ul id="placesList"></ul>
-                            <div id="pagination"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--                지역 모달-->
+        <div class="modal" id="location-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">분류 선택</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body container">
+
+                        <div class="row">
+                            <div class="col-auto mt-2 mb-2" th:each="lType : ${locationType}">
+                                <button type="button" class=" btn btn-outline-secondary lTypeBtn"
+                                        th:text="${lType.value}" th:if="${lType.value !='기타'}"
+                                        th:data-loc="${lType.name()}"></button>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div><!--TODO: 분류, 지역선택 모달 띄우고, 선택하면 모달 닫히기-->
+
+        <!-- 메인 컨테이너 영역 -->
+        <div class="w-75 container m-auto">
+            <div class="row">
+                <!-- 지도 영역 -->
+                <div class="col-9">
+                    <div id="map" style="width:100%;height:450px;"></div><!--TODO: 지도 크기 재설정 100%로 하면 지도의 크기가 작아짐-->
+                    <div id="setMap" class="btn btn-primary">현재 위치로 이동</div>
+                </div>
+                <!-- TODO 사이드 검색창 -->
+                <div class="col ml-2 h-100" id="side-search">
+                    <form class="container p-0">
+                        <!-- TODO 검색창 -->
+                        <div class="row p-0" style="height: 10%">
+                            <!-- 버튼 비활성화 -->
+                            <div class="col-3 p-0">
+                                <button type="submit" id="search-btn"
+                                        class="w-100 h-100 btn-dark fa-solid fa-magnifying-glass"></button>
+                            </div>
+                            <div class="dropdown col-8 p-0">
+                                <input type="text" id="search-text" class="p-0 w-100 form-control col dropdown-toggle"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                <ul class="dropdown-menu overflow-scroll" id="searched-list">
+                                    <!-- 동적으로 드롭다운 검색 결과 -->
+                                </ul>
+                            </div>
+
+                        </div>
+                        <!-- TODO 검색 결과 -->
+                        <div class="row p-0">
+                            <!-- 검색 결과 양식 -->
+                            <div class="card p-0 overflow-scroll" id="search-info-box">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+<!--
+        <div class="content-wrapper" name="search-box">
+            <span name="mapWithModal">  &lt;!&ndash;  지도+검색결과 작품  &ndash;&gt;
+                <span name="map">
+
                 </span>
-                <span name="searchResult-box">  <!--  검색결과 작품  -->
+                <span name="searchResult-box">  &lt;!&ndash;  검색결과 작품  &ndash;&gt;
                     <div name="programCard"></div>
-                    <div name="programDetail-button">자세히</div>  <!--  TODO programDetail에 개요가 없다면 페이지 넘겨도 더 보여줄 게 없을 듯..  -->
+                    <div name="programDetail-button">자세히</div>  &lt;!&ndash;  TODO programDetail에 개요가 없다면 페이지 넘겨도 더 보여줄 게 없을 듯..  &ndash;&gt;
                 </span>
-            </span>  <!--  mapWithModal  -->
+            </span>  &lt;!&ndash;  mapWithModal  &ndash;&gt;
             <span name="sideInfo-box">
                 <div>
                     <div name="heading">인기 작품</div>
-                    <div name="programCard"></div>  <!--  NOTE 검색 전) 현재 위치의 인기작품 노출 / 검색 후) 검색 결과 작품 노출  -->
+                    <div name="programCard"></div>  &lt;!&ndash;  NOTE 검색 전) 현재 위치의 인기작품 노출 / 검색 후) 검색 결과 작품 노출  &ndash;&gt;
                 </div>
-                <hr />  <!--  horizonBar  -->
+                <hr />  &lt;!&ndash;  horizonBar  &ndash;&gt;
                 <div>
                     <div name="heading">인기 모임</div>
-                    <div name="eventCard"></div>  <!--  NOTE 검색 전) 현재 위치의 인기모임 노출 / 검색 후) 검색 결과 모임 노출  -->
+                    <div name="eventCard"></div>  &lt;!&ndash;  NOTE 검색 전) 현재 위치의 인기모임 노출 / 검색 후) 검색 결과 모임 노출  &ndash;&gt;
                 </div>
-            </span>  <!--  sideInfo-box  -->
-        </div>  <!--  search-box  -->
-        <div name="favLocationProgram">
-            <div name="favLocaionProgramHeader">
-                <div>
-                    <span name="heading">지역별 인기작품</span>
-                    <span name="genre-dropdown">
-                        <select name="programType">
-                            <option value="EXHIBITION">전시</option>
-                            <option value="CONCERT">음악/콘서트</option>
-                            <option value="DRAMA">연극</option>
-                            <option value="MUSICAL">뮤지컬/오페라</option>
-                            <option value="ETC">기타</option>
-                        </select>
-                    </span>
-                    <span name="location-dropdown">
-                        <select name="location">
-                            <option value="SEOUL">서울</option>
-                            <option value="BUSAN">부산</option>
-                            <option value="DAEGU">대구</option>
-                            <option value="INCHEON">인천</option>
-                            <option value="GWANGJU">광주</option>
-                            <option value="DAEJEON">대전</option>
-                            <option value="ULSAN">울산</option>
-                            <option value="SEJONG">세종</option>
-                            <option value="GYEONGGI">경기</option>
-                            <option value="GANGWON">강원</option>
-                            <option value="CHUNGBUK">충북</option>
-                            <option value="CHUNGNAM">충남</option>
-                            <option value="JEONBUK">전북</option>
-                            <option value="JEONNAM">전남</option>
-                            <option value="GYEONGBUK">경북</option>
-                            <option value="GYEONGNAM">경남</option>
-                            <option value="JEJU">제주</option>
-                            <option value="ETC">기타</option>
-                        </select>
-                    </span>
+            </span>  &lt;!&ndash;  sideInfo-box  &ndash;&gt;
+        </div>  &lt;!&ndash;  search-box  &ndash;&gt;-->
+        <div id="favLocaionProgram" class="container">  <!--  좌우 스크롤  -->
+            <div class="row mt-5 mb-3">
+                <div class="col-auto">
+                    <div class="fs-3 badge text-bg-secondary">지역별 인기 작품</div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#type-modal">분류 선택</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#location-modal">지역 선택</button>
                 </div>
-                <hr />
-            </div>  <!--  favLocaionProgramHeader  -->
-            <div name="favLocaionProgram">  <!--  좌우 스크롤  -->
-                <span name="programCard"></span>
-                <span name="programCard"></span>
-                <span name="programCard"></span>
-                <span name="programCard"></span>
             </div>
+                <div class="row mb-5" id="BestProgramContainer"></div>
         </div>  <!--  favLocationProgram  -->
-        <div name="favLocationEvent">
-            <div name="favLocaionEventHeader">
-                <div>
-                    <span name="heading">지역별 인기모임</span>
-                    <span name="genre-dropdown"></span>
-                    <span name="location-dropdown"></span>
+        <div id="favLocationEvent" class="container">  <!--  좌우 스크롤  -->
+            <div class="row mt-5 mb-3">
+                <div class="col-auto">
+                    <div class="fs-3 badge text-bg-secondary">지역별 인기 모임</div><!--TODO 인기 모임 추가-->
                 </div>
-                <hr />
-            </div>  <!--  favLocaionProgramHeader  -->
-            <div name="favLocaionEvent">  <!--  좌우 스크롤  -->
-                <span name="eventCard"></span>
-                <span name="eventCard"></span>
-                <span name="eventCard"></span>
-                <span name="eventCard"></span>
             </div>
+            <div class="row mb-5" id="BestClubContainer"></div>
         </div>  <!--  favLocationEvent  -->
     </th:block>
 </th:block>
-<script>
-    var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
-        center : new kakao.maps.LatLng(36.2683, 127.6358), // 지도의 중심좌표
-        level : 14 // 지도의 확대 레벨
-    });
+<script th:inline="javascript">
+    $(document).ready(function() {
 
-    // 마커 클러스터러를 생성합니다
-    // 마커 클러스터러를 생성할 때 disableClickZoom 값을 true로 지정하지 않은 경우
-    // 클러스터 마커를 클릭했을 때 클러스터 객체가 포함하는 마커들이 모두 잘 보이도록 지도의 레벨과 영역을 변경합니다
-    // 이 예제에서는 disableClickZoom 값을 true로 설정하여 기본 클릭 동작을 막고
-    // 클러스터 마커를 클릭했을 때 클릭된 클러스터 마커의 위치를 기준으로 지도를 1레벨씩 확대합니다
-    var clusterer = new kakao.maps.MarkerClusterer({
-        map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
-        averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-        minLevel: 10, // 클러스터 할 최소 지도 레벨
-        disableClickZoom: true // 클러스터 마커를 클릭했을 때 지도가 확대되지 않도록 설정한다
-    });
+        // ********** 변수 선언 **********
 
-    // 데이터를 가져오기 위해 jQuery를 사용합니다
-    // 데이터를 가져와 마커를 생성하고 클러스터러 객체에 넘겨줍니다
-    $.get("/sbadmin/js/chicken.json", function(data) {
-        // 데이터에서 좌표 값을 가지고 마커를 표시합니다
-        // 마커 클러스터러로 관리할 마커 객체는 생성할 때 지도 객체를 설정하지 않습니다
-        var markers = $(data.positions).map(function(i, position) {
-            return new kakao.maps.Marker({
-                position : new kakao.maps.LatLng(position.lat, position.lng)
-                ,
+        var map;
+        var clusterer;
+        var userMarker; // 사용자 위치 마커
+        var modalProgramType = "DRAMA";
+        var modalLocationType = "SEOUL";
+        var modalProgramTypeName;
+        var modalLocationTypeName;
+        var programId;
+        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/2018/mw/m640/ico_marker.png",
+            imageSize = new kakao.maps.Size(30, 30),
+            imageOption = {offset: new kakao.maps.Point(20, 40)};
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+        // ********** 페이지 로딩시 실행할 함수들 **********
+        getBestProgramList();
+        kakaoMap();
+
+        // 검색창에 값변경시
+        $('#search-text').on('keyup', function () {
+            console.log($(this).val());
+            $.ajax({
+                url: '/program/search/' + $(this).val(),
+                type: 'GET',
+                success: function (data) {
+                    console.log(data);
+                    changeDropdown(data);
+                    programId = null;
+                    // 드롭다운 보여주기
+                    $('#searched-list').css('display', 'block')
+                }
             });
         });
 
-        // 클러스터러에 마커들을 추가합니다
-        clusterer.addMarkers(markers);
+        // 인기 작품 리스트 불러오기
+        function getBestProgramList() {
+            $.ajax({
+                type: "get",
+                url: "/search/bestProgramTypeList",
+                data: {
+                    programType: modalProgramType,
+                    locationType: modalLocationType
+                },
+                success: function (result) {
+                    console.log("인기 작품 목록 요청 성공!");
+                    console.log(result);
+                    // 인기작품 목록 화면에 띄우기
+                    changeBestProgramList(result);
+                },
+                error: function (e) {
+                    console.log("인기글 목록 요청 실패....");
+                    console.log(e);
+                },
+            });
+        }
+
+        // 인기 작품 목록 화면에 띄우기
+        function changeBestProgramList(list) {
+            var html = '';
+            for (let i = 0; i < list.length; i++) {
+
+                html += '<div class="col-3 ml-1 mr-1 bestProgramCard">';
+                html += '<div hidden="hidden" class="programSeq">' + list[i].seq + '</div>';
+                html += '<div>';
+                html += '<img src="' + list[i].thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid" style="height: 30vw" alt="...">';
+                html += '<div class="card-body">';
+                html += '<div class="row mb-2">';
+                var title = list[i].title;
+                if (title.length > 8) {
+                    title = title.substring(0, 8) + "...";
+                }
+                html += '<div class="col-auto card-title fs-4">' + title + '</div>';
+                html += '</div>';
+                html += '<div class="row">';
+                html += '<div class="col-auto badge text-bg-secondary fs-6 d-flex justify-content-center align-items-center">';
+                html += getProgramType(list[i].programType);
+                html += '</div>';
+                html += '</div>';
+                html += '<div class="row">';
+                html += '<div class="col-12">';
+                html += '<div class="fs-5">' + list[i].startDate.substring(0,10) + ' ~ </div>';
+                html += '<div class="fs-5">' + list[i].endDate.substring(0,10) + '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+            }
+            $('#BestProgramContainer').html(html);
+        }
+
+        function changeDropdown(data) {
+            console.log(data);
+            let html = '';
+            data.forEach(function (program) {
+                html += '<li><a class="dropdown-item" href="#" data-programId="' + program.id + '">' + program.title + '</a></li>';
+            });
+            $('#searched-list').html(html);
+        }
+
+        // 사이드 검색창 상세 정보 바꾸기
+        function changeSideInfo(data) {
+
+            // ENUM으로 바꾸기
+            var programType = data.programType;
+            var location = data.location;
+
+            if (programType === 'DRAMA') {
+                programType = '연극';
+            } else if (programType === 'MUSICAL') {
+                programType = '뮤지컬/오페라';
+            } else if (programType === 'EXHIBITION') {
+                programType = '전시';
+            } else if (programType === 'CONCERT') {
+                programType = '음악/콘서트';
+            } else if (programType === 'ETC') {
+                programType = '기타';
+            }
+
+            if (location === 'SEOUL') {
+                location = '서울';
+            } else if (location === 'GYEONGGI') {
+                location = '경기';
+            } else if (location === 'INCHEON') {
+                location = '인천';
+            } else if (location === 'DAEJEON') {
+                location = '대전';
+            } else if (location === 'GWANGJU') {
+                location = '광주';
+            } else if (location === 'DAEGU') {
+                location = '대구';
+            } else if (location === 'BUSAN') {
+                location = '부산';
+            } else if (location === 'ULSAN') {
+                location = '울산';
+            } else if (location === 'SEJONG') {
+                location = '세종';
+            } else if (location === 'JEJU') {
+                location = '제주';
+            } else if (location === 'GANGWON') {
+                location = '강원';
+            } else if (location === 'CHUNGBUK') {
+                location = '충북';
+            } else if (location === 'CHUNGNAM') {
+                location = '충남';
+            } else if (location === 'JEONBUK') {
+                location = '전북';
+            } else if (location === 'JEONNAM') {
+                location = '전남';
+            } else if (location === 'GYEONGBUK') {
+                location = '경북';
+            } else if (location === 'GYEONGNAM') {
+                location = '경남';
+            }
+
+            var programDate = data.startDate.substring(0, 10) + ' ~ ' + data.endDate.substring(0, 10);
+
+            let html = '';
+            html += '<img src="' + data.thumbnail + '" class="card-img-top" alt="...">';
+            html += '<div class="card-body">';
+            html += '<h5 class="card-title">' + data.title + '</h5>';
+            html += '<p class="card-text" id="staticMap">'+ getStaticMap(data) +'지도 예정</p>';// TODO: 지도 넣기
+            html += '</div>';
+            html += '<ul class="list-group list-group-flush">';
+            html += '<li class="list-group-item">' + programType + '</li>';
+            html += '<li class="list-group-item">' + location + '</li>';
+            html += '<li class="list-group-item">' + programDate + '</li>';
+            html += '</ul>';
+            html += '<div class="card-body">';
+            html += '<div class="col p-0">';
+            html += '<button id="#bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>';
+            html += '</div>';
+            html += '<div class="col p-0">';
+            html += '<button class="fa-regular fa-clipboard w-75 h-75"></button>';
+            html += '</div>';
+            html += '</div>';
+
+            $('#search-info-box').html(html);
+        }
+
+        // 지도 이미지 생성
+        function getStaticMap(data) {
+                var locationX = data.locationX;
+                var locationY = data.locationY;
+                var markerPosition  = new kakao.maps.LatLng(locationY, locationX);
+                var marker = {
+                    position: markerPosition
+                };
+                var mapContainer = document.getElementById('staticMap'), // 지도를 표시할 div
+                    mapOption = {
+                        center: new kakao.maps.LatLng(locationY, locationX), // 지도의 중심좌표
+                        level: 3, // 지도의 확대 레벨
+                        marker: marker // 이미지 지도에 표시할 마커
+                    };
+                var staticMap = new kakao.maps.StaticMap(mapContainer, mapOption); // 지도를 생성
+        }
+
+        // 작품 타입 가져오기
+        function getProgramType(type) {
+            if (type == "DRAMA") {
+                return "연극";
+            } else if (type == "MUSICAL") {
+                return "뮤지컬/오페라";
+            } else if (type == "CONCERT") {
+                return "음악/콘서트";
+            } else if (type == "EXHIBITION") {
+                return "전시";
+            } else if (type == "ETC") {
+                return "기타";
+            }
+        }
+
+
+
+        // 카카오맵
+        function kakaoMap() {
+            console.log("kakaoMap 호출!");
+            var mapContainer = document.getElementById('map'),
+                mapOption = {
+                    center: new kakao.maps.LatLng(37.566826, 126.9786567),
+                    level: 3
+                };
+            map = new kakao.maps.Map(mapContainer, mapOption);
+
+            clusterer = new kakao.maps.MarkerClusterer({
+                map: map,
+                averageCenter: true,
+                minLevel: 5
+            });
+            getCurrentLocationAndPrograms();
+        }
+
+        // 현재 위치와 인기 작품 가져오기
+        function getCurrentLocationAndPrograms() {
+            console.log("getCurrentLocationAndPrograms 호출!");
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    // 사용자의 현재 위치에 마커 생성
+                    userMarker = new kakao.maps.Marker({
+                        position: new kakao.maps.LatLng(lat, lng),
+                        image: markerImage,
+                        map: map,
+                        title: "현재 위치"
+                    });
+                    map.setCenter(new kakao.maps.LatLng(lat, lng));
+                    reverseGeocode(lat, lng, function(location) {
+                        getLocationBestList(location);
+                    });
+                }, function(error) {
+                    console.error('Geolocation error:', error);
+                    alert('위치 정보를 가져오는 데 실패했습니다.');
+                });
+            } else {
+                alert('이 브라우저는 위치 추적을 지원하지 않습니다.');
+            }
+        }
+
+        // 사용자 위치를 주소로 변환 - 사용자 위치기반 인기 작품 가져오기 위해
+        function reverseGeocode(lat, lng, callback) {
+            console.log("reverseGeocode 호출!");
+            console.log(lat, lng);
+            $.ajax({
+                url: 'https://dapi.kakao.com/v2/local/geo/coord2address.json',
+                type: 'GET',
+                data: {
+                    x: lng,
+                    y: lat
+                },
+                headers: {
+                    'Authorization': 'KakaoAK d9cba248832f4faec5a2780994bcebdd' // 발급받은 REST API 키
+                },
+                success: function(response) {
+                    if (response && response.documents && response.documents.length > 0) {
+                        const addressInfo = response.documents[0].address;
+                        const location = addressInfo.region_1depth_name;
+                        callback(location);
+                    } else {
+                        console.error('No address found for the given coordinates.');
+                        callback(null);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Geocoding error:', error);
+                    callback(null);
+                }
+            });
+        }
+
+        // 현재 위치 주변의 인기 작품 가져오기
+        function getLocationBestList(location) {
+            console.log("getLocationBestList 호출!");
+            console.log(location);
+            $.ajax({
+                url: '/search/locationBestList',
+                type: 'GET',
+                data: { location: location },
+                success: function(data) {
+                    var markers = data.map(function(result) {
+                        var marker = new kakao.maps.Marker({
+                            position: new kakao.maps.LatLng(result.locationY, result.locationX),
+                            title: result.title
+                        });
+                        kakao.maps.event.addListener(marker, 'click', function() {
+                            changeSideInfo(result);
+                        });
+                        return marker;
+                    });
+                    clusterer.addMarkers(markers);
+                },
+                error: function(xhr, status, error) {
+                    console.error('작품 정보 로드 실패:', error);
+                }
+            });
+        }
+
+        // 작품 검색 결과 지도에 표시와 맵 이동
+        function changeSetMap(data) {
+            var marker = new kakao.maps.Marker({
+                position: new kakao.maps.LatLng(data.locationY, data.locationX),
+                title: data.title
+            });
+            marker.setMap(map);
+            map.setCenter(new kakao.maps.LatLng(data.locationY, data.locationX));
+            map.setLevel(3);
+        }
+
+        // ********** 클릭시 이벤트들 **********
+
+        // 모달 닫기
+        $(document).on('click', '.close', function () {
+            $('#type-modal').css('display', 'none');
+            $('#location-modal').css('display', 'none');
+        });
+
+        // 검색 버튼 클릭시 기본 이벤트 제거
+        $('#search-btn').click(function (e) {
+            e.preventDefault();
+        });
+
+        // 드롭다운 외부 클릭시 드롭다운 숨기기
+        $(document).mouseup(function (e) {
+            var container = $(".dropdown");
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                container.find('.dropdown-menu').css('display', 'none');
+            }
+        });
+
+        // 드롭다운 내부 클릭시 input에 값 넣기
+        $(document).on('click', '.dropdown-item', function () {
+            $('#search-text').val($(this).text());
+            programId = $(this).data('programid');
+            $('.dropdown-menu').css('display', 'none');
+        });
+
+        // 검색 버튼 클릭시 카드 내부 변경
+        $('#search-btn').click(function () {
+            console.log(programId);
+            if (programId === undefined) {
+                alert('검색 결과를 선택해주세요.');
+                return;
+            } else if (programId === null) {
+                alert('검색 결과가 없습니다.');
+                return;
+            } else if (programId !== null) {
+                $.ajax({
+                    url: '/program/find/' + programId,
+                    type: 'GET',
+                    success: function (data) {
+                        console.log(data);
+                        changeSetMap(data);
+                        changeSideInfo(data);
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+
+        // 모달 닫기
+        $(document).on('click', '.close', function () {
+            $('#type-modal').css('display', 'none');
+            $('#location-modal').css('display', 'none');
+        });
+        // 분류 모달과 지역 모달에서 선택시 값 변경
+        $(document).on('click', ".pTypeBtn", function () {
+            modalProgramType = $(this).data('type');
+            modalProgramTypeName = $(this).text();
+            $('#type-modal').modal('hide');
+            getBestProgramList()
+        });
+        $(document).on('click', ".lTypeBtn", function () {
+            modalLocationType = $(this).data('loc');
+            modalLocationTypeName = $(this).text();
+            $('#location-modal').modal('hide');
+            getBestProgramList()
+        });
+
+        $("#setMap").on('click', function () {
+            getCurrentLocationAndPrograms();
+        });
     });
-
-    // 마커 클러스터러에 클릭이벤트를 등록합니다
-    // 마커 클러스터러를 생성할 때 disableClickZoom을 true로 설정하지 않은 경우
-    // 이벤트 헨들러로 cluster 객체가 넘어오지 않을 수도 있습니다
-    kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
-
-        // 현재 지도 레벨에서 1레벨 확대한 레벨
-        var level = map.getLevel()-1;
-
-        // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
-        map.setLevel(level, {anchor: cluster.getCenter()});
-    });
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var lat = position.coords.latitude;
-            var lon = position.coords.longitude;
-            var locPosition = new kakao.maps.LatLng(lat, lon);
-            displayMarker(locPosition, "현재 위치");
-        });
-    } else {
-        var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),
-            message = '현재 위치를 찾을 수 없습니다.'
-        displayMarker(locPosition, message);
-    }
-    // 지도에 마커와 인포윈도우를 표시하는 함수입니다
-    function displayMarker(locPosition, message) {
-
-        // 마커를 생성합니다
-        var marker = new kakao.maps.Marker({
-            map: map,
-            position: locPosition
-        });
-        kakao.maps.event.addListener(marker, 'markerclick', function(marker) {
-
-            // 현재 지도 레벨에서 1레벨 확대한 레벨
-            var level = map.getLevel()-7;
-
-            // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
-            map.setLevel(level, {anchor: marker.getCenter()});
-        });
-
-        var iwContent = message, // 인포윈도우에 표시할 내용
-            iwRemoveable = true;
-
-        // 인포윈도우를 생성합니다
-        var infowindow = new kakao.maps.InfoWindow({
-            content: iwContent,
-            removable: iwRemoveable
-        });
-
-        // 인포윈도우를 마커위에 표시합니다
-        infowindow.open(map, marker);
-
-        // 지도 중심좌표를 접속위치로 변경합니다
-        map.setCenter(locPosition);
-
-    }
 </script>
 </html>
