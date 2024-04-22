@@ -33,6 +33,15 @@ public class FollowController {
         return new ResponseEntity<>(followingList, HttpStatus.OK);
     }
 
+    // 무한 스크롤을 위한 페이징 처리
+    @GetMapping("/{memberId}/following/{start}")
+    public ResponseEntity<List<FollowDTO>> followingListWithPaging(@PathVariable("memberId") Long memberId, @PathVariable("start") Long start) {
+        log.info("팔로우 리스트 무한 스크롤");
+        log.info("********** FollowController GET /follows/:userid/follow - memberId : {}", memberId);
+        List<FollowDTO> followListWithPaging = followService.getFollowListWithPaging(memberId, start);
+        return new ResponseEntity<>(followListWithPaging, HttpStatus.OK);
+    }
+
     // 회원을 팔로우 하고 있는 팔로워 리스트 조회
     @GetMapping("/{memberId}/follower")
     public ResponseEntity<List<FollowDTO>> followerList(@PathVariable("memberId") Long memberId) {

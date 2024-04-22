@@ -8,26 +8,24 @@
         <!-- 팔로우 목록 모달 -->
         <div class="modal fade" id="followList-modal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
+                <div class="modal-content" id="test1">
+                    <div class="modal-header" id="test2">
                         <h1 class="modal-title fs-5">내 팔로우 목록</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body container">
+                    <div class="modal-body container" id="followingListModalBody">
 
                         <!-- 팔로우 목록 양식-->
-                        <div class="row">
+                        <!--<div class="row">
 
-                            <!-- 프로필 -->
+                            &lt;!&ndash; 프로필 &ndash;&gt;
                             <div class="col-2">
                                 <i class="fa-solid fa-circle-user fa-2x d-flex justify-content-center align-items-center"></i>
                             </div>
 
                             <div class="col">
-
                                 <div class="row d-flex justify-content-between align-items-center">
-
-                                    <!-- 닉네임, 지역 -->
+                                    &lt;!&ndash; 닉네임, 지역 &ndash;&gt;
                                     <div class="col-auto">
                                         <div class="input-group">
                                             <button type="button" class="btn btn-outline-secondary">asd</button>
@@ -35,7 +33,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- 팔로우 버튼 -->
+                                    &lt;!&ndash; 팔로우 버튼 &ndash;&gt;
                                     <div class="col-auto">
                                         <div class="input-group">
                                             <button type="button" class="btn btn-dark">UnFollow</button>
@@ -43,74 +41,12 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
 
                     </div>
                 </div>
             </div>
         </div>
-
-
-        <!-- 팔로잉 모달 -->
-        <div class="modal-dialog modal-dialog-scrollable"><!-- 스크롤 모달 -->
-            <div class="modal fade" id="followingModal" tabindex="-1" role="dialog"
-                 aria-labelledby="followingModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="followingModalLabel">팔로잉</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div id="followingList"></div>
-                            </form>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div id="memberList"></div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> <!-- 스크롤 모달 -->
-
-        <!-- 팔로워 모달 -->
-        <div class="modal-dialog modal-dialog-scrollable"><!-- 스크롤 모달 -->
-            <div class="modal fade" id="followerModal" tabindex="-1" role="dialog" aria-labelledby="followerModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="followerModalLabel">팔로워</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div id="followerList"></div>
-                            </form>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <!--<div id="memberList"></div>-->
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> <!-- 스크롤 모달 -->
-
 
         <!-- TODO 마이페이지 기능 구현 및 디자인 -->
 
@@ -258,13 +194,29 @@
 
         console.log("memberIdVal : " + memberIdVal);
 
-        let flowListDiv = $('#followingList');
-        let FlwerListDiv = $('#followerList');
-        let memberListDiv = $('#memberList');
-        getFollowingList();
-        getFollowerList();
+        let followingStart = 0;
 
-        function getFollowingList() {
+        // ********* 페이지 로딩시 함수 **********
+
+        // 팔로잉 인원수 가져오기
+        getFollowingNum();
+        // 팔로워 인원수 가져오기
+        getFollowerNum();
+
+        // ********** 클릭시 이벤트 **********
+
+        // 팔로잉 버튼 클릭시 이벤트
+        $('#followNum').on('click', function () {
+            console.log("팔로잉 버튼 클릭");
+            followingStart = 0;
+            getFollowingListWithpaging();
+
+        });
+
+        // ********** 각종 함수들 **********
+
+        // 팔로잉 하고 있는 인원수 가져오기
+        function getFollowingNum() {
             $.ajax({
                 type: 'GET',
                 url: '/follows/' + memberIdVal + '/following',
@@ -280,7 +232,8 @@
             });
         }
 
-        function getFollowerList() {
+        // 회원을 팔로우 하고 있는 인원수 가져오기
+        function getFollowerNum() {
             $.ajax({
                 type: 'GET',
                 url: '/follows/' + memberIdVal + '/follower',
@@ -296,65 +249,167 @@
             });
         }
 
+        // 팔로잉 리스트 가져오기
+        function getFollowingListWithpaging() {
+            $.ajax({
+                type: 'GET',
+                url: '/follows/' + memberIdVal + '/following/' + followingStart,
+                success: function (follow) {
+                    console.log("팔로잉 리스트 가져오기 성공");
+                    console.log(follow);
 
-        function printFollowingList(listFollowing) {
-            console.log("팔로잉 리스트 출력");
-            console.log(listFollowing);
-            let html = '';
-            for (let i = 0; i < listFollowing.length; i++) {
-                html += '<div name="member">';
-                html += '<span name="memberImage"></span>';
-                html += '<span name="memberInfo">';
-                html += '<div name="username">닉네임 ' + listFollowing[i].username + '</div>';
-                html += '<div name="memberInfoBottom">';
-                html += '<span name="location">지역 ' + listFollowing[i].location + '</span>';
-                html += '<span name="introduce">자기소개 ' + listFollowing[i].introduction + '</span>';
-                html += '</div></span></div>';
-                html += '<span name="follow-button"></span>';
-                html += '<button type="button" class="btn btn-info unFollowBtn" data-unflowbtn="' + listFollowing[i].id + '">팔로잉</button>';
-            }
-            flowListDiv.html(html);
-        }
 
-        function printMemberList(memberList) {
-            let html = '';
-            for (let i = 0; i < memberList.length; i++) {
-                html += '<div name="member">';
-                html += '<span name="memberImage"></span>';
-                html += '<span name="memberInfo">';
-                html += '<div name="username">닉네임' + memberList[i].username + '</div>';
-                html += '<div name="memberInfoBottom">';
-                html += '<span name="location">지역' + memberList[i].location + '</span>';
-                html += '<span name="introduce">자기소개' + memberList[i].introduction + '</span>';
-                html += '</div></span></div>';
-                html += '<span name="follow-button"></span>';
-                html += '<button type="button" class="btn btn-primary followBtn" data-flwbtn="' + memberList[i].id + '">팔로우</button>';
-            }
-            memberListDiv.html(html);
-        }
+                    if (follow.length === 0) {
+                        console.log("팔로잉 리스트가 없습니다.");
+                    } else {
+                        // 리스트
+                        printFollowingList(follow);
+                    }
 
-        function printFollowerList(listFollower) {
-            console.log("팔로워 리스트 출력");
-            console.log(listFollower);
-            let html = '';
-            for (let i = 0; i < listFollower.length; i++) {
-                html += '<div name="member">';
-                html += '<span name="memberImage"></span>';
-                html += '<span name="memberInfo">';
-                html += '<div name="username">닉네임 ' + listFollower[i].username + '</div>';
-                html += '<div name="memberInfoBottom">';
-                html += '<span name="location">지역 ' + listFollower[i].location + '</span>';
-                html += '<span name="introduce">자기소개 ' + listFollower[i].introduction + '</span>';
-                html += '</div></span></div>';
-                html += '<span name="follow-button"></span>';
-                if (listFollower[i].id == null) {
-                    html += '<button type="button" class="btn btn-info unFollowBtn" data-unflowbtn="' + listFollower[i].id + '">팔로잉</button>';
-                } else {
-                    html += '<button type="button" class="btn btn-primary followBtn" data-flwbtn="' + listFollower[i].id + '">팔로우</button>';
+
+                },
+                error: function (e) {
+                    console.log("팔로잉 리스트 가져오기 실패");
+                    console.log(e);
                 }
-            }
-            FlwerListDiv.html(html);
+            });
         }
+
+        // 팔로워 리스트 출력하기
+        function printFollowingList(follow) {
+           /* <div className="row">
+
+                <!-- 프로필 -->
+                <div className="col-2">
+                    <i className="fa-solid fa-circle-user fa-2x d-flex justify-content-center align-items-center"></i>
+                </div>
+
+                <div className="col">
+                    <div className="row d-flex justify-content-between align-items-center">
+                        <!-- 닉네임, 지역 -->
+                        <div className="col-auto">
+                            <div className="input-group">
+                                <button type="button" className="btn btn-outline-secondary">asd</button>
+                                <span className="input-group-text">지역</span>
+                            </div>
+                        </div>
+
+                        <!-- 팔로우 버튼 -->
+                        <div className="col-auto">
+                            <div className="input-group">
+                                <button type="button" className="btn btn-dark">UnFollow</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*/
+
+            let followingListModalBody = $('#followingListModalBody');
+            let html = '';
+            for (let i = 0; i < follow.length; i++) {
+                html += '<div class="row mt-2">';
+                html += '<div class="col-2">';
+                html += '<i class="fa-solid fa-circle-user fa-2x d-flex justify-content-center align-items-center"></i>';
+                html += '</div>';
+                html += '<div class="col">';
+                html += '<div class="row d-flex justify-content-between align-items-center">';
+                html += '<div class="col-auto">';
+                html += '<div class="input-group">';
+                html += '<button type="button" class="btn btn-outline-secondary">' + follow[i].followDTO.username + '</button>';
+                let locationString = locationEnumToString(follow[i].followDTO.location);
+                html += '<span class="input-group-text">' + locationString + '</span>';
+                html += '</div>';
+                html += '</div>';
+                html += '<div class="col-auto">';
+                html += '<div class="input-group">';
+                html += '<button type="button" class="btn btn-dark">UnFollow</button>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+            }
+            // 팔로잉 리스트 html 추가하기
+            followingListModalBody.append(html);
+        }
+
+        // 팔로잉 모달이 닫힐 때 팔로잉 리스트 초기화
+        $('#followList-modal').on('hidden.bs.modal', function () {
+            $('#followingListModalBody').empty();
+            followingStart = 0;
+        });
+
+        // 팔로잉 모달내에  스크롤이 바닥에 닿았을 때
+        $('#followingListModalBody').on('scroll', function () {
+            console.log("스크롤 이벤트 발생");
+            let scrollHeight = $(this)[0].scrollHeight;
+            let scrollTop = $(this).scrollTop();
+            let followingListModalBodyHeight = $('#followingListModalBody').height();
+            let padding_top = $('#followingListModalBody').css('padding-top');
+            let padding_bottom = $('#followingListModalBody').css('padding-bottom');
+
+            // padding-top, padding-bottom 값 제거
+            padding_top = padding_top.replace('px', '');
+            padding_bottom = padding_bottom.replace('px', '');
+            // padding-top, padding-bottom 값 int로 변환
+            padding_top = parseInt(padding_top);
+            padding_bottom = parseInt(padding_bottom);
+            followingListModalBodyHeight = followingListModalBodyHeight + padding_top + padding_bottom;
+
+            // modal-body
+
+            if (scrollTop + followingListModalBodyHeight+1 >= scrollHeight) {
+                console.log("스크롤이 바닥에 닿았습니다.");
+                followingStart += 20;
+                getFollowingListWithpaging();
+            }
+        });
+
+
+        // 지역 ENUM 값 변환
+        function locationEnumToString(locationEnum) {
+            switch (locationEnum) {
+                case 'SEOUL':
+                    return '서울';
+                case 'BUSAN':
+                    return '부산';
+                case 'DAEGU':
+                    return '대구';
+                case 'INCHEON':
+                    return '인천';
+                case 'GWANGJU':
+                    return '광주';
+                case 'DAEJEON':
+                    return '대전';
+                case 'ULSAN':
+                    return '울산';
+                case 'SEJONG':
+                    return '세종';
+                case 'GYEONGGI':
+                    return '경기';
+                case 'KANGWON':
+                    return '강원';
+                case 'CHUNGBUK':
+                    return '충북';
+                case 'CHUNGNAM':
+                    return '충남';
+                case 'JEONBUK':
+                    return '전북';
+                case 'JEONNAM':
+                    return '전남';
+                case 'GYEONGBUK':
+                    return '경북';
+                case 'GYEONGNAM':
+                    return '경남';
+                case 'JEJU':
+                    return '제주';
+                default:
+                    return '지역';
+            }
+        }
+
+
+
     });
 </script>
 </html>

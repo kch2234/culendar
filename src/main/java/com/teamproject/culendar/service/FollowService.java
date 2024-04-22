@@ -74,6 +74,19 @@ public class FollowService {
         return followingList;
     }
 
+    // 무한 스크롤을 위한 페이징 처리
+    public List<FollowDTO> getFollowListWithPaging(Long memberId, Long start) {
+
+        List<Follow> findFollowingList = followRepository.findAllByMemberIdWtihPaging(memberId, start);
+        List<FollowDTO> followingList = new ArrayList<>();
+        for (Follow follow : findFollowingList) {
+            followingList.add(new FollowDTO(follow));
+        }
+        log.info("********** FollowService getFollowListWithPaging - followingList : {}", followingList);
+
+        return followingList;
+    }
+
     // 팔로워 리스트 조회
     public List<FollowDTO> getFollowerList(Long memberId) {
 

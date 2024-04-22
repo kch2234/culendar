@@ -107,6 +107,16 @@ public class MemberService {
         return memberRepository.findById(id).orElse(null);
     }
 
+    public Long TestsaveMember(MemberForm memberForm) {
+        // 비밀번호 암호화
+        memberForm.setPassword(passwordEncoder.encode(memberForm.getPassword()));
+        Member member = memberForm.toEntity();
+        log.info("********** MemberService Test - member : {}", member.getBirth());
+        Member saved = memberRepository.save(memberForm.toEntity());
+        log.info("********** MemberService saveMember - saved : {}", saved);
+        return saved.getId();
+    }
+
 
 
 }
