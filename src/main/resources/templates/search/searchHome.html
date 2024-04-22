@@ -147,6 +147,7 @@
 
         // ********** 페이지 로딩시 실행할 함수들 **********
         getBestProgramList();
+        getBestEventBoardList();
         kakaoMap();
 
         // 검색창에 값변경시
@@ -187,8 +188,32 @@
             });
         }
 
+        // 인기 모임 리스트 불러오기
+        function getBestEventBoardList() {
+            $.ajax({
+                type: "get",
+                url: "/search/bestEventBoardList",
+                data: {
+                    programType: modalProgramType,
+                    locationType: modalLocationType
+                },
+                success: function (result) {
+                    console.log("인기 모임 목록 요청 성공!");
+                    console.log(result);
+                    // 인기모임 목록 화면에 띄우기
+                    printCardList(result);
+                },
+                error: function (e) {
+                    console.log("인기모임 목록 요청 실패....");
+                    console.log(e);
+                },
+            })
+        }
+
         // 인기 작품 목록 화면에 띄우기
         function changeBestProgramList(list) {
+            console.log("changeBestProgramList 호출!");
+            console.log(list);
             var html = '';
             for (let i = 0; i < list.length; i++) {
 
@@ -220,6 +245,38 @@
                 html += '</div>';
             }
             $('#BestProgramContainer').html(html);
+        }
+
+        // 인기 모임 목록 화면에 띄우기
+        function printCardList(eventList) {
+            console.log("printCardList 호출!");
+            console.log(eventList);
+            var html = '';
+            for (let i = 0; i < eventList.length; i++) {
+                html += '<div class="col-3 ml-1 mr-1 eventCardContainer">';
+                html += '<div hidden="hidden" class="eventBoardId">' + eventList[i].id+ '</div>';
+                html += '<div>';
+                html += '<img src="' + eventList[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid w-100" style="" alt="...">';
+                html += '<div class="card-body">';
+                html += '<div class="row mb-2">';
+                // 제목 길이가 11자 이상이면 11자로 자르기
+                var title = eventList[i].title;
+                if (title.length > 10) {
+                    title = title.substring(0, 10) + '...';
+                }
+                html += '<div class="col-auto card-title fs-4">' + title + '</div>';
+                // html += '<div class="col-2 badge text-bg-secondary fs-6 d-flex justify-content-center align-items-center">' + getBoardType(eventList[i].boardType) + '</div>';
+                html += '</div>';
+                var content = eventList[i].content;
+                if (content.length > 30) {
+                    content = content.substring(0, 30) + '...';
+                }
+                html += '<p class="card-text">' + content + '</p>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+            }
+            $("#eventCardContainer").html(html);
         }
 
         function changeDropdown(data) {
@@ -292,7 +349,7 @@
             html += '<img src="' + data.thumbnail + '" class="card-img-top" alt="...">';
             html += '<div class="card-body">';
             html += '<h5 class="card-title">' + data.title + '</h5>';
-            html += '<p class="card-text" id="staticMap">'+ getStaticMap(data) +'지도 예정</p>';// TODO: 지도 넣기
+            html += '<p class="card-text" id="staticMap">지도 예정</p>';// TODO: 지도 넣기
             html += '</div>';
             html += '<ul class="list-group list-group-flush">';
             html += '<li class="list-group-item">' + programType + '</li>';
@@ -315,17 +372,19 @@
         function getStaticMap(data) {
                 var locationX = data.locationX;
                 var locationY = data.locationY;
-                var markerPosition  = new kakao.maps.LatLng(locationY, locationX);
+                var markerPosition  = new kakao.maps.LatLng(33.450701, 126.570667);
                 var marker = {
                     position: markerPosition
                 };
-                var mapContainer = document.getElementById('staticMap'), // 지도를 표시할 div
-                    mapOption = {
-                        center: new kakao.maps.LatLng(locationY, locationX), // 지도의 중심좌표
+                var staticMapContainer = document.getElementById('staticMap'), // 지도를 표시할 div
+                    staticMapOption = {
+                        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
                         level: 3, // 지도의 확대 레벨
                         marker: marker // 이미지 지도에 표시할 마커
                     };
-                var staticMap = new kakao.maps.StaticMap(mapContainer, mapOption); // 지도를 생성
+                var staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption); // 지도를 생성
+                staticMap.setCenter(locationY, locationX);
+                marker.setPosition(locationY, locationX);
         }
 
         // 작품 타입 가져오기
@@ -530,6 +589,12 @@
             modalLocationTypeName = $(this).text();
             $('#location-modal').modal('hide');
             getBestProgramList()
+        });
+
+        // ********** 작품 카드 클릭시 해당 작품 상세 페이지로 이동 **********
+        $('#BestProgramContainer').on('click', '.bestProgramCard', function () {
+            var seq = $(this).find('.programSeq').text();
+            location.href = "/program/" + seq;
         });
 
         $("#setMap").on('click', function () {
