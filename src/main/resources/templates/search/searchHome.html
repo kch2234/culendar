@@ -45,14 +45,14 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div><!--TODO: 분류, 지역선택 모달 띄우고, 선택하면 모달 닫히기-->
 
         <!-- 메인 컨테이너 영역 -->
         <div class="w-75 container m-auto">
             <div class="row">
                 <!-- 지도 영역 -->
                 <div class="col-9">
-                    <div id="map" style="width:100%;height:450px;"></div>
+                    <div id="map" style="width:100%;height:450px;"></div><!--TODO: 지도 크기 재설정 100%로 하면 지도의 크기가 작아짐-->
                     <div id="setMap" class="btn btn-primary">현재 위치로 이동</div>
                 </div>
                 <!-- TODO 사이드 검색창 -->
@@ -120,7 +120,7 @@
         <div id="favLocationEvent" class="container">  <!--  좌우 스크롤  -->
             <div class="row mt-5 mb-3">
                 <div class="col-auto">
-                    <div class="fs-3 badge text-bg-secondary">지역별 인기 모임</div>
+                    <div class="fs-3 badge text-bg-secondary">지역별 인기 모임</div><!--TODO 인기 모임 추가-->
                 </div>
             </div>
             <div class="row mb-5" id="BestClubContainer"></div>
@@ -292,7 +292,7 @@
             html += '<img src="' + data.thumbnail + '" class="card-img-top" alt="...">';
             html += '<div class="card-body">';
             html += '<h5 class="card-title">' + data.title + '</h5>';
-            html += '<p class="card-text" id="staticMap">'+ getStaticMap(data) +'지도 예정</p>';
+            html += '<p class="card-text" id="staticMap">'+ getStaticMap(data) +'지도 예정</p>';// TODO: 지도 넣기
             html += '</div>';
             html += '<ul class="list-group list-group-flush">';
             html += '<li class="list-group-item">' + programType + '</li>';
