@@ -3,7 +3,6 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
-        <!--  TODO 텍스트 에디터 API  -->
 
         <div id="boardAddWrapper" class="mt-5">
 
@@ -75,7 +74,6 @@
 
                     <div class="col-12 input-group input-group-lg">
 
-                        <!--  TODO DB 연결  -->
                         <label class="input-group-text">모임 참가 신청을 자동으로 수락합니다.</label>
                         <div class="input-group-text">
                             <input class="form-check-input mt-0" type="checkbox" th:checked="${autoAccept}" th:field="*{autoAccept}">
@@ -93,7 +91,6 @@
                         <label class="input-group-text" for="filterGender">성별</label>
                         <select class="form-control" th:field="*{filterGender}">
                             <option th:each="filterGender: ${filterGender}" th:value="${filterGender.name()}" th:text="${filterGender.value}">
-                                <!--  TODO 버튼 누르면 드롭다운 되도록 연결  -->
                             </option>
                         </select>
                         <input id="filterGender" hidden="hidden" th:field="*{filterGender}">
@@ -115,15 +112,6 @@
                     </div>
 
                 </div>
-
-                <!--                <div class="form-group">-->
-                <!--                    <label class="text-blank" for="thumbnail">썸네일 이미지</label>-->
-                <!--                    <input type="file" th:field="*{thumbnail}" class="form-control" id="thumbnail">-->
-                <!--                </div>  &lt;!&ndash;  todo 이미지 첨부 기능 예정  &ndash;&gt;-->
-                <!--                <div class="form-group">-->
-                <!--                    <label class="text-blank" for="image">본문 이미지 첨부</label>-->
-                <!--                    <input type="file" th:field="*{image}" class="form-control" id="image">-->
-                <!--                </div>  &lt;!&ndash;  todo 이미지 첨부 기능 예정  &ndash;&gt;-->
 
                 <!--  내용 영역  -->
                 <div class="row mb-4">

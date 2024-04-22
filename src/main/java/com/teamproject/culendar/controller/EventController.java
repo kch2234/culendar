@@ -4,6 +4,7 @@ import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.EventBoard;
 import com.teamproject.culendar.domain.board.EventMemberList;
 import com.teamproject.culendar.domain.member.Member;
+import com.teamproject.culendar.domain.program.Program;
 import com.teamproject.culendar.dto.BoardDTO;
 import com.teamproject.culendar.dto.EventBoardDTO;
 import com.teamproject.culendar.dto.MemberDTO;
@@ -31,9 +32,8 @@ public class EventController {
   private final MemberService memberService;
   private final EventBoardService eventBoardService;
 
-  // TODO 모임 신청
   @PostMapping("/applyEventMember")
-  public ResponseEntity<String> applyEventMember(@RequestBody Map<String, Long> requestData) {
+  public ResponseEntity<String> applyEventMember(@RequestBody Map<String, Long> requestData) {  // *EventController* 모임 신청 관련 컨트롤러
     Long memberId = requestData.get("memberId");
     Long eventBoardId = requestData.get("eventBoardId");
     log.info("***** EventController /event/applyEventMember - memberId: {}", memberId);
@@ -45,8 +45,9 @@ public class EventController {
     eventMemberList.setMember(member);
 
     EventBoardDTO eventBoardDTO = eventBoardService.getOneBoard(eventBoardId);
-    // TODO EventBoardDTO -> EventBoard  변환
+    // EventBoardDTO -> EventBoard  변환
     EventBoard eventBoard = new EventBoard();
+    eventBoard.setId(eventBoardDTO.getId());
     eventMemberList.setEventBoard(eventBoard);
 
     boolean result = eventService.applyEventMember(eventMemberList);
