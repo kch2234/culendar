@@ -11,6 +11,10 @@
     width: 80%;
 }
 
+#boardModifyWrapper{
+    width: 80%;
+}
+
 #boardDetailWrapper {
     width: 60vw;
 }
@@ -31,6 +35,16 @@
 
 #signUpContainer{
     width: 60vw;
+}
+
+/* Chrome, Safari, Edge */
+#search-info-box::-webkit-scrollbar {
+    display: none;
+}
+
+/* Firefox */
+#search-info-box {
+    scrollbar-width: none;
 }
 
 textarea{

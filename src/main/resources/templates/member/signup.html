@@ -4,156 +4,6 @@
 <th:block th:replace="~{/layouts/baseNoMenu :: base(~{this::content})}">
     <th:block th:fragment="content">
 
-        <!--<div> &lt;!&ndash;  회원가입 영역 START &ndash;&gt;
-            <form action="" th:action th:object="${memberForm}" method="post">
-            <div name="profile">  &lt;!&ndash;  회원 프로필 영역 START  &ndash;&gt;
-                <span name="memberInfo">  &lt;!&ndash;  회원 프로필 사진 영역 START  &ndash;&gt;
-                    <div name="memberImage">  &lt;!&ndash;  회원 프로필 사진  &ndash;&gt;
-                        &lt;!&ndash; TODO: 추가예정
-                        <input type="file" th:field="*{profileImage}" name="profileImage">
-                        &ndash;&gt;
-                    </div>
-                    <div name="gernder-radio">  &lt;!&ndash;  버튼 영역  &ndash;&gt;
-                        <input type="radio" th:field="*{gender}" th:value="MALE">
-                        <span name="male-gender-radio">남성</span>
-                        <input type="radio" th:field="*{gender}" th:value="FEMALE">
-                        <span name="female-gender-radio">여성</span>
-                    </div>
-                    <div name="location">  &lt;!&ndash;  위치 영역  &ndash;&gt;
-                        <span name="location-dropdown">
-                                <select th:field="*{location}" th:value="SEOUL">
-                                    <option th:value="SEOUL">서울</option>
-                                    <option th:value="BUSAN">부산</option>
-                                    <option th:value="DAEGU">대구</option>
-                                    <option th:value="INCHEON">인천</option>
-                                    <option th:value="GWANGJU">광주</option>
-                                    <option th:value="DAEJEON">대전</option>
-                                    <option th:value="ULSAN">울산</option>
-                                    <option th:value="SEJONG">세종</option>
-                                    <option th:value="GYEONGGI">경기</option>
-                                    <option th:value="GANGWON">강원</option>
-                                    <option th:value="CHUNGBUK">충북</option>
-                                    <option th:value="CHUNGNAM">충남</option>
-                                    <option th:value="JEONBUK">전북</option>
-                                    <option th:value="JEONNAM">전남</option>
-                                    <option th:value="GYEONGBUK">경북</option>
-                                    <option th:value="GYEONGNAM">경남</option>
-                                    <option th:value="JEJU">제주</option>
-                                    <option th:value="ETC">기타</option>
-                                </select>
-                        </span>
-                        <span name="location-checkbox">
-                            &lt;!&ndash; 활동 지역 외 게시글, 작품 미노출 &ndash;&gt;
-                            <input type="checkbox" >
-                        </span>
-                    </div>
-                </span>  &lt;!&ndash;  회원 프로필 사진 영역 END  &ndash;&gt;
-                <span name="memberInfo-textbox">  &lt;!&ndash;  회원 정보 영역 START  &ndash;&gt;
-                    <div name="userId">
-                        <span name="userId-textbox"></span>
-                            <input type="text" th:field="*{userid}" placeholder="아이디">
-                        <span name="submit-button">
-                            <button type="button" id="checkUserIdBtn">중복확인</button>
-                        </span>
-                    </div>
-                    <div name="username">
-                        <span name="username-textbox"></span>
-                            <input type="text" th:field="*{username}" placeholder="닉네임">
-                        <span name="submit-button">
-                            <button type="button" id="checkUsernameBtn">중복확인</button>
-                        </span>
-                    </div>
-                    <div name="email">
-                        <span name="email-textbox"></span>
-                            <input type="email" th:field="*{email}" placeholder="이메일">
-                        <span name="submit-button">
-                            <button type="button" id="checkEmailBtn">중복확인</button>
-                        </span>
-                    </div>
-                    <div name="password">
-                        <span name="password-textbox"></span>
-                            <input type="password" th:field="*{password}" placeholder="비밀번호">
-                        <span name="password-textbox">
-                            <input type="password" id="" placeholder="비밀번호 재입력">
-                        </span>
-                    </div>
-                    <div name="phone">
-                        <span name="phone-textbox"></span>
-                            <input type="text" th:field="*{phone}" placeholder="전화번호">
-                        <span name="username-textbox">인증번호 입력</span>
-                            <input type="text" placeholder="인증번호 입력">
-                        <span name="submit-button">인증번호 확인
-                        </span>
-                    </div>
-                    <div name="birth">
-                        <span name="birth-textbox"></span>
-                            <input type="date" th:field="*{birth}" placeholder="생년월일">
-                        <span name="submit-button">중복확인</span>
-                    </div>
-                </span>  &lt;!&ndash;  회원 정보 영역 END  &ndash;&gt;
-                <div name="introduce">
-                    <input type="text" th:field="*{introduction}" placeholder="자기소개">
-                </div>
-            </div>  &lt;!&ndash;  회원 프로필 영역 END  &ndash;&gt;
-        <div name="genre">  &lt;!&ndash; 관심사 영역 START &ndash;&gt;
-            <div name="heading">관심사</div>  &lt;!&ndash;  제목  &ndash;&gt;
-            <form action="" th:action th:object="${interestForm}" method="post">
-            <div name="cards">  &lt;!&ndash;  관심사 카드 영역 상단 START  &ndash;&gt;
-                <h1>카드 영역</h1>
-                <span name="card">
-                    <input type="checkbox" th:field="*{interestList}" th:value="DRAMA">
-                    <div name="image"></div>
-                    <div name="title">연극</div>
-                </span>
-                <span name="card">
-                    <input type="checkbox" th:field="*{interestList}" th:value="CONCERT">
-                    <div name="image"></div>
-                    <div name="title">음악/콘서트</div>
-                </span>
-                <span name="card">
-                    <input type="checkbox" th:field="*{interestList}" th:value="EXHIBITION">
-                    <div name="image"></div>
-                    <div name="title">전시</div>
-                </span>
-                <span name="card">
-                    <input type="checkbox" th:field="*{interestList}" th:value="MUSICAL">
-                    <div name="image"></div>
-                    <div name="title">뮤지컬/오페라</div>
-                </span>
-                <span name="card">
-                    <input type="checkbox" th:field="*{interestList}" th:value="ETC">
-                    <div name="image"></div>
-                    <div name="title">기타</div>
-                </span>
-            </div>  &lt;!&ndash;  관심사 카드 영역 상단 END  &ndash;&gt;
-           &lt;!&ndash; <div name="cards">  &lt;!&ndash;  관심사 카드 영역 하단 START  &ndash;&gt;
-                <h1>카드 영역</h1>
-                <span name="card">
-                    <div name="image"></div>
-                    <div name="title"></div>
-                </span>
-                <span name="card">
-                    <div name="image"></div>
-                    <div name="title"></div>
-                </span>
-                <span name="card">
-                    <div name="image"></div>
-                    <div name="title"></div>
-                </span>
-                <span name="card">
-                    <div name="image"></div>
-                    <div name="title"></div>
-                </span>
-            </div>  &lt;!&ndash;  관심사 카드 영역 하단 END  &ndash;&gt;&ndash;&gt;
-                <div name="submit-button">
-                    <button type="submit">회원가입</button>
-                </div>
-            </form>
-            </form>
-        </div>-->
-
-<!--        </div>-->
-
         <!-- 지역 선택 모달 -->
         <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -175,9 +25,9 @@
             </div>
         </div>
         <!-- 회원 가입 영역 -->
-        <div class="container mt-5" id="signUpContainer">
+        <div class="container mt-5 mb-5" id="signUpContainer">
 
-            <form action="" th:action th:object="${memberForm}" method="post">
+            <form action="" th:action th:object="${memberForm}" method="post" onsubmit="return false">
                 <!-- 페이지 제목 -->
                 <div class="row mt-5">
                     <div class="col d-flex align-items-center justify-content-center">
@@ -199,15 +49,15 @@
                         <!-- 성별 -->
                         <div class="row d-flex justify-content-between mb-3">
                             <div class="col input-group">
-                                <label class="input-group-text" for="male">남성</label>
+                                <label class="input-group-text" for="checkMale">남성</label>
                                 <div class="input-group-text">
-                                    <input class="form-check-input mt-0" type="radio" th:field="*{gender}" th:value="MALE" id="male">
+                                    <input class="form-check-input mt-0" type="radio" th:field="*{gender}" th:value="MALE" id="checkMale">
                                 </div>
                             </div>
                             <div class="col input-group d-flex justify-content-end">
-                                <label class="input-group-text" for="female">여성</label>
+                                <label class="input-group-text" for="checkFemale">여성</label>
                                 <div class="input-group-text">
-                                    <input class="form-check-input mt-0" type="radio" th:field="*{gender}" th:value="FEMALE" id="female">
+                                    <input class="form-check-input mt-0" type="radio" th:field="*{gender}" th:value="FEMALE" id="checkFemale">
                                 </div>
                             </div>
                         </div>
@@ -217,6 +67,17 @@
                             <div class="col input-group mb-3">
                                 <span class="input-group-text">지역</span>
                                 <button class="btn btn-outline-secondary" type="button" id="locationModalBtn" data-bs-toggle="modal" data-bs-target="#locationModal">선택</button>
+                            </div>
+                            <!-- 지역 선택 결과값 -->
+                            <input type="hidden" th:field="*{location}" id="locationValue">
+                        </div>
+
+                        <!-- 생년 월일 선택 -->
+
+                        <div class="row">
+                            <div class="col input-group mb-3">
+                                    <span class="input-group-text">생년월일</span>
+                                    <input type="date" th:field="*{birth}" max="2012-12-31" min="1940-01-01" class="form-control">
                             </div>
                         </div>
 
@@ -300,6 +161,7 @@
                             <div class="col">
                                 <!-- 전화번호 입력 -->
                                 <div class="input-group">
+                                    <input hidden="hidden" th:field="*{phone}" id="phoneNum">
                                     <span class="input-group-text d-flex justify-content-center align-items-center p-2"
                                           style="width: 40%">전화번호</span>
                                     <input type="number" class="form-control" id="phoneNumFirst">
@@ -318,10 +180,45 @@
                 </div>
 
                 <!-- 한줄 소개 입력 -->
-                <div class="row"></div>
+                <div class="row mt-2">
+                    <div class="col">
+                        <div class="input-group">
+                            <span class="input-group-text d-flex justify-content-center align-items-center p-2"
+                                  style="width: 10%">한줄소개</span>
+                            <input type="text" th:field="*{introduction}" class="form-control" id="introductionInput">
+                        </div>
+                    </div>
+                </div>
 
                 <!-- 관심사 선택 -->
-                <div class="row"></div>
+                <div class="row mt-2">
+                    <div class="col-2">
+                        <span class="d-flex justify-content-center input-group-text">관심사</span>
+                    </div>
+                </div>
+                <div class="row mt-2 d-flex justify-content-between">
+                    <div class="col-auto" th:each="iType : ${interestType}">
+                        <div class="input-group">
+                            <label class="input-group-text" th:text="${iType.value}" th:if="${iType.value !='기타' && iType.value != '전체'}" th:for="${iType.name()}"></label>
+                            <div class="input-group-text" th:if="${iType.value !='기타' && iType.value != '전체'}">
+                                <input class="form-check-input mt-0" type="checkbox" th:field="${interestType}" th:value="${iType.name()}" th:id="${iType.name()}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 회원가입, 취소, 로그인 버튼 -->
+                <div class="row mt-5 mb-5 d-flex justify-content-between">
+                    <!-- 취소, 로그인 버튼 -->
+                    <div class="col input-group input-group-lg">
+                        <a href="/" class="btn btn-outline-secondary">Home</a>
+                        <a href="/login" class="btn btn-outline-secondary">Login</a>
+                    </div>
+                    <!-- 회원가입 버튼 -->
+                    <div class="col input-group input-group-lg d-flex justify-content-end">
+                        <button id="signUpBtn" type="submit" class="btn btn-dark">Sign Up</button>
+                    </div>
+                </div>
 
             </form>
 
@@ -330,86 +227,8 @@
 </th:block>
 
 <script th:inline="javascript">
-    $(document).ready(function () {
-        /*let checkIdResult = null;
-        let checkNameResult = null;
-        let checkEmailResult = null;
-        // id속성값이 userid인 input태그에 change이벤트 등록
-        $("#userid").change(function(){
-            let userid = $(this).val(); // 사용자가 작성한 값 꺼내기
-            console.log("userid : " + userid);
-            $.ajax({
-                type: "post",
-                url: "/useridCheck",
-                data: {userid: userid},
-                success: function(result){
-                    console.log("성공!");
-                    console.log(result);
-                    checkIdResult = result; // 성공 결과 저장
-                },
-                error: function(e) {
-                    console.log("실패...");
-                    console.log(e);
-                }
-            });
-        });
-        $("#checkUserIdBtn").click(function(){
-            if(checkIdResult !== null) {
-                alert(checkIdResult); // 마지막 AJAX 호출 결과 사용
-            } else {
-                alert("아이디 중복확인을 해주세요.");
-            }
-        });
-        $("#username").change(function(){
-            let username = $(this).val(); // 사용자가 작성한 값 꺼내기
-            console.log("username : " + username);
-            $.ajax({
-                type: "post",
-                url: "/usernameCheck",
-                data: {username: username},
-                success: function(result){
-                    console.log("성공!");
-                    console.log(result);
-                    checkNameResult = result; // 성공 결과 저장
-                },
-                error: function(e) {
-                    console.log("실패...");
-                    console.log(e);
-                }
-            });
-        });
-        $("#checkUsernameBtn").click(function(){
-            if(checkNameResult !== null) {
-                alert(checkNameResult); // 마지막 AJAX 호출 결과 사용
-            } else {
-                alert("닉네임 중복확인을 해주세요.");
-            }
-        });
-        $("#email").change(function(){
-            let email = $(this).val(); // 사용자가 작성한 값 꺼내기
-            console.log("email : " + email);
-            $.ajax({
-                type: "post",
-                url: "/emailCheck",
-                data: {email: email},
-                success: function(result){
-                    console.log("성공!");
-                    console.log(result);
-                    checkEmailResult = result; // 성공 결과 저장
-                },
-                error: function(e) {
-                    console.log("실패...");
-                    console.log(e);
-                }
-            });
-        });
-        $("#checkEmailBtn").click(function(){
-            if(checkEmailResult !== null) {
-                alert(checkEmailResult); // 마지막 AJAX 호출 결과 사용
-            } else {
-                alert("이메일 중복확인을 해주세요.");
-            }
-        });*/
+
+$(document).ready(function () {
 
         // ********** 변수 선언 **********
         let userIdCheck = false;
@@ -583,9 +402,11 @@
                             // 글자색 토글 변경하기
                             $("#phoneCheckResult").text("이미 사용중인 전화번호입니다.")
                             $('#phoneCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+                            $("#phoneNum").val("0");
                         } else {
                             $("#phoneCheckResult").text("사용 가능한 전화번호입니다.")
                             $('#phoneCheckResult').toggleClass('text-danger', false).toggleClass('text-success', true);
+                            $("#phoneNum").val(phone);
                         }
                     },
                     error: function (e) {
@@ -596,26 +417,53 @@
 
         }
 
+        // ********** 클릭시 함수 **********
+
+        // 관심사 선택시 memberForm에 값 넣기
+        $("input[type=checkbox]").click(function () {
+            let interest = $(this).val();
+            if ($(this).is(":checked")) {
+                console.log("체크됨");
+                console.log(interest);
+                let input = $("<input>").attr("type", "hidden").attr("name", "interestType").val(interest);
+                $("#signUpContainer form").append(input);
+            } else {
+                console.log("체크해제");
+                console.log(interest);
+                $("#signUpContainer form input[name=interestType][value=" + interest + "]").remove();
+            }
+        });
+
         // submit 버튼 클릭 시 유효성 검사
-        $("button[type=submit]").click(function () {
-            // 아이디 중복확인
+        $("#signUpBtn").click(function () {
+
+            let check = inputcheck();
+
+            if(check === true){
+                $("#signUpContainer form").submit();
+            }
+            else {
+            }
+        });
+
+        function inputcheck() {
+
+            console.log("inputcheck 함수 실행");
+            // 아이디 입력 확인
             let userId = $("#userIdInput").val();
             if (userId === null || userId === "") {
+
                 alert("아이디를 입력해주세요.");
                 return false;
             }
-            // 닉네임 중복확인
+
+            // 닉네임 입력 확인
             let username = $("#usernameInput").val();
             if (username === null || username === "") {
                 alert("닉네임을 입력해주세요.");
                 return false;
             }
-            // 이메일 중복확인
-            let email = $("#emailInput").val();
-            if (email === null || email === "") {
-                alert("이메일을 입력해주세요.");
-                return false;
-            }
+
             // 비밀번호 확인
             let password = $("#password").val();
             let repeatPassword = $("#repeatPassword").val();
@@ -627,24 +475,55 @@
                 alert("비밀번호가 일치하지 않습니다.");
                 return false;
             }
-            // 전화번호
-            let phone = $("#phoneInput").val();
-            if (phone === null || phone === "") {
-                alert("전화번호를 입력해주세요.");
+
+            if (passwordCheck === false) {
+                alert("비밀번호를 확인해주세요.");
                 return false;
             }
-            // 자기소개
-            let introduction = $("#introductionInput").val();
-            if (introduction === null || introduction === "") {
-                alert("자기소개를 입력해주세요.");
+
+            // 성별 체크 여부 확인
+            if (!($("#checkMale").is(":checked") === true)&& !($("#checkFemale").is(":checked") === true)) {
+                alert("성별을 선택해주세요.");
                 return false;
             }
-            // 관심사
-            let interest = $("input[name=interest]:checked").val();
-            if (interest === null || interest === "") {
-                alert("관심사를 선택해주세요.");
+
+            // 지역 체크 여부 확인
+            if ($("#locationModalBtn").text() === "선택") {
+                alert("지역을 선택해주세요.");
                 return false;
             }
+
+            // 생년월일 체크 여부 확인
+            if ($("#birth").val() === null || $("#birth").val() === "") {
+                alert("생년월일을 선택해주세요.");
+                return false;
+            }
+
+            // 아이디 중복확인
+            if (userIdCheck === false) {
+                alert("아이디 중복확인을 해주세요.");
+                return false;
+            }
+            // 닉네임 중복확인
+            if (usernameCheck === false) {
+                alert("닉네임 중복확인을 해주세요.");
+                return false;
+            }
+
+            console.log("모든 조건 통과");
+
+            return true;
+        }
+
+
+
+        // ********** 각종 함수 **********
+
+        // 지역 모달에서 지역 선택시 함수
+        $(document).on('click', ".lTypeBtn", function () {
+            $("#locationModal").modal('hide');
+            $("#locationValue").val($(this).data('loc'));
+            $("#locationModalBtn").text($(this).text());
         });
     });
 

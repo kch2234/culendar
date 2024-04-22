@@ -9,6 +9,29 @@
         <!-- 게시글 상세 페이지 컨테이너 -->
         <div class="container" id="boardDetailWrapper">
 
+            <!-- 게시글 삭제 모달 -->
+            <div class="modal fade" id="boardDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">게시글 삭제</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <span>정말 삭제 하시겠습니까?</span>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                            <form action="" th:action="@{/boards/{id}/delete(id=${board.id})}" method="post">
+                                <button type="submit" class="btn btn-secondary">삭제</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!--        일정 추가 모달-->
             <div class="modal" id="addMyCalendar-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -47,23 +70,18 @@
             </div>
 
             <!-- 게시글 제목, 수정 / 삭제 버튼, 북마크 버튼 -->
-            <div class="row mt-5 text-center align-items-center">
-                <div class="col-3"></div>
-                <div class="col">
-                    <h1 th:text="${board.title}"></h1>
+            <div class="row mt-5 text-center d-flex justify-content-center align-items-center">
+                <div class="col-9 fs-3 overflow-auto d-flex justify-content-center align-items-center" th:text="${board.title}">
                 </div>
                 <!-- 회원 일 경우에만 북마크 또는 수정, 삭제 버튼 보이기 -->
                 <th:block sec:authorize="isAuthenticated()">
                     <!-- 게시글 작성자 일 경우만 수정, 삭제 버튼 보이기 -->
                     <th:block th:if="${member.getId} == ${board.getMemberDTO().getId()}">
                         <div class="col-3">
-                            <button type="button" class="btn btn-secondary mb-1"
-                                    th:onclick="|location.href='@{/boards/{id}/modify(id=${board.id})}'|">수정
+                            <button type="button" class="btn btn-secondary mb-1" id="modifyBtn" th:text="수정">
                             </button>
-                            <form action="" th:action="@{/boards/{id}/delete(id=${board.id})}" method="post">
-                                <button type="submit" class="btn btn-outline-secondary">삭제</button>
-                                <!--  TODO 삭제 확인 모달   -->
-                            </form>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#boardDeleteModal">삭제</button>
+
                         </div>
                     </th:block>
                     <!-- 게시글 작성자가 아닐 경우 북마크 버튼 보이기 -->
@@ -133,22 +151,25 @@
                     </div>
 
                     <!-- 좋아요 버튼, 내 후기 -->
-                    <div class="d-flex flex-row" id="ratingAndReviewContainer">
+                    <div class="d-flex flex-row justify-content-between" id="ratingAndReviewContainer">
 
                         <th:block sec:authorize="isAuthenticated()">
 
-                            <div class="col-4">
+                            <div class="col-auto d-flex justify-content-start align-items-center">
                                 <!--   회원 문장형 평가 위치-->
                                 <button class="btn btn-outline-secondary" id="addRating" type="button" data-bs-toggle="modal" data-bs-target="#addRating-modal"></button>
                             </div>
 
-                            <div class="col"></div>
                             <!-- TODO : 좋아요, 후기, 체크박스 버튼 -->
-                            <div class="col-3 p-0">
-                                <div class="d-flex justify-content-end align-items-center fs-5 w-100 h-100">내후기</div>
-                            </div>
-                            <div class="col-2 d-flex justify-content-center align-items-center">
-                                <button class="fa-regular fa-circle-check fa-2x"></button>
+                            <div class="col-auto">
+                                <div class="row">
+                                    <div class="col-auto p-0">
+                                        <div class="d-flex justify-content-end align-items-center fs-5 w-100 h-100">내후기</div>
+                                    </div>
+                                    <div class="col-2 d-flex justify-content-center align-items-center">
+                                        <button class="fa-regular fa-circle-check fa-2x"></button>
+                                    </div>
+                                </div>
                             </div>
 
                         </th:block>
@@ -180,7 +201,9 @@
                     <!-- 프로필 이미지 -->
                     <div class="row mb-3 justify-content-center">
                         <div class="col-4">
-                            <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid rounded">
+<!--                            <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid rounded">-->
+                            <i class="fa-solid fa-circle-user fa-7x d-flex justify-content-center align-items-center"></i>
+
                         </div>
                     </div>
 
@@ -562,6 +585,11 @@
                         });
                     }
 
+                });
+
+                // 수정 버튼 클릭시
+                $('#modifyBtn').on('click', function () {
+                    location.href = '/boards/' + boardIdVal + '/modify';
                 });
 
 

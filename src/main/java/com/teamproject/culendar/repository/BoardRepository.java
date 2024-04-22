@@ -41,4 +41,10 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
         "GROUP BY b " +
         "ORDER BY COUNT(bb) DESC")
     List<Board> findBestReviewByBkMark(Long programId);
+
+    // 회원의 REVIEW 게시글중 해당 프로그램의 리뷰가 있는지 조회
+    @Query("SELECT b " +
+        "FROM Board b " +
+        "WHERE b.member.id = :memberId AND b.program.id = :programId AND b.boardType = 'REVIEW'")
+    Board findProgramReviewByMemberId(Long memberId, Long programId);
 }
