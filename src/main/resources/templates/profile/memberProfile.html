@@ -79,7 +79,9 @@
                             <div class="col">
                                 <div class="input-group input-group-lg d-flex justify-content-center align-items-center">
                                     <span class="input-group-text">팔로우</span>
-                                    <button type="button" id="followNum" data-bs-target="#followList-modal" data-bs-toggle="modal" class="btn btn-outline-secondary">10명</button>
+                                    <button type="button" id="followNum" data-bs-target="#followList-modal"
+                                            data-bs-toggle="modal" class="btn btn-outline-secondary">10명
+                                    </button>
                                 </div>
 
                             </div>
@@ -213,6 +215,49 @@
 
         });
 
+        // 팔로잉 모달 내에 언팔로우 버튼 클릭시 이벤트
+        $('#followingListModalBody').on('click', '.unFollowBtn', function () {
+            console.log("언팔로우 버튼 클릭");
+            let unfollowId = $(this).data('unfollowid');
+            console.log("unfollowId : " + unfollowId);
+
+            let thisBtn = $(this);
+
+            let data = {
+                memberId: memberIdVal,
+                followId: unfollowId
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/follows/follow/' + unfollowId,
+                data: JSON.stringify(data),
+                contentType: 'application/json; charset=utf-8',
+                success: function (result) {
+                    console.log(result);
+                    if (result === 'unfollow') {
+                        alert('팔로우가 취소되었습니다.');
+                        thisBtn.text('Follow');
+                        thisBtn.toggleClass('btn-dark',false);
+                        thisBtn.toggleClass('btn-outline-secondary',true);
+
+                    } else {
+                        alert('팔로우가 추가되었습니다.');
+                        thisBtn.text('UnFollow');
+                        thisBtn.toggleClass('btn-outline-secondary',false);
+                        thisBtn.toggleClass('btn-dark',true);
+
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                    alert('팔로우 추가에 실패했습니다.');
+                }
+            });
+
+        });
+
         // ********** 각종 함수들 **********
 
         // 팔로잉 하고 있는 인원수 가져오기
@@ -277,32 +322,32 @@
 
         // 팔로워 리스트 출력하기
         function printFollowingList(follow) {
-           /* <div className="row">
+            /* <div className="row">
 
-                <!-- 프로필 -->
-                <div className="col-2">
-                    <i className="fa-solid fa-circle-user fa-2x d-flex justify-content-center align-items-center"></i>
-                </div>
+                 <!-- 프로필 -->
+                 <div className="col-2">
+                     <i className="fa-solid fa-circle-user fa-2x d-flex justify-content-center align-items-center"></i>
+                 </div>
 
-                <div className="col">
-                    <div className="row d-flex justify-content-between align-items-center">
-                        <!-- 닉네임, 지역 -->
-                        <div className="col-auto">
-                            <div className="input-group">
-                                <button type="button" className="btn btn-outline-secondary">asd</button>
-                                <span className="input-group-text">지역</span>
-                            </div>
-                        </div>
+                 <div className="col">
+                     <div className="row d-flex justify-content-between align-items-center">
+                         <!-- 닉네임, 지역 -->
+                         <div className="col-auto">
+                             <div className="input-group">
+                                 <button type="button" className="btn btn-outline-secondary">asd</button>
+                                 <span className="input-group-text">지역</span>
+                             </div>
+                         </div>
 
-                        <!-- 팔로우 버튼 -->
-                        <div className="col-auto">
-                            <div className="input-group">
-                                <button type="button" className="btn btn-dark">UnFollow</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>*/
+                         <!-- 팔로우 버튼 -->
+                         <div className="col-auto">
+                             <div className="input-group">
+                                 <button type="button" className="btn btn-dark">UnFollow</button>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>*/
 
             let followingListModalBody = $('#followingListModalBody');
             let html = '';
@@ -322,7 +367,7 @@
                 html += '</div>';
                 html += '<div class="col-auto">';
                 html += '<div class="input-group">';
-                html += '<button type="button" class="btn btn-dark">UnFollow</button>';
+                html += '<button type="button" class="btn btn-dark unFollowBtn" data-unfollowId="' + follow[i].followDTO.id + '">UnFollow</button>';
                 html += '</div>';
                 html += '</div>';
                 html += '</div>';
@@ -337,6 +382,8 @@
         $('#followList-modal').on('hidden.bs.modal', function () {
             $('#followingListModalBody').empty();
             followingStart = 0;
+            getFollowingNum();
+            getFollowerNum();
         });
 
         // 팔로잉 모달내에  스크롤이 바닥에 닿았을 때
@@ -358,7 +405,7 @@
 
             // modal-body
 
-            if (scrollTop + followingListModalBodyHeight+1 >= scrollHeight) {
+            if (scrollTop + followingListModalBodyHeight + 1 >= scrollHeight) {
                 console.log("스크롤이 바닥에 닿았습니다.");
                 followingStart += 20;
                 getFollowingListWithpaging();
@@ -407,7 +454,6 @@
                     return '지역';
             }
         }
-
 
 
     });
