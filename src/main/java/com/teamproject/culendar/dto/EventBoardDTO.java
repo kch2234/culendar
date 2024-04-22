@@ -21,7 +21,6 @@ public class EventBoardDTO {
   private ProgramDTO programDTO;
   private LocalDateTime eventDate;  // 모임 날짜
   private Integer maxPeople;  // 최대 정원
-//  private Location location;
   private Gender filterGender;
   private Integer filterMinAge;
   private Integer filterMaxAge;

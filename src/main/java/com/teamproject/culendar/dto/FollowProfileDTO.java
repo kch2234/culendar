@@ -8,7 +8,6 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class FollowFollowing {
-//    private List<MemberDTO> followingList;
-    private List<Member> memberList;
+public class FollowProfileDTO {
+//    private
 }

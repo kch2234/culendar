@@ -24,9 +24,6 @@ public class EventMemberList extends BaseEntityCreatedDate {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(nullable = false)
-    private Location location;
-
     // 확정 여부
     private EventMemberStatus status = EventMemberStatus.WAIT;
 }

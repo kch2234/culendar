@@ -36,7 +36,7 @@ public class BoardService {
     return savedBoard.getId();
   }
 
-  // 게시글 목록 불러오기
+  // 전체 게시글 최신순 목록 불러오기
   public Page<Board> getListWithPaging(PageRequestDTO pageRequestDTO) {
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
@@ -48,7 +48,7 @@ public class BoardService {
     return result;
   }
 
-  // 게시글 카테고리 목록 불러오기
+  // 카테고리 게시글 최신순 목록 불러오기
   public Page<Board> getListWithCategory(PageRequestDTO pageRequestDTO, BoardType boardType){
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
@@ -59,7 +59,7 @@ public class BoardService {
     return result;
   }
 
-  // 게시글 인기순(북마크순) 목록 불러오기
+  // 전체 게시글 인기순 목록 불러오기
   public Page<Board> getListWithBkMark(PageRequestDTO pageRequestDTO){
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
@@ -67,6 +67,18 @@ public class BoardService {
         Sort.by("id").descending());
 
     Page<Board> result = boardRepository.findOrderByBkMark(pageable);
+    return result;
+  }
+
+  // 카테고리 게시글 인기순 목록 불러오기
+  public Page<Board> getCategoryListWithBkMark(PageRequestDTO pageRequestDTO, BoardType boardType){
+    log.info("**** BoardService getCategoryListWithBkMark - /{}/BEST/1", boardType);
+    Pageable pageable = PageRequest.of(
+        pageRequestDTO.getPage() - 1,
+        pageRequestDTO.getSize(),
+        Sort.by("id").descending());
+
+    Page<Board> result = boardRepository.findOrderByBoardType(boardType, pageable);
     return result;
   }
 
@@ -126,6 +138,15 @@ public class BoardService {
             log.info("**** BoardService findProgramReviewByMemberId - result : {}", result);
             return true;
         }
+    }
+
+    // 특정 작품에 대해 작성된 회원의 리뷰글 조회
+    public BoardDTO findProgramIdReviewByMemberId(Long memberId, Long programId) {
+        Board programReviewByMemberId = boardRepository.findProgramReviewByMemberId(memberId, programId);
+
+        return new BoardDTO(programReviewByMemberId);
+
+
     }
 
 

@@ -2,7 +2,6 @@ package com.teamproject.culendar.service;
 
 import com.teamproject.culendar.domain.member.Follow;
 import com.teamproject.culendar.domain.member.Member;
-import com.teamproject.culendar.dto.FollowFollowing;
 import com.teamproject.culendar.dto.FollowResponseDTO;
 import com.teamproject.culendar.dto.MemberDTO;
 import com.teamproject.culendar.repository.FollowRepository;
@@ -76,18 +75,5 @@ public class FollowService {
         log.info("********** FollowService /follows/:userid/follow - followings : {}", listFollowing);
         log.info("********** FollowService /follows/:userid/follow - followers : {}", listFollower);
         return new FollowResponseDTO(listFollowing, listFollower, memberList);
-    }
-
-    public FollowFollowing getFollowerList(Long memberId) {
-        List<Member> memberList = memberRepository.findAll();
-        /*List<Follow> followerList = followRepository.findByFollowId(memberId);
-        log.info("********** FollowService /follows/:userid/follow - followerList : {}", followerList);
-        List<MemberDTO> listFollower = new ArrayList<>();
-        for (Follow follow : followerList) {
-            MemberDTO member = new MemberDTO(follow.getMember());
-            listFollower.add(member);
-        }*/
-//        log.info("********** FollowService /follows/:userid/follow - followers : {}", listFollower);
-        return new FollowFollowing(memberList);
     }
 }

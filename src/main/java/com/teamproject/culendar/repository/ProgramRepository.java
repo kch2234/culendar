@@ -35,13 +35,22 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
             "ORDER BY COUNT(pb) DESC")
     List<Program> findProgramsOrderByBkMarkCount();
 
-    // 사용자 위치 기반으로 추천하는 작품리스트
+    // programType, locationType 해당하는 인기 있는 작품리스트를 가져옴
     @Query("SELECT p FROM Program p " +
             "LEFT JOIN ProgramBkmark pb ON p.id = pb.program.id " +
-            "WHERE (:programType IS NULL OR p.programType = :programType) " +
-            "AND (:locationType IS NULL OR p.location = :locationType) " +
+            "WHERE (p.programType = :programType) " +
+            "AND (p.location = :locationType) " +
             "AND pb.createDate >= CURRENT_DATE - 7 " +
             "GROUP BY p " +
             "ORDER BY COUNT(pb) DESC")
     List<Program> findBestProgramsByProgramTypeAndLocation(ProgramType programType, Location locationType);
+
+    // 사용자 위치 기반으로 추천하는 작품리스트
+    @Query("SELECT p FROM Program p " +
+            "LEFT JOIN ProgramBkmark pb ON p.id = pb.program.id " +
+            "WHERE (:location IS NULL OR p.location = :location) " +
+            "AND pb.createDate >= CURRENT_DATE - 7 " +
+            "GROUP BY p " +
+            "ORDER BY COUNT(pb) DESC")
+    List<Program> findCurrentLocationByBestPrograms(Location location);
 }

@@ -29,4 +29,13 @@ public class BoardRestController {
         return checkResult ? ResponseEntity.ok().body(true) : ResponseEntity.ok().body(false);
     }
 
+    @GetMapping("/findReviewId/{memberId}/{programId}")
+    public ResponseEntity<BoardDTO> findProgramReviewIdByMemberId(@PathVariable("memberId") Long memberId, @PathVariable("programId") Long programId){
+
+        BoardDTO programIdReviewByMemberId = boardService.findProgramIdReviewByMemberId(memberId, programId);
+
+        return ResponseEntity.ok().body(programIdReviewByMemberId);
+
+    }
+
 }

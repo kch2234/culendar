@@ -21,6 +21,7 @@ public class EventBoardForm {
   private String content;
   //  private String image;  TODO 이미지 추가
   private Program program;
+  private Long programId;
 
   @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
   private String eventDate;  // 일정 날짜
@@ -38,6 +39,7 @@ public class EventBoardForm {
 
   public EventBoard toEntity() {
     EventBoard eventBoard = new EventBoard();
+    eventBoard.setMember(member);
     eventBoard.setTitle(title);
     eventBoard.setContent(content);
     eventBoard.setProgram(program);

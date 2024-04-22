@@ -44,6 +44,9 @@ public class EventBoard extends BaseEntityLastModifiedDate {
     // 모임 일정 날짜
     @Column(nullable = false)
     private LocalDateTime eventDate;
+    // 모임 인원 모집 마감 날짜
+    @Column(nullable = false)
+    private LocalDateTime deadlineDate;
 
     // 최대 인원
     @Column(nullable = false)
@@ -55,9 +58,6 @@ public class EventBoard extends BaseEntityLastModifiedDate {
     private Integer filterMinAge = 0;
     private Integer filterMaxAge = 0;
 
-    // 모임 인원 모집 마감 날짜
-    @Column(nullable = false)
-    private LocalDateTime deadlineDate;
     // 자동 수락 여부
     private Boolean autoAccept = true;
 

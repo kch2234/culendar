@@ -1,30 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
-        <div class="untree_co-section bg-light">
-            <div class="container">
-                <div class="col-12 mb-5 aos-init aos-animate" data-aos="fade-up">
-                    <div class="row">
-                        <select class="custom-select" id="selectorProgramType">
-                            <option value="">분류</option>
-                            <option th:each="programType: ${programType}" th:value="${programType.name()}" th:text="${programType.value}"></option>
-                        </select>
+        <!-- 커뮤니티 wrapper -->
+        <div id="community-wrapper" class="mt-5">
 
-                        <button type="button"
-                                class="btn btn-primary"
-                                th:onclick="|location.href='@{/clubs/add}'|">글 작성
-                        </button>
+            <!-- 전체 게시글 컨테이너 -->
+            <div id="eventBoardListContainer" class="container">
+
+                <!--  모임 필터, 작성 버튼  -->
+                <button class="badge text-bg-secondary fs-6 p-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">카테고리</button>
+                <ul class="dropdown-menu" id="selectorProgramType">
+                    <li>
+                        <button class="dropdown-item" th:each="programType: ${programType}" th:value="${programType.name()}" th:text="${programType.value}"></button>
+                    </li>
+                </ul>
+
+                <!--<select class="custom-select" id="selectorProgramType">
+                    <option value="">분류</option>
+                    <option th:each="programType: ${programType}" th:value="${programType.name()}" th:text="${programType.value}"></option>
+                </select>-->
+                <button type="button" class="btn btn-warning" id="btnNew">최신순</button>
+                <button type="button" class="btn btn-warning" id="btnBest">인기순</button>
+                <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/clubs/add}'|">글 작성</button>
+
+                <!--  모임(카드)  -->
+                <div class="container mb-5">
+
+                    <div class="row" id="eventCardContainer">
+
+                        <!-- NOTE 동적으로 추가 -->
+
                     </div>
-                    <div class="row">
-                        <div id="eventListContainer">
-                            <!--  NOTE 동적으로 추가  -->
-                        </div>
-                        <div class="custom-pagination">
-                            <!--  NOTE 동적으로 추가  -->
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -33,20 +44,21 @@
             $(document).ready(function () {
                 let currPage = 1;
 
-                // 페이지 로딩 후 실행
-                getAllList("ALL", 1);
+                // 모임 카드 호출
+                getCardList("ALL", "NEW", 1);
 
-                function getAllList(sort, page) {
-                    console.log("getAllList! page: " + page);
+                // 모임 카드 불러오기
+                function getCardList(sort, align, page) {
+                    console.log("getCardList /" + sort +  "/" + align +  "/" + page + " 요청");
                     currPage = page;
                     $.ajax({
                         type: "get",
-                        url: "/ajaxClubs/list/" + sort + "/" + page,
+                        url: "/ajaxClubs/list/" + sort + "/" + align + "/" + page,
                         success: function (result) {
                             console.log("게시글 목록 요청 성공!");
                             console.log(result);
                             // 게시글 목록 화면에 띄우기
-                            printBoardList(result.eventList);
+                            printCardList(result);
                             // 게시글 페이지네이션 화면에 띄우기
                             printPagination(result, sort);
                         },
@@ -57,24 +69,45 @@
                     });
                 }
 
-                // 모임 목록 띄우는 함수
-                function printBoardList(eventList) {
-                    var html = "";
+                // 모임 카드 목록 띄우기
+                // FIX eventList에 데이터는 받아오는데 html에서 출력이 안 됨 (id 값 오류로 추정)
+                function printCardList(eventList) {
+                    var html = '';
                     for (let i = 0; i < eventList.length; i++) {
-                        html += '<div class="card">';
-                        html += '<div class="thumbnail"></div>';
-                        html +=	'<h3><a href="/clubs/' + eventList[i].id + '">' + eventList[i].title + "</h3>";
-                        html +='<p><a href="/clubs/' + eventList[i].id + '">' + eventList[i].content + "</p>";
+                        html += '<div class="col-3 ml-1 mr-1 eventCardContainer">';
+                        html += '<div hidden="hidden" class="eventBoardId">' + eventList[i].id+ '</div>';
+                        html += '<div>';
+                        html += '<img src="' + eventList[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid w-100" style="" alt="...">';
+                        html += '<div class="card-body">';
+                        html += '<div class="row mb-2">';
+                        // 제목 길이가 11자 이상이면 11자로 자르기
+                        var title = eventList[i].title;
+                        if (title.length > 10) {
+                            title = title.substring(0, 10) + '...';
+                        }
+                        html += '<div class="col-auto card-title fs-4">' + title + '</div>';
+                        html += '<div class="col-2 badge text-bg-secondary fs-6 d-flex justify-content-center align-items-center">' + getBoardType(eventList[i].boardType) + '</div>';
+                        html += '</div>';
+                        var content = eventList[i].content;
+                        if (content.length > 30) {
+                            content = content.substring(0, 30) + '...';
+                        }
+                        html += '<p class="card-text">' + content + '</p>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
                     }
-                    $("#eventListContainer").html(html);
+                    console.log(html);
+                    $("#eventCardContainer").html(html);
                 }
 
-                // 모임 Pagination 띄우는 함수
+                // 모임 카드 Pagination 띄우는 함수
                 function printPagination(pageDTO, sort) {
                     let html = "";
+
                     html += '<span class="page-item"';
                     if (pageDTO.prev == false) {
-                        html += "disabled";
+                        html += 'disabled';
                     }
                     html += '><a href="' + (pageDTO.startPage - 1);
                     html += '" class="page-link" data-sort="' + sort + '">Previous</a></span>';
@@ -82,47 +115,65 @@
                     for (let i = 0; i < pageDTO.pageNumList.length; i++) {
                         html += '<span class="page-item ';
                         if (pageDTO.pageNumList[i] == currPage) {
-                            html += "active";
+                            html += 'active';
                         }
                         html += '"><a href="' + pageDTO.pageNumList[i];
-                        html += '" class="page-link" data-sort="' + sort + '">' + pageDTO.pageNumList[i] + "</a></span>";
+                        html += '" class="page-link" data-sort="' + sort + '">' + pageDTO.pageNumList[i] + '</a></span>';
                     }
 
                     html += '<span class="page-item"';
                     if (pageDTO.next == false) {
-                        html += "disabled";
+                        html += 'disabled';
                     }
                     html += '><a href="' + (pageDTO.endPage + 1);
                     html += '" class="page-link" data-sort="' + sort + '">Next</a></span>';
 
-                    $(".custom-pagination").html(html);
+                    $(".custom-pagination").html(html); // 부착!
                 }
 
+                // 모임 클릭시 해당 게시글로 이동
+                $(document).on("click", ".eventCardContainer", function () {
+                    var eventBoardId = $(this).find(".eventBoardId").text();
+                    location.href = "/clubs/" + eventBoardId;
+                });
+
+                // <a> 태그 페이지 이동 방지용
                 $(".custom-pagination").on("click", "a.page-link", function (e) {
                     e.preventDefault();
                     let pageNum = $(this).attr("href");
                     let sort = $(this).data("sort");
-                    getAllList(sort, pageNum);
+                    let align = $(this).data("align");
+                    getCardList(sort, align, pageNum);
                 });
 
-                $("#selectorProgramType").change(function() {
-                    var selectedValue = $(this).val();
-                    if(selectedValue === "DRAMA") {
-                        getAllList(selectedValue, 1);
-                    }
-                    else if(selectedValue === "CONCERT") {
-                        getAllList(selectedValue, 1);
-                    }
-                    else if(selectedValue === "EXHIBITION") {
-                        getAllList(selectedValue, 1);
-                    }
-                    else if(selectedValue === "MUSICAL") {
-                        getAllList(selectedValue, 1);
-                    }
-                    else if(selectedValue === "ETC") {
-                        getAllList(selectedValue, 1);
-                    }
+                // 프로그램타입 셀렉터 + 정렬 버튼 이벤트
+
+                let currentSort = "ALL";
+                let currentAlign = "NEW";
+
+                function handleButtonClick(sort, align) {
+                    currentSort = sort;
+                    currentAlign = align;
+                    getCardList(currentSort, currentAlign, 1);
+                }
+
+                // 프로그램 타입 셀렉터
+                document.querySelectorAll('.dropdown-item').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        var programType = button.getAttribute('value');
+                        handleButtonClick(programType, currentAlign);
+                    });
                 });
+
+                // 정렬 버튼
+                $("#btnBest").on("click", function () {
+                    handleButtonClick(currentSort, "BEST");
+                });
+                $("#btnNew").on("click", function () {
+                    handleButtonClick(currentSort, "NEW");
+                });
+
+
 
             });
         </script>

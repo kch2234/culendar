@@ -9,7 +9,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class FollowResponseDTO {
-//    private Long followingCount;
     private List<MemberDTO> followingList;
     private List<MemberDTO> followerList;
     private List<Member> memberList;

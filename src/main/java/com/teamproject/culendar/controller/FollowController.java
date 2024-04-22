@@ -19,9 +19,6 @@ import org.springframework.web.bind.annotation.*;
 public class FollowController {
 
     private final FollowService followService;
-    private final MemberService memberService;
-    private final MemberRepository memberRepository;
-
 
     // 팔로우, 팔로워 조회
     @GetMapping("/{memberId}/following")

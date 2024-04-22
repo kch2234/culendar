@@ -55,23 +55,19 @@ public class MemberController {
 
     // 회원 상세페이지
 //    @PreAuthorize("hasRole('MEMBER')")
-    @GetMapping("/{id}")
-    public String myProfile(@PathVariable("id") Long id, @AuthenticationPrincipal CustomMember customMember, Model model){
-        log.info("********** MemberController GET /members/:id (myProfile) - id : {}", id);
-        MemberDTO member = memberService.findById(id);
+    @GetMapping("/{username}")
+    public String myProfile(@PathVariable("username") String username, @AuthenticationPrincipal CustomMember customMember, Model model){
+        log.info("********** MemberController GET /members/:id (myProfile) - id : {}", username);
+        MemberDTO member = memberService.findById(customMember.getMember().getId());
+//        FollowDTO followDTO = memberService.Follows();
         model.addAttribute("member", member);
+//        model.addAttribute("followCount", followDTO);
         if (customMember != null) {
             model.addAttribute("customMember", customMember.getMember());
         }
         else {
             model.addAttribute("customMember", null);
         }
-        /*Follow follow = followService.findById(id);
-        FollowDTO followDTO = new FollowDTO(follow);*/
-        // TODO: 팔로우, 팔로워 수
-        /*long followerCount = followDTO.getFollowerCount();
-        long followingCount = followDTO.getFollowingCount();*/
-//        model.addAttribute("follow", followDTO);
         return "profile/memberProfile";
     }
 
