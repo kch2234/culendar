@@ -36,33 +36,23 @@ public class AjaxBoardController {
 
     Page<Board> result = null;
 
-/*      if (sort.equals("ALL")){
-      result = boardService.getListWithPaging(pageRequestDTO);
-    }
-    else if(sort.equals("INFO")){
-      result = boardService.getListWithCategory(pageRequestDTO, BoardType.INFO);
-    }
-    else if(sort.equals("REVIEW")){
-      result = boardService.getListWithCategory(pageRequestDTO, BoardType.REVIEW);
-    }
-    else if(sort.equals("BEST")){
-      result = boardService.getListWithBkMark(pageRequestDTO);
-    }*/
-
-
     if (sort.equals("ALL")){
       if(align.equals("BEST")){
+        log.info("***** AjaxBoardController get /list/ALL/BEST/{}", page);
         result = boardService.getListWithBkMark(pageRequestDTO);
       } else {
+        log.info("***** AjaxBoardController get /list/ALL/NEW/{}", page);
           result = boardService.getListWithPaging(pageRequestDTO);  // 페이지 첫 로드 -- 전체>최신글
       }
     }
 
     else if(sort.equals("INFO")){
       if(align.equals("BEST")){
+        log.info("***** AjaxBoardController get /list/INFO/BEST/{}", page);
         result = boardService.getCategoryListWithBkMark(pageRequestDTO, BoardType.INFO);  // 정보>인기글
       }
       else {
+        log.info("***** AjaxBoardController get /list/INFO/NEW/{}", page);
           result = boardService.getListWithCategory(pageRequestDTO, BoardType.INFO);  // 정보 카테고리 첫 로드 -- 정보>최신글
       }
     }
@@ -70,9 +60,11 @@ public class AjaxBoardController {
 
     else if(sort.equals("REVIEW")){
       if(align.equals("BEST")){
+        log.info("***** AjaxBoardController get /list/REVIEW/BEST/{}", page);
         result = boardService.getCategoryListWithBkMark(pageRequestDTO, BoardType.REVIEW);  // 후기>인기글
       }
       else {
+        log.info("***** AjaxBoardController get /list/REVIEW/NEW/{}", page);
           result = boardService.getListWithCategory(pageRequestDTO, BoardType.REVIEW);  // 후기 카테고리 첫 로드 -- 후기>최신글
       }
     }
