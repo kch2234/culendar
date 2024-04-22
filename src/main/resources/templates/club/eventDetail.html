@@ -112,11 +112,11 @@
                     </div>
                     <!--  모임 상세 정보 영역 하단  -->
                     <div class="col d-flex justify-content-around align-content-around">
-                        <!--  필터링 연령대 TODO if문으로 전연령/10대/20대 등..  -->
-                        <div class="badge text-bg-secondary"
-                             th:text="${eventBoard.filterMinAge + ' ~ ' + eventBoard.filterMaxAge}"></div>
-                        <!--  필터링 연령대 TODO if문으로 성별무관/남자/여자  -->
-                        <div class="badge text-bg-secondary" th:text="${eventBoard.filterGender.value + ' ONLY'}"></div>
+                        <!--  필터링 연령대  -->
+                        <div class="badge text-bg-secondary" id="filterAgeRange" th:data-min-age="${eventBoard.filterMinAge}" th:data-max-age="${eventBoard.filterMaxAge}"></div>
+                        <!--  필터링 성별  -->
+                        <div class="badge text-bg-secondary" id="filterGender" th:data-value="${eventBoard.filterGender}"></div>
+
                     </div>
                 </div>  <!--  col-auto  -->
                 <div class="col"></div>
@@ -571,6 +571,49 @@
                             $('#addRating').html(html);
                         }
                     });
+                }
+
+                // 성별에 따라 다른 내용을 설정하는 함수
+                setFilterGenderContent();
+                function setFilterGenderContent() {
+                    let gender = document.getElementById('filterGender').getAttribute('data-value');
+                    let content = '';
+                    switch (gender) {
+                        case 'MALE':
+                            content = '남자';
+                            break;
+                        case 'FEMALE':
+                            content = '여자';
+                            break;
+                        case 'ALL':
+                            content = '성별 무관';
+                            break;
+                        default:
+                            content = '관리자 문의';
+                    }
+                    document.getElementById('filterGender').innerText = content;
+                    console.log('최종 gender : ' + content);
+                }
+
+
+                // 연령대 필터링에 따른 노출 방식 변환
+                let minAge = [[${eventBoard.filterMinAge}]];
+                let maxAge = [[${eventBoard.filterMaxAge}]];
+                setAgeRangeContent(minAge, maxAge);
+
+                function setAgeRangeContent(minAge, maxAge) {
+                    let content = '';
+                    if (minAge === 0 && maxAge === 0) {
+                        content = '연령 무관';
+                    } else if (minAge > 0 && maxAge > 0) {
+                        if (maxAge - minAge === 9) {
+                            content = minAge + '대';
+                        } else {
+                            content = minAge + '~' + (minAge + 10) + '대';
+                        }
+                    }
+                    // filterAgeRange 요소에 내용 설정
+                    document.getElementById('filterAgeRange').innerText = content;
                 }
 
                 // 화면에 뿌려주는 시간 포맷팅 함수
