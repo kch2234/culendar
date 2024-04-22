@@ -90,7 +90,9 @@ public class BoardService {
   public BoardDTO getOneBoard(Long id) {
     Board board = boardRepository.findById(id).orElse(null);
     board.setViewCount(board.getViewCount() + 1);
-    BoardDTO boardDTO = new BoardDTO(board);
+
+    BoardDTO boardDTO = new BoardDTO(board); // Board entity -> BoardDTO 변환
+    log.info("**** BoardService getOneBoard - boardDTO : {}", boardDTO);
 
     return boardDTO;
   }
@@ -127,6 +129,28 @@ public class BoardService {
         }
         log.info("**** BoardService getBestReviewList - result : {}", result);
         return result;
+    }
+
+    // 특정 작품에 대해 작성된 회원의 리뷰글 조회
+    public Boolean findProgramReviewByMemberId(Long memberId, Long programId) {
+        Board result = boardRepository.findProgramReviewByMemberId(memberId, programId);
+
+        if (result == null) {
+            log.info("**** BoardService findProgramReviewByMemberId - result : null");
+            return false;
+        } else {
+            log.info("**** BoardService findProgramReviewByMemberId - result : {}", result);
+            return true;
+        }
+    }
+
+    // 특정 작품에 대해 작성된 회원의 리뷰글 조회
+    public BoardDTO findProgramIdReviewByMemberId(Long memberId, Long programId) {
+        Board programReviewByMemberId = boardRepository.findProgramReviewByMemberId(memberId, programId);
+
+        return new BoardDTO(programReviewByMemberId);
+
+
     }
 
 

@@ -54,6 +54,7 @@
 
 
         <div id="favProgram" class="container">  <!-- 인기 작품 영역 -->
+            <!-- TODO 인기 모임 영역 -->
 
             <div class="row mt-5 mb-3">
                 <div class="col-auto">
@@ -93,7 +94,7 @@
 
 
         </div>  <!--  인기 작품 영역 END  -->
-        <div name="favMeeting">  <!-- 인기 모임 영역 -->
+        <div name="favMeeting">
             <div>
                 <div name="heading">인기 모임</div>  <!--  제목  -->
                 <div name="icon-horizon"></div>
@@ -110,7 +111,7 @@
 
         <script>
 
-            // 달력
+            // TODO 달력 디자인
             $(document).ready(function () {
                 var calendarEl = document.getElementById('calendar');
                 var modalProgramType = "DRAMA";
@@ -289,6 +290,7 @@
                 }
                 $('#BestProgramContainer').html(html);
             }
+
 
             // 작품 타입 가져오기
             function getProgramType(type) {

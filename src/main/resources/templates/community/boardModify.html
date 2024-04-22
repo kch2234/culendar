@@ -4,9 +4,8 @@
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
         <!--  TODO 텍스트 에디터 API  -->
-        <!-- TODO 유효성 검사, 이미지 첨부 -->
 
-        <div id="boardAddWrapper" class="mt-5">
+        <div id="boardModifyWrapper" class="mt-5">
 
             <form class="container mt-4" th:object="${board}" method="post" action="" th:action >
 
@@ -15,25 +14,32 @@
                     <div class="col-12 input-group input-group-lg">
 
                         <span class="input-group-text">제목</span>
+                        <input hidden="hidden" th:field="*{boardType}" id="boardTypeValue" type="text">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <button class="btn-secondary bTypeBtn fs-6 text-center" th:text="*{boardType.value}" type="button">
+                            </button>
+                        </div>
+                        <div>
+                            <button class="boardTypeValue" ></button>
 
-                        <button class="btn-secondary" th:text="${board.getBoardType().value}"></button>
+                        </div>
+                        <input id="boardType" class="input-group-text" hidden="hidden" th:field="*{boardType}">
 
-                        <input type="text" class="form-control" th:field="*{title}">
+                        <!-- 제목 수정칸 플레이스 홀더 변경 -->
+                        <input type="text" class="form-control" th:field="*{title}" th:placeholder="*{title}">
 
                     </div>
 
                 </div>
-
-                <div class="row mb-4"> <!-- 작품 선택 -->
+                <!-- 작품 선택 변경 불가-->
+                <div class="row mb-4">
 
                     <div class="col-12 input-group input-group-lg">
 
-                        <label for="search-text" class="input-group-text">작품 선택</label>
-                        <div class="input-group-text">
-                            <input class="form-check-input mt-0" id="programSelectCheck" type="checkbox" th:checked="${true}" readonly>
-                        </div>
-                        <input type="text" id="search-text" class="form-control dropdown-toggle search-input"
-                               th:value="${board.getProgramDTO().getTitle()}" disabled>
+                        <label for="search-text" class="input-group-text">작품</label>
+                        <input type="text" id="search-text" class="form-control search-input" th:field="*{programDTO.title}" readonly="readonly">
+
+
                     </div>
 
                 </div>
@@ -57,7 +63,7 @@
 
                 <div class="row">
                     <div class="input-group">
-                        <button type="button" class="btn btn-outline-secondary" th:onclick="history.go(-1)">
+                        <button type="button" class="btn btn-outline-secondary" th:onclick="|location.href='@{/boards/list}'|">
                             취소
                         </button>
                         <button type="submit" class="btn btn-secondary">수정</button>
@@ -69,9 +75,6 @@
 
         </div>
 
-        <script th:inline="javascript">
-            
-        </script>
     </th:block>
 </th:block>
 </html>

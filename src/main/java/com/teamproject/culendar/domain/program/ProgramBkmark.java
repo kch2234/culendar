@@ -23,7 +23,6 @@ public class ProgramBkmark extends BaseEntityCreatedDate {
     @JoinColumn(name = "program_id")
     private Program program;
 
-    //TODO 지역 추가
     @Column(nullable = false)
     private Location location;
 }

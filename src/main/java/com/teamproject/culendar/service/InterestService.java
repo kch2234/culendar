@@ -1,6 +1,7 @@
 package com.teamproject.culendar.service;
 
 import com.teamproject.culendar.domain.member.Interest;
+import com.teamproject.culendar.dto.InterestDTO;
 import com.teamproject.culendar.dto.InterestForm;
 import com.teamproject.culendar.repository.InterestRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,11 @@ public class InterestService {
         Interest entity = interestForm.toEntity();
         Interest interest = interestRepository.save(entity);
         return interest.getId();
+    }
+
+    public void saveInterestNew(InterestDTO interestDTO) {
+        Interest entity = interestDTO.toEntity();
+        Interest interest = interestRepository.save(entity);
     }
 
     public List<Interest> findByMemberId(Long updateId) {
