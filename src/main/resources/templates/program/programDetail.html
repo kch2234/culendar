@@ -21,7 +21,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
-                        <!-- TODO 등록 작품 연동 -->
+                        <!-- 등록 작품 연동 해서 후기 작성 -->
                         <button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${program.getId})}'|">등록</button>
                     </div>
                 </div>
@@ -45,9 +45,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
                         <!-- TODO 수정 연동 -->
-                        <form action="" th:action="@{/boards/add}" method="get">
-                            <button type="submit" class="btn btn-secondary">수정</button>
-                        </form>
+                        <button type="button" class="btn btn-secondary" id="reviewModifyBtn" th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${program.getId})}'|">수정</button>
                     </div>
                 </div>
             </div>
@@ -550,6 +548,16 @@
                                     $('#myReview').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
                                     // data-bs-target 변경
                                     $('#myReview').attr('data-bs-target', '#modifyReview-modal');
+
+                                    // 회원 후기 게시글 id 가져오기
+                                    $.ajax({
+                                        url: '/boards/findReviewId/' + memberId + '/' + programId,
+                                        type: 'GET',
+                                        success: function (data) {
+                                            console.log(data);
+                                           $('#reviewModifyBtn').attr('th:href', '@{/boards/{boardId}/modify(boardId=' + data.id + ')}');
+                                        }
+                                    });
 
                                 }
 

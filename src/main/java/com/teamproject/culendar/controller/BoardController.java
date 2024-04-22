@@ -130,6 +130,7 @@ public class BoardController {
         log.info("***** BoardController GET /boards/addReview");
 
         rttr.addFlashAttribute("reviewProgramId", programId);
+        rttr.addFlashAttribute("fromReviewBtn",true);
 
         return "redirect:/boards/add";
     }

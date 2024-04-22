@@ -128,5 +128,14 @@ public class BoardService {
         }
     }
 
+    // 특정 작품에 대해 작성된 회원의 리뷰글 조회
+    public BoardDTO findProgramIdReviewByMemberId(Long memberId, Long programId) {
+        Board programReviewByMemberId = boardRepository.findProgramReviewByMemberId(memberId, programId);
+
+        return new BoardDTO(programReviewByMemberId);
+
+
+    }
+
 
 }
