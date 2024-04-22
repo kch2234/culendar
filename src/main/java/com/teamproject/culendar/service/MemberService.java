@@ -38,16 +38,6 @@ public class MemberService {
         return new MemberDTO(member);
     }
 
-    // 회원 팔로우 수 조회
-    public FollowDTO Follows(Long memberId, Long followId) {
-        FollowDTO followDTO = new FollowDTO();
-        Long followCount = followRepository.FollowsCount(memberId);
-        Long followState = followRepository.FollowsState(memberId, followId);
-        followDTO.setFollowState(followState == 1);
-        followDTO.setFollowCount(followCount);
-        return followDTO;
-    }
-
     // 아이디 중복 체크
     public MemberDTO findByUserid(String userid) {
         log.info("********** MemberService findByUserid - userId : {}", userid);

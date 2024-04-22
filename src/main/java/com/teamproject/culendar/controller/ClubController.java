@@ -38,20 +38,7 @@ public class ClubController {  // NOTE *ClubController == EventBoardController* 
 
   // 모임 목록 (클럽)
   @GetMapping("/list")
-  public String list(Model model, ProgramType programType) {  //  PageRequestDTO pageRequestDTO
-//    log.info("**** ClubController GET /clubs/list");
-//    Page<EventBoard> result = eventBoardService.getListWithPaging(pageRequestDTO);
-//    List<EventBoard> contents = result.getContent();
-//    List<EventBoardDTO> list = new ArrayList<>();
-//    for(int i = 0; i < contents.size(); i++) {
-//      EventBoard eventBoard = contents.get(i);
-//      EventBoardDTO dto = new EventBoardDTO(eventBoard);
-//      list.add(dto);
-//    }
-//    PageResponseDTO pageResponseDTO = new PageResponseDTO(pageRequestDTO, result.getTotalElements());
-
-//    model.addAttribute("list", list);
-//    model.addAttribute("pageDTO", pageResponseDTO);
+  public String list(Model model, ProgramType programType) {
 
     model.addAttribute("programType", ProgramType.values());
 

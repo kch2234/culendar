@@ -45,7 +45,7 @@ public class EventController {
     eventMemberList.setMember(member);
 
     EventBoardDTO eventBoardDTO = eventBoardService.getOneBoard(eventBoardId);
-    // FIX EventBoardDTO -> EventBoard  변환
+    // TODO EventBoardDTO -> EventBoard  변환
     EventBoard eventBoard = new EventBoard();
     eventMemberList.setEventBoard(eventBoard);
 

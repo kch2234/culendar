@@ -3,133 +3,261 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
 
-    <!-- TODO 마이페이지 기능 구현 및 디자인 -->
-    <h1>회원 페이지 영역</h1>
     <th:block th:fragment="content">
-            <!-- 팔로잉 모달 -->
-            <div class="modal-dialog modal-dialog-scrollable"><!-- 스크롤 모달 -->
-                <div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="followingModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="followingModalLabel">팔로잉</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+
+        <!-- 팔로우 목록 모달 -->
+        <div class="modal fade" id="followList-modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">내 팔로우 목록</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body container">
+
+                        <!-- 팔로우 목록 양식-->
+                        <div class="row">
+
+                            <!-- 프로필 -->
+                            <div class="col-2">
+                                <i class="fa-solid fa-circle-user fa-2x d-flex justify-content-center align-items-center"></i>
                             </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div id="followingList"></div>
-                                </form>
+
+                            <div class="col">
+
+                                <div class="row d-flex justify-content-between align-items-center">
+
+                                    <!-- 닉네임, 지역 -->
+                                    <div class="col-auto">
+                                        <div class="input-group">
+                                            <button type="button" class="btn btn-outline-secondary">asd</button>
+                                            <span class="input-group-text">지역</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- 팔로우 버튼 -->
+                                    <div class="col-auto">
+                                        <div class="input-group">
+                                            <button type="button" class="btn btn-dark">UnFollow</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div id="memberList"></div>
-                                </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 팔로잉 모달 -->
+        <div class="modal-dialog modal-dialog-scrollable"><!-- 스크롤 모달 -->
+            <div class="modal fade" id="followingModal" tabindex="-1" role="dialog"
+                 aria-labelledby="followingModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="followingModalLabel">팔로잉</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div id="followingList"></div>
+                            </form>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div id="memberList"></div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- 스크롤 모달 -->
+
+        <!-- 팔로워 모달 -->
+        <div class="modal-dialog modal-dialog-scrollable"><!-- 스크롤 모달 -->
+            <div class="modal fade" id="followerModal" tabindex="-1" role="dialog" aria-labelledby="followerModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="followerModalLabel">팔로워</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div id="followerList"></div>
+                            </form>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <!--<div id="memberList"></div>-->
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- 스크롤 모달 -->
+
+
+        <!-- TODO 마이페이지 기능 구현 및 디자인 -->
+
+        <!-- 프로필 페이지 영역 -->
+        <div class="container" id="profileWrapper">
+
+            <!-- 기본 정보 영역 -->
+            <div class="row mt-5">
+
+                <!-- 프로필 & 기본 정보 -->
+                <div class="row mt-4">
+
+                    <!-- 프로필 이미지 -->
+                    <div class="col-3">
+                        <i class="fa-solid fa-circle-user fa-7x d-flex justify-content-center align-items-center"></i>
+                    </div>
+
+                    <!-- 프로필 정보 -->
+                    <div class="col-9">
+                        <!-- 닉네임, 팔로우, 팔로워 -->
+                        <div class="row">
+                            <!-- 닉네임 -->
+                            <div class="col-auto">
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text">닉네임</span>
+                                    <span class="form-control" th:text="${member.username}"></span>
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                            <!-- 팔로우 -->
+                            <div class="col">
+                                <div class="input-group input-group-lg d-flex justify-content-center align-items-center">
+                                    <span class="input-group-text">팔로우</span>
+                                    <button type="button" id="followNum" data-bs-target="#followList-modal" data-bs-toggle="modal" class="btn btn-outline-secondary">10명</button>
+                                </div>
+
+                            </div>
+                            <!-- 팔로워 -->
+                            <div class="col">
+                                <div class="input-group input-group-lg d-flex justify-content-center align-items-center">
+                                    <span class="input-group-text">팔로워</span>
+                                    <button type="button" id="followerNum" class="btn btn-outline-secondary">10명
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 수정 버튼 -->
+                            <div class="col-auto">
+                                <div class="input-group input-group-lg">
+                                    <button type="button" class="btn btn-dark"
+                                            th:onclick="|location.href='@{/members/{id}/edit(id=${member.id})}'|">수정
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 지역, 자기소개 -->
+                        <div class="row mt-3">
+
+                            <div class="col-auto">
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text" th:text="${member.location.value}">지역</span>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text">자기소개</span>
+                                    <span class="form-control" th:text="${member.introduction}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- 필터 영역 -->
+                <div class="row mt-5">
+
+                    <!-- 동적 제목 -->
+                    <div class="col-3">
+                        <div class="input-group input-group-lg w-100 h-100">
+                            <span class="btn btn-secondary w-100 h-100 fs-2 d-flex justify-content-center align-items-center">카테고리</span>
+                        </div>
+                    </div>
+
+                    <!-- 필터 버튼 -->
+                    <!-- 나 : 후기, 정보, 작품, 신청한 모임 일정, 등록한 모임 일정 -->
+                    <!-- 북마크 : 후기, 정보, 작품, 모임 -->
+                    <!-- 타임 라인 : 후기, 정보, 작품 -->
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" class="btn btn-outline-secondary w-100 fs-4">나</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-outline-secondary w-100 fs-4">북마크</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-outline-secondary w-100 fs-4">타임라인</button>
+                            </div>
+                            <div class="col"></div>
+                            <div class="col"></div>
+                        </div>
+
+                        <!-- 세부 동적 필터 -->
+                        <div class="row mt-3">
+                            <div class="col">
+                                <button type="button" class="btn btn-outline-secondary w-100 fs-6">후기</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-outline-secondary w-100 fs-6">정보</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-outline-secondary w-100 fs-6">작품</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-outline-secondary w-100 fs-6">신청한 모임</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-outline-secondary w-100 fs-6">등록한 모임</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div> <!-- 스크롤 모달 -->
-            <!-- 팔로워 모달 -->
-            <div class="modal-dialog modal-dialog-scrollable"><!-- 스크롤 모달 -->
-                <div class="modal fade" id="followerModal" tabindex="-1" role="dialog" aria-labelledby="followerModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="followerModalLabel">팔로워</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div id="followerList"></div>
-                                </form>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <!--<div id="memberList"></div>-->
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- 스크롤 모달 -->
-<div class="container">
-    <div class="container-fluid" name="memberProfile">  <!--  회원 프로필 영역  -->
-        <div class="card">
-        <th:block sec:authorize="isAuthenticated()">
-        <span class="" name="memberImage"></span>  <!--  회원 프로필 사진  -->
-                <!-- TODO: 추가 예정 -->
-        <span name="memberInfo">  <!--  회원 정보 영역  -->
-            <div class="p-4" name="memberInfoTop">  <!--  회원 정보 상단  -->
-                <span class="" name="username" th:text="${member.username}" id="username"></span>  <!--  닉네임  -->
-                <span class="" name="following">
-                    <!-- 팔로잉 모달 버튼-->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#followingModal">팔로잉 모달</button>
-                </span>  <!--  팔로잉  -->
-                <span name="follower">
-                            <!-- 팔로잉 모달 버튼-->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#followerModal">팔로워 모달</button>
-                </span>  <!--  팔로워  -->
-                <th:block th:if="${member.id == customMember.id}">
-                    <span class="" name="edit-button"></span>  <!--  프로필 수정 버튼  -->
-                    <button type="button" class="btn btn-warning" th:onclick="|location.href='@{/members/{id}/edit(id=${member.id})}'|">프로필 수정</button>
-                </th:block>
             </div>
-            <div class="p-4" name="memberInfoBottom">  <!--  회원 정보 하단  -->
-                <span class="" name="location" th:text="${member.location}" id="location"></span>  <!--  지역  -->
-                <span class="" name="introduce" th:text="${member.introduction}" id="introduction"></span>  <!--  자기소개  -->
-                <span class="" name="memberTest-button"></span>  <!--  성향테스트 페이지 이동 버튼  -->
-                <th:block th:if="${member.id == customMember.id}">
-                    <button type="button" class="btn btn-info" th:onclick="|location.href='@{/members/{id}/memberTest(id=${member.id})}'|">성향테스트</button>
-                </th:block>
+
+            <!-- 카드 영역 -->
+            <div id="content-area" class="mt-4">
+
+                <div id="contentTest">asdasd</div>
+
             </div>
-        </span>  <!--  회원 정보 영역  -->
-        </th:block>
-        </div>  <!--  회원 프로필 영역 END  -->
-    </div>
-    <div name="filter">  <!--  필터링 (카테고리) 영역  -->
-        <span name="myFilter">  <!--  회원(나) 관련 필터 영역 / TODO 해당 카드에 등록버튼 삭제  -->
-            <span name="reviewBoard"></span>  <!--  내가 쓴 후기 게시글  -->
-            <span name="infoBoard"></span>  <!--  내가 쓴 정보 게시글  -->
-            <span name="program"></span>  <!--  내가 관람한 작품 / TODO 관람 기준?  -->
-            <span name="applyMeeting"></span>  <!--  내가 신청한 모임  -->
-            <span name="createMeeting"></span>  <!--  내가 만든 모임  -->
-        </span>
-        <span 4name="bookmark">  <!--  북마크 필터 영역 / TODO 해당 카드에 북마크 버튼 삭제  -->
-            <span name="reviewBoard"></span>  <!--  북마크한 후기 게시글  -->
-            <span name="infoBoard"></span>  <!--  북마크한 정보 게시글  -->
-            <span name="program"></span>  <!--  북마크한 작품  -->
-            <span name="meeting"></span>  <!--  북마크한 모임  -->
-        </span>
-        <span name="timeline">  <!--  타임라인 (팔로잉 회원 관련) 필터 영역  -->
-            <span name="reviewBoard"></span>  <!--  팔로잉 회원이 쓴 후기 게시글  -->
-            <span name="infoBoard"></span>  <!--  팔로잉 회원의 정보 게시글  -->
-            <span name="program"></span>  <!--  팔로잉 회원이 관람한 작품  -->
-        </span>
-    </div>  <!--  회원(나) 관련 필터 영역 END  -->
-    <div name="cards">
-        <h1>카드 영역</h1>
-        <span name="{filter}Card"></span>
-        <span name="{filter}Card"></span>
-        <span name="{filter}Card"></span>
-        <span name="{filter}Card"></span>
-    </div>
-</div>
-    <!--  무한 스크롤 영역  -->
+
+
+        </div>
+
+        <!--  무한 스크롤 영역  -->
+
+
     </th:block>
 </th:block>
 <script th:inline="javascript">
-    $(document).ready(function(){
+    $(document).ready(function () {
         let memberIdVal = [[${member.id}]];
+
+        console.log("memberIdVal : " + memberIdVal);
+
         let flowListDiv = $('#followingList');
         let FlwerListDiv = $('#followerList');
         let memberListDiv = $('#memberList');
@@ -140,15 +268,12 @@
             $.ajax({
                 type: 'GET',
                 url: '/follows/' + memberIdVal + '/following',
-                success: function (follow){
+                success: function (follow) {
                     console.log("팔로잉 리스트 가져오기 성공");
                     console.log(follow);
-                    printFollowingList(follow.followingList);
-                    if (follow.followingList != null) {
-                        printMemberList(follow.memberList);
-                    }
+                    $('#followNum').text(follow.length + '명');
                 },
-                error: function (e){
+                error: function (e) {
                     console.log("팔로잉 리스트 가져오기 실패");
                     console.log(e);
                 }
@@ -159,13 +284,12 @@
             $.ajax({
                 type: 'GET',
                 url: '/follows/' + memberIdVal + '/follower',
-                success: function (follower){
+                success: function (follower) {
                     console.log("팔로워 리스트 가져오기 성공");
                     console.log(follower);
-                    printFollowerList(follower.followerList);
-                    // printMemberList(follower.memberList);
+                    $('#followerNum').text(follower.length + '명');
                 },
-                error: function (e){
+                error: function (e) {
                     console.log("팔로워 리스트 가져오기 실패");
                     console.log(e);
                 }
@@ -208,6 +332,7 @@
             }
             memberListDiv.html(html);
         }
+
         function printFollowerList(listFollower) {
             console.log("팔로워 리스트 출력");
             console.log(listFollower);
@@ -225,61 +350,11 @@
                 if (listFollower[i].id == null) {
                     html += '<button type="button" class="btn btn-info unFollowBtn" data-unflowbtn="' + listFollower[i].id + '">팔로잉</button>';
                 } else {
-                html += '<button type="button" class="btn btn-primary followBtn" data-flwbtn="' + listFollower[i].id + '">팔로우</button>';
+                    html += '<button type="button" class="btn btn-primary followBtn" data-flwbtn="' + listFollower[i].id + '">팔로우</button>';
                 }
             }
             FlwerListDiv.html(html);
         }
-
-        // 팔로우 버튼 클릭 이벤트
-        memberListDiv.on("click", "button.followBtn", function(e){
-            console.log("팔로우 버튼 클릭");
-            let memberId = $(this).data("flwbtn");
-            console.log($(this).data("flwbtn"))
-            console.log("팔로우 버튼 클릭 memberId : " + memberId);
-            if (!memberId) {
-                console.error("memberId is undefined.");
-                return;
-            }
-            $.ajax({
-                type: 'POST',
-                url: '/follows/follow/' + memberId,
-                success: function (result){
-                    console.log("팔로우 성공");
-                    console.log(result);
-                    getFollowingList();
-                },
-                error: function (e){
-                    console.log("팔로우 실패");
-                    console.log(e);
-                }
-            });
-        });
-
-        // 언팔로우 버튼 클릭 이벤트
-        $(".modal-content").on("click", "button.unFollowBtn", function(e){
-            console.log("언팔로우 버튼 클릭");
-            let memberId = $(this).data("unflowbtn");
-            console.log($(this).data("unflowbtn"))
-            console.log("언팔로우 버튼 클릭 followId : " + memberId);
-            if (!memberId) {
-                console.error("followId is undefined.");
-                return;
-            }
-            $.ajax({
-                type: 'DELETE',
-                url: '/follows/unfollow/' + memberId,
-                success: function (result){
-                    console.log("언팔로우 성공");
-                    console.log(result);
-                    getFollowingList();
-                },
-                error: function (e){
-                    console.log("언팔로우 실패");
-                    console.log(e);
-                }
-            });
-        });
     });
 </script>
 </html>

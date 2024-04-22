@@ -11,19 +11,15 @@ import java.util.Optional;
 
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 
-    List<Follow> findByMemberId(Long id);
-    List<Follow> findByFollowId(Long id);
+    // 회원이 팔로우 하고 있는 리스트 조회
+    List<Follow> findAllByMemberId(Long memberId);
 
-    Optional<Follow> findByMemberAndFollow(Member member, Member follow);
+    // 회원을 팔로우 하고 있는 팔로워 리스트 조회
+    List<Follow> findAllByFollowId(Long followId);
 
-    @Query("SELECT COUNT(*) " +
-            "FROM Follow f " +
-            "WHERE f.member.id = :memberId")
-    Long FollowsCount(Long memberId);
+    // 팔로우 여부 확인
+    Optional<Follow> findByMemberIdAndFollowId(Long memberId, Long followId);
 
-    @Query("SELECT COUNT(*) " +
-            "FROM Follow f " +
-            "WHERE f.member.id = :memberId " +
-            "AND f.follow.id = :followId")
-    Long FollowsState (Long memberId, Long followId);
+    // 팔로우 취소
+    void deleteByMemberIdAndFollowId(Long memberId, Long followId);
 }
