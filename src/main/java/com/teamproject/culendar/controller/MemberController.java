@@ -55,10 +55,10 @@ public class MemberController {
 
     // 회원 상세페이지
 //    @PreAuthorize("hasRole('MEMBER')")
-    @GetMapping("/{id}")
-    public String myProfile(@PathVariable("id") Long id, @AuthenticationPrincipal CustomMember customMember, Model model){
-        log.info("********** MemberController GET /members/:id (myProfile) - id : {}", id);
-        MemberDTO member = memberService.findById(id);
+    @GetMapping("/{username}")
+    public String myProfile(@PathVariable("username") String username, @AuthenticationPrincipal CustomMember customMember, Model model){
+        log.info("********** MemberController GET /members/:id (myProfile) - id : {}", username);
+        MemberDTO member = memberService.findByUsername(username);
         model.addAttribute("member", member);
         if (customMember != null) {
             model.addAttribute("customMember", customMember.getMember());
