@@ -2,6 +2,7 @@ package com.teamproject.culendar.service;
 
 import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.EventBoard;
+import com.teamproject.culendar.domain.enumFiles.BoardType;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.program.Program;
 import com.teamproject.culendar.dto.EventBoardDTO;
@@ -17,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Service
 @Slf4j
@@ -35,7 +38,7 @@ public class EventBoardService {
     return savedBoard.getId();
   }
 
-  // 모임 목록 불러오기
+  // 전체 모임 최신순 목록 불러오기
   public Page<EventBoard> getListWithPaging(PageRequestDTO pageRequestDTO) {
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
@@ -47,7 +50,18 @@ public class EventBoardService {
     return result;
   }
 
-  // 게시글 프로그램타입별 목록 불러오기
+  // 전체 모임 인기순 목록 불러오기
+  public Page<EventBoard> getListWithBkMark(PageRequestDTO pageRequestDTO) {
+    Pageable pageable = PageRequest.of(
+        pageRequestDTO.getPage() - 1,
+        pageRequestDTO.getSize(),
+        Sort.by("id").descending());
+
+    Page<EventBoard> result = eventBoardRepository.findOrderByBkMark(pageable);
+    return result;
+  }
+
+  // 프로그램타입별 모임 최신순 목록 불러오기
   public Page<EventBoard> getListWithProgramType(PageRequestDTO pageRequestDTO, ProgramType programType) {
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
@@ -55,6 +69,17 @@ public class EventBoardService {
         Sort.by("id").descending());
 
     Page<EventBoard> result = eventBoardRepository.findByProgramType(programType, pageable);
+    return result;
+  }
+
+  // 프로그램타입별 모임 인기순 목록 불러오기
+  public Page<EventBoard> getProgramTypeListWithBkMark(PageRequestDTO pageRequestDTO, ProgramType programType){
+    Pageable pageable = PageRequest.of(
+        pageRequestDTO.getPage() - 1,
+        pageRequestDTO.getSize(),
+        Sort.by("id").descending());
+
+    Page<EventBoard> result = eventBoardRepository.findOrderByProgramType(programType, pageable);
     return result;
   }
 
@@ -72,8 +97,23 @@ public class EventBoardService {
   // 모임 수정
   public void updateOneBoard(EventBoardForm eventBoardForm) {
     EventBoard findEventBoard = eventBoardRepository.findById(eventBoardForm.getId()).orElse(null);
+
     findEventBoard.setTitle(eventBoardForm.getTitle());
     findEventBoard.setContent(eventBoardForm.getContent());
+
+    LocalDateTime eventDateLocalDateTime = LocalDateTime.parse(eventBoardForm.getEventDate() + "T00:00:00");
+    LocalDateTime deadlineDateLocalDateTime = LocalDateTime.parse(eventBoardForm.getDeadlineDate() + "T00:00:00");
+
+    findEventBoard.setEventDate(eventDateLocalDateTime);
+    findEventBoard.setDeadlineDate(deadlineDateLocalDateTime);
+
+    findEventBoard.setMaxPeople(eventBoardForm.getMaxPeople());
+
+    findEventBoard.setAutoAccept(eventBoardForm.getAutoAccept());
+
+    findEventBoard.setFilterGender(eventBoardForm.getFilterGender());
+    findEventBoard.setFilterMinAge(eventBoardForm.getFilterMinAge());
+    findEventBoard.setFilterMaxAge(eventBoardForm.getFilterMaxAge());
   }
 
 

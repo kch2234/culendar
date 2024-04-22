@@ -32,12 +32,14 @@ public class BoardService {
   public Long save(BoardForm boardForm) {
     Board entity = boardForm.toEntity();
     Board savedBoard = boardRepository.save(entity);
+    log.info("**** BoardService save - entity : {}", entity);
 
     return savedBoard.getId();
   }
 
-  // 게시글 목록 불러오기
+  // 전체 게시글 최신순 목록 불러오기
   public Page<Board> getListWithPaging(PageRequestDTO pageRequestDTO) {
+    log.info("**** BoardService getListWithPaging - /ALL/NEW/1");
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
         pageRequestDTO.getSize(),
@@ -48,8 +50,21 @@ public class BoardService {
     return result;
   }
 
-  // 게시글 카테고리 목록 불러오기
+  //  전체 게시글 인기순(북마크순) 목록 불러오기
+  public Page<Board> getListWithBkMark(PageRequestDTO pageRequestDTO){
+    log.info("**** BoardService getListWithBkMark - /ALL/BEST/1");
+    Pageable pageable = PageRequest.of(
+        pageRequestDTO.getPage() - 1,
+        pageRequestDTO.getSize(),
+        Sort.by("id").descending());
+
+    Page<Board> result = boardRepository.findOrderByBkMark(pageable);
+    return result;
+  }
+
+  // 카테고리 게시글 최신순 목록 불러오기
   public Page<Board> getListWithCategory(PageRequestDTO pageRequestDTO, BoardType boardType){
+    log.info("**** BoardService getListWithCategory - /{}/NEW/1", boardType);
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
         pageRequestDTO.getSize(),
@@ -59,14 +74,15 @@ public class BoardService {
     return result;
   }
 
-  // 게시글 인기순(북마크순) 목록 불러오기
-  public Page<Board> getListWithBkMark(PageRequestDTO pageRequestDTO){
+  // 카테고리 게시글 인기순 목록 불러오기
+  public Page<Board> getCategoryListWithBkMark(PageRequestDTO pageRequestDTO, BoardType boardType){
+    log.info("**** BoardService getCategoryListWithBkMark - /{}/BEST/1", boardType);
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
         pageRequestDTO.getSize(),
         Sort.by("id").descending());
 
-    Page<Board> result = boardRepository.findOrderByBkMark(pageable);
+    Page<Board> result = boardRepository.findOrderByBoardType(boardType, pageable);
     return result;
   }
 

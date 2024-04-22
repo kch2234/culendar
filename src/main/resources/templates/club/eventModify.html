@@ -1,24 +1,192 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
-        <h1>모임 수정 페이지 영역</h1>
-
         <!--  TODO 텍스트 에디터 API  -->
-        <div name="title">제목</div>
-        <div name="program">작품 선택</div>  <!--  전시, 콘서트  -->
-        <div name="date">모임 날짜</div>
-        <div name="personnel">인원</div>
-        <div name="age">연령</div>
-        <div name="place">장소</div>
-        <div name="gender">성별</div>
-        <div name="thumbnail">썸네일</div>
-        <div name="image">이미지 첨부</div>
-        <div name="content-textbox">내용</div>
-        <div name="button">
-            <span name="cancel-button">취소</span>
-            <span name="submit-button">등록</span>
+
+        <div id="boardAddWrapper" class="mt-5">
+
+            <form class="container mt-4" th:object="${eventBoard}" method="post" action="" th:action >
+
+                <!-- 제목, 게시글 분류 선택 -->
+                <div class="row mb-4 ">
+
+                    <div class="col-12 input-group input-group-lg">
+
+                        <span class="input-group-text">제목</span>
+                        <input type="text" class="form-control" th:field="*{title}">
+
+                    </div>
+
+                </div>
+
+                <!-- 작품 선택 -->
+                <div class="row mb-4">
+
+                    <div class="col-12 input-group input-group-lg">
+
+                        <label for="search-text" class="input-group-text">작품 선택</label>
+                        <div class="input-group-text">
+                            <input class="form-check-input mt-0" id="programSelectCheck" type="checkbox" checked disabled>
+                        </div>
+                        <input type="text" id="search-text" class="form-control dropdown-toggle search-input"
+                               th:value="${eventBoard.getProgramDTO().getTitle()}" disabled>
+                    </div>
+
+                </div>
+
+                <!--  모임 일정 / 모집 마감 일자  -->
+                <div class="row mb-4 ">
+
+                    <div class="col-12 input-group input-group-lg">
+
+                        <!--  모임 날짜  -->
+                        <div class="form-group">
+                            <span class="input-group-text">날짜</span>
+                            <input type="date" class="form-control" th:value="${eventDateString}" name="eventDate" id="eventDate">
+                        </div>
+                        <!--  달력형 모집 마감 일자  -->
+                        <div class="form-group">
+                            <span class="input-group-text" >모집 마감 일자</span>
+                            <input type="date" class="form-control" th:value="${deadlineDateString}" name="deadlineDate" id="deadlineDate">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--  인원  -->
+                <div class="row mb-4 ">
+
+                    <div class="col-12 input-group input-group-lg">
+
+                        <div class="form-group">
+                            <span class="input-group-text">최대 인원</span>
+                            <input type="number" class="form-control" th:field="*{maxPeople}" min="2" id="maxPeople">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--  모임 자동 수락 여부  -->
+                <div class="row mb-4 ">
+
+                    <div class="col-12 input-group input-group-lg">
+
+                        <!--  TODO DB 연결  -->
+                        <label class="input-group-text">모임 참가 신청을 자동으로 수락합니다.</label>
+                        <div class="input-group-text">
+                            <input class="form-check-input mt-0" type="checkbox" th:checked="${autoAccept}" th:field="*{autoAccept}">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--  필터링 영역  -->
+                <div class="row mb-4 ">
+
+                    <div class="col-12 input-group input-group-lg">
+
+                        <label class="input-group-text" for="filterGender">성별</label>
+                        <select class="form-control" th:field="*{filterGender}">
+                            <option th:each="filterGender: ${filterGender}" th:value="${filterGender.name()}" th:text="${filterGender.value}">
+                                <!--  TODO 버튼 누르면 드롭다운 되도록 연결  -->
+                            </option>
+                        </select>
+                        <input id="filterGender" hidden="hidden" th:field="*{filterGender}">
+<!--                        <ul class="dropdown-menu">-->
+<!--                            <li th:each="filterGender: ${filterGender}">-->
+<!--                                <select class="form-control" th:value="*{filterGender.name()}" id="filterGender">-->
+<!--                                    <button class="dropdown-item filterGender" th:text="${filterGender.value}" th:data-type="${filterGender.name()}"></button>-->
+<!--                                </select>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+
+                        <span class="input-group-text" for="filterMinAge">최소 연령</span>
+                        <input type="number" class="form-control" th:field="*{filterMinAge}" min="0" id="filterMinAge">
+
+                        <span class="input-group-text">최대 연령</span>
+                        <input type="number" class="form-control" th:field="*{filterMaxAge}" min="0" id="filterMaxAge">
+
+
+                    </div>
+
+                </div>
+
+                <!--                <div class="form-group">-->
+                <!--                    <label class="text-blank" for="thumbnail">썸네일 이미지</label>-->
+                <!--                    <input type="file" th:field="*{thumbnail}" class="form-control" id="thumbnail">-->
+                <!--                </div>  &lt;!&ndash;  todo 이미지 첨부 기능 예정  &ndash;&gt;-->
+                <!--                <div class="form-group">-->
+                <!--                    <label class="text-blank" for="image">본문 이미지 첨부</label>-->
+                <!--                    <input type="file" th:field="*{image}" class="form-control" id="image">-->
+                <!--                </div>  &lt;!&ndash;  todo 이미지 첨부 기능 예정  &ndash;&gt;-->
+
+                <!--  내용 영역  -->
+                <div class="row mb-4">
+                    <div class="input-group input-group-lg">
+
+                        <label for="content-textarea" class="input-group-text">내용</label>
+
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="input-group">
+
+                        <textarea th:field="*{content}" rows="30" class="form-control" id="content-textarea">
+
+                        </textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-group">
+                <button type="button" class="btn btn-info" th:onclick="history.go(-1)">취소</button>
+                <button type="submit" class="btn btn-primary">수정</button>
+                    </div>
+                </div>
+
+            </form>
+
         </div>
+
+        <script th:inline="javascript">
+            $(document).ready(function () {
+
+                // 현재 날짜 계산
+                var now_utc = Date.now();
+                var timeOff = new Date().getTimezoneOffset() * 60000;
+                var today = new Date(now_utc - timeOff);
+
+                // minEventDate = today + 2
+                var minEventDate = new Date(today);
+                minEventDate.setDate(today.getDate() + 2);
+                var minEventDateISOString = minEventDate.toISOString().split("T")[0];
+                document.getElementById("eventDate").setAttribute("min", minEventDateISOString);
+
+                // eventDate 입력 후
+                document.getElementById("eventDate").addEventListener("change", function() {
+                    var eventDateValue = this.value;
+                    var eventDate = new Date(eventDateValue);
+
+                    // minDeadlineDate = today
+                    var minDeadlineDate = new Date();
+                    var minDeadlineDateISOString = minDeadlineDate.toISOString().split("T")[0];
+                    document.getElementById("deadlineDate").setAttribute("min", minDeadlineDateISOString);
+
+                    // maxDeadlineDate = eventDate - 2
+                    var maxDeadlineDate = new Date(eventDate);
+                    maxDeadlineDate.setDate(eventDate.getDate() - 2);
+                    var maxDeadlineDateISOString = maxDeadlineDate.toISOString().split("T")[0];
+                    document.getElementById("deadlineDate").setAttribute("max", maxDeadlineDateISOString);
+                });
+
+            });
+        </script>
+
     </th:block>
 </th:block>
 </html>

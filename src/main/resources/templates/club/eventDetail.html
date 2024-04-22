@@ -1,132 +1,598 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+    <th:block th:fragment="content">
 
-    <h3>Thumbnail</h3>  <!--  썸네일 이미지  -->
-    <div class="eventDetailHeader">  <!--  모임 영역 헤더  -->
-        <div class="eventDetailTitle">  <!-- 모임 상세 제목 영역   -->
-            <div class="eventDetailTitleTop">  <!--  모임 상세 제목 영역 상단  -->
-                <span class="form-group">  <!--  모임 제목  -->
-                    <label for="title"></label>
-                    <input type="text" class="form-control" th:field="${board.title}" id="title" readonly>
-                </span>
-                <span class="button">  <!--  버튼 영역  -->
-                    <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/boards/add}'|">수정</button>  <!--  수정 버튼  -->
-                    <button type="button" class="btn btn-danger" th:onclick="|location.href='@{/boards/add}'|">삭제</button>  <!--  수정 버튼  -->
+        <!-- 모임 상세 페이지 컨테이너 -->
+        <div class="container" id="boardDetailWrapper">
 
-                    <label for="boardBKmark">북마크 toggle</label>
-                    <input type="checkbox" name="boardBKmark" value="unBK" id="boardBKmark">  <!--  북마크 버튼  -->
-                </span>
-            </div>  <!--  eventDetailTitleTop 모임 상세 제목 영역 상단 END  -->
-            <div class="program.title"></div>  <!--  작품 제목 (모임 상세 제목 하단)  -->
-        </div>  <!--  eventDetailTitle 모임 상세 제목 영역 END   -->
-        <div class="eventDetailInfo">  <!--  모임 상세 정보 영역  -->
-            <div class="eventDetailInfoTop">  <!--  모임 상세 정보 영역 상단  -->
-                <span>eventDate</span>  <!--  모임 날짜  -->
-                <span>location</span>  <!--  모임 장소  note 지역!=장소  -->
-                <span>확정인원/maxPeople</span>  <!--  eventMemberStatus 모임 인원 현황  -->
-                <button type="submit" class="btn btn-primary">신청</button>  <!--  신청자용 신청 버튼  -->
-                <button type="button" class="btn btn-primary" th:onclick="">인원 관리 modal</button>  <!--  모임리더용 신청자 관리 버튼  -->
-            </div>
-            <div class="eventDetailInfoBottom">  <!-- 모임 상세 정보 영역 하단   -->
-                <button type="button" class="btn btn-secondary">연령대</button>
-                <button type="button" class="btn btn-secondary">지역</button>
-                <button type="button" class="btn btn-secondary">성별</button>
-            </div>
-            
-        </div>  <!--  eventDetailInfo 모임 상세 정보 영역 END  -->
-    </div>  <!--  eventDetailHeader 모임 영역 헤더 END  -->
-
-    <div class="form-group">  <!--  게시글 내용  -->
-        <label for="content"></label>
-        <textarea class="form-control" th:field="${board.content}" id="content" rows="20" readonly></textarea>
-    </div>
-    <div class="container">  <!--  포스터 + 작품 정보 카드  -->
-        <div class="row">
-            <div class="col-lg-7">  <!--  포스터 영역  -->
-                <div class="img-shadow">
-                    <div class="owl-single no-dots owl-carousel owl-loaded">
-                        <div class="owl-stage-outer owl-height" style="height: 388.25px;">
-                            <div class="owl-stage"
-                                 style="transform: translate3d(-1530px, 0px, 0px); transition: all 0s ease 0s; width: 3570px;">
-                                <div class="owl-item cloned" style="width: 510px;">
-                                    <div class="owl-item active" style="width: 510px;">
-                                        <div class="item">
-                                            <img th:src="@{/sbadmin/images/dashboard.jpg}">
-                                        </div>  <!--  item  -->
-                                    </div>  <!--  owl-item active  -->
-                                </div>  <!-- owl-item cloned   -->
-                            </div>  <!--  owl-stage  -->
-                        </div>  <!--  owl-single no-dots owl-carousel owl-loaded  -->
-                    </div>  <!--  img-shadow  썸네일 그림자 영역  -->
-
-                </div> <!-- col-md-4 -->
-            </div> <!-- row 포스터 -->
-
-            <div class="col-md-6 mb-4 mb-lg-0 col-lg-3" data-aos="fade-up" data-aos-delay="0">
-                <div class="service">
-                    <div class="service-contents">
-                            <span>
-                                <p>보통이에요 58%</p>  <!--  작품의 평균 문장형 평가  -->
-                                <form>  <!--  toggle todo DB연결  -->
-                                    <label for="schedule">캘린더 등록 toggle</label>
-                                    <input type="checkbox" name="schedule" value="unregister" id="schedule">
-                                    <label for="BKmark">북마크 toggle</label>
-                                    <input type="checkbox" name="BKmark" value="unBKmark" id="BKmark">
-                                </form>
-                            </span>  <!--  toggle  -->
-                        <div>  <!--  todo DB, 링크 연결  -->
-                            <h2>작품 제목</h2>
-                            <h5>작품 기간</h5>
+            <!--        일정 추가 모달-->
+            <div class="modal"
+                 id="addMyCalendar-modal"
+                 tabindex="-1"
+                 aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">달력 선택</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div>  <!--  todo DB연결  -->
-                            <button type="button" class="btn btn-primary">좋아요</button>  <!--  todo 작품의 내 문장형 평가  -->
-                            <label for="rating">내 후기</label>
-                            <input type="checkbox" name="rating" value="notExist" id="rating">
-                        </div>
-                        <div>지도 영역</div>  <!--  todo 지도 연결  -->
-                    </div> <!-- service-contents -->
-                </div> <!-- service -->
-            </div>  <!--  row 작품 정보  -->
-        </div>  <!--  row  -->
-    </div>  <!-- container 포스터 + 작품 정보 카드 -->
-    <div class="col-md-6 mb-4 mb-lg-0 col-lg-4">
-        <div class="news-item">  <!--  프로필 이미지 + 회원 정보 영역  -->
-            <div class="vcard d-flex mb-4">  <!--  프로필 이미지  -->
-                <div class="img-wrap">
-                    <img th:src="@{/sbadmin/images/person_1.jpg}" alt="Image" class="img-fluid">
-                </div>
-                <div class="post-meta"></div>
-            </div>
-            <div class="news-contents mb-4">  <!--  회원 정보  -->
-                <button type="button" class="btn btn-primary" th:onclick="">Follow</button>  <!--  todo 회원 팔로우  -->
-                <div class="form-group">
-                    <label for="username">닉네임</label>
-                    <input type="text"
-                           class="form-control"
-                           th:value="${board.memberDTO.username}"
-                           id="username"
-                           readonly>
-                </div>
-                <div class="form-group">
-                    <label for="location">지역</label>
-                    <input type="text"
-                           class="form-control"
-                           th:value="${board.memberDTO.location}"
-                           id="location"
-                           readonly>
-                </div>
-                <div class="form-group">
-                    <label for="introduction">한줄소개</label>
-                    <input type="text"
-                           class="form-control"
-                           th:value="${board.memberDTO.introduction}"
-                           id="introduction"
-                           readonly>
-                </div>
-            </div>  <!--  news-contents 회원 정보 영역  -->
-        </div>  <!--  news-item 프로필 이미지 + 회원 정보 영역  -->
-    </div>  <!--  col-md-6 mb-4 mb-lg-0 col-lg-4 작성자 영역 카드  -->
+                        <div class="modal-body" id="addMyCalContainer">
+                            <div class="container" id="addMyCalendarBtnContainer">
+                                <!--    내 캘린더 목록 및 캘린더 추가 버튼 위치 -->
 
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--    문장형 평가 추가 모달-->
+            <div class="modal"
+                 id="addRating-modal"
+                 tabindex="-1"
+                 aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">문장형 평가 추가</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body container" id="addRatingContainer">
+                            <div class="row d-flex justify-content-center mt-2 mb-2" th:each="rating : ${ratingType}">
+                                <button class="col-auto btn btn-outline-secondary" th:text="${rating.getValue()}"
+                                        th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--  TODO 썸네일 이미지  -->
+            <div class="badge text-bg-secondary fs-1">썸네일</div>
+
+            <!-- 게시글 제목, 수정 / 삭제 버튼, 북마크 버튼 -->
+            <div class="row mt-5 text-center align-items-center">
+                <div class="col-3"></div>
+
+                <div class="col">
+                    <!--  게시글 제목  -->
+                    <h1 th:text="${eventBoard.title}"></h1>
+                    <!--  작품 제목 (모임 상세 제목 하단)  -->
+                    <p th:text="${eventBoard.getProgramDTO().getTitle()}"></p>
+                </div>
+
+                <!-- 회원 일 경우에만 북마크 또는 수정, 삭제 버튼 보이기 -->
+                <th:block sec:authorize="isAuthenticated()">
+                    <!-- 게시글 작성자 일 경우만 수정, 삭제 버튼 보이기 -->
+                    <th:block th:if="${member.getId} == ${eventBoard.getMemberDTO().getId()}">
+                        <div class="col-3">
+                            <button type="button" class="btn btn-secondary mb-1"
+                                    th:onclick="|location.href='@{/clubs/{id}/modify(id=${eventBoard.id})}'|">수정
+                            </button>
+                            <form action="" th:action="@{/clubs/{id}/delete(id=${eventBoard.id})}" method="post">
+                                <button type="submit" class="btn btn-outline-secondary">삭제</button>
+                                <!--  TODO 삭제 확인 모달   -->
+                            </form>
+                        </div>
+                    </th:block>
+                    <!-- 게시글 작성자가 아닐 경우 북마크 버튼 보이기 -->
+                    <th:block th:if="${member.getId} != ${eventBoard.getMemberDTO().getId()}">
+                        <div class="col-3">
+                            <button id="boardBkMarkBtn"
+                                    type="button"
+                                    class="fa-regular fa-bookmark fa-3x">
+                            </button>
+                        </div>
+                    </th:block>
+
+                </th:block>
+
+            </div>
+
+            <!--  모임 상세 정보 영역 / 신청, 인원관리 버튼  -->
+            <div class="d-flex">
+                <!--  모임 상세 정보 영역  -->
+                <div class="col">
+                    <!--  모임 상세 정보 영역 상단  -->
+                    <div class="col d-flex justify-content-around align-content-around">
+                        <!--  모임 날짜  -->
+                        <div class="badge text-bg-secondary"
+                             th:text="|${#temporals.format(eventBoard.eventDate, 'yyyy-MM-dd')}|"></div>
+                        <!--  모임 지역  -->
+                        <div class="badge text-bg-secondary"
+                             th:text="${eventBoard.getProgramDTO().getLocation().value}"></div>
+                        <!--  TODO 확정인원/최대인원  -->
+                        <div class="badge text-bg-secondary" th:text="${'' + '/' + eventBoard.maxPeople}"></div>
+                    </div>
+                    <!--  모임 상세 정보 영역 하단  -->
+                    <div class="col d-flex justify-content-around align-content-around">
+                        <!--  필터링 연령대 TODO if문으로 전연령/10대/20대 등..  -->
+                        <div class="badge text-bg-secondary"
+                             th:text="${eventBoard.filterMinAge + ' ~ ' + eventBoard.filterMaxAge}"></div>
+                        <!--  필터링 연령대 TODO if문으로 성별무관/남자/여자  -->
+                        <div class="badge text-bg-secondary" th:text="${eventBoard.filterGender.value + ' ONLY'}"></div>
+                    </div>
+                </div>  <!--  col-auto  -->
+                <div class="col"></div>
+                <!--  신청/인원관리 버튼 영역  -->
+                <div class="col d-flex justify-content-center ">
+                    <!-- 회원일 경우에만 신청 또는 인원관리 버튼 보이기 -->
+                    <th:block sec:authorize="isAuthenticated()">
+                        <!-- 게시글 작성자일 경우만 인원관리 버튼 보이기 -->
+                        <!--  FIX 게시글 미작성자의 [신청]시 문제 없으나, 게시글 작성자의 [모임확정인원] 버튼 생성 시 레이아웃 망가짐  -->
+                        <th:block th:if="${member.getId} == ${eventBoard.getMemberDTO().getId()}">
+                            <div class="col-3">
+                                <button type="button" class="btn btn-primary">모임확정인원
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title"></h4>
+                                                <button type="button" class="close" data-dismiss="modal">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id>
+                                                <!--  TODO 모임 확정 인원 리스트  -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </th:block>  <!--  작성자  -->
+                        <!-- 게시글 작성자가 아닐 경우 신청 버튼 보이기 -->
+                        <th:block th:if="${member.getId} != ${eventBoard.getMemberDTO().getId()}">
+                            <div class="col-3">
+                                <button class="btnApplyEventMember btn btn-primary" type="button">신청</button>
+                                <!--  TODO 신청 완료 모달   -->
+                            </div>
+                        </th:block>  <!--  미작성자  -->
+
+                    </th:block>  <!--  회원  -->
+                </div>
+            </div>
+
+            <!--  게시글 내용  -->
+            <div class="row mt-4">
+                <div class="col">
+                    <p th:text="${eventBoard.content}"></p>
+                </div>
+            </div>
+
+            <!-- 작품 정보 카드 -->
+            <div class="row mt-4">
+
+                <!-- 포스터 영역 -->
+                <div class="col mr-2">
+                    <img class="w-100" th:src="${eventBoard.getProgramDTO().getThumbnail()}" alt="썸네일 이미지">
+                </div>
+
+                <!-- 작품 정보 영역 -->
+                <div class="col d-flex flex-column justify-content-between">
+                    <!-- 문장형 평가, 캘린더 등록, 북마크 -->
+                    <div class="d-flex flex-row">
+
+                        <div class="col-4">
+                            <div class="badge text-bg-secondary w-100 fs-6" id="AvgRating">
+                                <!--    평균 문장형 평가 위치-->
+                            </div>
+                        </div>
+                        <div class="col "></div>
+
+                        <!-- 북마크, 캘린더 추가 버튼 -->
+                        <div class="col-4 row" id="addBtnContainer">
+                            <!-- 회원일 경우에만 북마크, 캘린더 추가 버튼 보이기 -->
+                            <th:block sec:authorize="isAuthenticated()">
+                                <div class="col p-0 fs-4">
+                                    <button id="bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>
+                                </div>
+                                <div class="col p-0 fs-4">
+                                    <button class="fa-regular fa-clipboard w-75 h-75"></button>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <!-- 작품 제목 -->
+                    <div class="">
+                        <div class="col">
+                            <div class="fs-3" th:text="${eventBoard.getProgramDTO().getTitle()}"></div>
+                        </div>
+                    </div>
+
+                    <!-- 작품 시작일 -->
+                    <div class="">
+                        <div class="col-10 h-100">
+                            <div class="w-100 fs-5"
+                                 th:text="|${#temporals.format(eventBoard.getProgramDTO().getStartDate(), 'yyyy-MM-dd')} ~ ${#temporals.format(eventBoard.getProgramDTO().getEndDate(), 'yyyy-MM-dd')}|"
+                            ></div>
+                        </div>
+                    </div>
+
+                    <!-- 좋아요 버튼, 내 후기 -->
+                    <div class="d-flex flex-row" id="ratingAndReviewContainer">
+
+                        <th:block sec:authorize="isAuthenticated()">
+
+                            <div class="col-4 fs-6" id="addRating">
+                                <!--   회원 문장형 평가 위치-->
+                            </div>
+                            <div class="col"></div>
+                            <!-- TODO : 좋아요, 후기, 체크박스 버튼 -->
+                            <div class="col-2 fs-6">
+                                <div class="badge text-bg-secondary w-100 h-100">내후기</div>
+                            </div>
+                            <div class="col-2 fs-6">
+                                <div class="badge text-bg-secondary w-100 h-100">체크박스</div>
+                            </div>
+
+                        </th:block>
+
+                    </div>  <!--  좋아요 버튼, 내 후기  -->
+
+                    <!-- TODO 지도 영역 -->
+                    <div style="height: 40%">
+                        <div class="col h-100">
+                            <div class="badge text-bg-secondary w-100 h-100 fs-1">지도</div>
+                        </div>
+                    </div>
+
+                </div>  <!--  col 작품 정보 영역  -->
+
+            </div>  <!--  row 작품 정보 카드  -->
+
+            <!--  신청 버튼 TODO 모임 신청  -->
+            <div class="d-flex col justify-content-center mt-5">
+                <div class="row"></div>
+                <!-- 회원일 경우에만 신청 버튼 보이기 -->
+                <th:block sec:authorize="isAuthenticated()">
+                    <!-- 게시글 작성자가 아닐 경우 신청 버튼 보이기 -->
+                    <th:block th:if="${member.getId} != ${eventBoard.getMemberDTO().getId()}">
+                        <div class="row">
+                            <button class="btnApplyEventMember btn btn-primary" type="button">신청</button>
+                            <!--  TODO 신청 완료 모달   -->
+                        </div>
+                    </th:block>
+                </th:block>
+                <div class="row"></div>
+            </div>
+
+            <!--  프로필 이미지 + 회원 정보 영역  -->
+            <div class="row d-flex justify-content-center mt-5 mb-5">
+
+                <div class="col-6">
+                    <!-- 프로필 이미지 -->
+                    <div class="row mb-3 justify-content-center">
+                        <div class="col-4">
+                            <img src="/sbadmin/images/person_1.jpg"
+                                 alt="Image"
+                                 class="img-fluid rounded">
+                        </div>
+                    </div>
+
+                    <!-- TODO 닉네임, 팔로우 버튼 -->
+                    <div class="row text-center mb-3 d-flex justify-content-center">
+                        <div class="col-auto text-center">
+                            <div class="badge text-bg-secondary fs-4 d-inline-block"
+                                 th:text="${eventBoard.getMemberDTO().getUsername()}"></div>
+                        </div>
+                        <div sec:authorize="isAuthenticated()" class="col-auto p-0">
+                            <div class="badge text-bg-primary fs-6">Follow</div>
+                        </div>
+                    </div>
+
+                    <!-- 지역, 소개 -->
+                    <div class="row text-center justify-content-center">
+                        <div class="col-auto text-end">
+                            <div class="badge text-bg-secondary fs-6"
+                                 th:text="${eventBoard.getMemberDTO().getLocation().value}"></div>
+                        </div>
+                        <div class="col-auto text-start">
+                            <div class="badge text-bg-secondary fs-6"
+                                 th:text="${eventBoard.getMemberDTO().getIntroduction()}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>  <!--  container boardDetailWrapper  -->
+
+        <script th:inline="javascript">
+            $(document).ready(function () {
+                let boardIdVal = [[${eventBoard.id}]]; // 본문 글번호
+
+                // 현재 로그인이 되어 있다면 회원 id를, 아니면 null을 저장
+                var member = [[${member}]]
+                var memberId
+                if (member == null) {
+                    memberId = 0;
+                } else {
+                    memberId = member.id;
+                }
+                console.log("memberId : " + memberId);
+
+                var programId = [[${eventBoard.getProgramDTO.getId()}]]; // 현재 게시글의 작품 id
+
+                // 페이지 로딩시 시작할 함수들
+                getAvgRating(); // 평균 평가 가져오기
+                getMyRating(); // 내 평가 가져오기
+
+                // ********** 클릭시 이벤트들 **********
+
+                // 모달 닫기 버튼 클릭시
+                $('.close').click(function () {
+                    // close modal
+                    $('#addRating-modal').modal('hide');
+                    $('#addMyCalendar-modal').modal('hide');
+                });
+
+                // 모임 신청 버튼 클릭시 이벤트
+                $('.btnApplyEventMember').on('click', function () {
+                    console.log('모임 신청 click');
+                    let eventBoardId = [[${eventBoard.id}]];
+                    let data = {
+                        memberId: memberId,
+                        eventBoardId: eventBoardId
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: '/event/applyEventMember',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (result, status) {
+                            console.log(result);
+
+                            if (result === 'fail') {
+                                alert('모임 신청이 취소되었습니다.');
+                                return;
+                            }
+                            alert('모임 신청이 완료 되었습니다');
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('모임 신청에 실패했습니다. 다시 시도해주세요.');
+                        }
+                    });
+
+                });
+
+                // 회원의 문장형 평가 클릭시 모달 띄우기
+                $('#ratingAndReviewContainer').on('click', '#addRating', function () {
+                    let data = {
+                        memberId: memberId,
+                        programId: programId
+                    };
+
+                    $('#addRating-modal').modal('show');
+                });
+
+                // 문장형 평가 모달내에 버튼 클릭시 이벤트
+                $('#addRatingContainer').on('click', 'button', function () {
+                    let rating = $(this).data('rating');
+                    console.log(rating);
+                    let ratingNum = 0;
+
+                    if (rating === 'VERYGOOD') {
+                        ratingNum = 5;
+                    } else if (rating === 'GOOD') {
+                        ratingNum = 4;
+                    } else if (rating === 'NORMAL') {
+                        ratingNum = 3;
+                    } else if (rating === 'BAD') {
+                        ratingNum = 2;
+                    } else if (rating === 'VERYBAD') {
+                        ratingNum = 1;
+                    }
+                    console.log(ratingNum);
+
+                    let data = {
+                        memberId: memberId,
+                        programId: programId,
+                        rating: ratingNum
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/rating/addRating',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (result, status) {
+                            console.log(result);
+                            $('#addRating-modal').modal('hide');
+                            if (result === 'fail') {
+                                alert('평가가 수정 되었습니다.');
+                                getMyRating();
+                                getAvgRating();
+                                return;
+                            }
+                            alert('평가가 등록되었습니다.');
+                            getMyRating();
+                            getAvgRating();
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('평가 등록에 실패했습니다.');
+                        }
+
+                    });
+
+                });
+
+                // 북마크 버튼 클릭시 이벤트
+                $('#addBtnContainer').on('click', '#bkMarkBtn', function () {
+
+                    let data = {
+                        memberId: memberId,
+                        programId: programId
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/bkmark/addProgramBkmark',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (result, status) {
+                            console.log(result);
+
+                            if (result === 'fail') {
+                                alert('북마크에서 삭제 되었습니다.');
+                                return;
+                            }
+                            alert('북마크에 추가되었습니다.');
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('북마크 추가에 실패했습니다.');
+                        }
+                    });
+
+                });
+
+                // 일정 아이콘 클릭시 이벤트
+                $('#addBtnContainer').on('click', '.fa-clipboard', function () {
+
+                    // ajax로 내 달력 목록 가져오기
+                    $.ajax({
+                        url: '/calendar/myCalendarNameList/' + memberId,
+                        type: 'GET',
+                        success: function (data) {
+                            console.log(data);
+                            let html = '';
+                            data.forEach(function (myCalendar) {
+                                html += '<button class="btn btn-primary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
+                            });
+                            html += '<br><input type="text" id="newCalendarName" placeholder="새로운 캘린더 이름"><button id="addNewCalendarBtn" class="btn btn-primary">추가</button>';
+                            $('#addMyCalContainer').html(html);
+
+                            $('#addMyCalendar-modal').modal('show');
+                        }
+                    });
+                });
+
+                // 일정 모달 내에 달력 버튼 클릭시
+                $('#addMyCalContainer').on('click', '.cal-name', function () {
+                    let myCalId = $(this).data('mycalid');
+                    console.log(myCalId);
+                    console.log(programId);
+                    // ajax로 내 달력에 일정 추가 POST방식
+                    let data = {
+                        calendarId: myCalId,
+                        programId: programId
+                    };
+
+                    console.log(data);
+                    $.ajax({
+                        type: 'POST',
+                        url: '/calendar/addProgramToCalendar',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (result, status) {
+                            console.log(result);
+
+                            if (result === 'fail') {
+                                alert('이미 추가된 일정입니다.');
+                                return;
+                            }
+                            alert('일정이 추가되었습니다.');
+                            $('#addMyCalendar-modal').modal('hide');
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('일정 추가에 실패했습니다.');
+                        }
+                    });
+
+                });
+
+                // 일정 모달 내에 새로운 캘린더 추가 버튼 클릭시
+                $('#addMyCalContainer').on('click', '#addNewCalendarBtn', function () {
+                    let newCalendarName = $('#newCalendarName').val();
+                    console.log(newCalendarName);
+                    if (newCalendarName === '') {
+                        alert('캘린더 이름을 입력해주세요.');
+                        return;
+                    } else {
+
+                        let data = {
+                            memberId: memberId,
+                            name: newCalendarName
+                        };
+                        $.ajax({
+                            type: 'POST',
+                            url: '/calendar/addNewCalendar',
+                            data: JSON.stringify(data),
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (result, status) {
+                                console.log(result);
+                                if (result === 'fail') {
+                                    alert('이미 존재하는 캘린더 이름입니다.');
+                                    return;
+                                }
+                                alert('새로운 캘린더가 추가되었습니다.');
+                                $('#addMyCalendar-modal').modal('hide');
+                            },
+                            error: function (error) {
+                                console.log(error);
+                                alert('캘린더 추가에 실패했습니다.');
+                            }
+                        });
+                    }
+
+                });
+
+
+                // ********** 각종 함수들 **********
+
+                // 평균 문장형 평가 가져는 함수
+                function getAvgRating() {
+                    $.ajax({
+                        url: '/rating/getAvgRating/' + programId,
+                        type: 'GET',
+                        success: function (data) {
+                            $('#AvgRating').text(data);
+                        }
+                    });
+                }
+
+                // 회원 문장형 평가 가져오기
+                function getMyRating() {
+                    $.ajax({
+                        url: '/rating/getRating/' + memberId + '/' + programId,
+                        type: 'GET',
+                        success: function (data) {
+                            console.log(data);
+                            let html = '';
+                            html += '<div class="badge text-bg-secondary w-100 h-100">' + data + '</div>';
+                            $('#addRating').html(html);
+                        }
+                    });
+                }
+
+                // 화면에 뿌려주는 시간 포맷팅 함수
+                function displayTime(timeValue) {
+                    let today = new Date();
+                    let dateObj = new Date(timeValue);
+                    let gap = today.getTime() - dateObj;
+                    if (gap < (1000 * 60 * 60 * 24) && today.getDate() == dateObj.getDate()) {
+                        let hh = dateObj.getHours();
+                        let mi = dateObj.getMinutes();
+                        let ss = dateObj.getSeconds();
+                        return [(hh > 9 ? '' : '0') + hh, ':', (mi > 9 ? '' : '0') + mi, ':', (ss > 9 ? '' : '0') + ss].join('');
+                    } else {
+                        let yy = dateObj.getFullYear();
+                        let mm = dateObj.getMonth() + 1;
+                        let dd = dateObj.getDate();
+                        return [yy, '/', (mm > 9 ? '' : '0') + mm, '/', (dd > 9 ? '' : '0') + dd].join('');
+                    }
+                }
+
+            }); // ready
+        </script>
+    </th:block>
 </th:block>
 </html>

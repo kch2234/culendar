@@ -29,11 +29,19 @@
                     <div class="col-3">
                         <div class="d-flex flex-row justify-content-between">
 
-                            <!--  TODO 북마크 데이터로 인기글 조건 걸어서 필터링 버튼  -->
-                            <div class="badge text-bg-secondary fs-6 p-2" id="btnAll">전체글</div>
-                            <div class="badge text-bg-secondary fs-6 p-2" id="btnBest">인기글</div>
-                            <div class="badge text-bg-secondary fs-6 p-2" id="btnInfo">정보</div>
-                            <div class="badge text-bg-secondary fs-6 p-2" id="btnReview">후기</div>
+                            <!--  TODO 북마크 데이터로 인기글 조건 걸어서 필터링 버튼 디자인  -->
+                            <button class="badge text-bg-secondary fs-6 p-2" id="btnAll">전체글</button>
+
+                            <button class="badge text-bg-secondary fs-6 p-2" id="btnInfo">정보</button>
+                            <button class="badge text-bg-secondary fs-6 p-2" id="btnReview">후기</button>
+
+                            <button class="badge text-bg-secondary fs-6 p-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">글 분류</button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <button class="dropdown-item" id="btnNew">최신순</button>
+                                    <button class="dropdown-item" id="btnBest">인기순</button>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <div class="col"></div>
@@ -83,7 +91,7 @@
                 let currPage = 1;
 
                 // 페이지 로딩 후 실행
-                getAllList("ALL", 1);
+                getAllList("ALL", "NEW", 1);
 
                 // 인기 게시글 불러오기
                 getBestList();
@@ -95,12 +103,12 @@
                 }
 
                 // 게시글 목록 불러오기
-                function getAllList(sort, page) {
-                    console.log("getAllList! page: " + page);
+                function getAllList(sort, align, page) {
+                    console.log("getAllList /" + sort +  "/" + align +  "/" + page + " 요청");
                     currPage = page;
                     $.ajax({
                         type: "get",
-                        url: "/ajaxBoards/list/" + sort + "/" + page,
+                        url: "/ajaxBoards/list/" + sort + "/" + align + "/" + page,
                         success: function (result) {
                             console.log("게시글 목록 요청 성공!");
                             console.log(result);
@@ -132,7 +140,7 @@
                     $('#listContainer').html(html);
                 }
 
-                // 댓글 Pagination 띄우는 함수
+                // 게시글 Pagination 띄우는 함수
                 function printPagination(pageDTO, sort) {
                     let html = "";
 
@@ -169,17 +177,44 @@
                     getAllList(sort, pageNum);
                 });
 
-                $("#btnBest").on("click", function () {
-                    getAllList("BEST", 1);
-                });
+                // 카테고리 버튼 + 정렬 버튼 이벤트
+                let currentSort = "ALL";
+                let currentAlign = "NEW";
+
+                function handleButtonClick(sort, align) {
+                	getAllList(sort, align, 1);
+                }
+
                 $("#btnAll").on("click", function () {
-                    getAllList("ALL", 1);
+                    console.log("btnAll 클릭");
+                    currentSort = "ALL";
+                    console.log('handleButtonClick ALL/' + currentAlign + '/1 요청');
+                	handleButtonClick("ALL", currentAlign)
                 });
                 $("#btnInfo").on("click", function () {
-                    getAllList("INFO", 1);
+                    console.log("btnInfo 클릭");
+                    currentSort = "INFO";
+                    console.log('handleButtonClick INFO/' + currentAlign + '/1 요청');
+                	handleButtonClick("INFO", currentAlign)
                 });
                 $("#btnReview").on("click", function () {
-                    getAllList("REVIEW", 1);
+                    console.log("btnReview 클릭");
+                    currentSort = "REVIEW";
+                    console.log('handleButtonClick REVIEW/' + currentAlign + '/1 요청');
+                	handleButtonClick("REVIEW", currentAlign)
+                });
+                // 정렬 버튼
+                $("#btnNew").on("click", function () {
+                    console.log("btnNew 클릭");
+                    currentAlign = "NEW";
+                    console.log('handleButtonClick /' + currentSort + '/NEW/1 요청');
+                	handleButtonClick(currentSort, "NEW")
+                });
+                $("#btnBest").on("click", function () {
+                    console.log("btnBest 클릭");
+                    currentAlign = "BEST";
+                    console.log('handleButtonClick /' + currentSort + '/BEST/1 요청');
+                	handleButtonClick(currentSort, "BEST")
                 });
 
                 // 각종 함수들

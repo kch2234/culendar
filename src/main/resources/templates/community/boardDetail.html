@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
@@ -236,7 +235,6 @@
                     <p th:text="${board.getContent()}"></p>
                 </div>
             </div>
-
 
             <!--  프로필 이미지 + 회원 정보 영역  -->
             <div class="row d-flex justify-content-center mt-5 mb-5">
