@@ -75,11 +75,8 @@ public class BoardService {
     Board board = boardRepository.findById(id).orElse(null);
     board.setViewCount(board.getViewCount() + 1);
 
-    //BoardDTO 의 memberDTO 를 외부(getOneBoard)에서 변환하는 경우
-//    Member member = board.getMember(); // Board 에서 Member 엔티티만 꺼내기
-//    MemberDTO memberDTO = new MemberDTO(member); // Member entity -> MemberDTO 로 변환
     BoardDTO boardDTO = new BoardDTO(board); // Board entity -> BoardDTO 변환
-//    boardDTO.setMemberDTO(memberDTO); // BoardDTO 에 부족한 MemberDTO 를 채우기
+    log.info("**** BoardService getOneBoard - boardDTO : {}", boardDTO);
 
     return boardDTO;
   }
@@ -116,6 +113,28 @@ public class BoardService {
         }
         log.info("**** BoardService getBestReviewList - result : {}", result);
         return result;
+    }
+
+    // 특정 작품에 대해 작성된 회원의 리뷰글 조회
+    public Boolean findProgramReviewByMemberId(Long memberId, Long programId) {
+        Board result = boardRepository.findProgramReviewByMemberId(memberId, programId);
+
+        if (result == null) {
+            log.info("**** BoardService findProgramReviewByMemberId - result : null");
+            return false;
+        } else {
+            log.info("**** BoardService findProgramReviewByMemberId - result : {}", result);
+            return true;
+        }
+    }
+
+    // 특정 작품에 대해 작성된 회원의 리뷰글 조회
+    public BoardDTO findProgramIdReviewByMemberId(Long memberId, Long programId) {
+        Board programReviewByMemberId = boardRepository.findProgramReviewByMemberId(memberId, programId);
+
+        return new BoardDTO(programReviewByMemberId);
+
+
     }
 
 

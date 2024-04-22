@@ -18,6 +18,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,13 +57,12 @@ public class BoardController {
     @GetMapping("/add")
     public String addForm(@ModelAttribute("boardForm") BoardForm boardForm) {
         log.info("***** BoardController GET /boards/add");
-        // TODO 모델 추가
 
         return "community/boardAdd";
     }
 
     @PostMapping("/add")
-    public String addPRo(BoardForm boardForm, @AuthenticationPrincipal CustomMember customMember) {
+    public String addPRo(BoardForm boardForm, @AuthenticationPrincipal CustomMember customMember, RedirectAttributes rttr) {
         log.info("**** BoardController POST /boards/add - boardForm : {}", boardForm);
         ProgramDTO programDTO = programService.findById(boardForm.getProgramId());
         boardForm.setProgram(programDTO.toEntity());
@@ -72,7 +72,10 @@ public class BoardController {
         log.info("**** BoardController POST /boards/add - boardForm : {}", boardForm);
 
         Long save = boardService.save(boardForm);
-        // TODO 게시글 작성시 완료 알림 띄우기
+
+        if (save != null) {
+            rttr.addFlashAttribute("result", "success");
+        }
         return "redirect:/boards/list";
     }
 
@@ -99,6 +102,7 @@ public class BoardController {
     // 게시글 삭제
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable("id") Long id) {
+        log.info("게시글 삭제");
         log.info("**** BoardController POST /boards/:id/delete - id : {}", id);
         boardService.deleteOneBoard(id);
         return "redirect:/boards/list";
@@ -119,6 +123,16 @@ public class BoardController {
         log.info("**** BoardController GET /boards/:id/modify - boardForm : {}", boardForm);
         boardService.updateOneBoard(boardForm);
         return "redirect:/boards/{id}";
+    }
+
+    @GetMapping("/addReview/{programId}")
+    public String addReview(RedirectAttributes rttr, @PathVariable("programId") Long programId) {
+        log.info("***** BoardController GET /boards/addReview");
+
+        rttr.addFlashAttribute("reviewProgramId", programId);
+        rttr.addFlashAttribute("fromReviewBtn",true);
+
+        return "redirect:/boards/add";
     }
 
     // programType 보내기
