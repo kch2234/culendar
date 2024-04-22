@@ -140,6 +140,10 @@
         var modalProgramTypeName;
         var modalLocationTypeName;
         var programId;
+        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/2018/mw/m640/ico_marker.png",
+            imageSize = new kakao.maps.Size(30, 30),
+            imageOption = {offset: new kakao.maps.Point(20, 40)};
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
         // ********** 페이지 로딩시 실행할 함수들 **********
         getBestProgramList();
@@ -288,7 +292,7 @@
             html += '<img src="' + data.thumbnail + '" class="card-img-top" alt="...">';
             html += '<div class="card-body">';
             html += '<h5 class="card-title">' + data.title + '</h5>';
-            html += '<p class="card-text">지도 예정</p>';
+            html += '<p class="card-text" id="staticMap">'+ getStaticMap(data) +'지도 예정</p>';
             html += '</div>';
             html += '<ul class="list-group list-group-flush">';
             html += '<li class="list-group-item">' + programType + '</li>';
@@ -307,6 +311,23 @@
             $('#search-info-box').html(html);
         }
 
+        // 지도 이미지 생성
+        function getStaticMap(data) {
+                var locationX = data.locationX;
+                var locationY = data.locationY;
+                var markerPosition  = new kakao.maps.LatLng(locationY, locationX);
+                var marker = {
+                    position: markerPosition
+                };
+                var mapContainer = document.getElementById('staticMap'), // 지도를 표시할 div
+                    mapOption = {
+                        center: new kakao.maps.LatLng(locationY, locationX), // 지도의 중심좌표
+                        level: 3, // 지도의 확대 레벨
+                        marker: marker // 이미지 지도에 표시할 마커
+                    };
+                var staticMap = new kakao.maps.StaticMap(mapContainer, mapOption); // 지도를 생성
+        }
+
         // 작품 타입 가져오기
         function getProgramType(type) {
             if (type == "DRAMA") {
@@ -321,6 +342,8 @@
                 return "기타";
             }
         }
+
+
 
         // 카카오맵
         function kakaoMap() {
@@ -350,6 +373,7 @@
                     // 사용자의 현재 위치에 마커 생성
                     userMarker = new kakao.maps.Marker({
                         position: new kakao.maps.LatLng(lat, lng),
+                        image: markerImage,
                         map: map,
                         title: "현재 위치"
                     });
@@ -435,7 +459,6 @@
             map.setLevel(3);
         }
 
-
         // ********** 클릭시 이벤트들 **********
 
         // 모달 닫기
@@ -510,7 +533,7 @@
         });
 
         $("#setMap").on('click', function () {
-            getCurrentLocationAndWorks();
+            getCurrentLocationAndPrograms();
         });
     });
 </script>

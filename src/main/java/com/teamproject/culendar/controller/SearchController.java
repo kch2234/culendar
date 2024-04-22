@@ -41,7 +41,7 @@ public class SearchController {
         log.info("***** SearchController - getLocationBestList ***** :{}", locationString);
         Location location = searchService.mapStringToLocation(locationString);
         log.info("***** SearchController - getLocationBestList - location :{}", location);
-        List<Program> programList = programRepository.findProgramsByLocation(location);
+        List<Program> programList = programRepository.findCurrentLocationByBestPrograms(location);
         List<ProgramDTO> programDTOList = programList.stream()
                 .map(ProgramDTO::new)
                 .collect(Collectors.toList());
