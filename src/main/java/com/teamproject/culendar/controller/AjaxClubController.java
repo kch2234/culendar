@@ -88,7 +88,6 @@ import java.util.List;
       eventList.add(dto);  // 리스트에 추가
     }
 
-    // TODO 페이징 오류 - totalCount 가 list.size() * totalPage 보다 적은 경우 index 에러
     PageResponseDTO pageResponseDTO = new PageResponseDTO(pageRequestDTO, result.getTotalElements());  // 페이징 노출
     pageResponseDTO.setEventList(eventList);
 
