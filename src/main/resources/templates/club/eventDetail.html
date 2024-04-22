@@ -122,7 +122,7 @@
                     <!-- 회원일 경우에만 신청 또는 인원관리 버튼 보이기 -->
                     <th:block sec:authorize="isAuthenticated()">
                         <!-- 게시글 작성자일 경우만 인원관리 버튼 보이기 -->
-                        <!--  TODO 게시글 미작성자의 [신청]시 문제 없으나, 게시글 작성자의 [모임확정인원] 버튼 생성 시 레이아웃 망가짐  -->
+                        <!--  TODO 게시글 미작성자의 '신청'시 문제 없으나, 게시글 작성자의 '모임확정인원' 버튼 생성 시 레이아웃 망가짐  -->
                         <th:block th:if="${member.getId} == ${eventBoard.getMemberDTO().getId()}">
                             <div class="col-3">
                                 <button type="button" class="btn btn-primary">모임확정인원
@@ -589,7 +589,6 @@
                             content = '관리자 문의';
                     }
                     document.getElementById('filterGender').innerText = content;
-                    console.log('최종 gender : ' + content);
                 }
 
 

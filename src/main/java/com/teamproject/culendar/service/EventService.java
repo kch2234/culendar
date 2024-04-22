@@ -27,7 +27,7 @@ public class EventService {
   // 모임 신청
   @Transactional
   public boolean applyEventMember(EventMemberList eventMemberList) {
-    log.info("***** EventService applyEventMember - eventMemberList: {}", eventMemberList);
+    log.info("***** EventService applyEventMember - eventMemberList : {}", eventMemberList);
 
     /*// 중복 체크
     long memberId = eventMemberList.getMember().getId();
