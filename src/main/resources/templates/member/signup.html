@@ -27,7 +27,7 @@
         <!-- 회원 가입 영역 -->
         <div class="container mt-5 mb-5" id="signUpContainer">
 
-            <form action="" th:action th:object="${memberForm}" method="post" onsubmit="return false">
+            <form action="" th:action th:object="${memberForm}" method="post" >
                 <!-- 페이지 제목 -->
                 <div class="row mt-5">
                     <div class="col d-flex align-items-center justify-content-center">
@@ -436,6 +436,8 @@ $(document).ready(function () {
 
         // submit 버튼 클릭 시 유효성 검사
         $("#signUpBtn").click(function () {
+
+            event.preventDefault();
 
             let check = inputcheck();
 
