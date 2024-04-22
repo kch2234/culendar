@@ -44,9 +44,9 @@ public class MemberController {
 
     // 회원 전체 조회 - 관리자용
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public String memberList(Model model){
+    public String memberList(Model model) {
         log.info("********** MemberController GET /members/list (memberList)");
         List<Member> memberList = memberRepository.findAll();
         model.addAttribute("list", memberList);
@@ -55,26 +55,22 @@ public class MemberController {
 
     // 회원 상세페이지
 //    @PreAuthorize("hasRole('MEMBER')")
-    @GetMapping("/{username}")
-    public String myProfile(@PathVariable("username") String username, @AuthenticationPrincipal CustomMember customMember, Model model){
-        log.info("********** MemberController GET /members/:id (myProfile) - id : {}", username);
-        MemberDTO member = memberService.findById(customMember.getMember().getId());
-//        FollowDTO followDTO = memberService.Follows();
-        model.addAttribute("member", member);
-//        model.addAttribute("followCount", followDTO);
-        if (customMember != null) {
-            model.addAttribute("customMember", customMember.getMember());
-        }
-        else {
-            model.addAttribute("customMember", null);
-        }
+    @GetMapping("/{id}")
+    public String myProfile(@PathVariable("id") Long id, Model model) {
+
+        log.info("********** MemberController GET /members/:id - id : {}", id);
+
+        MemberDTO memberDTO = memberService.findById(id);
+
+        model.addAttribute("member", memberDTO);
+
         return "profile/memberProfile";
     }
 
     // 회원 정보 수정
 //    @PreAuthorize("hasRole('MEMBER')")
     @GetMapping("/{id}/edit")
-    public String edit(@PathVariable("id") Long id, InterestForm interestForm, Model model){
+    public String edit(@PathVariable("id") Long id, InterestForm interestForm, Model model) {
         log.info("********** MemberController GET /members/:id/edit - id : {}", id);
         MemberDTO memberDTO = memberService.findById(id);
         model.addAttribute("member", memberDTO);
@@ -85,7 +81,7 @@ public class MemberController {
     // 회원 정보 수정 처리
 //    @PreAuthorize("hasRole('MEMBER')")
     @PostMapping("/{id}/edit")
-    public String editPro(@PathVariable("id") Long id, MemberForm memberForm, InterestForm interestForm){
+    public String editPro(@PathVariable("id") Long id, MemberForm memberForm, InterestForm interestForm) {
         log.info("********** MemberController POST /members/:id/edit - id : {}", id);
         log.info("********** MemberController POST /members/:id/edit - memberForm : {}", memberForm);
         // 회원 정보
@@ -109,16 +105,16 @@ public class MemberController {
     // 회원 설정
 //    @PreAuthorize("hasRole('MEMBER')")
     @GetMapping("/{id}/setting")
-    public String setting(@PathVariable("id") Long id, Model model){
+    public String setting(@PathVariable("id") Long id, Model model) {
         log.info("********** MemberController GET /members/:id/setting - id : {}", id);
         MemberDTO memberDTO = memberService.findById(id);
         model.addAttribute("member", memberDTO);
         return "member/setting";
     }
 
-//    @PreAuthorize("hasRole('MEMBER')")
+    //    @PreAuthorize("hasRole('MEMBER')")
     @PostMapping("/{id}/setting")
-    public String settingPro(@PathVariable("id") Long id){
+    public String settingPro(@PathVariable("id") Long id) {
         log.info("********** MemberController POST /members/:id/setting - id : {}", id);
         return "redirect:/members/{id}";
     }
@@ -126,25 +122,20 @@ public class MemberController {
     // 회원 탈퇴 - 비활성화
 //    @PreAuthorize("hasRole('MEMBER')")
     @GetMapping("/{id}/deactivate")
-    public String deactivate(@PathVariable("id") Long id, Model model){
+    public String deactivate(@PathVariable("id") Long id, Model model) {
         log.info("********** MemberController GET /members/:id/deactivate - id : {}", id);
         MemberDTO memberDTO = memberService.findById(id);
         model.addAttribute("member", memberDTO);
         return "member/withdrawal";
     }
-//    @PreAuthorize("hasRole('MEMBER')")
+
+    //    @PreAuthorize("hasRole('MEMBER')")
     @PostMapping("/{id}/deactivate")
-    public String deactivatePro(@PathVariable("id") Long id){
+    public String deactivatePro(@PathVariable("id") Long id) {
         log.info("********** MemberController POST /members/:id/deactivate - id : {}", id);
         memberService.deactivateMember(id);
         return "redirect:/logout";
     }
-
-
-
-
-
-
 
 
     // 관리자 접근 허용
