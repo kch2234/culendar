@@ -36,7 +36,6 @@ public class Program {
 
     // 작품 분류
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     private ProgramType programType;
 
     // 작품 썸네일 이미지 추가
