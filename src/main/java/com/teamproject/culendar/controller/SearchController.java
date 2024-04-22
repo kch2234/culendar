@@ -1,6 +1,5 @@
 package com.teamproject.culendar.controller;
 
-import com.teamproject.culendar.domain.board.EventBoard;
 import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.program.Program;
 import com.teamproject.culendar.dto.EventBoardDTO;
