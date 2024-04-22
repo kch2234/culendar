@@ -4,6 +4,7 @@ import com.teamproject.culendar.domain.member.Follow;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.FollowDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,5 +16,14 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     Optional<Follow> findByMemberAndFollow(Member member, Member follow);
 
-    Long countAllByMemberId(Long memberId);
+    @Query("SELECT COUNT(*) " +
+            "FROM Follow f " +
+            "WHERE f.member.id = :memberId")
+    Long FollowsCount(Long memberId);
+
+    @Query("SELECT COUNT(*) " +
+            "FROM Follow f " +
+            "WHERE f.member.id = :memberId " +
+            "AND f.follow.id = :followId")
+    Long FollowsState (Long memberId, Long followId);
 }
