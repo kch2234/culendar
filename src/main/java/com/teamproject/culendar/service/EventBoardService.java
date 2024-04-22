@@ -2,6 +2,7 @@ package com.teamproject.culendar.service;
 
 import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.EventBoard;
+import com.teamproject.culendar.domain.enumFiles.BoardType;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.program.Program;
 import com.teamproject.culendar.dto.EventBoardDTO;
@@ -37,7 +38,7 @@ public class EventBoardService {
     return savedBoard.getId();
   }
 
-  // 모임 목록 불러오기
+  // 전체 모임 최신순 목록 불러오기
   public Page<EventBoard> getListWithPaging(PageRequestDTO pageRequestDTO) {
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
@@ -49,7 +50,18 @@ public class EventBoardService {
     return result;
   }
 
-  // 모임 프로그램타입별 목록 불러오기
+  // 전체 모임 인기순 목록 불러오기
+  public Page<EventBoard> getListWithBkMark(PageRequestDTO pageRequestDTO) {
+    Pageable pageable = PageRequest.of(
+        pageRequestDTO.getPage() - 1,
+        pageRequestDTO.getSize(),
+        Sort.by("id").descending());
+
+    Page<EventBoard> result = eventBoardRepository.findOrderByBkMark(pageable);
+    return result;
+  }
+
+  // 프로그램타입별 모임 최신순 목록 불러오기
   public Page<EventBoard> getListWithProgramType(PageRequestDTO pageRequestDTO, ProgramType programType) {
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
@@ -60,14 +72,14 @@ public class EventBoardService {
     return result;
   }
 
-  // 모임 인기순(북마크순) 목록 불러오기
-  public Page<EventBoard> getListWithBkMark(PageRequestDTO pageRequestDTO) {
+  // 프로그램타입별 모임 인기순 목록 불러오기
+  public Page<EventBoard> getProgramTypeListWithBkMark(PageRequestDTO pageRequestDTO, ProgramType programType){
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
         pageRequestDTO.getSize(),
         Sort.by("id").descending());
 
-    Page<EventBoard> result = eventBoardRepository.findOrderByBkMark(pageable);
+    Page<EventBoard> result = eventBoardRepository.findOrderByProgramType(programType, pageable);
     return result;
   }
 

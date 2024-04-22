@@ -9,33 +9,43 @@
         <div class="container" id="boardDetailWrapper">
 
             <!--        일정 추가 모달-->
-            <div class="modal" id="addMyCalendar-modal">
-                <div class="modal-dialog">
+            <div class="modal"
+                 id="addMyCalendar-modal"
+                 tabindex="-1"
+                 aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title">달력 선택</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body" id="addMyCalContainer">
-                            <div id="addMyCalendarBtnContainer">
+                            <div class="container" id="addMyCalendarBtnContainer">
                                 <!--    내 캘린더 목록 및 캘린더 추가 버튼 위치 -->
+
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
 
             <!--    문장형 평가 추가 모달-->
-            <div class="modal" id="addRating-modal">
-                <div class="modal-dialog">
+            <div class="modal"
+                 id="addRating-modal"
+                 tabindex="-1"
+                 aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title">문장형 평가 추가</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body" id="addRatingContainer">
-                            <div th:each="rating : ${ratingType}">
-                                <button class="btn btn-primary" th:text="${rating.getValue()}"
+                        <div class="modal-body container" id="addRatingContainer">
+                            <div class="row d-flex justify-content-center mt-2 mb-2" th:each="rating : ${ratingType}">
+                                <button class="col-auto btn btn-outline-secondary" th:text="${rating.getValue()}"
                                         th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>
                             </div>
                         </div>
@@ -85,54 +95,73 @@
 
             </div>
 
-            <div class="eventDetailInfo">  <!--  모임 상세 정보 영역  -->
-                <div class="eventDetailInfoTop">  <!--  모임 상세 정보 영역 상단  -->
-
-                    <!--  모임 날짜  -->
-                    <div class="badge text-bg-secondary" th:text="|${#temporals.format(eventBoard.eventDate, 'yyyy-MM-dd')}|"></div>
-                    <!--  모임 지역  -->
-                    <div class="badge text-bg-secondary" th:text="${eventBoard.getProgramDTO().getLocation().value}"></div>
-                    <!--  TODO 확정인원/최대인원  -->
-                    <div class="badge text-bg-secondary" th:text="${'' + '/' + eventBoard.maxPeople}"></div>
-
-                    <!--  신청 버튼 TODO 모임 신청  -->
-                    <form action="" th:action method="post">
-                        <button type="submit" class="btn btn-primary">신청</button>
-                        <!--  TODO 신청 완료 모달   -->
-                    </form>
-                    <!--  인원 관리 버튼 TODO 인원관리 modal  -->
-                    <button type="button" class="btn btn-primary" id>
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">모임 확정 인원</h4>
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-                                <div class="modal-body" id>
-                                    <div id>
-                                        <!--  TODO 모임 확정 인원 리스트  -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <!--  모임 상세 정보 영역 / 신청, 인원관리 버튼  -->
+            <div class="d-flex">
+                <!--  모임 상세 정보 영역  -->
+                <div class="col">
+                    <!--  모임 상세 정보 영역 상단  -->
+                    <div class="col d-flex justify-content-around align-content-around">
+                        <!--  모임 날짜  -->
+                        <div class="badge text-bg-secondary"
+                             th:text="|${#temporals.format(eventBoard.eventDate, 'yyyy-MM-dd')}|"></div>
+                        <!--  모임 지역  -->
+                        <div class="badge text-bg-secondary"
+                             th:text="${eventBoard.getProgramDTO().getLocation().value}"></div>
+                        <!--  TODO 확정인원/최대인원  -->
+                        <div class="badge text-bg-secondary" th:text="${'' + '/' + eventBoard.maxPeople}"></div>
                     </div>
-
-                </div>
-
-                <div class="eventDetailInfoBottom">  <!-- 모임 상세 정보 영역 하단   -->
+                    <!--  모임 상세 정보 영역 하단  -->
+                    <div class="col d-flex justify-content-around align-content-around">
                         <!--  필터링 연령대 TODO if문으로 전연령/10대/20대 등..  -->
-                    <div class="badge text-bg-secondary"
-                         th:text="${eventBoard.filterMinAge + ' ~ ' + eventBoard.filterMaxAge}"></div>
+                        <div class="badge text-bg-secondary"
+                             th:text="${eventBoard.filterMinAge + ' ~ ' + eventBoard.filterMaxAge}"></div>
                         <!--  필터링 연령대 TODO if문으로 성별무관/남자/여자  -->
-                    <div class="badge text-bg-secondary" th:text="${eventBoard.filterGender.value + ' ONLY'}"></div>
-                </div>
+                        <div class="badge text-bg-secondary" th:text="${eventBoard.filterGender.value + ' ONLY'}"></div>
+                    </div>
+                </div>  <!--  col-auto  -->
+                <div class="col"></div>
+                <!--  신청/인원관리 버튼 영역  -->
+                <div class="col d-flex justify-content-center ">
+                    <!-- 회원일 경우에만 신청 또는 인원관리 버튼 보이기 -->
+                    <th:block sec:authorize="isAuthenticated()">
+                        <!-- 게시글 작성자일 경우만 인원관리 버튼 보이기 -->
+                        <!--  FIX 게시글 미작성자의 [신청]시 문제 없으나, 게시글 작성자의 [모임확정인원] 버튼 생성 시 레이아웃 망가짐  -->
+                        <th:block th:if="${member.getId} == ${eventBoard.getMemberDTO().getId()}">
+                            <div class="col-3">
+                                <button type="button" class="btn btn-primary">모임확정인원
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title"></h4>
+                                                <button type="button" class="close" data-dismiss="modal">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id>
+                                                <!--  TODO 모임 확정 인원 리스트  -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </th:block>  <!--  작성자  -->
+                        <!-- 게시글 작성자가 아닐 경우 신청 버튼 보이기 -->
+                        <th:block th:if="${member.getId} != ${eventBoard.getMemberDTO().getId()}">
+                            <div class="col-3">
+                                <button class="btnApplyEventMember btn btn-primary" type="button">신청</button>
+                                <!--  TODO 신청 완료 모달   -->
+                            </div>
+                        </th:block>  <!--  미작성자  -->
 
-            </div>  <!--  eventDetailInfo 모임 상세 정보 영역 END  -->
+                    </th:block>  <!--  회원  -->
+                </div>
+            </div>
 
             <!--  게시글 내용  -->
-            <div class="form-group">
-                <label for="content"></label>
-                <textarea class="form-control" th:field="${eventBoard.content}" id="content" rows="20" readonly></textarea>
+            <div class="row mt-4">
+                <div class="col">
+                    <p th:text="${eventBoard.content}"></p>
+                </div>
             </div>
 
             <!-- 작품 정보 카드 -->
@@ -218,35 +247,48 @@
             </div>  <!--  row 작품 정보 카드  -->
 
             <!--  신청 버튼 TODO 모임 신청  -->
-            <form action="" th:action method="post">
-                <button type="submit" class="btn btn-secondary">신청</button>
-                <!--  TODO 신청 완료 모달   -->
-            </form>
+            <div class="d-flex col justify-content-center mt-5">
+                <div class="row"></div>
+                <!-- 회원일 경우에만 신청 버튼 보이기 -->
+                <th:block sec:authorize="isAuthenticated()">
+                    <!-- 게시글 작성자가 아닐 경우 신청 버튼 보이기 -->
+                    <th:block th:if="${member.getId} != ${eventBoard.getMemberDTO().getId()}">
+                        <div class="row">
+                            <button class="btnApplyEventMember btn btn-primary" type="button">신청</button>
+                            <!--  TODO 신청 완료 모달   -->
+                        </div>
+                    </th:block>
+                </th:block>
+                <div class="row"></div>
+            </div>
 
             <!--  프로필 이미지 + 회원 정보 영역  -->
             <div class="row d-flex justify-content-center mt-5 mb-5">
+
                 <div class="col-6">
                     <!-- 프로필 이미지 -->
                     <div class="row mb-3 justify-content-center">
                         <div class="col-4">
-                            <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid">
+                            <img src="/sbadmin/images/person_1.jpg"
+                                 alt="Image"
+                                 class="img-fluid rounded">
                         </div>
                     </div>
 
-                    <!-- 닉네임, 팔로우 버튼 -->
-                    <div class="row text-center mb-3">
-                        <div class="col-6 text-end">
+                    <!-- TODO 닉네임, 팔로우 버튼 -->
+                    <div class="row text-center mb-3 d-flex justify-content-center">
+                        <div class="col-auto text-center">
                             <div class="badge text-bg-secondary fs-4 d-inline-block"
                                  th:text="${eventBoard.getMemberDTO().getUsername()}"></div>
                         </div>
-                        <div class="col-6 text-start">
-                            <div sec:authorize="isAuthenticated()" class="badge text-bg-primary fs-6">Follow</div>
+                        <div sec:authorize="isAuthenticated()" class="col-auto p-0">
+                            <div class="badge text-bg-primary fs-6">Follow</div>
                         </div>
                     </div>
 
                     <!-- 지역, 소개 -->
                     <div class="row text-center justify-content-center">
-                        <div class="col-3 text-end">
+                        <div class="col-auto text-end">
                             <div class="badge text-bg-secondary fs-6"
                                  th:text="${eventBoard.getMemberDTO().getLocation().value}"></div>
                         </div>
@@ -289,17 +331,44 @@
                     $('#addMyCalendar-modal').modal('hide');
                 });
 
+                // 모임 신청 버튼 클릭시 이벤트
+                $('.btnApplyEventMember').on('click', function () {
+                    console.log('모임 신청 click');
+                    let eventBoardId = [[${eventBoard.id}]];
+                    let data = {
+                        memberId: memberId,
+                        eventBoardId: eventBoardId
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: '/event/applyEventMember',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (result, status) {
+                            console.log(result);
+
+                            if (result === 'fail') {
+                                alert('모임 신청이 취소되었습니다.');
+                                return;
+                            }
+                            alert('모임 신청이 완료 되었습니다');
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('모임 신청에 실패했습니다. 다시 시도해주세요.');
+                        }
+                    });
+
+                });
+
                 // 회원의 문장형 평가 클릭시 모달 띄우기
                 $('#ratingAndReviewContainer').on('click', '#addRating', function () {
-
                     let data = {
                         memberId: memberId,
                         programId: programId
                     };
 
                     $('#addRating-modal').modal('show');
-
-
                 });
 
                 // 문장형 평가 모달내에 버튼 클릭시 이벤트
@@ -524,6 +593,6 @@
 
             }); // ready
         </script>
-
     </th:block>
+</th:block>
 </html>

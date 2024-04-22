@@ -134,7 +134,7 @@
                     $('#listContainer').html(html);
                 }
 
-                // 댓글 Pagination 띄우는 함수
+                // 게시글 Pagination 띄우는 함수
                 function printPagination(pageDTO, sort) {
                     let html = "";
 
@@ -171,6 +171,7 @@
                     getAllList(sort, pageNum);
                 });
 
+                // 카테고리 버튼 + 정렬 버튼 이벤트
                 let currentSort = "ALL";
                 let currentAlign = "NEW";
 
@@ -196,7 +197,7 @@
                     console.log('handleButtonClick REVIEW/' + currentAlign + '/1 요청');
                 	handleButtonClick("REVIEW", currentAlign)
                 });
-
+                // 정렬 버튼
                 $("#btnNew").on("click", function () {
                     console.log("btnNew 클릭");
                     currentAlign = "NEW";
