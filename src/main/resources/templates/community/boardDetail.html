@@ -2,11 +2,81 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
+
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
         <!-- 게시글 상세 페이지 컨테이너 -->
         <div class="container" id="boardDetailWrapper">
+
+            <!-- 내후기 등록 모달 -->
+            <div class="modal fade" id="addReview-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">등록된 후기가 없습니다.</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <span>후기를 등록 하시겠습니까?</span>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
+                            <!-- 등록 작품 연동 -->
+                            <button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${board.programDTO.getId})}'|">등록</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 내후기 수정 모달 -->
+            <div class="modal fade" id="modifyReview-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">등록된 후기가 있습니다.</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <span>후기를 수정 하시겠습니까?</span>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
+                            <!-- 수정 연동 -->
+                            <button type="button" class="btn btn-secondary" id="reviewModifyBtn" th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${board.programDTO.getId})}'|">수정</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 게시글 삭제 모달 -->
+            <div class="modal fade" id="boardDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">게시글 삭제</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <span>정말 삭제 하시겠습니까?</span>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                            <form action="" th:action="@{/boards/{id}/delete(id=${board.id})}" method="post">
+                                <button type="submit" class="btn btn-secondary">삭제</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!--        일정 추가 모달-->
             <div class="modal" id="addMyCalendar-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -46,23 +116,18 @@
             </div>
 
             <!-- 게시글 제목, 수정 / 삭제 버튼, 북마크 버튼 -->
-            <div class="row mt-5 text-center align-items-center">
-                <div class="col-3"></div>
-                <div class="col">
-                    <h1 th:text="${board.title}"></h1>
+            <div class="row mt-5 text-center d-flex justify-content-center align-items-center">
+                <div class="col-9 fs-3 overflow-auto d-flex justify-content-center align-items-center" th:text="${board.title}">
                 </div>
                 <!-- 회원 일 경우에만 북마크 또는 수정, 삭제 버튼 보이기 -->
                 <th:block sec:authorize="isAuthenticated()">
                     <!-- 게시글 작성자 일 경우만 수정, 삭제 버튼 보이기 -->
                     <th:block th:if="${member.getId} == ${board.getMemberDTO().getId()}">
                         <div class="col-3">
-                            <button type="button" class="btn btn-secondary mb-1"
-                                    th:onclick="|location.href='@{/boards/{id}/modify(id=${board.id})}'|">수정
+                            <button type="button" class="btn btn-secondary mb-1" id="modifyBtn" th:text="수정">
                             </button>
-                            <form action="" th:action="@{/boards/{id}/delete(id=${board.id})}" method="post">
-                                <button type="submit" class="btn btn-outline-secondary">삭제</button>
-                                <!--  TODO 삭제 확인 모달   -->
-                            </form>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#boardDeleteModal">삭제</button>
+
                         </div>
                     </th:block>
                     <!-- 게시글 작성자가 아닐 경우 북마크 버튼 보이기 -->
@@ -132,22 +197,23 @@
                     </div>
 
                     <!-- 좋아요 버튼, 내 후기 -->
-                    <div class="d-flex flex-row" id="ratingAndReviewContainer">
+                    <div class="d-flex flex-row justify-content-between" id="ratingAndReviewContainer">
 
                         <th:block sec:authorize="isAuthenticated()">
 
-                            <div class="col-4">
+                            <div class="col-auto d-flex justify-content-start align-items-center">
                                 <!--   회원 문장형 평가 위치-->
                                 <button class="btn btn-outline-secondary" id="addRating" type="button" data-bs-toggle="modal" data-bs-target="#addRating-modal"></button>
                             </div>
-
                             <div class="col"></div>
-                            <!-- TODO : 좋아요, 후기, 체크박스 버튼 -->
+
+                            <!-- 좋아요, 후기, 체크박스 버튼 -->
                             <div class="col-3 p-0">
                                 <div class="d-flex justify-content-end align-items-center fs-5 w-100 h-100">내후기</div>
                             </div>
                             <div class="col-2 d-flex justify-content-center align-items-center">
-                                <button class="fa-regular fa-circle-check fa-2x"></button>
+                                <button type="button" class="fa-regular fa-circle-check fa-2x" id="myReview"
+                                        data-bs-toggle="modal" data-bs-target="#addReview-modal"></button>
                             </div>
 
                         </th:block>
@@ -171,14 +237,17 @@
                 </div>
             </div>
 
+
             <!--  프로필 이미지 + 회원 정보 영역  -->
             <div class="row d-flex justify-content-center mt-5 mb-5">
 
-                <div class="col-6 justify-content-center">
+                <div class="col-6">
                     <!-- 프로필 이미지 -->
                     <div class="row mb-3 justify-content-center">
                         <div class="col-4">
-                            <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid rounded">
+<!--                            <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid rounded">-->
+                            <i class="fa-solid fa-circle-user fa-7x d-flex justify-content-center align-items-center"></i>
+
                         </div>
                     </div>
 
@@ -319,7 +388,6 @@
                 let currPage = 1; // 현재 보고있는 댓글 페이지 번호 저장해둘 변수
                 let boardType = [[${board.boardType}]]; // 게시글 타입
 
-
                 // 현재 로그인이 되어 있다면 회원 id를, 아니면 null을 저장
                 var member = [[${member}]]
                 var memberId
@@ -336,6 +404,11 @@
                 getAvgRating(); // 평균 평가 가져오기
                 getMyRating(); // 내 평가 가져오기
                 getCommentList(1);  // 댓글 목록 요청 호출!
+                checkBoardBkmark(); // 게시글 북마크 체크
+                checkProgramBkmark(); // 작품 북마크 체크
+
+                // 해당 작품 후기 작성 여부 확인 함수
+                getThisProgramReview();
 
                 // ********** 클릭시 이벤트들 **********
 
@@ -391,7 +464,7 @@
 
                 });
 
-                // 북마크 버튼 클릭시 이벤트
+                // 작품 북마크 버튼 클릭시 이벤트
                 $('#addBtnContainer').on('click', '#bkMarkBtn', function () {
 
                     let data = {
@@ -409,9 +482,11 @@
 
                             if (result === 'fail') {
                                 alert('북마크에서 삭제 되었습니다.');
+                                checkProgramBkmark();
                                 return;
                             }
                             alert('북마크에 추가되었습니다.');
+                            checkProgramBkmark();
                         },
                         error: function (error) {
                             console.log(error);
@@ -419,6 +494,40 @@
                         }
                     });
 
+                });
+
+                // 게시글 북마크 버튼 클릭시
+                $('#boardBkMarkBtn').on('click', function () {
+                    let data = {
+                        memberId: memberId,
+                        boardId: boardIdVal,
+                        boardType: boardType,
+                        programId: programId
+                    };
+
+                    console.log(data);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/bkmark/addBoardBkmark',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (result, status) {
+                            console.log(result);
+
+                            if (result === 'fail') {
+                                alert('북마크에서 삭제 되었습니다.');
+                                checkBoardBkmark();
+                                return;
+                            }
+                            alert('북마크에 추가되었습니다.');
+                            checkBoardBkmark();
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('북마크 추가에 실패했습니다.');
+                        }
+                    });
                 });
 
                 // 일정 아이콘 클릭시 이벤트
@@ -523,6 +632,11 @@
 
                 });
 
+                // 수정 버튼 클릭시
+                $('#modifyBtn').on('click', function () {
+                    location.href = '/boards/' + boardIdVal + '/modify';
+                });
+
 
                 // ********** 각종 함수들 **********
 
@@ -567,6 +681,95 @@
                         let mm = dateObj.getMonth() + 1;
                         let dd = dateObj.getDate();
                         return [yy, '/', (mm > 9 ? '' : '0') + mm, '/', (dd > 9 ? '' : '0') + dd].join('');
+                    }
+                }
+
+                // 게시글 북마크 여부 확인 함수
+                function checkBoardBkmark() {
+
+                    console.log("checkBoardBkmark");
+                    $.ajax({
+                        url: '/bkmark/checkBoardBkmark/' + memberId + '/' + boardIdVal,
+                        type: 'GET',
+                        success: function (data) {
+                            if (data === true) {
+                                console.log(data);
+                                $('#boardBkMarkBtn').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
+                            }
+
+                            if (data === false) {
+                                console.log(data);
+                                $('#boardBkMarkBtn').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
+                            }
+                        }
+                    });
+
+                }
+
+                // 작품 북마크 여부 확인 이벤트
+                function checkProgramBkmark() {
+                    console.log("checkProgramBkmark");
+                    $.ajax({
+                        url: '/bkmark/checkProgramBkmark/' + memberId + '/' + programId,
+                        type: 'GET',
+                        success: function (data) {
+                            if (data === true) {
+                                console.log(data);
+                                $('#bkMarkBtn').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
+                            }
+
+                            if (data === false) {
+                                console.log(data);
+                                $('#bkMarkBtn').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
+                            }
+                        }
+                    });
+                }
+
+                // 해당 작품 후기 작성 여부 확인 함수
+                function getThisProgramReview() {
+
+                    console.log("후기 여부 확인 함수")
+
+                    // 회원 아이디 Long 출력
+                    console.log(memberId);
+
+
+                    if (memberId !== null) {
+
+                        console.log("getThisProgramReview");
+
+                        $.ajax({
+                            url: '/boards/findReview/' + memberId + '/' + programId,
+                            type: 'GET',
+                            success: function (data) {
+                                console.log(data);
+                                if (data === true) {
+                                    console.log(data);
+                                    $('#myReview').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
+                                    // data-bs-target 변경
+                                    $('#myReview').attr('data-bs-target', '#modifyReview-modal');
+
+                                    // 회원 후기 게시글 id 가져오기
+                                    $.ajax({
+                                        url: '/boards/findReviewId/' + memberId + '/' + programId,
+                                        type: 'GET',
+                                        success: function (data) {
+                                            console.log(data);
+                                            $('#reviewModifyBtn').attr('th:href', '@{/boards/{boardId}/modify(boardId=' + data.id + ')}');
+                                        }
+                                    });
+
+                                }
+
+                                if (data === false) {
+                                    console.log(data);
+                                    $('#myReview').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
+                                    // data-bs-target 변경
+                                    $('#myReview').attr('data-bs-target', '#addReview-modal');
+                                }
+                            }
+                        });
                     }
                 }
 

@@ -12,8 +12,10 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Data
 public class MemberForm  {
@@ -32,7 +34,6 @@ public class MemberForm  {
     private Location location;
     // 생년 월일
     @NotBlank(message = "생년월일은 필수 입력 값입니다.")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private String birth;
     @NotBlank(message = "성별은 필수 입력 값입니다.")
     private Gender gender;
@@ -43,6 +44,11 @@ public class MemberForm  {
     // 권한
     private Role role = Role.MEMBER;
 
+    // 관심분야
+    private List<ProgramType> interestType;
+
+
+
     // form -> Entity
     public Member toEntity() {
         Member member = new Member();
@@ -52,9 +58,9 @@ public class MemberForm  {
         member.setPhone(phone);
         member.setEmail(email);
         member.setLocation(location);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        birth += " 00:00:00";
-        member.setBirth(LocalDateTime.parse(birth, formatter));
+        LocalDate date = LocalDate.parse(birth);
+        LocalDateTime dateTime = date.atStartOfDay();
+        member.setBirth(dateTime);
         member.setGender(gender);
         //member.setProfileImage(profileImage);
         member.setIntroduction(introduction);

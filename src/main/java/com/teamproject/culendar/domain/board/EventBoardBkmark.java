@@ -26,8 +26,4 @@ public class EventBoardBkmark extends BaseEntityCreatedDate {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id")
     private Program program;
-
-    //TODO 지역 추가
-    //private Location location;
-
 }

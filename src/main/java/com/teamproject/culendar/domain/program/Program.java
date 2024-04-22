@@ -39,11 +39,8 @@ public class Program {
     @Enumerated(EnumType.STRING)
     private ProgramType programType;
 
-    // TODO 작품 썸네일 이미지 추가
+    // 작품 썸네일 이미지 추가
      private String thumbnail;
-
-//    @Column(length = 4000)
-//    private String description;
 
     //작품 지역
     private Location location;

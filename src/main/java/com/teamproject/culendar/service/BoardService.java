@@ -32,14 +32,12 @@ public class BoardService {
   public Long save(BoardForm boardForm) {
     Board entity = boardForm.toEntity();
     Board savedBoard = boardRepository.save(entity);
-    log.info("**** BoardService save - entity : {}", entity);
 
     return savedBoard.getId();
   }
 
   // 전체 게시글 최신순 목록 불러오기
   public Page<Board> getListWithPaging(PageRequestDTO pageRequestDTO) {
-    log.info("**** BoardService getListWithPaging - /ALL/NEW/1");
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
         pageRequestDTO.getSize(),
@@ -50,21 +48,8 @@ public class BoardService {
     return result;
   }
 
-  //  전체 게시글 인기순(북마크순) 목록 불러오기
-  public Page<Board> getListWithBkMark(PageRequestDTO pageRequestDTO){
-    log.info("**** BoardService getListWithBkMark - /ALL/BEST/1");
-    Pageable pageable = PageRequest.of(
-        pageRequestDTO.getPage() - 1,
-        pageRequestDTO.getSize(),
-        Sort.by("id").descending());
-
-    Page<Board> result = boardRepository.findOrderByBkMark(pageable);
-    return result;
-  }
-
-  // 카테고리 게시글 최신순 목록 불러오기
+  // 게시글 카테고리 목록 불러오기
   public Page<Board> getListWithCategory(PageRequestDTO pageRequestDTO, BoardType boardType){
-    log.info("**** BoardService getListWithCategory - /{}/NEW/1", boardType);
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
         pageRequestDTO.getSize(),
@@ -74,15 +59,14 @@ public class BoardService {
     return result;
   }
 
-  // 카테고리 게시글 인기순 목록 불러오기
-  public Page<Board> getCategoryListWithBkMark(PageRequestDTO pageRequestDTO, BoardType boardType){
-    log.info("**** BoardService getCategoryListWithBkMark - /{}/BEST/1", boardType);
+  // 게시글 인기순(북마크순) 목록 불러오기
+  public Page<Board> getListWithBkMark(PageRequestDTO pageRequestDTO){
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() - 1,
         pageRequestDTO.getSize(),
         Sort.by("id").descending());
 
-    Page<Board> result = boardRepository.findOrderByBoardType(boardType, pageable);
+    Page<Board> result = boardRepository.findOrderByBkMark(pageable);
     return result;
   }
 
@@ -90,7 +74,9 @@ public class BoardService {
   public BoardDTO getOneBoard(Long id) {
     Board board = boardRepository.findById(id).orElse(null);
     board.setViewCount(board.getViewCount() + 1);
-    BoardDTO boardDTO = new BoardDTO(board);
+
+    BoardDTO boardDTO = new BoardDTO(board); // Board entity -> BoardDTO 변환
+    log.info("**** BoardService getOneBoard - boardDTO : {}", boardDTO);
 
     return boardDTO;
   }
@@ -127,6 +113,28 @@ public class BoardService {
         }
         log.info("**** BoardService getBestReviewList - result : {}", result);
         return result;
+    }
+
+    // 특정 작품에 대해 작성된 회원의 리뷰글 조회
+    public Boolean findProgramReviewByMemberId(Long memberId, Long programId) {
+        Board result = boardRepository.findProgramReviewByMemberId(memberId, programId);
+
+        if (result == null) {
+            log.info("**** BoardService findProgramReviewByMemberId - result : null");
+            return false;
+        } else {
+            log.info("**** BoardService findProgramReviewByMemberId - result : {}", result);
+            return true;
+        }
+    }
+
+    // 특정 작품에 대해 작성된 회원의 리뷰글 조회
+    public BoardDTO findProgramIdReviewByMemberId(Long memberId, Long programId) {
+        Board programReviewByMemberId = boardRepository.findProgramReviewByMemberId(memberId, programId);
+
+        return new BoardDTO(programReviewByMemberId);
+
+
     }
 
 
