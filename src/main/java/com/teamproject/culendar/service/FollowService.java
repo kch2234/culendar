@@ -74,6 +74,39 @@ public class FollowService {
         return followingList;
     }
 
+    // 팔로잉 무한 스크롤을 위한 페이징 처리
+    public List<FollowDTO> getFollowListWithPaging(Long memberId, Long start) {
+
+        List<Follow> findFollowingList = followRepository.findAllByMemberIdWtihPaging(memberId, start);
+        List<FollowDTO> followingList = new ArrayList<>();
+        for (Follow follow : findFollowingList) {
+            followingList.add(new FollowDTO(follow));
+        }
+        log.info("********** FollowService getFollowListWithPaging - followingList : {}", followingList);
+
+        return followingList;
+    }
+
+    // 팔로워 무한 스크롤을 위한 페이징 처리
+    public List<FollowDTO> getFollowerListWithPaging(Long memberId, Long start) {
+
+        List<Follow> findFollowerList = followRepository.findAllByFollowIdWtihPaging(memberId, start);
+        List<FollowDTO> followerList = new ArrayList<>();
+        for (Follow follow : findFollowerList) {
+            Optional<Follow> byMemberIdAndFollowId = followRepository.findByMemberIdAndFollowId(memberId, follow.getMember().getId());
+            Boolean isFollow = false;
+            if (byMemberIdAndFollowId.isPresent()) {
+                isFollow = true;
+            }
+            FollowDTO followDTO = new FollowDTO(follow);
+            followDTO.setIsFollow(isFollow);
+            followerList.add(followDTO);
+        }
+        log.info("********** FollowService getFollowerListWithPaging - followerList : {}", followerList);
+
+        return followerList;
+    }
+
     // 팔로워 리스트 조회
     public List<FollowDTO> getFollowerList(Long memberId) {
 
