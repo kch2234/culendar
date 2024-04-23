@@ -25,7 +25,7 @@ public class CommentDTO {
   public CommentDTO(Comment entity) {
     id = entity.getId();
     comment = entity.getComment();
-    memberDTO = new MemberDTO();
+    memberDTO = new MemberDTO(entity.getMember());
     createDate = entity.getCreateDate();
     lastModifiedDate = entity.getLastModifiedDate();
     refId = entity.getRefId();

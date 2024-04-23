@@ -2,9 +2,11 @@ package com.teamproject.culendar.service;
 
 import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.Comment;
+import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.*;
 import com.teamproject.culendar.repository.BoardRepository;
 import com.teamproject.culendar.repository.CommentRepository;
+import com.teamproject.culendar.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,19 @@ public class CommentService {
 
   private final CommentRepository commentRepository;
   private final BoardRepository boardRepository;
+  private final MemberRepository memberRepository;
 
   // 댓글 등록 : save()
   public Long addComment(CommentForm commentForm) {
+
+    commentForm.setBoard(boardRepository.findById(commentForm.getBoardId()).get());
+    log.info("***** CommentService - addComment setBoard : {}", String.valueOf(boardRepository.findById(commentForm.getBoardId()).get()));
+    commentForm.setMember(memberRepository.findById(commentForm.getMemberId()).get());
+    log.info("***** CommentService - addComment setMember : {}", String.valueOf(memberRepository.findById(commentForm.getMemberId())));
+
     Comment cmt = commentForm.toEntity();
-    Board board = boardRepository.findById(commentForm.getBoardDTO().getId()).orElse(null);
-    cmt.setBoard(board); // Comment Entity 에 Board 객체 채우기
+    log.info("***** CommentService - addComment savedComentForm : {}", cmt);
+
     Comment saved = null; // 저장된 entity 담아줄 변수 미리 선언
 
     // 일반 댓글 : id=null, refId=0, step=0, level=0

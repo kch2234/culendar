@@ -36,5 +36,4 @@ public class BoardDTO {
     this.lastModifiedDate = board.getLastModifiedDate();
   }
 
-
 }

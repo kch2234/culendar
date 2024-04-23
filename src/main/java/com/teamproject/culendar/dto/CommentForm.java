@@ -1,5 +1,6 @@
 package com.teamproject.culendar.dto;
 
+import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.Comment;
 import com.teamproject.culendar.domain.member.Member;
 import lombok.Data;
@@ -8,8 +9,10 @@ import lombok.Data;
 @Data
 public class CommentForm {
   private Long id;
-  private BoardDTO boardDTO;
-  private MemberDTO memberDTO;
+  private Board board;
+  private Long boardId;
+  private Member member;
+  private Long memberId;
   private String comment;
   private Long refId;
   private Integer step;
@@ -19,7 +22,8 @@ public class CommentForm {
   public Comment toEntity() {
     Comment cmt = new Comment();
     cmt.setComment(comment);
-    cmt.setMember(memberDTO.toEntity());
+    cmt.setBoard(board);
+    cmt.setMember(member);
     cmt.setRefId(refId);
     cmt.setStep(step);
     cmt.setLevel(level);
