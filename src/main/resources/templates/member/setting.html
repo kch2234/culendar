@@ -3,94 +3,313 @@
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
-        <!-- TODO 회원 설정 & 기능 구현 -->
-        <h1>회원설정 페이지 영역</h1>
-    <form action="" th:action th:object="${member}" method="post">
+        <!-- 회원 설정 영역 -->
+        <div class="container mt-5 mb-5" style="width: 35%" id="SettingContainer">
+            <form action="" th:action th:object="${member}" method="post">
 
-        <div name="heading">회원설정</div>
-        <div name="memberInfo">
-            <div name="userId-box">
-                <span name="heading">아이디</span>
-                <span name="userId" readonly></span>
-                <input type="text" th:field="*{userid}" readonly>
+                <!-- 페이지 제목 -->
+                <div class="row">
+                    <div class="col d-flex align-items-center justify-content-center">
+                        <div class="fs-1">Setting</div>
+                    </div>
+                </div>
+
+                    <!-- 회원 입력 & 기본 정보 -->
+                    <div class="row mt-5">
+                        <!-- 회원 정보 아이디 -->
+                        <div class="row mb-2">
+                            <div class="col-auto">
+                                <div class="input-group d-flex align-items-center">
+                                    <span class="input-group-text">아이디</span>
+                                    <span class="form-control" th:text="*{userid}"></span>
+                                </div>
+                            </div>
+
+                        <!-- 성별 -->
+                        <div class="col">
+                            <div class="input-group d-flex justify-content-center">
+                                <label class="input-group-text" for="checkMale">남성</label>
+                                <div class="input-group-text">
+                                    <input class="form-check-input mt-0" type="radio" th:field="*{gender}" th:value="MALE" id="checkMale">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="input-group d-flex justify-content-center">
+                                <label class="input-group-text" for="checkFemale">여성</label>
+                                <div class="input-group-text">
+                                    <input class="form-check-input mt-0" type="radio" th:field="*{gender}" th:value="FEMALE" id="checkFemale">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 저장 버튼 -->
+                        <div class="col-auto">
+                            <!--회원 설정 저장 버튼-->
+                            <div class="input-group ">
+                                <button id="saveBtn" type="submit" class="btn btn-dark">Save</button>
+                            </div>
+                        </div>
+                        </div>
+                        <!-- 비밀번호 -->
+                        <div class="row mb-2">
+                            <div class="col">
+                                <!-- 비밀번호 입력 -->
+                                <div class="input-group d-flex">
+                                    <span class="input-group-text d-flex justify-content-center align-items-center p-2"
+                                          style="width: 30%">비밀번호</span>
+                                    <input type="password" th:field="*{password}" class="form-control" id="password">
+                                </div>
+                                <!-- 중복체크 결과값 -->
+                                <div class="form-text" id="passwordCheckResult"></div>
+                            </div>
+                        </div>
+                        <!-- 비밀번호 확인 -->
+                        <div class="row mb-2">
+                            <div class="col">
+                                <!-- 비밀번호 확인 입력 -->
+                                <div class="input-group d-flex">
+                                    <span class="input-group-text d-flex justify-content-center align-items-center p-2"
+                                          style="width: 30%">비밀번호 확인</span>
+                                    <input type="password" class="form-control" id="repeatPassword">
+                                </div>
+                                <!-- 중복체크 결과값 -->
+                                <div class="form-text" id="repeatPasswordCheckResult"></div>
+                            </div>
+                        </div>
+                        <!-- 전화번호 -->
+                        <div class="row mb-2">
+                            <div class="col">
+                                <!-- 전화번호 입력 -->
+                                <div class="input-group">
+                                    <input hidden="hidden" th:field="*{phone}" id="phoneNum">
+                                    <span class="input-group-text d-flex justify-content-center align-items-center"
+                                          style="width: 30%">전화번호</span>
+                                    <input type="number" class="form-control" id="phoneNumFirst">
+                                    <span class="input-group-text d-flex justify-content-center align-items-center">-</span>
+                                    <input type="number" class="form-control" id="phoneNumSecond">
+                                    <span class="input-group-text d-flex justify-content-center align-items-center">-</span>
+                                    <input type="number" class="form-control" id="phoneNumThird">
+                                </div>
+                                <!-- 중복체크 결과값 -->
+                                <div class="form-text" id="phoneCheckResult"></div>
+                            </div>
+                        </div>
+                        <!-- 생년월일 -->
+                        <div class="row">
+                            <div class="col input-group mb-3">
+                                <span class="input-group-text d-flex justify-content-center align-items-center p-2"
+                                      style="width: 30%">생년월일</span>
+                                <input type="date" th:field="*{birth}" max="2012-12-31" min="1940-01-01" class="form-control">
+                            </div>
+                        </div>
+                </div>
+
+            <!-- 공개 범위 설정 -->
+        <div class="row mt-5">
+            <div class="col d-flex">
+                <div class="col">
+                    <button class="button col btn btn-secondary fs-6 p-2 dropdown-toggle"
+                        type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">팔로잉 목록</button>
+                    <ul class="dropdown-menu" id="followingRange">
+                        <li>
+                            <button class="dropdown-item"
+                                    th:each="openRangeType: ${openRangeType}"
+                                    th:value="${openRangeType.name()}"
+                                    th:text="${openRangeType.value}"></button>
+                        </li>
+                    </ul>
+                    <button class="button col btn btn-secondary fs-6 p-2 dropdown-toggle"
+                            type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">작성 후기</button>
+                    <ul class="dropdown-menu" id="reviewRange">
+                        <li>
+                            <button class="dropdown-item"
+                                    th:each="openRangeType: ${openRangeType}"
+                                    th:value="${openRangeType.name()}"
+                                    th:text="${openRangeType.value}"></button>
+                        </li>
+                    </ul>
+                    <span class="btn btn-outline-secondary w-100 fs-6">관람 작품</span><!--관람한 작품 대신 문장형 평가-->
+                    <ul class="dropdown-menu" id="programRange">
+                        <li>
+                            <button class="dropdown-item"
+                                    th:each="openRangeType: ${openRangeType}"
+                                    th:value="${openRangeType.name()}"
+                                    th:text="${openRangeType.value}"></button>
+                        </li>
+                    </ul>
+                    <span class="btn btn-outline-secondary w-100 fs-6">참여 모임</span>
+                    <ul class="dropdown-menu" id="meetingApplyRange">
+                        <li>
+                            <button class="dropdown-item"
+                                    th:each="openRangeType: ${openRangeType}"
+                                    th:value="${openRangeType.name()}"
+                                    th:text="${openRangeType.value}"></button>
+                        </li>
+                    </ul>
+                    <span class="btn btn-outline-secondary w-100 fs-6">북마크</span>
+                    <ul class="dropdown-menu" id="bookmarkRange">
+                        <li>
+                            <button class="dropdown-item"
+                                    th:each="openRangeType: ${openRangeType}"
+                                    th:value="${openRangeType.name()}"
+                                    th:text="${openRangeType.value}"></button>
+                        </li>
+                    </ul>
             </div>
-            <div name="gender-radio">
-                <input type="radio" th:field="*{gender}" th:value="MALE">
-                <span name="male-gender-radio">남성</span>
-                <input type="radio" th:field="*{gender}" th:value="FEMALE">
-                <span name="female-gender-radio">여성</span>
-            </div>
-            <div name="phone-box">
-                <span name="heading">전화번호</span>
-                <span name="phone-textbox"></span>
-                <input type="text" th:field="*{phone}" placeholder="전화번호">
-            </div>
-            <div name="password-box">
-                <span name="heading">비밀번호</span>
-                <span name="password-textbox"></span>
-                <input type="password" th:field="*{password}" placeholder="비밀번호를 입력하세요">
-            </div>
-            <div name="birth-box">
-                <span name="heading">생년월일</span>
-                <span name="birthYear-dropdown">년</span>
-                <span name="birthMonth-dropdown">월</span>
-                <span name="birthDay-dropdown">일</span>
+                <!--회원 설정, 튀소, 탈퇴 버튼-->
+                <div class="row mt-5 mb-5 d-flex justify-content-between">
+                    <!-- 취소, 탈퇴 버튼 -->
+                    <div class="col input-group input-group-lg">
+                        <a href="#" th:onclick="history.go(-1)" class="btn btn-outline-secondary">Home</a>
+                        <a href="#" th:onclick="|location.href='@{/members/{id}/deactivate(id=${member.userid})}'|" class="btn btn-outline-secondary">Withdrawal</a>
+                    </div>
+                </div>
             </div>
         </div>
-        <div name="openRange">
-        <span name="followingRange">
-            <div name="heading">팔로잉 목록</div>
-            <div name="range-dropdown">
-                <div name="public">전체 공개</div>
-                <div name="memberOnly"></div>
-                <div name="mutualFollow"></div>
-                <div name="private"></div>
-            </div>
-        </span>
-            <span name="reviewRange">
-            <div name="heading">작성 후기</div>
-            <div name="range-dropdown">
-                <div name="public">전체 공개</div>
-                <div name="memberOnly">회원 공개</div>
-                <div name="mutualFollow">맞팔로우 공개</div>
-                <div name="private">비공개</div>
-            </div>
-        </span>
-            <span name="programRange">
-            <div name="heading">관람 작품</div>
-            <div name="range-dropdown">
-                <div name="public">전체 공개</div>
-                <div name="memberOnly">회원 공개</div>
-                <div name="mutualFollow">맞팔로우 공개</div>
-                <div name="private">비공개</div>
-            </div>
-        </span>
-            <span name="meetingApplyRange">
-            <div name="heading">참여 모임</div>
-            <div name="range-dropdown">
-                <div name="public">전체 공개</div>
-                <div name="memberOnly">회원 공개</div>
-                <div name="mutualFollow">맞팔로우 공개</div>
-                <div name="private">비공개</div>
-            </div>
-        </span>
-            <span name="bookmarkRange">
-            <div name="heading">북마크</div>
-            <div name="range-dropdown">
-                <div name="public">전체 공개</div>
-                <div name="memberOnly">회원 공개</div>
-                <div name="mutualFollow">맞팔로우 공개</div>
-                <div name="private">비공개</div>
-            </div>
-        </span>
+            </form>
         </div>
-        <div name="button">
-            <span name="cancel-button"></span>
-            <button type="button" th:onclick="history.go(-1)">취소</button>
-            <span name="withdrawal-button"></span>
-            <button type="button" th:onclick="|location.href='@{/members/{id}/deactivate(id=${member.userid})}'|">회원 탈퇴</button>
-        </div>
-    </form>
     </th:block>
 </th:block>
+
+<script th:inline="javascript">
+    $(document).ready(function (){
+        // ********** 변수 선언 **********
+        let passwordCheck = false;
+
+        // 비밀번호 일치 확인
+        $("#repeatPassword").change(function () {
+            let password = $("#password").val();
+            let repeatPassword = $(this).val();
+            if (password === null || password === "") {
+                $('#repeatPasswordCheckResult').text("비밀번호를 먼저 입력해주세요.");
+                $('#repeatPasswordCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+                passwordCheck = false;
+            } else if (password !== repeatPassword) {
+                $('#repeatPasswordCheckResult').text("비밀번호가 일치하지 않습니다.");
+                $('#repeatPasswordCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+                passwordCheck = false;
+            } else {
+                $('#repeatPasswordCheckResult').text("비밀번호가 일치합니다.");
+                $('#repeatPasswordCheckResult').toggleClass('text-danger', false).toggleClass('text-success', true);
+                passwordCheck = true;
+            }
+        });
+
+        // 비밀번호 일치 확인
+        $("#password").change(function () {
+            let password = $(this).val();
+            let repeatPassword = $("#repeatPassword").val();
+            if (repeatPassword !== null && repeatPassword !== "") {
+                if (password !== repeatPassword) {
+                    $('#repeatPasswordCheckResult').text("비밀번호가 일치하지 않습니다.");
+                    $('#repeatPasswordCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+                    passwordCheck = false;
+                } else {
+                    $('#repeatPasswordCheckResult').text("비밀번호가 일치합니다.");
+                    $('#repeatPasswordCheckResult').toggleClass('text-danger', false).toggleClass('text-success', true);
+                    passwordCheck = true;
+                }
+            }
+        });
+
+        // 전화번호 중복 확인
+        $("#phoneNumFirst").change(function () {
+            checkPhone();
+        });
+        $("#phoneNumSecond").change(function () {
+            checkPhone();
+        });
+        $("#phoneNumThird").change(function () {
+            checkPhone();
+        });
+
+        // 전화번호 중복 확인 함수
+        function checkPhone() {
+            console.log("전화번호 변경");
+            let phoneNumFirst = $("#phoneNumFirst").val();
+            let phoneNumSecond = $("#phoneNumSecond").val();
+            let phoneNumThird = $("#phoneNumThird").val();
+            if (phoneNumFirst === null || phoneNumFirst === "" || phoneNumSecond === null || phoneNumSecond === "" || phoneNumThird === null || phoneNumThird === "" || phoneNumFirst.length !== 3 || phoneNumSecond.length !== 4 || phoneNumThird.length !== 4) {
+                $('#phoneCheckResult').text("정확한 전화번호를 입력해주세요.");
+                $('#phoneCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+            } else {
+                let phone = 0;
+                phone = phoneNumFirst + phoneNumSecond + phoneNumThird;
+                $.ajax({
+                    type: "post",
+                    url: "/phoneCheck",
+                    data: {phone: phone},
+                    success: function (result) {
+                        if (result === true) {
+                            console.log(result);
+                            // 글자색 토글 변경하기
+                            $("#phoneCheckResult").text("이미 사용중인 전화번호입니다.")
+                            $('#phoneCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
+                            $("#phoneNum").val("0");
+                        } else {
+                            $("#phoneCheckResult").text("사용 가능한 전화번호입니다.")
+                            $('#phoneCheckResult').toggleClass('text-danger', false).toggleClass('text-success', true);
+                            $("#phoneNum").val(phone);
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            }
+        }
+
+        // submit 버튼 클릭 시 유효성 검사
+        $("#saveBtn").click(function () {
+
+            let check = inputcheck();
+
+            if(check === true){
+                $("#SettingContainer form").submit();
+            }
+            else {
+            }
+        });
+
+        function inputcheck() {
+            // 비밀번호 확인
+            let password = $("#password").val();
+            let repeatPassword = $("#repeatPassword").val();
+            if (password === null || password === "") {
+                alert("비밀번호를 입력해주세요.");
+                return false;
+            }
+            if (password !== repeatPassword) {
+                alert("비밀번호가 일치하지 않습니다.");
+                return false;
+            }
+
+            if (passwordCheck === false) {
+                alert("비밀번호를 확인해주세요.");
+                return false;
+            }
+            // 성별 체크 여부 확인
+            if (!($("#checkMale").is(":checked") === true)&& !($("#checkFemale").is(":checked") === true)) {
+                alert("성별을 선택해주세요.");
+                return false;
+            }
+            // 생년월일 체크 여부 확인
+            if ($("#birth").val() === null || $("#birth").val() === "") {
+                alert("생년월일을 선택해주세요.");
+                return false;
+            }
+            console.log("모든 조건 통과");
+
+            return true;
+        }
+
+        // ********** 각종 함수 **********
+        // 공개 범위 선택시 함수
+
+
+    });
+</script>
 </html>

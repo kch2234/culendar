@@ -2,6 +2,7 @@ package com.teamproject.culendar.controller;
 
 
 import com.teamproject.culendar.domain.enumFiles.Location;
+import com.teamproject.culendar.domain.enumFiles.OpenRangeType;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.member.Follow;
 import com.teamproject.culendar.domain.member.Interest;
@@ -111,21 +112,12 @@ public class MemberController {
         List<ProgramType> programTypes = new ArrayList<>();
         return ProgramType.values();
     }
-        /*// 수정된 회원 정보 조회
-        MemberDTO memberDTO = memberService.findById(updateId);
-        // 기존 관심분야 삭제
-        List<Interest> interestList = interestService.findByMemberId(updateId);
-        for (Interest interest : interestList) {
-            interestService.deleteInterest(interest.getId());
-        }
-        // 회원의 관심분야 수정
-        for (ProgramType programType : interestForm.getInterestList()) {
-            InterestForm interest = new InterestForm(programType);
-            interest.setMember(memberDTO.toEntity());
-            interestService.saveInterest(interest);
-        }
-        return "redirect:/members/{id}";
-    }*/
+
+    @ModelAttribute("openRangeType") // 공개 범위 데이터를 뷰에 전달
+    public OpenRangeType[] openRangeTypes() {
+        List<OpenRangeType> openRangeTypes = new ArrayList<>();
+        return OpenRangeType.values();
+    }
 
     // 회원 설정
 //    @PreAuthorize("hasRole('MEMBER')")
@@ -136,11 +128,14 @@ public class MemberController {
         model.addAttribute("member", memberDTO);
         return "member/setting";
     }
-
     //    @PreAuthorize("hasRole('MEMBER')")
     @PostMapping("/{id}/setting")
-    public String settingPro(@PathVariable("id") Long id) {
+    public String settingPro(@PathVariable("id") Long id, MemberForm memberForm, RedirectAttributes rttr) {
         log.info("********** MemberController POST /members/:id/setting - id : {}", id);
+        log.info("********** MemberController POST /members/:id/edit - memberForm : {}", memberForm);
+//        // 회원 정보
+//        memberService.updateMember(memberForm);
+//        rttr.addFlashAttribute("result", true);
         return "redirect:/members/{id}";
     }
 
