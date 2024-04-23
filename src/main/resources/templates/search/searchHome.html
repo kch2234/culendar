@@ -329,7 +329,6 @@
             html += '<img src="' + data.thumbnail + '" class="card-img-top" alt="...">';
             html += '<div class="card-body">';
             html += '<h5 class="card-title">' + data.title + '</h5>';
-            html += '<div id="staticMap" class="card-text" style="height:360px;"></div>';
             html += '</div>';
             html += '<ul class="list-group list-group-flush">';
             html += '<li class="list-group-item">' + programType + '</li>';
@@ -346,26 +345,6 @@
             html += '</div>';
 
             $('#search-info-box').html(html);
-
-            // 검색창 상세정보의 띄울 지도
-            getStaticMap(data);
-        }
-
-        function getStaticMap(data) {
-            var locationX = data.locationX;
-            var locationY = data.locationY;
-
-            var staticMapContainer = document.getElementById('staticMap');
-            var markerPosition = new kakao.maps.LatLng(locationY, locationX);
-
-            var staticMapOption = {
-                center: markerPosition,
-                level: 3,
-                marker: {
-                    position: markerPosition
-                }
-            };
-            var staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
         }
 
         // 작품 타입 가져오기
