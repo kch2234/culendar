@@ -72,7 +72,7 @@
                 <!--  모임 자동 수락 여부  -->
                 <div class="row mb-4 d-flex justify-content-between align-items-center">
 
-                    <div class="col-2">
+                    <div class="col-3">
                         <div class="input-group input-group-lg"><span class="input-group-text dropdown-toggle">성별</span>
                             <select class="form-control" name="filterGender" id="filterGender">  <!--  TODO #filterGender box-sizing: content-box;  -->
                                 <option th:each="filterGender: ${filterGender}" th:value="${filterGender.name()}" th:text="${filterGender.value}" selected="${filterGender.value == 'ALL'}">
@@ -81,7 +81,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col">
                         <div class="input-group input-group-lg"><span class="input-group-text" for="filterMinAge">최소 연령</span>
                             <input type="number" class="form-control" th:field="*{filterMinAge}" min="15" max="99"
                                    id="filterMinAge">  <!--  TODO #filterMinAge box-sizing: content-box;  -->
@@ -91,7 +91,7 @@
                         </div>
                     </div>
 
-                    <div class="col-6">
+                    <div class="col-auto">
 
                         <div class="input-group input-group-lg">
                             <label class="input-group-text">신청을 자동으로 수락합니다.</label>
