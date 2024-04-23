@@ -1,6 +1,7 @@
 package com.teamproject.culendar.controller;
 
 
+import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.member.Follow;
 import com.teamproject.culendar.domain.member.Interest;
@@ -70,23 +71,47 @@ public class MemberController {
     // 회원 정보 수정
 //    @PreAuthorize("hasRole('MEMBER')")
     @GetMapping("/{id}/edit")
-    public String edit(@PathVariable("id") Long id, InterestForm interestForm, Model model) {
+    public String edit(@PathVariable("id") Long id, Model model) {
         log.info("********** MemberController GET /members/:id/edit - id : {}", id);
         MemberDTO memberDTO = memberService.findById(id);
         model.addAttribute("member", memberDTO);
-        model.addAttribute("interestForm", interestForm);
         return "profile/edit";
     }
 
     // 회원 정보 수정 처리
 //    @PreAuthorize("hasRole('MEMBER')")
     @PostMapping("/{id}/edit")
-    public String editPro(@PathVariable("id") Long id, MemberForm memberForm, InterestForm interestForm) {
+    public String editPro(@PathVariable("id") Long id, MemberForm memberForm, RedirectAttributes rttr) {
         log.info("********** MemberController POST /members/:id/edit - id : {}", id);
         log.info("********** MemberController POST /members/:id/edit - memberForm : {}", memberForm);
         // 회원 정보
         Long updateId = memberService.updateMember(memberForm);
-        // 수정된 회원 정보 조회
+        rttr.addFlashAttribute("result", true);
+        // 로그인한 회원이 수정한 회원의 관심분야 저장
+        MemberDTO byId = memberService.findById(updateId);
+        List<ProgramType> interestType = memberForm.getInterestType();
+        if (interestType != null) {
+            for (ProgramType programType : interestType) {
+                InterestForm interestForm = new InterestForm(programType);
+                interestForm.setMember(byId.toEntity());
+                interestService.saveInterest(interestForm);
+            }
+        }
+
+        return "redirect:/members/{id}";
+    }
+    @ModelAttribute("locationType") // 작품 종류 데이터를 뷰에 전달
+    public Location[] locations() {
+        List<Location> programTypes = new ArrayList<>();
+        return Location.values();
+    }
+
+    @ModelAttribute("interestType") // 작품 종류 데이터를 뷰에 전달
+    public ProgramType[] programTypes() {
+        List<ProgramType> programTypes = new ArrayList<>();
+        return ProgramType.values();
+    }
+        /*// 수정된 회원 정보 조회
         MemberDTO memberDTO = memberService.findById(updateId);
         // 기존 관심분야 삭제
         List<Interest> interestList = interestService.findByMemberId(updateId);
@@ -100,7 +125,7 @@ public class MemberController {
             interestService.saveInterest(interest);
         }
         return "redirect:/members/{id}";
-    }
+    }*/
 
     // 회원 설정
 //    @PreAuthorize("hasRole('MEMBER')")

@@ -45,20 +45,20 @@
                     </div>
                 </div>
             </div>
-        </div><!--TODO: 분류, 지역선택 모달 띄우고, 선택하면 모달 닫히기-->
+        </div>
 
         <!-- 메인 컨테이너 영역 -->
         <div class="w-75 container m-auto">
             <div class="row">
                 <!-- 지도 영역 -->
                 <div class="col-9">
-                    <div id="map" style="width:100%;height:450px;"></div><!--TODO: 지도 크기 재설정 100%로 하면 지도의 크기가 작아짐-->
+                    <div id="map" style="height:780px;"></div>
                     <div id="setMap" class="btn btn-primary">현재 위치로 이동</div>
                 </div>
-                <!-- TODO 사이드 검색창 -->
+                <!-- 사이드 검색창 -->
                 <div class="col ml-2 h-100" id="side-search">
                     <form class="container p-0">
-                        <!-- TODO 검색창 -->
+                        <!-- 검색창 -->
                         <div class="row p-0" style="height: 10%">
                             <!-- 버튼 비활성화 -->
                             <div class="col-3 p-0">
@@ -74,7 +74,7 @@
                             </div>
 
                         </div>
-                        <!-- TODO 검색 결과 -->
+
                         <div class="row p-0">
                             <!-- 검색 결과 양식 -->
                             <div class="card p-0 overflow-scroll" id="search-info-box">
@@ -84,29 +84,8 @@
                 </div>
             </div>
         </div>
-<!--
-        <div class="content-wrapper" name="search-box">
-            <span name="mapWithModal">  &lt;!&ndash;  지도+검색결과 작품  &ndash;&gt;
-                <span name="map">
 
-                </span>
-                <span name="searchResult-box">  &lt;!&ndash;  검색결과 작품  &ndash;&gt;
-                    <div name="programCard"></div>
-                    <div name="programDetail-button">자세히</div>  &lt;!&ndash;  TODO programDetail에 개요가 없다면 페이지 넘겨도 더 보여줄 게 없을 듯..  &ndash;&gt;
-                </span>
-            </span>  &lt;!&ndash;  mapWithModal  &ndash;&gt;
-            <span name="sideInfo-box">
-                <div>
-                    <div name="heading">인기 작품</div>
-                    <div name="programCard"></div>  &lt;!&ndash;  NOTE 검색 전) 현재 위치의 인기작품 노출 / 검색 후) 검색 결과 작품 노출  &ndash;&gt;
-                </div>
-                <hr />  &lt;!&ndash;  horizonBar  &ndash;&gt;
-                <div>
-                    <div name="heading">인기 모임</div>
-                    <div name="eventCard"></div>  &lt;!&ndash;  NOTE 검색 전) 현재 위치의 인기모임 노출 / 검색 후) 검색 결과 모임 노출  &ndash;&gt;
-                </div>
-            </span>  &lt;!&ndash;  sideInfo-box  &ndash;&gt;
-        </div>  &lt;!&ndash;  search-box  &ndash;&gt;-->
+        <!-- 인기 작품, 모임 영역 -->
         <div id="favLocaionProgram" class="container">  <!--  좌우 스크롤  -->
             <div class="row mt-5 mb-3">
                 <div class="col-auto">
@@ -116,15 +95,16 @@
                 </div>
             </div>
                 <div class="row mb-5" id="BestProgramContainer"></div>
-        </div>  <!--  favLocationProgram  -->
+        </div>
+
         <div id="favLocationEvent" class="container">  <!--  좌우 스크롤  -->
             <div class="row mt-5 mb-3">
                 <div class="col-auto">
-                    <div class="fs-3 badge text-bg-secondary">지역별 인기 모임</div><!--TODO 인기 모임 추가-->
+                    <div class="fs-3 badge text-bg-secondary">지역별 인기 모임</div>
                 </div>
             </div>
-            <div class="row mb-5" id="BestClubContainer"></div>
-        </div>  <!--  favLocationEvent  -->
+            <div class="row mb-5" id="eventCardContainer"></div>
+        </div>
     </th:block>
 </th:block>
 <script th:inline="javascript">
@@ -140,6 +120,7 @@
         var modalProgramTypeName;
         var modalLocationTypeName;
         var programId;
+        // 사용자 이미지 마커
         var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/2018/mw/m640/ico_marker.png",
             imageSize = new kakao.maps.Size(30, 30),
             imageOption = {offset: new kakao.maps.Point(20, 40)};
@@ -220,7 +201,7 @@
                 html += '<div class="col-3 ml-1 mr-1 bestProgramCard">';
                 html += '<div hidden="hidden" class="programSeq">' + list[i].seq + '</div>';
                 html += '<div>';
-                html += '<img src="' + list[i].thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid" style="height: 30vw" alt="...">';
+                html += '<img src="' + list[i].thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid w-100" style="" alt="...">';
                 html += '<div class="card-body">';
                 html += '<div class="row mb-2">';
                 var title = list[i].title;
@@ -247,35 +228,33 @@
             $('#BestProgramContainer').html(html);
         }
 
-        // 인기 모임 목록 화면에 띄우기
-        // TODO: 데이터는 받아오는데 html에서 출력이 안 됨
-        function printCardList(eventList) {
+        function printCardList(eventBoardList) {
             console.log("printCardList 호출!");
-            console.log(eventList);
+            console.log(eventBoardList);
+            if (!eventBoardList) {
+                console.log("result 데이터가 없습니다.");
+                return; // 데이터가 없으면 함수를 종료
+            }
+
             var html = '';
-            for (let i = 0; i < eventList.length; i++) {
+            for (let i = 0; i < eventBoardList.length; i++) {
                 html += '<div class="col-3 ml-1 mr-1 eventCardContainer">';
-                html += '<div hidden="hidden" class="eventBoardId">' + eventList[i].id+ '</div>';
+                html += '<div hidden="hidden" class="eventBoardId">' + eventBoardList[i].id + '</div>';
                 html += '<div>';
-                html += '<img src="' + eventList[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid w-100" style="" alt="...">';
+                html += '<img src="' + eventBoardList[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid w-100" alt="..." />';
                 html += '<div class="card-body">';
                 html += '<div class="row mb-2">';
-                // 제목 길이가 11자 이상이면 11자로 자르기
-                var title = eventList[i].title;
+                var title = eventBoardList[i].title;
                 if (title.length > 10) {
                     title = title.substring(0, 10) + '...';
                 }
-                html += '<div class="col-auto card-title fs-4">' + title + '</div>';
-                // html += '<div class="col-2 badge text-bg-secondary fs-6 d-flex justify-content-center align-items-center">' + getBoardType(eventList[i].boardType) + '</div>';
+                html += '<div class="col-auto card-title fs-4">' + eventBoardList[i].title + '</div>';
                 html += '</div>';
-                var content = eventList[i].content;
+                var content = eventBoardList[i].content;
                 if (content.length > 30) {
                     content = content.substring(0, 30) + '...';
                 }
-                html += '<p class="card-text">' + content + '</p>';
-                html += '</div>';
-                html += '</div>';
-                html += '</div>';
+                html += '<p class="card-text">' + content + '</p></div></div></div>';
             }
             $("#eventCardContainer").html(html);
         }
@@ -350,7 +329,6 @@
             html += '<img src="' + data.thumbnail + '" class="card-img-top" alt="...">';
             html += '<div class="card-body">';
             html += '<h5 class="card-title">' + data.title + '</h5>';
-            html += '<p class="card-text" id="staticMap">지도 예정</p>';// TODO: 지도 넣기
             html += '</div>';
             html += '<ul class="list-group list-group-flush">';
             html += '<li class="list-group-item">' + programType + '</li>';
@@ -367,25 +345,6 @@
             html += '</div>';
 
             $('#search-info-box').html(html);
-        }
-
-        // 지도 이미지 생성
-        function getStaticMap(data) {
-                var locationX = data.locationX;
-                var locationY = data.locationY;
-                var markerPosition  = new kakao.maps.LatLng(33.450701, 126.570667);
-                var marker = {
-                    position: markerPosition
-                };
-                var staticMapContainer = document.getElementById('staticMap'), // 지도를 표시할 div
-                    staticMapOption = {
-                        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-                        level: 3, // 지도의 확대 레벨
-                        marker: marker // 이미지 지도에 표시할 마커
-                    };
-                var staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption); // 지도를 생성
-                staticMap.setCenter(locationY, locationX);
-                marker.setPosition(locationY, locationX);
         }
 
         // 작품 타입 가져오기
@@ -438,6 +397,7 @@
                         title: "현재 위치"
                     });
                     map.setCenter(new kakao.maps.LatLng(lat, lng));
+                    map.setLevel(3);
                     reverseGeocode(lat, lng, function(location) {
                         getLocationBestList(location);
                     });
@@ -523,8 +483,8 @@
 
         // 모달 닫기
         $(document).on('click', '.close', function () {
-            $('#type-modal').css('display', 'none');
-            $('#location-modal').css('display', 'none');
+            $('#type-modal').modal('hide');
+            $('#location-modal').modal('hide');
         });
 
         // 검색 버튼 클릭시 기본 이벤트 제거
@@ -573,23 +533,23 @@
             }
         });
 
-        // 모달 닫기
-        $(document).on('click', '.close', function () {
-            $('#type-modal').css('display', 'none');
-            $('#location-modal').css('display', 'none');
-        });
         // 분류 모달과 지역 모달에서 선택시 값 변경
         $(document).on('click', ".pTypeBtn", function () {
             modalProgramType = $(this).data('type');
             modalProgramTypeName = $(this).text();
+            console.log('분류 모달 닫기 시도');
             $('#type-modal').modal('hide');
-            getBestProgramList()
+            // 인기 작품, 모임 리스트 다시 불러오기
+            getBestProgramList();
+            getBestEventBoardList();
         });
         $(document).on('click', ".lTypeBtn", function () {
             modalLocationType = $(this).data('loc');
             modalLocationTypeName = $(this).text();
+            console.log('지역 모달 닫기 시도');
             $('#location-modal').modal('hide');
-            getBestProgramList()
+            getBestProgramList();
+            getBestEventBoardList();
         });
 
         // ********** 작품 카드 클릭시 해당 작품 상세 페이지로 이동 **********
@@ -598,6 +558,13 @@
             location.href = "/program/" + seq;
         });
 
+        // 모임카드 클릭
+        $('#eventCardContainer').on('click', '.eventCardContainer', function () {
+            var id = $(this).find('.eventBoardId').text();
+            location.href = "/clubs/" + id;
+        });
+
+        // 현재 위치로 이동 버튼 클릭시 현재 위치로 이동
         $("#setMap").on('click', function () {
             getCurrentLocationAndPrograms();
         });

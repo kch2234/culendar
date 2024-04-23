@@ -253,8 +253,8 @@
                     <!-- TODO 닉네임, 팔로우 버튼 -->
                     <div class="row text-center mb-3 d-flex justify-content-center">
                         <div class="col-auto text-center">
-                            <div class="badge text-bg-secondary fs-4 d-inline-block"
-                                 th:text="${board.getMemberDTO().getUsername()}"></div>
+                            <button type="button" class="btn btn-outline-secondary fs-4 d-inline-block"
+                                 th:text="${board.getMemberDTO().getUsername()}" th:onclick="|location.href='@{/members/{id}(id=${board.getMemberDTO().getId()})}'|">
                         </div>
 
                         <th:block  sec:authorize="isAuthenticated()">
@@ -415,8 +415,14 @@
                 // 해당 작품 후기 작성 여부 확인 함수
                 getThisProgramReview();
 
-                // 팔로일 여부 확인
-                checkFollow();
+                // 로그인 여부 확인
+                if (memberId !== 0) {
+                    // 팔로잉 여부 확인
+                    checkFollow();
+                }
+
+
+
 
                 // ********** 클릭시 이벤트들 **********
 

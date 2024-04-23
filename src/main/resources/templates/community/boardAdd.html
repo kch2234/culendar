@@ -224,6 +224,7 @@
                                 programId = data.id;
                                 let input = $("<input>").attr("type", "hidden").attr("name", "programId").val(reviewProgramId);
                                 $("#boardAddWrapper form").append(input);
+                                $('#programSelectCheck').val(reviewProgramId);
 
                                 console.log($('#programSelectCheck').val());
                                 $('#programSelectCheck').prop('checked', true);
@@ -252,19 +253,23 @@
 
                 // 유효성 검사
                 function inputcheck() {
+                    console.log('유효성 검사 시작');
                     if ($('#boardType').val() === '') {
                         alert('게시글 분류를 선택해주세요');
                         return false;
-                    } else if ($('#programSelectCheck').val() === '') {
-                        alert('작품을 선택해주세요');
-                        return false;
-                    } else if ($('#title').val() === '') {
+                    }
+                    else if ($('#programSelectCheck').val() === '') {
+                            alert('작품을 선택해주세요');
+                            return false;
+                    }
+                    else if ($('#title').val() === '') {
                         alert('제목을 입력해주세요');
                         return false;
                     } else if ($('#content-textarea').val() === '') {
                         alert('내용을 입력해주세요');
                         return false;
                     } else {
+                        console.log('유효성 검사 true');
                         return true;
                     }
                 }

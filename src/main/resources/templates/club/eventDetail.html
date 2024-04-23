@@ -254,9 +254,9 @@
                     </div>  <!--  좋아요 버튼, 내 후기  -->
 
                     <!-- TODO 지도 영역 -->
-                    <div style="height: 40%">
+                    <div class="h-40">
                         <div class="col h-100">
-                            <div class="badge text-bg-secondary w-100 h-100 fs-1">지도</div>
+                            <div class="w-100" id="staticMap" style="height:420px;"></div>
                         </div>
                     </div>
 
@@ -337,6 +337,7 @@
                 var programId = [[${eventBoard.getProgramDTO.getId()}]]; // 현재 게시글의 작품 id
 
                 // 페이지 로딩시 시작할 함수들
+                kakaoMap() // 카카오 지도 띄우기
                 getAvgRating(); // 평균 평가 가져오기
                 getMyRating(); // 내 평가 가져오기
 
@@ -662,6 +663,23 @@
                         let dd = dateObj.getDate();
                         return [yy, '/', (mm > 9 ? '' : '0') + mm, '/', (dd > 9 ? '' : '0') + dd].join('');
                     }
+                }
+
+                // ********** 카카오 지도 **********
+                function kakaoMap(){
+                    var locationX = [[${eventBoard.getProgramDTO.getLocationX()}]];
+                    var locationY = [[${eventBoard.getProgramDTO.getLocationY()}]];
+                    var markerPosition  = new kakao.maps.LatLng(locationY, locationX);
+                    var marker = {
+                        position: markerPosition
+                    };
+                    var mapContainer = document.getElementById('staticMap'), // 지도를 표시할 div
+                        mapOption = {
+                            center: new kakao.maps.LatLng(locationY, locationX), // 지도의 중심좌표
+                            level: 3, // 지도의 확대 레벨
+                            marker: marker // 이미지 지도에 표시할 마커
+                        };
+                    var staticMap = new kakao.maps.StaticMap(mapContainer, mapOption); // 지도를 생성
                 }
 
             }); // ready

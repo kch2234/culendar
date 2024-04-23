@@ -38,4 +38,15 @@ public class BoardRestController {
 
     }
 
+    // 회원 리뷰 최신순으로 무한 스크롤 조회
+    @GetMapping("/findMyReviewWithPaging/{memberId}/{start}")
+    public ResponseEntity<List<BoardDTO>> findProgramReviewByMemberIdWithPaging(@PathVariable("memberId") Long memberId, @PathVariable("start") Long start){
+
+        List<BoardDTO> programReviewByMemberId = boardService.findProgramReviewByMemberIdWithPaging(memberId, start);
+
+        return ResponseEntity.ok().body(programReviewByMemberId);
+    }
+
+
+
 }

@@ -92,7 +92,6 @@
         </div>
 
 
-
         <!-- TODO 마이페이지 기능 구현 및 디자인 -->
 
         <!-- 프로필 페이지 영역 -->
@@ -141,13 +140,18 @@
                             </div>
 
                             <!-- 수정 버튼 -->
-                            <div class="col-auto">
-                                <div class="input-group input-group-lg">
-                                    <button type="button" class="btn btn-dark"
-                                            th:onclick="|location.href='@{/members/{id}/edit(id=${member.id})}'|">수정
-                                    </button>
-                                </div>
-                            </div>
+                            <th:block sec:authorize="isAuthenticated()">
+                                <th:block th:if="${#authentication.principal.member.id == member.getId()}">
+                                    <div class="col-auto">
+                                        <div class="input-group input-group-lg">
+                                            <button type="button" class="btn btn-dark"
+                                                    th:onclick="|location.href='@{/members/{id}/edit(id=${member.id})}'|">
+                                                수정
+                                            </button>
+                                        </div>
+                                    </div>
+                                </th:block>
+                            </th:block>
                         </div>
 
                         <!-- 지역, 자기소개 -->
@@ -176,7 +180,7 @@
                     <!-- 동적 제목 -->
                     <div class="col-3">
                         <div class="input-group input-group-lg w-100 h-100">
-                            <span class="btn btn-secondary w-100 h-100 fs-2 d-flex justify-content-center align-items-center">카테고리</span>
+                            <span id="activeFilterName" class="btn btn-secondary w-100 h-100 fs-2 d-flex justify-content-center align-items-center">카테고리</span>
                         </div>
                     </div>
 
@@ -187,20 +191,23 @@
                     <div class="col-9">
                         <div class="row">
                             <div class="col">
-                                <button type="button" class="btn btn-outline-secondary w-100 fs-4">나</button>
+                                <button type="button" class="btn btn-outline-secondary w-100 fs-4" id="myBtn">나</button>
                             </div>
                             <div class="col">
-                                <button type="button" class="btn btn-outline-secondary w-100 fs-4">북마크</button>
+                                <button type="button" class="btn btn-outline-secondary w-100 fs-4" id="bkMarkBtn">북마크
+                                </button>
                             </div>
                             <div class="col">
-                                <button type="button" class="btn btn-outline-secondary w-100 fs-4">타임라인</button>
+                                <button type="button" class="btn btn-outline-secondary w-100 fs-4" id="timeLineBtn">
+                                    타임라인
+                                </button>
                             </div>
                             <div class="col"></div>
                             <div class="col"></div>
                         </div>
 
                         <!-- 세부 동적 필터 -->
-                        <div class="row mt-3">
+                        <div class="row mt-3" id="activeFilterContainer">
                             <div class="col">
                                 <button type="button" class="btn btn-outline-secondary w-100 fs-6">후기</button>
                             </div>
@@ -224,9 +231,30 @@
             </div>
 
             <!-- 카드 영역 -->
-            <div id="content-area" class="mt-4">
+            <div id="content-area" class="row mt-4">
 
-                <div id="contentTest">asdasd</div>
+                <div class="col">
+
+                    <!-- 카드 양식 -->
+                    <div class="row mt-5">
+                        <div class="col">
+                            <div class="card">
+                                <img src="..." class="card-img-top">
+                                <div class="card-body">
+                                    <!-- Todo 버튼 클릭시 해당 게시글로 이동 -->
+                                    <!-- TODO 제목 글자수 -->
+                                    <button class="card-title fs-5 btn btn-outline-secondary">제목</button>
+                                    <!-- TODO 내용 글자수 -->
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
 
             </div>
 
@@ -234,20 +262,32 @@
         </div>
 
 
-
     </th:block>
 </th:block>
 <script th:inline="javascript">
     $(document).ready(function () {
+
+        // 로그인 여부 확인
+        let isLogin = [[${#authorization.expression('isAuthenticated()')}]];
+        console.log("isLogin : " + isLogin);
+
+
         let memberIdVal = [[${member.id}]];
 
         console.log("memberIdVal : " + memberIdVal);
+
+        // 팔로잉 페이징 관련
 
         let followingStart = 0;
         let loadingFollowing = true;
 
         let followerStart = 0;
         let loadingFollower = true;
+
+        // 필터링 페이징 관련
+        let myFilterStart = 0;
+        let myFilterLoading = true;
+
 
         // ********* 페이지 로딩시 함수 **********
 
@@ -296,14 +336,14 @@
                     if (result === 'unfollow') {
                         alert('팔로우가 취소되었습니다.');
                         thisBtn.text('Follow');
-                        thisBtn.toggleClass('btn-dark',false);
-                        thisBtn.toggleClass('btn-outline-secondary',true);
+                        thisBtn.toggleClass('btn-dark', false);
+                        thisBtn.toggleClass('btn-outline-secondary', true);
 
                     } else {
                         alert('팔로우가 추가되었습니다.');
                         thisBtn.text('UnFollow');
-                        thisBtn.toggleClass('btn-outline-secondary',false);
-                        thisBtn.toggleClass('btn-dark',true);
+                        thisBtn.toggleClass('btn-outline-secondary', false);
+                        thisBtn.toggleClass('btn-dark', true);
 
                     }
 
@@ -339,14 +379,14 @@
                     if (result === 'unfollow') {
                         alert('팔로우가 취소되었습니다.');
                         thisBtn.text('Follow');
-                        thisBtn.toggleClass('btn-dark',false);
-                        thisBtn.toggleClass('btn-outline-secondary',true);
+                        thisBtn.toggleClass('btn-dark', false);
+                        thisBtn.toggleClass('btn-outline-secondary', true);
 
                     } else {
                         alert('팔로우가 추가되었습니다.');
                         thisBtn.text('UnFollow');
-                        thisBtn.toggleClass('btn-outline-secondary',false);
-                        thisBtn.toggleClass('btn-dark',true);
+                        thisBtn.toggleClass('btn-outline-secondary', false);
+                        thisBtn.toggleClass('btn-dark', true);
 
                     }
 
@@ -411,7 +451,7 @@
                             loadingFollowing = false;
 
                             if (followingStart === 0) {
-                                $('#followingListModalBody').empty();
+                                printEmptyFollowingList()
 
                             }
 
@@ -505,15 +545,19 @@
                 html += '<div class="col">';
                 html += '<div class="row d-flex justify-content-between align-items-center">';
                 html += '<div class="col-auto">';
+
                 html += '<div class="input-group">';
-                html += '<button type="button" class="btn btn-outline-secondary">' + follow[i].followDTO.username + '</button>';
+                // 버튼 클릭시 해당 회원의 프로필 페이지로 이동
+                html += '<button type="button" class="btn btn-outline-secondary" onclick="location.href=\'/members/' + follow[i].followDTO.id + '\'">' + follow[i].followDTO.username + '</button>';
                 let locationString = locationEnumToString(follow[i].followDTO.location);
                 html += '<span class="input-group-text">' + locationString + '</span>';
                 html += '</div>';
                 html += '</div>';
                 html += '<div class="col-auto">';
                 html += '<div class="input-group">';
-                html += '<button type="button" class="btn btn-dark unFollowBtn" data-unfollowId="' + follow[i].followDTO.id + '">UnFollow</button>';
+                if (isLogin) {
+                    html += '<button type="button" class="btn btn-dark unFollowBtn" data-unfollowId="' + follow[i].followDTO.id + '">UnFollow</button>';
+                }
                 html += '</div>';
                 html += '</div>';
                 html += '</div>';
@@ -564,7 +608,7 @@
                 html += '<div class="row d-flex justify-content-between align-items-center">';
                 html += '<div class="col-auto">';
                 html += '<div class="input-group">';
-                html += '<button type="button" class="btn btn-outline-secondary">' + follow[i].memberDTO.username + '</button>';
+                html += '<button type="button" class="btn btn-outline-secondary" onclick="location.href=\'/members/' + follow[i].memberDTO.id + '\'">' + follow[i].memberDTO.username + '</button>';
                 let locationString = locationEnumToString(follow[i].memberDTO.location);
                 html += '<span class="input-group-text">' + locationString + '</span>';
                 html += '</div>';
@@ -572,13 +616,15 @@
                 html += '<div class="col-auto">';
                 html += '<div class="input-group">';
 
-                // 팔로우 여부에 따라 버튼 변경
-                if (follow[i].isFollow) {
-                    html += '<button type="button" class="btn btn-dark unFollowBtn" data-unfollowId="' + follow[i].memberDTO.id + '">UnFollow</button>';
-                } else {
-                    html += '<button type="button" class="btn btn-outline-secondary unFollowBtn" data-unfollowId="' + follow[i].memberDTO.id + '">Follow</button>';
-                }
+                if (isLogin) {
+                    // 팔로우 여부에 따라 버튼 변경
+                    if (follow[i].isFollow) {
+                        html += '<button type="button" class="btn btn-dark unFollowBtn" data-unfollowId="' + follow[i].memberDTO.id + '">UnFollow</button>';
+                    } else {
+                        html += '<button type="button" class="btn btn-outline-secondary unFollowBtn" data-unfollowId="' + follow[i].memberDTO.id + '">Follow</button>';
+                    }
 
+                }
                 html += '</div>';
                 html += '</div>';
                 html += '</div>';
@@ -620,13 +666,13 @@
 
             let followingListModalBody = $('#followingListModalBody');
             let html = '';
-                html += '<div class="row mt-2">';
-                html += '<div class="col">';
-                html += '<div class="input-group">';
-                html += '<span class="input-group-text">팔로잉 리스트가 없습니다.</span>';
-                html += '</div>';
-                html += '</div>';
-                html += '</div>';
+            html += '<div class="row mt-2">';
+            html += '<div class="col">';
+            html += '<div class="input-group">';
+            html += '<span class="input-group-text">팔로잉 리스트가 없습니다.</span>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
 
             // 팔로잉 리스트 html 추가하기
             followingListModalBody.append(html);
@@ -788,6 +834,260 @@
         }
 
         // ********** 필터 관련 함수 **********
+
+        // ********** 메인 필터 클릭시
+
+        // 나 버튼 클릭시
+        $('#myBtn').on('click', function () {
+            console.log("나 버튼 클릭");
+            let html = '';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myReviewBtn">후기</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myInfoBtn">정보</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myProgramBtn">작품</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myApplyEventBtn">신청한 모임</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myAddEventBtn">등록한 모임</button>';
+            html += '</div>';
+            $('#activeFilterContainer').html(html);
+
+            $('#myBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#bkMarkBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#timeLineBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+
+        });
+
+        // 북마크 버튼 클릭시
+        $('#bkMarkBtn').on('click', function () {
+            console.log("북마크 버튼 클릭");
+            let html = '';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="bkReviewBtn">후기</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="bkInfoBtn">정보</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="bkProgramBtn">작품</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="bkEventBtn">모임</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '</div>';
+            $('#activeFilterContainer').html(html);
+
+            $('#myBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#bkMarkBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#timeLineBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+        });
+
+        // 타임라인 버튼 클릭시
+        $('#timeLineBtn').on('click', function () {
+            console.log("타임라인 버튼 클릭");
+            let html = '';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="timeLineReviewBtn">후기</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="timeLineInfoBtn">정보</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="timeLineProgramBtn">작품</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '</div>';
+            $('#activeFilterContainer').html(html);
+
+            $('#myBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#bkMarkBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#timeLineBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+        });
+
+        // ********** 필터 세부 버튼 클릭시
+
+        // 나 버튼 세부 필터 클릭시
+
+        //나 후기 버튼 클릭시
+        $('#activeFilterContainer').on('click', '#myReviewBtn', function () {
+            console.log("나 후기 버튼 클릭");
+            $('#myReviewBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#myInfoBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myApplyEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myAddEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#activeFilterName').text('후기');
+            getMyReviewListWithPaging();
+        });
+
+        // 나 정보 버튼 클릭시
+        $('#activeFilterContainer').on('click', '#myInfoBtn', function () {
+            console.log("나 정보 버튼 클릭");
+            $('#myReviewBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myInfoBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#myProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myApplyEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myAddEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#activeFilterName').text('정보');
+        });
+
+        // 나 작품 버튼 클릭시
+        $('#activeFilterContainer').on('click', '#myProgramBtn', function () {
+            console.log("나 작품 버튼 클릭");
+            $('#myReviewBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myInfoBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myProgramBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#myApplyEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myAddEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#activeFilterName').text('작품');
+        });
+
+        // 나 신청한 모임 버튼 클릭시
+        $('#activeFilterContainer').on('click', '#myApplyEventBtn', function () {
+            console.log("나 신청한 모임 버튼 클릭");
+            $('#myReviewBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myInfoBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myApplyEventBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#myAddEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#activeFilterName').text('신청한 모임');
+        });
+
+        // 나 등록한 모임 버튼 클릭시
+        $('#activeFilterContainer').on('click', '#myAddEventBtn', function () {
+            console.log("나 등록한 모임 버튼 클릭");
+            $('#myReviewBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myInfoBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myApplyEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myAddEventBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#activeFilterName').text('등록한 모임');
+        });
+
+        // 북마크 버튼 세부 필터 클릭시
+
+        // 북마크 후기 버튼 클릭시
+        $('#activeFilterContainer').on('click', '#bkReviewBtn', function () {
+            console.log("북마크 후기 버튼 클릭");
+            $('#bkReviewBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#bkInfoBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#bkProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#bkEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#activeFilterName').text('북마크 후기');
+        });
+
+        // 북마크 정보 버튼 클릭시
+        $('#activeFilterContainer').on('click', '#bkInfoBtn', function () {
+            console.log("북마크 정보 버튼 클릭");
+            $('#bkReviewBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#bkInfoBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#bkProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#bkEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#activeFilterName').text('북마크 정보');
+        });
+
+        // 북마크 작품 버튼 클릭시
+        $('#activeFilterContainer').on('click', '#bkProgramBtn', function () {
+            console.log("북마크 작품 버튼 클릭");
+            $('#bkReviewBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#bkInfoBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#bkProgramBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#bkEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#activeFilterName').text('북마크 작품');
+        });
+
+        // 북마크 모임 버튼 클릭시
+        $('#activeFilterContainer').on('click', '#bkEventBtn', function () {
+            console.log("북마크 모임 버튼 클릭");
+            $('#bkReviewBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#bkInfoBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#bkProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#bkEventBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#activeFilterName').text('북마크 모임');
+        });
+
+        // 타임라인 버튼 세부 필터 클릭시
+
+        // 타임라인 후기 버튼 클릭시
+        $('#activeFilterContainer').on('click', '#timeLineReviewBtn', function () {
+            console.log("타임라인 후기 버튼 클릭");
+            $('#timeLineReviewBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#timeLineInfoBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#timeLineProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#activeFilterName').text('팔로우 후기');
+        });
+
+        // 타임라인 정보 버튼 클릭시
+        $('#activeFilterContainer').on('click', '#timeLineInfoBtn', function () {
+            console.log("타임라인 정보 버튼 클릭");
+            $('#timeLineReviewBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#timeLineInfoBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#timeLineProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#activeFilterName').text('팔로우 정보');
+        });
+
+        // 타임라인 작품 버튼 클릭시
+        $('#activeFilterContainer').on('click', '#timeLineProgramBtn', function () {
+            console.log("타임라인 작품 버튼 클릭");
+            $('#timeLineReviewBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#timeLineInfoBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#timeLineProgramBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#activeFilterName').text('팔로우 작품');
+        });
+
+        // ********** 필터링 관련 ajax 함수 **********
+
+        // 내 후기 리스트 무한 스크롤 페이징 가져오기
+        function getMyReviewListWithPaging() {
+            if (myFilterLoading) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/boards/findMyReviewWithPaging/' + memberIdVal + '/' + myFilterStart,
+                    success: function (reviews) {
+                        console.log("내 후기 리스트 가져오기 성공");
+                        console.log(reviews);
+
+                        if (reviews.length === 0) {
+                            console.log("내 후기 리스트가 없습니다.");
+                            myFilterLoading = false;
+
+                            if (myFilterStart === 0) {
+                                printEmptyMyReviewList();
+                            }
+
+                        } else {
+                            // 리스트
+                            printMyReviewList(reviews);
+                        }
+
+                    },
+                    error: function (e) {
+                        console.log("내 후기 리스트 가져오기 실패");
+                        console.log(e);
+                    }
+                });
+            }
+        }
+
+        // 내 후기 리스트 출력하기
+        function printMyReviewList(reviews) {
+
+
+
+        }
+
+
+
+
 
 
     });

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -149,5 +150,17 @@ public class BoardService {
 
     }
 
+    // 회원 리뷰 최신순으로 무한 스크롤 조회
+    public List<BoardDTO> findProgramReviewByMemberIdWithPaging(Long memberId, Long start) {
+        List<Board> programReviewByMemberId = boardRepository.findProgramReviewByMemberIdWithPaging(memberId, start);
 
+        // Board entity -> BoardDTO 변환
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        for (Board board : programReviewByMemberId) {
+            boardDTOList.add(new BoardDTO(board));
+        }
+        log.info("**** BoardService findProgramReviewByMemberIdWithPaging - boardDTOList : {}", boardDTOList);
+
+        return boardDTOList;
+    }
 }
