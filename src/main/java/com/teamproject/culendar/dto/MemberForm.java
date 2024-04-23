@@ -7,6 +7,7 @@ import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.enumFiles.Role;
 import com.teamproject.culendar.domain.member.Interest;
 import com.teamproject.culendar.domain.member.Member;
+import com.teamproject.culendar.domain.member.OpenRange;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -46,7 +47,6 @@ public class MemberForm  {
 
     // 관심분야
     private List<ProgramType> interestType;
-
 
 
     // form -> Entity

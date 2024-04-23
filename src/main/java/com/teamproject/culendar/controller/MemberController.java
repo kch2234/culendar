@@ -101,23 +101,6 @@ public class MemberController {
 
         return "redirect:/members/{id}";
     }
-    @ModelAttribute("locationType") // 작품 종류 데이터를 뷰에 전달
-    public Location[] locations() {
-        List<Location> programTypes = new ArrayList<>();
-        return Location.values();
-    }
-
-    @ModelAttribute("interestType") // 작품 종류 데이터를 뷰에 전달
-    public ProgramType[] programTypes() {
-        List<ProgramType> programTypes = new ArrayList<>();
-        return ProgramType.values();
-    }
-
-    @ModelAttribute("openRangeType") // 공개 범위 데이터를 뷰에 전달
-    public OpenRangeType[] openRangeTypes() {
-        List<OpenRangeType> openRangeTypes = new ArrayList<>();
-        return OpenRangeType.values();
-    }
 
     // 회원 설정
 //    @PreAuthorize("hasRole('MEMBER')")
@@ -129,13 +112,12 @@ public class MemberController {
         return "member/setting";
     }
     //    @PreAuthorize("hasRole('MEMBER')")
+
     @PostMapping("/{id}/setting")
-    public String settingPro(@PathVariable("id") Long id, MemberForm memberForm, RedirectAttributes rttr) {
+    public String settingPro(@PathVariable("id") Long id, MemberForm memberForm) {
         log.info("********** MemberController POST /members/:id/setting - id : {}", id);
-        log.info("********** MemberController POST /members/:id/edit - memberForm : {}", memberForm);
-        // 회원 정보
-        memberService.saveMember(memberForm);
-        rttr.addFlashAttribute("result", true);
+        log.info("********** HomeController POST /members/:id/setting - member Birth : {}", memberForm.getBirth());
+        Long setId = memberService.setMember(memberForm);
         return "redirect:/";
     }
 
@@ -157,6 +139,23 @@ public class MemberController {
         return "redirect:/logout";
     }
 
+    @ModelAttribute("locationType") // 작품 종류 데이터를 뷰에 전달
+    public Location[] locations() {
+        List<Location> programTypes = new ArrayList<>();
+        return Location.values();
+    }
+
+    @ModelAttribute("interestType") // 작품 종류 데이터를 뷰에 전달
+    public ProgramType[] programTypes() {
+        List<ProgramType> programTypes = new ArrayList<>();
+        return ProgramType.values();
+    }
+
+    @ModelAttribute("openRangeType") // 공개 범위 데이터를 뷰에 전달
+    public OpenRangeType[] openRangeTypes() {
+        List<OpenRangeType> openRangeTypes = new ArrayList<>();
+        return OpenRangeType.values();
+    }
 
     // 관리자 접근 허용
     @PreAuthorize("hasRole('ADMIN')")

@@ -1,21 +1,23 @@
 package com.teamproject.culendar.service;
 
-import com.teamproject.culendar.domain.enumFiles.ProgramType;
-import com.teamproject.culendar.domain.member.Interest;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.*;
 import com.teamproject.culendar.repository.FollowRepository;
 import com.teamproject.culendar.repository.MemberRepository;
-import com.teamproject.culendar.security.domain.CustomMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Optional;
 
 import static java.time.LocalDateTime.now;
+import static java.time.format.DateTimeFormatter.*;
 
 
 @Service
@@ -76,7 +78,19 @@ public class MemberService {
     }
 
     // 회원 정보 설정
+    public Long setMember(MemberForm memberForm) {
+        String birth = memberForm.getBirth();
+        Member findMember = memberForm.toEntity();
+        log.info("********** MemberService Test - findMember : {}", findMember.getBirth());
+        findMember.setPhone(memberForm.getPhone());
+        findMember.setGender(memberForm.getGender());
+        findMember.setPhone(memberForm.getPhone());
+        LocalDate date = LocalDate.parse(birth);
+        LocalDateTime dateTime = date.atStartOfDay();
+        findMember.setBirth(dateTime);
 
+        return findMember.getId();
+    }
 
     // 회원정보 삭제 - 회원탈퇴 비활성화
     public void deactivateMember(Long id) {

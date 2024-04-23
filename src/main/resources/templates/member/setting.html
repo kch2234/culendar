@@ -3,7 +3,6 @@
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
-        <!--  -->
         <!-- 회원 설정 영역 -->
         <div class="container mt-5 mb-5" style="width: 35%" id="SettingContainer">
             <form action="" th:action th:object="${member}" method="post">
@@ -11,44 +10,40 @@
                 <!-- 페이지 제목 -->
                 <div class="row">
                     <div class="col d-flex align-items-center justify-content-center">
-                        <div class="fs-1">Setting</div>
+                        <div class="fs-1">설정</div>
                     </div>
                 </div>
-
+                <div class="row mt-5">
                     <!-- 회원 입력 & 기본 정보 -->
-                    <div class="row mt-5">
+                    <div class="col">
                         <!-- 회원 정보 아이디 -->
                         <div class="row mb-2">
-                            <div class="col-auto">
-                                <div class="input-group d-flex align-items-center">
-                                    <span class="input-group-text">아이디</span>
+                            <div class="col">
+                                <div class="input-group input-group-lg justify-content-start">
+                                    <span class="input-group-text d-flex justify-content-center align-items-center p-2"
+                                          style="width: 20%">아이디</span>
                                     <span class="form-control" th:text="*{userid}"></span>
                                 </div>
                             </div>
-
+                        </div>
                         <!-- 성별 -->
+                        <div class="row mb-2">
                         <div class="col">
-                            <div class="input-group d-flex justify-content-center">
-                                <label class="input-group-text" for="checkMale">남성</label>
+                            <div class="input-group input-group-lg">
+                                <label class="input-group-text d-flex justify-content-center align-items-center p-2"
+                                       style="width: 41%" for="checkMale">남성</label>
                                 <div class="input-group-text">
                                     <input class="form-check-input mt-0" type="radio" th:field="*{gender}" th:value="MALE" id="checkMale">
                                 </div>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="input-group d-flex justify-content-center">
-                                <label class="input-group-text" for="checkFemale">여성</label>
+                            <div class="input-group input-group-lg justify-content-end">
+                                <label class="input-group-text d-flex justify-content-center align-items-center p-2"
+                                       style="width: 41%" for="checkFemale">여성</label>
                                 <div class="input-group-text">
                                     <input class="form-check-input mt-0" type="radio" th:field="*{gender}" th:value="FEMALE" id="checkFemale">
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- 저장 버튼 -->
-                        <div class="col-auto">
-                            <!--회원 설정 저장 버튼-->
-                            <div class="input-group ">
-                                <button id="saveBtn" type="submit" class="btn btn-dark">Save</button>
                             </div>
                         </div>
                         </div>
@@ -56,9 +51,9 @@
                         <div class="row mb-2">
                             <div class="col">
                                 <!-- 비밀번호 입력 -->
-                                <div class="input-group d-flex">
+                                <div class="input-group input-group-lg">
                                     <span class="input-group-text d-flex justify-content-center align-items-center p-2"
-                                          style="width: 30%">비밀번호</span>
+                                          style="width: 20%">비밀번호</span>
                                     <input type="password" th:field="*{password}" class="form-control" id="password">
                                 </div>
                                 <!-- 중복체크 결과값 -->
@@ -69,9 +64,9 @@
                         <div class="row mb-2">
                             <div class="col">
                                 <!-- 비밀번호 확인 입력 -->
-                                <div class="input-group d-flex">
+                                <div class="input-group input-group-lg">
                                     <span class="input-group-text d-flex justify-content-center align-items-center p-2"
-                                          style="width: 30%">비밀번호 확인</span>
+                                          style="width: 20%">비밀번호 확인</span>
                                     <input type="password" class="form-control" id="repeatPassword">
                                 </div>
                                 <!-- 중복체크 결과값 -->
@@ -82,10 +77,10 @@
                         <div class="row mb-2">
                             <div class="col">
                                 <!-- 전화번호 입력 -->
-                                <div class="input-group">
+                                <div class="input-group input-group-lg">
                                     <input hidden="hidden" th:field="*{phone}" id="phoneNum">
                                     <span class="input-group-text d-flex justify-content-center align-items-center"
-                                          style="width: 30%">전화번호</span>
+                                          style="width: 20%">전화번호</span>
                                     <input type="number" class="form-control" id="phoneNumFirst">
                                     <span class="input-group-text d-flex justify-content-center align-items-center">-</span>
                                     <input type="number" class="form-control" id="phoneNumSecond">
@@ -98,14 +93,14 @@
                         </div>
                         <!-- 생년월일 -->
                         <div class="row">
-                            <div class="col input-group mb-3">
-                                <span class="input-group-text d-flex justify-content-center align-items-center p-2"
-                                      style="width: 30%">생년월일</span>
+                            <div class="col input-group  mb-3">
+                                <span class="input-group-text d-flex input-group-lg justify-content-center align-items-center"
+                                      style="width: 20%">생년월일</span>
                                 <input type="date" th:field="*{birth}" max="2012-12-31" min="1940-01-01" class="form-control">
                             </div>
                         </div>
                 </div>
-
+            </div>
             <!-- 공개 범위 설정 -->
         <div class="row mt-5">
             <div class="col d-flex">
@@ -116,9 +111,9 @@
                     <ul class="dropdown-menu" id="followingRange">
                         <li>
                             <button class="dropdown-item"
-                                    th:each="rType: ${openRangeType}"
-                                    th:value="${rType.name()}"
-                                    th:text="${rType.value}"></button>
+                                    th:each="openRangeType: ${openRangeType}"
+                                    th:value="${openRangeType.name()}"
+                                    th:text="${openRangeType.value}"></button>
                         </li>
                     </ul>
                     <button class="button col btn btn-secondary fs-6 p-2 dropdown-toggle"
@@ -132,7 +127,9 @@
                                     th:text="${openRangeType.value}"></button>
                         </li>
                     </ul>
-                    <span class="btn btn-outline-secondary w-100 fs-6">관람 작품</span><!--관람한 작품 대신 문장형 평가-->
+                    <button class="button col btn btn-secondary fs-6 p-2 dropdown-toggle"
+                            type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">문장형 평가</button>
                     <ul class="dropdown-menu" id="programRange">
                         <li>
                             <button class="dropdown-item"
@@ -141,7 +138,9 @@
                                     th:text="${openRangeType.value}"></button>
                         </li>
                     </ul>
-                    <span class="btn btn-outline-secondary w-100 fs-6">참여 모임</span>
+                    <button class="button col btn btn-secondary fs-6 p-2 dropdown-toggle"
+                            type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">참여 모임</button>
                     <ul class="dropdown-menu" id="meetingApplyRange">
                         <li>
                             <button class="dropdown-item"
@@ -150,7 +149,9 @@
                                     th:text="${openRangeType.value}"></button>
                         </li>
                     </ul>
-                    <span class="btn btn-outline-secondary w-100 fs-6">북마크</span>
+                        <button class="button col btn btn-secondary fs-6 p-2 dropdown-toggle"
+                                type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">북마크</button>
                     <ul class="dropdown-menu" id="bookmarkRange">
                         <li>
                             <button class="dropdown-item"
@@ -159,13 +160,20 @@
                                     th:text="${openRangeType.value}"></button>
                         </li>
                     </ul>
+                </div>
             </div>
-                <!--회원 설정, 튀소, 탈퇴 버튼-->
-                <div class="row mt-5 mb-5 d-flex justify-content-between">
-                    <!-- 취소, 탈퇴 버튼 -->
-                    <div class="col input-group input-group-lg">
-                        <a href="#" th:onclick="history.go(-1)" class="btn btn-outline-secondary">Home</a>
-                        <a href="#" th:onclick="|location.href='@{/members/{id}/deactivate(id=${member.userid})}'|" class="btn btn-outline-secondary">Withdrawal</a>
+            <!--회원 설정, 튀소, 탈퇴 버튼-->
+            <div class="row mt-5 mb-5 d-flex justify-content-between">
+                <!-- 취소, 탈퇴 버튼 -->
+                <div class="col input-group input-group-lg">
+                    <a href="#" th:onclick="history.go(-1)" class="btn btn-outline-secondary">취소</a>
+                    <a href="#" th:onclick="|location.href='@{/members/{id}/deactivate(id=${member.userid})}'|" class="btn btn-outline-secondary">탈퇴</a>
+                </div>
+                <!-- 저장 버튼 -->
+                <div class="col-auto">
+                    <!--회원 설정 저장 버튼-->
+                    <div class="input-group input-group-lg justify-content-end">
+                        <button id="saveBtn" type="submit" class="btn btn-dark">저장</button>
                     </div>
                 </div>
             </div>
@@ -276,6 +284,7 @@
         });
 
         function inputcheck() {
+            console.log("inputcheck 함수 실행");
             // 비밀번호 확인
             let password = $("#password").val();
             let repeatPassword = $("#repeatPassword").val();
@@ -306,11 +315,6 @@
 
             return true;
         }
-
-        // ********** 각종 함수 **********
-        // 공개 범위 선택시 함수
-
-
     });
 </script>
 </html>

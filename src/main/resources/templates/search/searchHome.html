@@ -48,7 +48,7 @@
         </div>
 
         <!-- 메인 컨테이너 영역 -->
-        <div class="w-75 container m-auto">
+        <div class="w-75 container m-auto mb-5">
             <div class="row">
                 <!-- 지도 영역 -->
                 <div class="col-9">
@@ -61,16 +61,17 @@
                         <!-- 검색창 -->
                         <div class="row p-0" style="height: 10%">
                             <!-- 버튼 비활성화 -->
-                            <div class="col-3 p-0">
+                            <div class="col-12 p-0 input-group input-group-lg">
+
                                 <button type="submit" id="search-btn"
-                                        class="w-100 h-100 btn-dark fa-solid fa-magnifying-glass"></button>
-                            </div>
-                            <div class="dropdown col-8 p-0">
-                                <input type="text" id="search-text" class="p-0 w-100 form-control col dropdown-toggle"
+                                        class="btn btn-dark fa-solid fa-magnifying-glass"></button>
+
+                                <input type="text" id="search-text" class="p-0 w-75 form-control col dropdown-toggle"
                                        data-bs-toggle="dropdown" aria-expanded="false">
                                 <ul class="dropdown-menu overflow-scroll" id="searched-list">
                                     <!-- 동적으로 드롭다운 검색 결과 -->
                                 </ul>
+
                             </div>
 
                         </div>
@@ -89,9 +90,10 @@
         <div id="favLocaionProgram" class="container">  <!--  좌우 스크롤  -->
             <div class="row mt-5 mb-3">
                 <div class="col-auto">
-                    <div class="fs-3 badge text-bg-secondary">지역별 인기 작품</div>
+                    <div class="col fs-3 badge text-bg-secondary">지역별 인기 작품</div>
                     <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#type-modal">분류 선택</button>
                     <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#location-modal">지역 선택</button>
+
                 </div>
             </div>
                 <div class="row mb-5" id="BestProgramContainer"></div>
@@ -335,16 +337,15 @@
             html += '<li class="list-group-item">' + location + '</li>';
             html += '<li class="list-group-item">' + programDate + '</li>';
             html += '</ul>';
-            html += '<div class="card-body">';
-            html += '<div class="col p-0">';
-            html += '<button id="#bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>';
+            html += '<div class="card-body container">';
+            html += '<div class="row d-flex justify-content-center">';
+            html += '<div class="col-auto">';
             html += '</div>';
-            html += '<div class="col p-0">';
-            html += '<button class="fa-regular fa-clipboard w-75 h-75"></button>';
             html += '</div>';
             html += '</div>';
 
             $('#search-info-box').html(html);
+
         }
 
         // 작품 타입 가져오기
@@ -361,8 +362,6 @@
                 return "기타";
             }
         }
-
-
 
         // 카카오맵
         function kakaoMap() {
@@ -568,6 +567,7 @@
         $("#setMap").on('click', function () {
             getCurrentLocationAndPrograms();
         });
+
     });
 </script>
 </html>
