@@ -92,6 +92,7 @@
         </div>
 
 
+
         <!-- TODO 마이페이지 기능 구현 및 디자인 -->
 
         <!-- 프로필 페이지 영역 -->
@@ -250,9 +251,7 @@
                             </div>
                         </div>
 
-
                     </div>
-
 
                 </div>
 
@@ -287,6 +286,7 @@
         // 필터링 페이징 관련
         let myFilterStart = 0;
         let myFilterLoading = true;
+        let myFilterType = 'MYREVIEW';
 
 
         // ********* 페이지 로딩시 함수 **********
@@ -926,7 +926,10 @@
             $('#myApplyEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#myAddEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#activeFilterName').text('후기');
-            getMyReviewListWithPaging();
+            myFilterStart = 0;
+            myFilterLoading = true;
+            myFilterType = 'MYREVIEW';
+            getListWithPaging(myFilterType);
         });
 
         // 나 정보 버튼 클릭시
@@ -938,6 +941,10 @@
             $('#myApplyEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#myAddEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#activeFilterName').text('정보');
+            myFilterStart = 0;
+            myFilterLoading = true;
+            myFilterType = 'MYINFO';
+            getListWithPaging(myFilterType);
         });
 
         // 나 작품 버튼 클릭시
@@ -949,6 +956,10 @@
             $('#myApplyEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#myAddEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#activeFilterName').text('작품');
+            myFilterStart = 0;
+            myFilterLoading = true;
+            myFilterType = 'MYPROGRAM';
+            getListWithPaging(myFilterType);
         });
 
         // 나 신청한 모임 버튼 클릭시
@@ -960,6 +971,8 @@
             $('#myApplyEventBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
             $('#myAddEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#activeFilterName').text('신청한 모임');
+            myFilterStart = 0;
+            myFilterLoading = true;
         });
 
         // 나 등록한 모임 버튼 클릭시
@@ -971,6 +984,8 @@
             $('#myApplyEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#myAddEventBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
             $('#activeFilterName').text('등록한 모임');
+            myFilterStart = 0;
+            myFilterLoading = true;
         });
 
         // 북마크 버튼 세부 필터 클릭시
@@ -983,6 +998,9 @@
             $('#bkProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#bkEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#activeFilterName').text('북마크 후기');
+            myFilterStart = 0;
+            myFilterLoading = true;
+            myFilterType = 'BKREVIEW';
         });
 
         // 북마크 정보 버튼 클릭시
@@ -993,6 +1011,8 @@
             $('#bkProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#bkEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#activeFilterName').text('북마크 정보');
+            myFilterStart = 0;
+            myFilterLoading = true;
         });
 
         // 북마크 작품 버튼 클릭시
@@ -1003,6 +1023,8 @@
             $('#bkProgramBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
             $('#bkEventBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#activeFilterName').text('북마크 작품');
+            myFilterStart = 0;
+            myFilterLoading = true;
         });
 
         // 북마크 모임 버튼 클릭시
@@ -1013,6 +1035,9 @@
             $('#bkProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#bkEventBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
             $('#activeFilterName').text('북마크 모임');
+            myFilterStart = 0;
+            myFilterLoading = true;
+
         });
 
         // 타임라인 버튼 세부 필터 클릭시
@@ -1024,6 +1049,8 @@
             $('#timeLineInfoBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#timeLineProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#activeFilterName').text('팔로우 후기');
+            myFilterStart = 0;
+            myFilterLoading = true;
         });
 
         // 타임라인 정보 버튼 클릭시
@@ -1033,6 +1060,8 @@
             $('#timeLineInfoBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
             $('#timeLineProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#activeFilterName').text('팔로우 정보');
+            myFilterStart = 0;
+            myFilterLoading = true;
         });
 
         // 타임라인 작품 버튼 클릭시
@@ -1042,9 +1071,13 @@
             $('#timeLineInfoBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
             $('#timeLineProgramBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
             $('#activeFilterName').text('팔로우 작품');
+            myFilterStart = 0;
+            myFilterLoading = true;
         });
 
         // ********** 필터링 관련 ajax 함수 **********
+
+        // 내 후기 무한 스크롤
 
         // 내 후기 리스트 무한 스크롤 페이징 가져오기
         function getMyReviewListWithPaging() {
@@ -1061,12 +1094,14 @@
                             myFilterLoading = false;
 
                             if (myFilterStart === 0) {
-                                printEmptyMyReviewList();
+                                printEmptyContentAreaList();
                             }
 
                         } else {
                             // 리스트
-                            printMyReviewList(reviews);
+                            myFilterStart += 16;
+                            printBoardsList(reviews);
+
                         }
 
                     },
@@ -1078,13 +1113,254 @@
             }
         }
 
-        // 내 후기 리스트 출력하기
-        function printMyReviewList(reviews) {
+        // 내 정보 리스트 무한 스크롤 페이징 가져오기
+        function getMyInfoListWithPaging() {
+            if (myFilterLoading) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/boards/findMyInfoWithPaging/' + memberIdVal + '/' + myFilterStart,
+                    success: function (infos) {
+                        console.log("내 정보 리스트 가져오기 성공");
+                        console.log(infos);
 
+                        if (infos.length === 0) {
+                            console.log("내 정보 리스트가 없습니다.");
+                            myFilterLoading = false;
+
+                            if (myFilterStart === 0) {
+                                printEmptyContentAreaList();
+                            }
+
+                        } else {
+                            // 리스트
+                            myFilterStart += 16;
+                            printBoardsList(infos);
+
+                        }
+
+                    },
+                    error: function (e) {
+                        console.log("내 정보 리스트 가져오기 실패");
+                        console.log(e);
+                    }
+                });
+            }
+        }
+
+        // 내 작품 평가 리스트 무한 스크롤 페이징 가져오기
+        function getMyProgramListWithPaging() {
+            if (myFilterLoading) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/rating/findMyRatingWithPaging/' + memberIdVal + '/' + myFilterStart,
+                    success: function (ratings) {
+                        console.log("내 작품 평가 리스트 가져오기 성공");
+                        console.log(ratings);
+
+                        if (ratings.length === 0) {
+                            console.log("내 작품 평가 리스트가 없습니다.");
+                            myFilterLoading = false;
+
+                            if (myFilterStart === 0) {
+                                printEmptyContentAreaList();
+                            }
+
+                        } else {
+                            // 리스트
+                            myFilterStart += 16;
+                            printProgramsList(ratings);
+
+                        }
+
+                    },
+                    error: function (e) {
+                        console.log("내 정보 리스트 가져오기 실패");
+                        console.log(e);
+                    }
+                });
+            }
+        }
+
+        // 내 게시글 리스트 출력하기
+        function printBoardsList(boards) {
+
+            /*<div class="row mt-5">
+                <div class="col">
+                    <div class="card">
+                        <img src="..." class="card-img-top">
+                            <div class="card-body">
+                                <!-- Todo 버튼 클릭시 해당 게시글로 이동 -->
+                                <!-- TODO 제목 글자수 -->
+                                <button class="card-title fs-5 btn btn-outline-secondary">제목</button>
+                                <!-- TODO 내용 글자수 -->
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            </div>
+                    </div>
+                </div>
+
+            </div>*/
+
+            let contentArea = $('#content-area');
+
+            let html = '';
+            html += '<div class="row mt-5">';
+            for (let i = 0; i < boards.length; i++) {
+
+                html += '<div class="col-3">';
+                html += '<div class="card">';
+                html += '<img src="' + boards[i].programDTO.thumbnail + '" class="card-img-top">';
+                html += '<div class="card-body">';
+                // 제목 글자수 10글자로 제한
+                let title = boards[i].title;
+                if (title.length > 10) {
+                    title = title.substring(0, 10) + '...';
+                }
+                html += '<button class="card-title fs-5 btn btn-outline-secondary" onclick="location.href=\'/boards/' + boards[i].id + '\'">' + title + '</button>';
+
+                // 내용 글자수 20글자로 제한
+                let content = boards[i].content;
+                if (content.length > 20) {
+                    content = content.substring(0, 20) + '...';
+                }
+                html += '<p class="card-text">' + content + '</p>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+            }
+            html += '</div>';
+
+
+            // 내 후기 리스트 html 추가하기
+            contentArea.append(html);
 
 
         }
 
+        // 내 작픔 리스트 출력하기
+        function printProgramsList(ratings) {
+
+            /*<div class="row mt-5">
+                <div class="col">
+                    <div class="card">
+                        <img src="..." class="card-img-top">
+                            <div class="card-body">
+                                <!-- Todo 버튼 클릭시 해당 게시글로 이동 -->
+                                <!-- TODO 제목 글자수 -->
+                                <button class="card-title fs-5 btn btn-outline-secondary">제목</button>
+                                <!-- TODO 내용 글자수 -->
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            </div>
+                    </div>
+                </div>
+
+            </div>*/
+
+            let contentArea = $('#content-area');
+
+            let html = '';
+            html += '<div class="row mt-5">';
+            for (let i = 0; i < ratings.length; i++) {
+
+                html += '<div class="col-3">';
+                html += '<div class="card">';
+                html += '<img src="' + ratings[i].programDTO.thumbnail + '" class="card-img-top">';
+                html += '<div class="card-body">';
+                // 제목 글자수 10글자로 제한
+                let title = ratings[i].programDTO.title;
+                if (title.length > 10) {
+                    title = title.substring(0, 10) + '...';
+                }
+                html += '<button class="card-title fs-5 btn btn-outline-secondary" onclick="location.href=\'/program/' + ratings[i].programDTO.seq + '\'">' + title + '</button>';
+
+                // 내용 문장형 평가로 변경
+                let content = ratingEnumToString(ratings[i].rating);
+                html += '<p class="card-text">' + content + '</p>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+            }
+            html += '</div>';
+
+
+            // 내 후기 리스트 html 추가하기
+            contentArea.append(html);
+
+
+        }
+
+
+
+        // 무한 스크롤 이벤트
+        $(document).scroll(function () {
+            // 스크롤바의 위치가 문서의 맨 아래쪽에 위치할 경우
+            let scrollTop = $(document).scrollTop();
+            let documentHeight = $(document).height();
+            let scrollHeight = $(window).height();
+            console.log("scrollTop : " + scrollTop);
+            console.log("documentHeight : " + documentHeight);
+            console.log("windowHeight : " + scrollHeight);
+
+            if (scrollTop + scrollHeight >= documentHeight - 1) {
+                console.log("스크롤 이벤트 발생");
+                getListWithPaging(myFilterType);
+            }
+        });
+
+        // 빈 리스트 출력하기
+        function printEmptyContentAreaList() {
+            let contentArea = $('#content-area');
+
+            let html = '';
+            html += '<div class="row mt-5">';
+            html += '<div class="col">';
+            html += '<div class="card">';
+            html += '<div class="card-body">';
+            html += '<p class="card-text">데이터가 없습니다.</p>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+
+            // 내 후기 리스트 html 추가하기
+            contentArea.append(html);
+        }
+
+        // 페이징 함수 셀렉터
+        function getListWithPaging(type) {
+            switch (type) {
+                case 'MYREVIEW':
+                    getMyReviewListWithPaging();
+                    break;
+                case 'MYINFO':
+                    getMyInfoListWithPaging();
+                    break;
+                case 'MYPROGRAM':
+                    getMyProgramListWithPaging();
+                    break;
+                case 'BKREVIEW':
+                    getBkReviewListWithPaging();
+                    break;
+                default:
+                    console.log("잘못된 타입입니다.");
+            }
+        }
+
+        // 문장형 평가 ENUM 값 변환
+        function ratingEnumToString(rating) {
+            if (rating === 1) {
+                return '매우 싫어요';
+            } else if (rating === 2) {
+                return '싫어요';
+            } else if (rating === 3) {
+                return '보통이에요';
+            } else if (rating === 4) {
+                return '좋아요';
+            } else if (rating === 5) {
+                return '매우 좋아요';
+            } else {
+                return '평가없음';
+            }
+        }
 
 
 

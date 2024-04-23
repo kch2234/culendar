@@ -163,4 +163,18 @@ public class BoardService {
 
         return boardDTOList;
     }
+
+    // 회원 정보 게시글 최신순으로 무한 스크롤 조회
+    public List<BoardDTO> findMyInfoByMemberIdWithPaging(Long memberId, Long start) {
+        List<Board> programInfoByMemberId = boardRepository.findProgramInfoByMemberIdWithPaging(memberId, start);
+
+        // Board entity -> BoardDTO 변환
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        for (Board board : programInfoByMemberId) {
+            boardDTOList.add(new BoardDTO(board));
+        }
+        log.info("**** BoardService findMyInfoByMemberIdWithPaging - boardDTOList : {}", boardDTOList);
+
+        return boardDTOList;
+    }
 }

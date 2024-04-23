@@ -65,5 +65,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
   @Query(value = "SELECT * FROM board WHERE member_id = ?1 AND board_type = 'REVIEW' ORDER BY create_date DESC LIMIT ?2, 16", nativeQuery = true)
     List<Board> findProgramReviewByMemberIdWithPaging(Long memberId, Long start);
 
-        // 회원의 REVIEW 게시글중 해당 프로그램의 리뷰가 있는지 조회
+    // 회원의 INFO 게시글 최신순으로 무한 스크롤 조회
+    @Query(value = "SELECT * FROM board WHERE member_id = ?1 AND board_type = 'INFO' ORDER BY create_date DESC LIMIT ?2, 16", nativeQuery = true)
+    List<Board> findProgramInfoByMemberIdWithPaging(Long memberId, Long start);
 }

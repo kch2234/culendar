@@ -1,13 +1,18 @@
 package com.teamproject.culendar.service;
 
+import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.BoardBkmark;
 import com.teamproject.culendar.domain.program.ProgramBkmark;
 import com.teamproject.culendar.dto.BoardBkMarkDTO;
+import com.teamproject.culendar.dto.BoardDTO;
 import com.teamproject.culendar.dto.ProgramBkMarkDTO;
 import com.teamproject.culendar.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j

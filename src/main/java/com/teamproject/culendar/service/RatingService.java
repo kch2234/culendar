@@ -1,7 +1,9 @@
 package com.teamproject.culendar.service;
 
+import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.enumFiles.RatingType;
 import com.teamproject.culendar.domain.program.Rating;
+import com.teamproject.culendar.dto.BoardDTO;
 import com.teamproject.culendar.dto.RatingDTO;
 import com.teamproject.culendar.repository.MemberRepository;
 import com.teamproject.culendar.repository.ProgramRepository;
@@ -9,6 +11,9 @@ import com.teamproject.culendar.repository.RatingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -87,6 +92,18 @@ public class RatingService {
         // DB에 저장
         ratingRepository.save(ratingDTO.toEntity());
         return true;
+    }
+
+    // 회원 문장형 평가 최신순으로 무한 스크롤 조회
+    public List<RatingDTO> findMyRatingByMemberIdWithPaging(Long memberId, Long start) {
+        List<Rating> result = ratingRepository.findMyRatingByMemberIdWithPaging(memberId, start);
+
+        // Board entity -> BoardDTO 변환
+        List<RatingDTO>ratingDTOList = new ArrayList<>();
+        for (Rating rating : result) {
+            ratingDTOList.add(new RatingDTO(rating));
+        }
+        return ratingDTOList;
     }
 
 }

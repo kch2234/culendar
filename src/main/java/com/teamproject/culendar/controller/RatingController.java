@@ -50,4 +50,13 @@ public class RatingController {
 
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
+
+    // 회원 문장형 평가 최신순으로 무한 스크롤 조회
+    @GetMapping("/findMyRatingWithPaging/{memberId}/{start}")
+    public ResponseEntity<List<RatingDTO>> findMyRatingByMemberIdWithPaging(@PathVariable("memberId") Long memberId, @PathVariable("start") Long start){
+
+        List<RatingDTO> ratingByMemberId = ratingService.findMyRatingByMemberIdWithPaging(memberId, start);
+
+        return ResponseEntity.ok().body(ratingByMemberId);
+    }
 }
