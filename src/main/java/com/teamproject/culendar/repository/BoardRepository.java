@@ -3,6 +3,7 @@ package com.teamproject.culendar.repository;
 import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.BoardBkmark;
 import com.teamproject.culendar.domain.enumFiles.BoardType;
+import com.teamproject.culendar.domain.member.Follow;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -59,4 +60,10 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
         "FROM Board b " +
         "WHERE b.member.id = :memberId AND b.program.id = :programId AND b.boardType = 'REVIEW'")
     Board findProgramReviewByMemberId(Long memberId, Long programId);
+
+    // 회원의 REVIEW 게시글 최신순으로 무한 스크롤 조회
+  @Query(value = "SELECT * FROM board WHERE member_id = ?1 AND board_type = 'REVIEW' ORDER BY create_date DESC LIMIT ?2, 16", nativeQuery = true)
+    List<Board> findProgramReviewByMemberIdWithPaging(Long memberId, Long start);
+
+        // 회원의 REVIEW 게시글중 해당 프로그램의 리뷰가 있는지 조회
 }
