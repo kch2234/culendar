@@ -133,10 +133,10 @@ public class MemberController {
     public String settingPro(@PathVariable("id") Long id, MemberForm memberForm, RedirectAttributes rttr) {
         log.info("********** MemberController POST /members/:id/setting - id : {}", id);
         log.info("********** MemberController POST /members/:id/edit - memberForm : {}", memberForm);
-//        // 회원 정보
-//        memberService.updateMember(memberForm);
-//        rttr.addFlashAttribute("result", true);
-        return "redirect:/members/{id}";
+        // 회원 정보
+        memberService.saveMember(memberForm);
+        rttr.addFlashAttribute("result", true);
+        return "redirect:/";
     }
 
     // 회원 탈퇴 - 비활성화

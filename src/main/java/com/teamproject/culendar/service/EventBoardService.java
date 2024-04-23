@@ -115,7 +115,7 @@ public class EventBoardService {
     findEventBoard.setFilterMaxAge(eventBoardForm.getFilterMaxAge());
   }
 
-  // 지역별 모임 인기순 목록 불러오기
+  /*// 지역별 모임 인기순 목록 불러오기
     public List<EventBoardDTO> getBestEventBoardLocList(String programType, String locationType) {
       log.info("** EventBoardService - getBestEventBoardLocList - programType : {}, location : {}", programType, locationType);
       ProgramType programTypeENUM = ProgramType.valueOf(programType);
@@ -127,6 +127,6 @@ public class EventBoardService {
               .collect(java.util.stream.Collectors.toList());
       log.info("** EventBoardService - getBestEventBoardLocList - eventBoardDTOList : {}", eventBoardDTOList.get(0).getTitle());
       return eventBoardDTOList;
-    }
+    }*/
 
 }

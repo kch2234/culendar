@@ -3,6 +3,7 @@
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
+        <!--  -->
         <!-- 회원 설정 영역 -->
         <div class="container mt-5 mb-5" style="width: 35%" id="SettingContainer">
             <form action="" th:action th:object="${member}" method="post">
@@ -115,9 +116,9 @@
                     <ul class="dropdown-menu" id="followingRange">
                         <li>
                             <button class="dropdown-item"
-                                    th:each="openRangeType: ${openRangeType}"
-                                    th:value="${openRangeType.name()}"
-                                    th:text="${openRangeType.value}"></button>
+                                    th:each="rType: ${openRangeType}"
+                                    th:value="${rType.name()}"
+                                    th:text="${rType.value}"></button>
                         </li>
                     </ul>
                     <button class="button col btn btn-secondary fs-6 p-2 dropdown-toggle"

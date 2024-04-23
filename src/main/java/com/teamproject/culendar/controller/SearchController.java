@@ -1,5 +1,6 @@
 package com.teamproject.culendar.controller;
 
+import com.teamproject.culendar.domain.board.EventBoard;
 import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.program.Program;
 import com.teamproject.culendar.dto.EventBoardDTO;
@@ -29,21 +30,25 @@ public class SearchController {
 
     // programType, location에 해당하는 인기 있는 작품리스트를 가져옴
     @GetMapping("bestProgramTypeList")
-    public ResponseEntity<List<ProgramDTO>> getBestProgramList(@RequestParam("programType") String programType, @RequestParam("locationType") String locationType) {
+    public ResponseEntity<List<Program>> getBestProgramList(@RequestParam("programType") String programType, @RequestParam("locationType") String locationType) {
         log.info("** SearchController GET /locationList 요청");
         log.info("** /locationList programType: {}", programType);
         log.info("** /locationList location: {}", locationType);
-        List<ProgramDTO> programDTOList = programService.getBestProgramLocList(programType, locationType);
+        List<Program> programDTOList = searchService.getBestTypeList(programType, locationType);
+        // ProgramDTO 4개로 자르기
+        programDTOList = programDTOList.stream().limit(4).collect(Collectors.toList());
         return ResponseEntity.ok(programDTOList);
     }
 
     // ProgramType, LocationType에 해당하는 인기 있는 모임리스트를 가져옴
     @GetMapping("bestEventBoardList")
-    public ResponseEntity<List<EventBoardDTO>> getBestEventBoardList(@RequestParam("programType") String programType, @RequestParam("locationType") String locationType) {
+    public ResponseEntity<List<EventBoard>> getBestEventBoardList(@RequestParam("programType") String programType, @RequestParam("locationType") String locationType) {
         log.info("** SearchController GET /bestEventBoardList 요청");
         log.info("** /bestEventBoardList programType: {}", programType);
         log.info("** /bestEventBoardList location: {}", locationType);
-        List<EventBoardDTO> eventBoardList = eventBoardService.getBestEventBoardLocList(programType, locationType);
+        List<EventBoard> eventBoardList = searchService.getBestTypeEventBoardList(programType, locationType);
+        // EventBoardDTO 4개로 자르기
+        eventBoardList = eventBoardList.stream().limit(4).collect(Collectors.toList());
         return ResponseEntity.ok(eventBoardList);
     }
 
@@ -53,7 +58,7 @@ public class SearchController {
         log.info("***** SearchController - getLocationBestList ***** :{}", locationString);
         Location location = searchService.mapStringToLocation(locationString);
         log.info("***** SearchController - getLocationBestList - location :{}", location);
-        List<Program> programList = programRepository.findCurrentLocationByBestPrograms(location);
+        List<Program> programList = programRepository.findProgramsByLocation(location);
         List<ProgramDTO> programDTOList = programList.stream()
                 .map(ProgramDTO::new)
                 .collect(Collectors.toList());

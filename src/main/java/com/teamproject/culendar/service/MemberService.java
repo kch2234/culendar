@@ -75,6 +75,9 @@ public class MemberService {
         return findMember.getId();
     }
 
+    // 회원 정보 설정
+
+
     // 회원정보 삭제 - 회원탈퇴 비활성화
     public void deactivateMember(Long id) {
         Member findMember = memberRepository.findById(id).orElse(null);
