@@ -80,7 +80,7 @@
                     </div>
                 </div>
                 <div class="row mt-2 d-flex justify-content-between">
-                    <div class="col-auto j" th:each="iType : ${interestType}">
+                    <div class="col-auto" th:each="iType : ${interestType}">
                         <div class="input-group">
                             <label class="input-group-text" th:text="${iType.value}" th:if="${iType.value !='기타' && iType.value != '전체'}" th:for="${iType.name()}"></label>
                             <div class="input-group-text" th:if="${iType.value !='기타' && iType.value != '전체'}">
@@ -168,6 +168,7 @@
             console.log("닉네임 조건 통과");
             return true;
         }
+
         // ********** 각종 함수 **********
         // 지역 모달에서 지역 선택시 함수
         $(document).on('click', ".lTypeBtn", function () {
