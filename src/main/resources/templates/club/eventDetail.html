@@ -53,6 +53,27 @@
                 </div>
             </div>
 
+            <!-- 모임 취소 모달 -->
+            <!--<div class="modal fade" id="cancelEventApply-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">이미 등록된 모임입니다.</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <span>모임 신청을 취소하시겠습니까?</span>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" th:onclick="|location.href='@{}'|">신청 취소</button>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+
             <!-- 게시글 제목, 수정 / 삭제 버튼, 북마크 버튼 -->
             <div class="row mt-5 text-center align-items-center">
                 <div class="col-3"></div>
@@ -251,7 +272,7 @@
                     <!-- 게시글 작성자가 아닐 경우 신청 버튼 보이기 -->
                     <th:block th:if="${member.getId} != ${eventBoard.getMemberDTO().getId()}">
                         <div class="row">
-                            <button class="btnApplyEventMember btn btn-primary" type="button">신청</button>
+                            <button class="btnApplyEventMember btn btn-primary" type="button" >신청</button>
                             <!--  TODO 신청 완료 모달   -->
                         </div>
                     </th:block>
@@ -328,35 +349,48 @@
                     $('#addMyCalendar-modal').modal('hide');
                 });
 
-                // 모임 신청 버튼 클릭시 이벤트
+
+
                 $('.btnApplyEventMember').on('click', function () {
-                    console.log('모임 신청 click');
-                    let eventBoardId = [[${eventBoard.id}]];
-                    let data = {
-                        memberId: memberId,
-                        eventBoardId: eventBoardId
-                    };
-                    $.ajax({
-                        type: 'POST',
-                        url: '/event/applyEventMember',
-                        data: JSON.stringify(data),
-                        contentType: 'application/json; charset=utf-8',
-                        success: function (result, status) {
-                            console.log(result);
+    console.log('모임 신청 click');
 
-                            if (result === 'fail') {
-                                alert('모임 신청이 취소되었습니다.');
-                                return;
-                            }
-                            alert('모임 신청이 완료 되었습니다');
-                        },
-                        error: function (error) {
-                            console.log(error);
-                            alert('모임 신청에 실패했습니다. 다시 시도해주세요.');
-                        }
-                    });
+    // 버튼의 현재 텍스트 가져오기
+    var currentText = $(this).text();
 
-                });
+    let eventBoardId = 0;
+    eventBoardId = [[${eventBoard.id}]];
+
+    let data = {
+        memberId: memberId,
+        eventBoardId: eventBoardId,
+        applyStatus: currentText // 현재 텍스트를 applyStatus에 할당
+    };
+    $.ajax({
+        type: 'POST',
+        url: '/event/applyEventMember',
+        data: JSON.stringify(data),
+        contentType: 'application/json; charset=utf-8',
+        success: function (result, status) {
+            console.log(result);
+
+            if (result === 'fail') {
+                // 버튼 텍스트 '신청'으로 변경
+                $('.btnApplyEventMember').text('신청');
+                alert('모임 신청이 취소 되었습니다.');
+                return;
+            }
+            // 버튼 텍스트 '취소'로 변경
+            $('.btnApplyEventMember').text('취소');
+            alert('모임 신청이 완료 되었습니다');
+        },
+        error: function (error) {
+            console.log(error);
+            alert('모임 신청에 실패했습니다. 다시 시도해주세요.');
+        }
+    });
+
+});
+
 
                 // 회원의 문장형 평가 클릭시 모달 띄우기
                 $('#ratingAndReviewContainer').on('click', '#addRating', function () {
