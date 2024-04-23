@@ -101,7 +101,7 @@
                         </div>
                 </div>
             </div>
-            <!-- 공개 범위 설정 -->
+            <!-- 공개 범위 설정
         <div class="row mt-5">
             <div class="col d-flex">
                 <div class="col">
@@ -111,9 +111,9 @@
                     <ul class="dropdown-menu" id="followingRange">
                         <li>
                             <button class="dropdown-item"
-                                    th:each="openRangeType: ${openRangeType}"
-                                    th:value="${openRangeType.name()}"
-                                    th:text="${openRangeType.value}"></button>
+                                    th:each="orType: ${openRangeType}"
+                                    th:value="${orType.name()}"
+                                    th:text="${orType.value}"></button>
                         </li>
                     </ul>
                     <button class="button col btn btn-secondary fs-6 p-2 dropdown-toggle"
@@ -122,9 +122,9 @@
                     <ul class="dropdown-menu" id="reviewRange">
                         <li>
                             <button class="dropdown-item"
-                                    th:each="openRangeType: ${openRangeType}"
-                                    th:value="${openRangeType.name()}"
-                                    th:text="${openRangeType.value}"></button>
+                                    th:each="orType: ${openRangeType}"
+                                    th:value="${orType.name()}"
+                                    th:text="${orType.value}"></button>
                         </li>
                     </ul>
                     <button class="button col btn btn-secondary fs-6 p-2 dropdown-toggle"
@@ -133,9 +133,9 @@
                     <ul class="dropdown-menu" id="programRange">
                         <li>
                             <button class="dropdown-item"
-                                    th:each="openRangeType: ${openRangeType}"
-                                    th:value="${openRangeType.name()}"
-                                    th:text="${openRangeType.value}"></button>
+                                    th:each="orType: ${openRangeType}"
+                                    th:value="${orType.name()}"
+                                    th:text="${orType.value}"></button>
                         </li>
                     </ul>
                     <button class="button col btn btn-secondary fs-6 p-2 dropdown-toggle"
@@ -144,9 +144,9 @@
                     <ul class="dropdown-menu" id="meetingApplyRange">
                         <li>
                             <button class="dropdown-item"
-                                    th:each="openRangeType: ${openRangeType}"
-                                    th:value="${openRangeType.name()}"
-                                    th:text="${openRangeType.value}"></button>
+                                    th:each="orType: ${openRangeType}"
+                                    th:value="${orType.name()}"
+                                    th:text="${orType.value}"></button>
                         </li>
                     </ul>
                         <button class="button col btn btn-secondary fs-6 p-2 dropdown-toggle"
@@ -155,29 +155,28 @@
                     <ul class="dropdown-menu" id="bookmarkRange">
                         <li>
                             <button class="dropdown-item"
-                                    th:each="openRangeType: ${openRangeType}"
-                                    th:value="${openRangeType.name()}"
-                                    th:text="${openRangeType.value}"></button>
+                                    th:each="orType: ${openRangeType}"
+                                    th:value="${orType.name()}"
+                                    th:text="${orType.value}"></button>
                         </li>
                     </ul>
                 </div>
-            </div>
-            <!--회원 설정, 튀소, 탈퇴 버튼-->
-            <div class="row mt-5 mb-5 d-flex justify-content-between">
-                <!-- 취소, 탈퇴 버튼 -->
-                <div class="col input-group input-group-lg">
-                    <a href="#" th:onclick="history.go(-1)" class="btn btn-outline-secondary">취소</a>
-                    <a href="#" th:onclick="|location.href='@{/members/{id}/deactivate(id=${member.userid})}'|" class="btn btn-outline-secondary">탈퇴</a>
-                </div>
-                <!-- 저장 버튼 -->
-                <div class="col-auto">
-                    <!--회원 설정 저장 버튼-->
-                    <div class="input-group input-group-lg justify-content-end">
-                        <button id="saveBtn" type="submit" class="btn btn-dark">저장</button>
+            </div>-->
+                <!--회원 설정, 튀소, 탈퇴 버튼-->
+                <div class="row mt-5 mb-5 d-flex justify-content-between">
+                    <!-- 취소, 탈퇴 버튼 -->
+                    <div class="col input-group input-group-lg">
+                        <a href="#" th:onclick="history.go(-1)" class="btn btn-outline-secondary">취소</a>
+                        <a href="#" th:onclick="|location.href='@{/members/{id}/deactivate(id=${member.userid})}'|" class="btn btn-outline-secondary">탈퇴</a>
+                    </div>
+                    <!-- 저장 버튼 -->
+                    <div class="col-auto">
+                        <!--회원 설정 저장 버튼-->
+                        <div class="input-group input-group-lg justify-content-end">
+                            <button id="saveBtn" type="submit" class="btn btn-dark">저장</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
             </form>
         </div>
     </th:block>
@@ -315,6 +314,7 @@
 
             return true;
         }
+
     });
 </script>
 </html>
