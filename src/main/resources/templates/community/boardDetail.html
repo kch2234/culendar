@@ -460,12 +460,10 @@
                             console.log(result);
                             $('#addRating-modal').modal('hide');
                             if (result === 'fail') {
-                                alert('평가가 수정 되었습니다.');
                                 getMyRating();
                                 getAvgRating();
                                 return;
                             }
-                            alert('평가가 등록되었습니다.');
                             getMyRating();
                             getAvgRating();
                         },
@@ -495,11 +493,9 @@
                             console.log(result);
 
                             if (result === 'fail') {
-                                alert('북마크에서 삭제 되었습니다.');
                                 checkProgramBkmark();
                                 return;
                             }
-                            alert('북마크에 추가되었습니다.');
                             checkProgramBkmark();
                         },
                         error: function (error) {
@@ -530,11 +526,9 @@
                             console.log(result);
 
                             if (result === 'fail') {
-                                alert('북마크에서 삭제 되었습니다.');
                                 checkBoardBkmark();
                                 return;
                             }
-                            alert('북마크에 추가되었습니다.');
                             checkBoardBkmark();
                         },
                         error: function (error) {

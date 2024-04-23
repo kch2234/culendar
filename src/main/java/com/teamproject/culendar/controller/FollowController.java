@@ -6,6 +6,7 @@ import com.teamproject.culendar.repository.MemberRepository;
 import com.teamproject.culendar.security.domain.CustomMember;
 import com.teamproject.culendar.service.FollowService;
 import com.teamproject.culendar.service.MemberService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequestMapping("/follows")
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class FollowController {
 
     private final FollowService followService;
@@ -70,7 +72,7 @@ public class FollowController {
 
         Boolean followResult = followService.findById(memberId, followId);
         log.info("********** FollowController GET /members/:id/follow - followResult : {}", followResult);
-        if (followResult) {
+        if (followResult == true) {
             return new ResponseEntity<>(true, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(false, HttpStatus.OK);

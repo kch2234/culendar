@@ -96,7 +96,7 @@
         <!-- TODO 마이페이지 기능 구현 및 디자인 -->
 
         <!-- 프로필 페이지 영역 -->
-        <div class="container" id="profileWrapper">
+        <div class="container mb-5" id="profileWrapper">
 
             <!-- 기본 정보 영역 -->
             <div class="row mt-5">
@@ -232,26 +232,10 @@
             </div>
 
             <!-- 카드 영역 -->
-            <div id="content-area" class="row mt-4">
+            <div id="content-area" class="row mt-4 mb-5">
 
                 <div class="col">
 
-                    <!-- 카드 양식 -->
-                    <div class="row mt-5">
-                        <div class="col">
-                            <div class="card">
-                                <img src="..." class="card-img-top">
-                                <div class="card-body">
-                                    <!-- Todo 버튼 클릭시 해당 게시글로 이동 -->
-                                    <!-- TODO 제목 글자수 -->
-                                    <button class="card-title fs-5 btn btn-outline-secondary">제목</button>
-                                    <!-- TODO 내용 글자수 -->
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
 
                 </div>
 
@@ -334,13 +318,11 @@
                 success: function (result) {
                     console.log(result);
                     if (result === 'unfollow') {
-                        alert('팔로우가 취소되었습니다.');
                         thisBtn.text('Follow');
                         thisBtn.toggleClass('btn-dark', false);
                         thisBtn.toggleClass('btn-outline-secondary', true);
 
                     } else {
-                        alert('팔로우가 추가되었습니다.');
                         thisBtn.text('UnFollow');
                         thisBtn.toggleClass('btn-outline-secondary', false);
                         thisBtn.toggleClass('btn-dark', true);
@@ -377,13 +359,11 @@
                 success: function (result) {
                     console.log(result);
                     if (result === 'unfollow') {
-                        alert('팔로우가 취소되었습니다.');
                         thisBtn.text('Follow');
                         thisBtn.toggleClass('btn-dark', false);
                         thisBtn.toggleClass('btn-outline-secondary', true);
 
                     } else {
-                        alert('팔로우가 추가되었습니다.');
                         thisBtn.text('UnFollow');
                         thisBtn.toggleClass('btn-outline-secondary', false);
                         thisBtn.toggleClass('btn-dark', true);
@@ -508,32 +488,6 @@
 
         // 팔로잉 리스트 출력하기
         function printFollowingList(follow) {
-            /* <div className="row">
-
-                 <!-- 프로필 -->
-                 <div className="col-2">
-                     <i className="fa-solid fa-circle-user fa-2x d-flex justify-content-center align-items-center"></i>
-                 </div>
-
-                 <div className="col">
-                     <div className="row d-flex justify-content-between align-items-center">
-                         <!-- 닉네임, 지역 -->
-                         <div className="col-auto">
-                             <div className="input-group">
-                                 <button type="button" className="btn btn-outline-secondary">asd</button>
-                                 <span className="input-group-text">지역</span>
-                             </div>
-                         </div>
-
-                         <!-- 팔로우 버튼 -->
-                         <div className="col-auto">
-                             <div className="input-group">
-                                 <button type="button" className="btn btn-dark">UnFollow</button>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>*/
 
             let followingListModalBody = $('#followingListModalBody');
             let html = '';
@@ -570,32 +524,7 @@
 
         // 팔로워 리스트 출력하기
         function printFollowerList(follow) {
-            /* <div className="row">
 
-                 <!-- 프로필 -->
-                 <div className="col-2">
-                     <i className="fa-solid fa-circle-user fa-2x d-flex justify-content-center align-items-center"></i>
-                 </div>
-
-                 <div className="col">
-                     <div className="row d-flex justify-content-between align-items-center">
-                         <!-- 닉네임, 지역 -->
-                         <div className="col-auto">
-                             <div className="input-group">
-                                 <button type="button" className="btn btn-outline-secondary">asd</button>
-                                 <span className="input-group-text">지역</span>
-                             </div>
-                         </div>
-
-                         <!-- 팔로우 버튼 -->
-                         <div className="col-auto">
-                             <div className="input-group">
-                                 <button type="button" className="btn btn-dark">UnFollow</button>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>*/
 
             let followerListModalBody = $('#followerListModalBody');
             let html = '';
@@ -637,32 +566,6 @@
 
         // 빈 팔로잉 리스트 출력하기
         function printEmptyFollowingList() {
-            /* <div className="row">
-
-                 <!-- 프로필 -->
-                 <div className="col-2">
-                     <i className="fa-solid fa-circle-user fa-2x d-flex justify-content-center align-items-center"></i>
-                 </div>
-
-                 <div className="col">
-                     <div className="row d-flex justify-content-between align-items-center">
-                         <!-- 닉네임, 지역 -->
-                         <div className="col-auto">
-                             <div className="input-group">
-                                 <button type="button" className="btn btn-outline-secondary">asd</button>
-                                 <span className="input-group-text">지역</span>
-                             </div>
-                         </div>
-
-                         <!-- 팔로우 버튼 -->
-                         <div className="col-auto">
-                             <div className="input-group">
-                                 <button type="button" className="btn btn-dark">UnFollow</button>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>*/
 
             let followingListModalBody = $('#followingListModalBody');
             let html = '';
@@ -680,32 +583,6 @@
 
         // 빈 팔로워 리스트 출력하기
         function printEmptyFollowerList() {
-            /* <div className="row">
-
-                 <!-- 프로필 -->
-                 <div className="col-2">
-                     <i className="fa-solid fa-circle-user fa-2x d-flex justify-content-center align-items-center"></i>
-                 </div>
-
-                 <div className="col">
-                     <div className="row d-flex justify-content-between align-items-center">
-                         <!-- 닉네임, 지역 -->
-                         <div className="col-auto">
-                             <div className="input-group">
-                                 <button type="button" className="btn btn-outline-secondary">asd</button>
-                                 <span className="input-group-text">지역</span>
-                             </div>
-                         </div>
-
-                         <!-- 팔로우 버튼 -->
-                         <div className="col-auto">
-                             <div className="input-group">
-                                 <button type="button" className="btn btn-dark">UnFollow</button>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>*/
 
             let followerListModalBody = $('#followerListModalBody');
             let html = '';
@@ -1187,22 +1064,6 @@
         // 내 게시글 리스트 출력하기
         function printBoardsList(boards) {
 
-            /*<div class="row mt-5">
-                <div class="col">
-                    <div class="card">
-                        <img src="..." class="card-img-top">
-                            <div class="card-body">
-                                <!-- Todo 버튼 클릭시 해당 게시글로 이동 -->
-                                <!-- TODO 제목 글자수 -->
-                                <button class="card-title fs-5 btn btn-outline-secondary">제목</button>
-                                <!-- TODO 내용 글자수 -->
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                    </div>
-                </div>
-
-            </div>*/
-
             let contentArea = $('#content-area');
 
             let html = '';
@@ -1241,22 +1102,6 @@
 
         // 내 작픔 리스트 출력하기
         function printProgramsList(ratings) {
-
-            /*<div class="row mt-5">
-                <div class="col">
-                    <div class="card">
-                        <img src="..." class="card-img-top">
-                            <div class="card-body">
-                                <!-- Todo 버튼 클릭시 해당 게시글로 이동 -->
-                                <!-- TODO 제목 글자수 -->
-                                <button class="card-title fs-5 btn btn-outline-secondary">제목</button>
-                                <!-- TODO 내용 글자수 -->
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                    </div>
-                </div>
-
-            </div>*/
 
             let contentArea = $('#content-area');
 
