@@ -10,10 +10,13 @@ import java.time.LocalDateTime;
 public class FollowDTO {
 
     private Long id;
+    private MemberDTO followDTO;
     private MemberDTO memberDTO;
+    private Boolean isFollow;
 
     public FollowDTO(Follow follow) {
         this.id = follow.getId();
-        this.memberDTO = new MemberDTO(follow.getFollow());
+        this.followDTO = new MemberDTO(follow.getFollow());
+        this.memberDTO = new MemberDTO(follow.getMember());
     }
 }

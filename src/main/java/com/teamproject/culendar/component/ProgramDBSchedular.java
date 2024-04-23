@@ -41,7 +41,7 @@ public class ProgramDBSchedular {
 
         } while (i != 1000 && seq < 273000L);
 
-    log.info("******** ProgramDBSchedular scheduleProgram - 크롤링 완료 현재 seq : " + seq + " ********");*/
+      log.info("******** ProgramDBSchedular scheduleProgram - 크롤링 완료 현재 seq : " + seq + " ********");*/
     }
 
 
