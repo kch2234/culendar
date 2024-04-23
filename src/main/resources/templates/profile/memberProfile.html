@@ -92,7 +92,6 @@
         </div>
 
 
-
         <!-- TODO 마이페이지 기능 구현 및 디자인 -->
 
         <!-- 프로필 페이지 영역 -->
@@ -141,13 +140,18 @@
                             </div>
 
                             <!-- 수정 버튼 -->
-                            <div class="col-auto">
-                                <div class="input-group input-group-lg">
-                                    <button type="button" class="btn btn-dark"
-                                            th:onclick="|location.href='@{/members/{id}/edit(id=${member.id})}'|">수정
-                                    </button>
-                                </div>
-                            </div>
+                            <th:block sec:authorize="isAuthenticated()">
+                                <th:block th:if="${#authentication.principal.member.id == member.getId()}">
+                                    <div class="col-auto">
+                                        <div class="input-group input-group-lg">
+                                            <button type="button" class="btn btn-dark"
+                                                    th:onclick="|location.href='@{/members/{id}/edit(id=${member.id})}'|">
+                                                수정
+                                            </button>
+                                        </div>
+                                    </div>
+                                </th:block>
+                            </th:block>
                         </div>
 
                         <!-- 지역, 자기소개 -->
@@ -187,20 +191,23 @@
                     <div class="col-9">
                         <div class="row">
                             <div class="col">
-                                <button type="button" class="btn btn-outline-secondary w-100 fs-4">나</button>
+                                <button type="button" class="btn btn-outline-secondary w-100 fs-4" id="myBtn">나</button>
                             </div>
                             <div class="col">
-                                <button type="button" class="btn btn-outline-secondary w-100 fs-4">북마크</button>
+                                <button type="button" class="btn btn-outline-secondary w-100 fs-4" id="bkMarkBtn">북마크
+                                </button>
                             </div>
                             <div class="col">
-                                <button type="button" class="btn btn-outline-secondary w-100 fs-4">타임라인</button>
+                                <button type="button" class="btn btn-outline-secondary w-100 fs-4" id="timeLineBtn">
+                                    타임라인
+                                </button>
                             </div>
                             <div class="col"></div>
                             <div class="col"></div>
                         </div>
 
                         <!-- 세부 동적 필터 -->
-                        <div class="row mt-3">
+                        <div class="row mt-3" id="activeFilterContainer">
                             <div class="col">
                                 <button type="button" class="btn btn-outline-secondary w-100 fs-6">후기</button>
                             </div>
@@ -234,11 +241,16 @@
         </div>
 
 
-
     </th:block>
 </th:block>
 <script th:inline="javascript">
     $(document).ready(function () {
+
+        // 로그인 여부 확인
+        let isLogin = [[${#authorization.expression('isAuthenticated()')}]];
+        console.log("isLogin : " + isLogin);
+
+
         let memberIdVal = [[${member.id}]];
 
         console.log("memberIdVal : " + memberIdVal);
@@ -296,14 +308,14 @@
                     if (result === 'unfollow') {
                         alert('팔로우가 취소되었습니다.');
                         thisBtn.text('Follow');
-                        thisBtn.toggleClass('btn-dark',false);
-                        thisBtn.toggleClass('btn-outline-secondary',true);
+                        thisBtn.toggleClass('btn-dark', false);
+                        thisBtn.toggleClass('btn-outline-secondary', true);
 
                     } else {
                         alert('팔로우가 추가되었습니다.');
                         thisBtn.text('UnFollow');
-                        thisBtn.toggleClass('btn-outline-secondary',false);
-                        thisBtn.toggleClass('btn-dark',true);
+                        thisBtn.toggleClass('btn-outline-secondary', false);
+                        thisBtn.toggleClass('btn-dark', true);
 
                     }
 
@@ -339,14 +351,14 @@
                     if (result === 'unfollow') {
                         alert('팔로우가 취소되었습니다.');
                         thisBtn.text('Follow');
-                        thisBtn.toggleClass('btn-dark',false);
-                        thisBtn.toggleClass('btn-outline-secondary',true);
+                        thisBtn.toggleClass('btn-dark', false);
+                        thisBtn.toggleClass('btn-outline-secondary', true);
 
                     } else {
                         alert('팔로우가 추가되었습니다.');
                         thisBtn.text('UnFollow');
-                        thisBtn.toggleClass('btn-outline-secondary',false);
-                        thisBtn.toggleClass('btn-dark',true);
+                        thisBtn.toggleClass('btn-outline-secondary', false);
+                        thisBtn.toggleClass('btn-dark', true);
 
                     }
 
@@ -411,7 +423,7 @@
                             loadingFollowing = false;
 
                             if (followingStart === 0) {
-                                $('#followingListModalBody').empty();
+                                printEmptyFollowingList()
 
                             }
 
@@ -505,15 +517,19 @@
                 html += '<div class="col">';
                 html += '<div class="row d-flex justify-content-between align-items-center">';
                 html += '<div class="col-auto">';
+
                 html += '<div class="input-group">';
-                html += '<button type="button" class="btn btn-outline-secondary">' + follow[i].followDTO.username + '</button>';
+                // 버튼 클릭시 해당 회원의 프로필 페이지로 이동
+                html += '<button type="button" class="btn btn-outline-secondary" onclick="location.href=\'/members/' + follow[i].followDTO.id + '\'">' + follow[i].followDTO.username + '</button>';
                 let locationString = locationEnumToString(follow[i].followDTO.location);
                 html += '<span class="input-group-text">' + locationString + '</span>';
                 html += '</div>';
                 html += '</div>';
                 html += '<div class="col-auto">';
                 html += '<div class="input-group">';
-                html += '<button type="button" class="btn btn-dark unFollowBtn" data-unfollowId="' + follow[i].followDTO.id + '">UnFollow</button>';
+                if (isLogin) {
+                    html += '<button type="button" class="btn btn-dark unFollowBtn" data-unfollowId="' + follow[i].followDTO.id + '">UnFollow</button>';
+                }
                 html += '</div>';
                 html += '</div>';
                 html += '</div>';
@@ -564,7 +580,7 @@
                 html += '<div class="row d-flex justify-content-between align-items-center">';
                 html += '<div class="col-auto">';
                 html += '<div class="input-group">';
-                html += '<button type="button" class="btn btn-outline-secondary">' + follow[i].memberDTO.username + '</button>';
+                html += '<button type="button" class="btn btn-outline-secondary" onclick="location.href=\'/members/' + follow[i].memberDTO.id + '\'">' + follow[i].memberDTO.username + '</button>';
                 let locationString = locationEnumToString(follow[i].memberDTO.location);
                 html += '<span class="input-group-text">' + locationString + '</span>';
                 html += '</div>';
@@ -572,13 +588,15 @@
                 html += '<div class="col-auto">';
                 html += '<div class="input-group">';
 
-                // 팔로우 여부에 따라 버튼 변경
-                if (follow[i].isFollow) {
-                    html += '<button type="button" class="btn btn-dark unFollowBtn" data-unfollowId="' + follow[i].memberDTO.id + '">UnFollow</button>';
-                } else {
-                    html += '<button type="button" class="btn btn-outline-secondary unFollowBtn" data-unfollowId="' + follow[i].memberDTO.id + '">Follow</button>';
-                }
+                if (isLogin) {
+                    // 팔로우 여부에 따라 버튼 변경
+                    if (follow[i].isFollow) {
+                        html += '<button type="button" class="btn btn-dark unFollowBtn" data-unfollowId="' + follow[i].memberDTO.id + '">UnFollow</button>';
+                    } else {
+                        html += '<button type="button" class="btn btn-outline-secondary unFollowBtn" data-unfollowId="' + follow[i].memberDTO.id + '">Follow</button>';
+                    }
 
+                }
                 html += '</div>';
                 html += '</div>';
                 html += '</div>';
@@ -620,13 +638,13 @@
 
             let followingListModalBody = $('#followingListModalBody');
             let html = '';
-                html += '<div class="row mt-2">';
-                html += '<div class="col">';
-                html += '<div class="input-group">';
-                html += '<span class="input-group-text">팔로잉 리스트가 없습니다.</span>';
-                html += '</div>';
-                html += '</div>';
-                html += '</div>';
+            html += '<div class="row mt-2">';
+            html += '<div class="col">';
+            html += '<div class="input-group">';
+            html += '<span class="input-group-text">팔로잉 리스트가 없습니다.</span>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
 
             // 팔로잉 리스트 html 추가하기
             followingListModalBody.append(html);
@@ -788,6 +806,81 @@
         }
 
         // ********** 필터 관련 함수 **********
+        // 나 버튼 클릭시
+        $('#myBtn').on('click', function () {
+            console.log("나 버튼 클릭");
+            let html = '';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myReviewBtn">후기</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myInfoBtn">정보</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myProgramBtn">작품</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myApplyEventBtn">신청한 모임</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myAddEventBtn">등록한 모임</button>';
+            html += '</div>';
+            $('#activeFilterContainer').html(html);
+
+            $('#myBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#bkMarkBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#timeLineBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+
+        });
+
+        // 북마크 버튼 클릭시
+        $('#bkMarkBtn').on('click', function () {
+            console.log("북마크 버튼 클릭");
+            let html = '';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="bkReviewBtn">후기</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="bkInfoBtn">정보</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="bkProgramBtn">작품</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="bkEventBtn">모임</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '</div>';
+            $('#activeFilterContainer').html(html);
+
+            $('#myBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#bkMarkBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#timeLineBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+        });
+
+        // 타임라인 버튼 클릭시
+        $('#timeLineBtn').on('click', function () {
+            console.log("타임라인 버튼 클릭");
+            let html = '';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="timeLineReviewBtn">후기</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="timeLineInfoBtn">정보</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="timeLineProgramBtn">작품</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '</div>';
+            $('#activeFilterContainer').html(html);
+
+            $('#myBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#bkMarkBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#timeLineBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+        });
 
 
     });
