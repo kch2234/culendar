@@ -18,16 +18,17 @@ public class ProgramDBSchedular {
 //    static Long seq = 200460L;
 //    static Long seq = 230000L; // 22년 11월 부터 시작
 //    static Long seq = 250000L; //23년 7월 부터 시작
-    static Long seq = 270000L; //24년 3월 부터 시작
+//    static Long seq = 270000L; //24년 3월 부터 시작
+    static Long seq = 257700L;
 
     // TODO 어느정도 진행되면 종료 되게
 
     // 매 1분마다 실행
 //    @Scheduled(cron = "0 0/1 * * * *")
-    @Scheduled(fixedDelay = 6000) // 작업 종료 후 6초 후에 다시 실행
+    @Scheduled(fixedDelay = 1000) // 작업 종료 후 1초 후에 다시 실행
     public void scheduleProgram() {
 
-        /*int i = 0;
+        int i = 0;
 
         log.info("******** ProgramDBSchedular scheduleProgram - 크롤링 시작 현재 seq : " + seq + " ********");
 
@@ -39,9 +40,9 @@ public class ProgramDBSchedular {
             seq++;
             i++;
 
-        } while (i != 1000 && seq < 273000L);
+        } while (i != 100);
 
-      log.info("******** ProgramDBSchedular scheduleProgram - 크롤링 완료 현재 seq : " + seq + " ********");*/
+      log.info("******** ProgramDBSchedular scheduleProgram - 크롤링 완료 현재 seq : " + seq + " ********");
     }
 
 

@@ -16,7 +16,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <button type="button" th:each="pType : ${programType}" class="btn btn-primary pTypeBtn"
+                        <button type="button" th:each="pType : ${programType}" class="btn btn-outline-secondary pTypeBtn"
                                 th:text="${pType.value}" th:if="${pType.value !='기타'}"
                                 th:data-type="${pType.name()}"></button>
 
@@ -34,7 +34,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <button type="button" th:each="lType : ${locationType}" class="btn btn-primary lTypeBtn"
+                        <button type="button" th:each="lType : ${locationType}" class="btn btn-outline-secondary lTypeBtn"
                                 th:text="${lType.value}" th:if="${lType.value !='기타'}"
                                 th:data-loc="${lType.name()}"></button>
 
