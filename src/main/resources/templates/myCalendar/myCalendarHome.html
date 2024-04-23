@@ -6,7 +6,6 @@
 
     <th:block th:fragment="content">
 
-
         <!--                분류 모달-->
         <div class="modal" id="type-modal">
             <div class="modal-dialog">
@@ -16,9 +15,13 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <button type="button" th:each="pType : ${programType}" class="btn btn-primary pTypeBtn"
-                                th:text="${pType.value}" th:if="${pType.value !='기타'}"
-                                th:data-type="${pType.name()}"></button>
+                        <div class="row">
+                            <div class="col-auto mt-2 mb-2" th:each="pType : ${programType}">
+                                <button type="button" class="btn btn-outline-secondary pTypeBtn"
+                                        th:text="${pType.value}" th:if="${pType.value !='기타'}"
+                                        th:data-type="${pType.name()}"></button>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -33,11 +36,15 @@
                         <h4 class="modal-title">분류 선택</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body">
-                        <button type="button" th:each="lType : ${locationType}" class="btn btn-primary lTypeBtn"
-                                th:text="${lType.value}" th:if="${lType.value !='기타'}"
-                                th:data-loc="${lType.name()}"></button>
+                    <div class="modal-body container">
 
+                        <div class="row">
+                            <div class="col-auto mt-2 mb-2" th:each="lType : ${locationType}">
+                                <button type="button" class=" btn btn-outline-secondary lTypeBtn"
+                                        th:text="${lType.value}" th:if="${lType.value !='기타'}"
+                                        th:data-loc="${lType.name()}"></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -87,7 +94,7 @@
         </div>
 
         <!-- 메인 컨테이너 영역 -->
-        <div class="w-75 container m-auto">
+        <div class="w-75 container m-auto mb-5">
             <div class="row">
                 <!-- 달력 영역 -->
                 <div class="col-9" id="calendar"></div>
@@ -96,19 +103,21 @@
                 <div class="col ml-2 h-100" id="side-search">
                     <form class="container p-0">
                         <!-- TODO 검색창 지도 및 디자인 -->
-                        <div class="row p-0" style="height: 10%">
+                        <div class="row p-0 mb-3" style="height: 10%">
                             <!-- 버튼 비활성화 -->
-                            <div class="col-3 p-0">
+                            <div class="col-12 p-0 input-group input-group-lg">
+
                                 <button type="submit" id="search-btn"
-                                        class="w-100 h-100 btn-dark fa-solid fa-magnifying-glass"></button>
-                            </div>
-                            <div class="dropdown col-8 p-0">
-                                <input type="text" id="search-text" class="p-0 w-100 form-control col dropdown-toggle"
+                                        class="btn btn-dark fa-solid fa-magnifying-glass"></button>
+
+                                <input type="text" id="search-text" class="form-control col dropdown-toggle"
                                        data-bs-toggle="dropdown" aria-expanded="false">
                                 <ul class="dropdown-menu overflow-scroll" id="searched-list">
                                     <!-- 동적으로 드롭다운 검색 결과 -->
                                 </ul>
+
                             </div>
+
 
                         </div>
                         <!-- TODO 검색 결과 클릭시 작품 상세 페이지 연동 -->
@@ -116,6 +125,26 @@
 
                             <!-- 검색 결과 양식 -->
                             <div class="card p-0 overflow-scroll" id="search-info-box">
+
+                                <!--<img src="" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">제목</h5>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">연극</li>
+                                    <li class="list-group-item">서울</li>
+                                    <li class="list-group-item">2024-04-04 ~ 2024004027</li>
+                                </ul>
+                                <div class="card-body container">
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="col-auto">
+                                            <button id="#bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75 fa-2x"></button>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button class="fa-regular fa-clipboard w-75 h-75 fa-2x"></button>
+                                        </div>
+                                    </div>
+                                </div>-->
 
                             </div>
 
@@ -200,9 +229,9 @@
                                         console.log(data);
                                         let html = '';
                                         data.forEach(function (myCalendar) {
-                                            html += '<button class="btn btn-primary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
+                                            html += '<button class="btn btn-outline-secondary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
                                         });
-                                        html += '<br><input type="text" id="newCalendarName" placeholder="새로운 캘린더 이름"><button id="addNewCalendarBtn" class="btn btn-primary">추가</button>';
+                                        html += '<br><input type="text" id="newCalendarName" placeholder="새로운 캘린더 이름"><button id="addNewCalendarBtn" class="btn btn-outline-secondary">추가</button>';
                                         $('#addMyCalContainer').html(html);
 
                                         $('#calendar-modal').css('display', 'block');
@@ -277,7 +306,6 @@
 
                 });
 
-
                 calendar.render();
 
                 // ********** 클릭시 이벤트들 **********
@@ -287,7 +315,6 @@
                     $('#type-modal').css('display', 'none');
                     $('#location-modal').css('display', 'none');
                     $('#calendar-modal').css('display', 'none');
-                    $('#addMyCalendar-modal').css('display', 'none');
 
                 });
 
@@ -415,12 +442,10 @@
                             console.log(data);
                             let html = '';
                             data.forEach(function (myCalendar) {
-                                html += '<button class="btn btn-primary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
+                                html += '<button class="btn btn-outline-secondary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
                             });
-                            html += '<br><input type="text" id="newCalendarName" placeholder="새로운 캘린더 이름"><button id="addNewCalendarBtn" class="btn btn-primary">추가</button>';
+                            html += '<br><input type="text" id="newCalendarName" placeholder="새로운 캘린더 이름"><button id="addNewCalendarBtn" class="btn btn-outline-secondary">추가</button>';
                             $('#addMyCalContainer2').html(html);
-
-                            $('#addMyCalendar-modal').modal('show');
                         }
                     });
                 });
@@ -496,7 +521,6 @@
                     }
 
                 });
-
 
                 // 북마크 버튼 클릭시 이벤트
                 $('#search-info-box').on('click', '.fa-bookmark', function () {
@@ -607,24 +631,46 @@
                     var programDate = data.startDate.substring(0, 10) + ' ~ ' + data.endDate.substring(0, 10);
 
                     let html = '';
+                    /*<img src="" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">제목</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">연극</li>
+                            <li class="list-group-item">서울</li>
+                            <li class="list-group-item">2024-04-04 ~ 2024004027</li>
+                        </ul>
+                        <div class="card-body container">
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-auto">
+                                    <button id="#bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75 fa-2x"></button>
+                                </div>
+                                <div class="col-auto">
+                                    <button class="fa-regular fa-clipboard w-75 h-75 fa-2x"></button>
+                                </div>
+                            </div>
+                        </div>*/
+
                     html += '<img src="' + data.thumbnail + '" class="card-img-top" alt="...">';
                     html += '<div class="card-body">';
                     html += '<h5 class="card-title">' + data.title + '</h5>';
-                    html += '<p class="card-text">지도 예정</p>';
                     html += '</div>';
                     html += '<ul class="list-group list-group-flush">';
                     html += '<li class="list-group-item">' + programType + '</li>';
                     html += '<li class="list-group-item">' + location + '</li>';
                     html += '<li class="list-group-item">' + programDate + '</li>';
                     html += '</ul>';
-                    html += '<div class="card-body">';
-                    html += '<div class="col p-0">';
-                    html += '<button id="#bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>';
+                    html += '<div class="card-body container">';
+                    html += '<div class="row d-flex justify-content-center">';
+                    html += '<div class="col-auto">';
+                    html += '<button class="fa-regular fa-bookmark w-75 h-75 fa-2x"></button>';
                     html += '</div>';
-                    html += '<div class="col p-0">';
-                    html += '<button class="fa-regular fa-clipboard w-75 h-75"></button>';
+                    html += '<div class="col-auto">';
+                    html += '<button class="fa-regular fa-clipboard w-75 h-75 fa-2x" type="button" data-bs-toggle="modal" data-bs-target="#addMyCalendar-modal"></button>';
                     html += '</div>';
                     html += '</div>';
+                    html += '</div>';
+
 
                     $('#search-info-box').html(html);
                     checkBkmark();
@@ -646,6 +692,7 @@
                         },
                     });
                 }
+
                 // seq로 프로그램 데이터 받아오기
                 function getProgramDataBySeq(seq) {
                     $.ajax({

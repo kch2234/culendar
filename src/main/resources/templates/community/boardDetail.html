@@ -255,6 +255,7 @@
                         <div class="col-auto text-center">
                             <button type="button" class="btn btn-outline-secondary fs-4 d-inline-block"
                                  th:text="${board.getMemberDTO().getUsername()}" th:onclick="|location.href='@{/members/{id}(id=${board.getMemberDTO().getId()})}'|">
+                            </button>
                         </div>
 
                         <th:block  sec:authorize="isAuthenticated()">
