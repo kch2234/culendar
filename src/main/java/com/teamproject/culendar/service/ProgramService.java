@@ -293,7 +293,7 @@ public class ProgramService {
         return programDTOList;
     }
 
-    // programType, location을 받아서 해당하는 가장 인기있는 작품들 리스트를 반환
+    /*// programType, location을 받아서 해당하는 가장 인기있는 작품들 리스트를 반환
     public List<ProgramDTO> getBestProgramLocList(String programType, String locationType) {
         log.info("******** ProgramService - getBestProgramLocList - programType: {}, location: {}", programType, locationType);
         ProgramType programTypeENUM = ProgramType.valueOf(programType);
@@ -307,5 +307,5 @@ public class ProgramService {
                 .map(ProgramDTO::new)
                 .collect(Collectors.toList());
         return programDTOList;
-    }
+    }*/
 }
