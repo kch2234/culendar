@@ -57,7 +57,6 @@ public class AjaxBoardController {
       }
     }
 
-
     else if(sort.equals("REVIEW")){
       if(align.equals("BEST")){
         log.info("***** AjaxBoardController get /list/REVIEW/BEST/{}", page);

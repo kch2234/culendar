@@ -29,17 +29,18 @@ public class EventService {
   public boolean applyEventMember(EventMemberList eventMemberList) {
     log.info("***** EventService applyEventMember - eventMemberList : {}", eventMemberList);
 
-    /*// 중복 체크
+    // 중복 체크
     long memberId = eventMemberList.getMember().getId();
     long eventBoardId = eventMemberList.getEventBoard().getId();
     log.info("****** EventService applyEventMember - memberId : {}, boardIdVal: {}", memberId, eventBoardId);
     EventMemberList findEventMemberList = eventRepository.findEventMemberListByMemberIdAndEventBoardId(memberId, eventBoardId);
-    log.info("****** EventService applyEventMember : {}", findEventMemberList);
+    log.info("****** EventService applyEventMember - findEventMemberList : {}", findEventMemberList);
 
     if (findEventMemberList != null) {
       log.info("** 이미 신청한 모임입니다.");
+      cancelEventMember(eventMemberList);
       return false;
-    }*/
+    }
 
     EventBoard eventBoard = eventBoardRepository.findById(eventMemberList.getEventBoard().getId()).orElse(null);
     Member member = memberRepository.findById(eventMemberList.getMember().getId()).orElse(null);

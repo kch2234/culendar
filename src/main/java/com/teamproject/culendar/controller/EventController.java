@@ -22,40 +22,38 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-@RestController
-@Slf4j
-@RequestMapping("/event")
-@RequiredArgsConstructor
-public class EventController {
+@RestController @Slf4j @RequestMapping("/event") @RequiredArgsConstructor public class EventController {
 
   private final EventService eventService;
   private final MemberService memberService;
   private final EventBoardService eventBoardService;
 
   @PostMapping("/applyEventMember")
-  public ResponseEntity<String> applyEventMember(@RequestBody Map<String, Long> requestData) {  // *EventController* 모임 신청 관련 컨트롤러
-    Long memberId = requestData.get("memberId");
-    Long eventBoardId = requestData.get("eventBoardId");
+  public ResponseEntity<String> applyEventMember(@RequestBody Map<String, String> requestData) {
+    String applyStatus = requestData.get("applyStatus");
+    Long memberId = Long.parseLong(requestData.get("memberId"));
+    Long eventBoardId = Long.parseLong(requestData.get("eventBoardId"));
     log.info("***** EventController /event/applyEventMember - memberId: {}", memberId);
     log.info("***** EventController /event/applyEventMember - eventBoardId: {}", eventBoardId);
+    log.info("***** EventController /event/applyEventMember - applyStatus: {}", applyStatus);
 
     EventMemberList eventMemberList = new EventMemberList();
-
     Member member = memberService.findById(memberId).toEntity();
     eventMemberList.setMember(member);
 
     EventBoardDTO eventBoardDTO = eventBoardService.getOneBoard(eventBoardId);
-    // EventBoardDTO -> EventBoard  변환
     EventBoard eventBoard = new EventBoard();
     eventBoard.setId(eventBoardDTO.getId());
     eventMemberList.setEventBoard(eventBoard);
 
     boolean result = eventService.applyEventMember(eventMemberList);
 
-    // 모임 신청에 실패 시 fail 리턴
     if (!result) {
+      log.info("***** EventController /event/applyEventMember - result = fail");
       return new ResponseEntity<>("fail", HttpStatus.OK);
     }
+    log.info("***** EventController /event/applyEventMember - result = success");
     return new ResponseEntity<>("success", HttpStatus.OK);
   }
 }
+
