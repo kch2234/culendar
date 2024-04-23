@@ -45,7 +45,7 @@
 
                     <div class="row" id="eventCardContainer">
 
-                        <!-- NOTE 동적으로 추가 -->
+                        <!-- 동적으로 추가 -->
 
                     </div>
 
@@ -55,12 +55,12 @@
 
         </div>
 
-        <!--  모임(카드)  -->
-        <div class="container mb-5">
+        <!--  페이지네이션  -->
+        <div class="container mt-2 mb-5">
 
-            <div class="row custom-pagination">
+            <div class="row align-items-center custom-pagination">
 
-                <!-- NOTE 동적으로 추가 -->
+                <!-- 동적으로 추가 -->
 
             </div>
 
@@ -126,7 +126,7 @@
             function printPagination(pageDTO, sort, align) {
                 let html = "";
 
-                html += '<span class="page-item"';
+                html += '<span class="col-3 d-flex justify-content-around btn btn-info page-item"';
                 if (pageDTO.prev == false) {
                     html += 'disabled';
                 }
@@ -136,7 +136,7 @@
                 // pageNumList 배열의 길이를 확인하고 반복문 실행
                 if (pageDTO.pageNumList && pageDTO.pageNumList.length > 0) {
                     for (let i = 0; i < pageDTO.pageNumList.length; i++) {
-                        html += '<span class="page-item ';
+                        html += '<span class="col d-flex justify-content-around page-item ';
                         if (pageDTO.pageNumList[i] == currPage) {
                             html += 'active';
                         }
@@ -145,7 +145,7 @@
                     }
                 }
 
-                html += '<span class="page-item"';
+                html += '<span class="col-3 d-flex justify-content-around btn btn-info page-item"';
                 if (pageDTO.next == false) {
                     html += 'disabled';
                 }

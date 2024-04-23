@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true) // TODO:추가 @PreAuthorize 어노테이션을 사용하기 위해 필요한 설정
+@EnableMethodSecurity(prePostEnabled = true) // @PreAuthorize 어노테이션을 사용하기 위해 필요한 설정
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -62,7 +62,6 @@ public class SecurityConfig {
                                 .accessDeniedHandler((request, response, accessDeniedException) ->
                                         response.sendRedirect("/access-denied")
                                 )); // 권한 없음 에러 처리
-                //TODO: 세션 관리 설정
         return http.build();
     }
 

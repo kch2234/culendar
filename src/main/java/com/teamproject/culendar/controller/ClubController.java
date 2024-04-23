@@ -31,7 +31,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/clubs")
-public class ClubController {  // NOTE *ClubController == EventBoardController* 모임 페이지 관련 컨트롤러
+public class ClubController {  // *ClubController == EventBoardController* 모임 페이지 관련 컨트롤러
 
   private final EventBoardService eventBoardService;
   private final ProgramService programService;

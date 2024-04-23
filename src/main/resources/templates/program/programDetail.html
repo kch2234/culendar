@@ -177,12 +177,11 @@
 
                         </div>
                     </th:block>
-                    <!-- TODO 지도 API -->
-                    <div class style="height: 40%">
-                        <div class="col-12 h-100">
-                            <div class="badge text-bg-secondary w-100 h-100" id="map" style="width:100%;height:100%;">
-                                지도
-                            </div>
+
+                    <!-- 지도 API -->
+                    <div class="h-40">
+                        <div class="col h-100">
+                            <div class="w-100" id="staticMap" style="height:420px;"></div>
                         </div>
 
                     </div>
@@ -225,7 +224,6 @@
                 checkBkmark();
                 // 인기 게시글 불러오기
                 getBestReviewList();
-
                 // 해당 작품 후기 작성 여부 확인 함수
                 getThisProgramReview();
 
@@ -574,7 +572,6 @@
                         });
                     }
                 }
-
 
                 // ********** 카카오 지도 **********
                 function kakaoMap(){
