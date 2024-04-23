@@ -15,7 +15,7 @@
                 <div class="row p-4">
                     <div class="col d-flex">
                         <div class="col">
-                            <button class="button col btn btn-secondary fs-6 p-2 dropdown-toggle"
+                            <button class="button col btn btn-secondary dropdown-toggle"
                                     type="button"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false">카테고리
@@ -35,7 +35,7 @@
                     <div class="col"></div>
                     <button sec:authorize="isAuthenticated()"
                             type="button"
-                            class="col-3 btn btn-primary"
+                            class="col-auto btn btn-primary"
                             th:onclick="|location.href='@{/clubs/add}'|">글작성
                     </button>
                 </div>

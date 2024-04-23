@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
@@ -15,7 +14,7 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">등록된 후기가 없습니다.</h1>
+                            <h1 class="modal-title fs-5">등록된 후기가 없습니다.</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -26,7 +25,11 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
                             <!-- 등록 작품 연동 -->
-                            <button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${board.programDTO.getId})}'|">등록</button>
+                            <button type="button"
+                                    class="btn btn-secondary"
+                                    th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${board.programDTO.getId})}'|">
+                                등록
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -49,18 +52,27 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
                             <!-- 수정 연동 -->
-                            <button type="button" class="btn btn-secondary" id="reviewModifyBtn" th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${board.programDTO.getId})}'|">수정</button>
+                            <button type="button"
+                                    class="btn btn-secondary"
+                                    id="reviewModifyBtn"
+                                    th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${board.programDTO.getId})}'|">
+                                수정
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- 게시글 삭제 모달 -->
-            <div class="modal fade" id="boardDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade"
+                 id="boardDeleteModal"
+                 tabindex="-1"
+                 aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">게시글 삭제</h1>
+                            <h1 class="modal-title fs-5">게시글 삭제</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -69,7 +81,8 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close
+                            </button>
                             <form action="" th:action="@{/boards/{id}/delete(id=${board.id})}" method="post">
                                 <button type="submit" class="btn btn-secondary">삭제</button>
                             </form>
@@ -79,7 +92,11 @@
             </div>
 
             <!--        일정 추가 모달-->
-            <div class="modal" id="addMyCalendar-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal"
+                 id="addMyCalendar-modal"
+                 tabindex="-1"
+                 aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -98,7 +115,11 @@
             </div>
 
             <!--    문장형 평가 추가 모달-->
-            <div class="modal" id="addRating-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal"
+                 id="addRating-modal"
+                 tabindex="-1"
+                 aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -117,16 +138,21 @@
 
             <!-- 게시글 제목, 수정 / 삭제 버튼, 북마크 버튼 -->
             <div class="row mt-5 text-center d-flex justify-content-center align-items-center">
-                <div class="col-9 fs-3 overflow-auto d-flex justify-content-center align-items-center" th:text="${board.title}">
+                <div class="col-9 fs-3 overflow-auto d-flex justify-content-center align-items-center"
+                     th:text="${board.title}">
                 </div>
                 <!-- 회원 일 경우에만 북마크 또는 수정, 삭제 버튼 보이기 -->
                 <th:block sec:authorize="isAuthenticated()">
                     <!-- 게시글 작성자 일 경우만 수정, 삭제 버튼 보이기 -->
                     <th:block th:if="${member.getId} == ${board.getMemberDTO().getId()}">
                         <div class="col-3">
-                            <button type="button" class="btn btn-secondary mb-1" id="modifyBtn" th:text="수정">
+                            <button type="button" class="btn btn-secondary" id="modifyBtn" th:text="수정">
                             </button>
-                            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#boardDeleteModal">삭제</button>
+                            <button type="button"
+                                    class="btn btn-outline-secondary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#boardDeleteModal">삭제
+                            </button>
 
                         </div>
                     </th:block>
@@ -158,7 +184,8 @@
                     <div class="d-flex flex-row">
 
                         <div class="col-auto">
-                            <div class="badge text-bg-secondary h-100 fs-4 d-flex justify-content-center align-items-center p-1" id="AvgRating">
+                            <div class="badge text-bg-secondary h-100 fs-4 d-flex justify-content-center align-items-center p-1"
+                                 id="AvgRating">
                                 <!--    평균 문장형 평가 위치-->
                             </div>
                         </div>
@@ -172,7 +199,10 @@
                                     <button id="bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>
                                 </div>
                                 <div class="col p-0 fs-4">
-                                    <button class="fa-regular fa-clipboard w-75 h-75" type="button" data-bs-toggle="modal" data-bs-target="#addMyCalendar-modal"></button>
+                                    <button class="fa-regular fa-clipboard w-75 h-75"
+                                            type="button"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#addMyCalendar-modal"></button>
                                 </div>
                             </th:block>
 
@@ -183,7 +213,9 @@
                     <!-- 작품 제목 -->
                     <div class="">
                         <div class="col">
-                            <a th:href="@{/program/{seq}(seq=${board.getProgramDTO().seq})}" class="fs-3" th:text="${board.getProgramDTO().getTitle()}"></a>
+                            <a th:href="@{/program/{seq}(seq=${board.getProgramDTO().seq})}"
+                               class="fs-3"
+                               th:text="${board.getProgramDTO().getTitle()}"></a>
                         </div>
                     </div>
 
@@ -203,7 +235,11 @@
 
                             <div class="col-auto d-flex justify-content-start align-items-center">
                                 <!--   회원 문장형 평가 위치-->
-                                <button class="btn btn-outline-secondary" id="addRating" type="button" data-bs-toggle="modal" data-bs-target="#addRating-modal"></button>
+                                <button class="btn btn-outline-secondary"
+                                        id="addRating"
+                                        type="button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#addRating-modal"></button>
                             </div>
                             <div class="col"></div>
 
@@ -229,10 +265,11 @@
                 </div>
             </div>
 
-            <!-- Todo 게시글 내용 안짤리게-->
             <div class="row mt-4">
                 <div class="col">
+                    <br /><br />
                     <p th:text="${board.getContent()}"></p>
+                    <br />
                 </div>
             </div>
 
@@ -244,7 +281,7 @@
                     <!-- 프로필 이미지 -->
                     <div class="row mb-3 justify-content-center">
                         <div class="col-4">
-<!--                            <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid rounded">-->
+                            <!--                            <img src="/sbadmin/images/person_1.jpg" alt="Image" class="img-fluid rounded">-->
                             <i class="fa-solid fa-circle-user fa-7x d-flex justify-content-center align-items-center"></i>
 
                         </div>
@@ -257,9 +294,11 @@
                                  th:text="${board.getMemberDTO().getUsername()}" th:onclick="|location.href='@{/members/{id}(id=${board.getMemberDTO().getId()})}'|">
                         </div>
 
-                        <th:block  sec:authorize="isAuthenticated()">
+                        <th:block sec:authorize="isAuthenticated()">
                             <div class="col-auto p-0" th:if="${member.getId} != ${board.getMemberDTO().getId()}">
-                                <button type="button" class="btn btn-dark btn-outline-secondary fs-6" id="followBtn">Follow</button>
+                                <button type="button" class="btn btn-dark btn-outline-secondary fs-6" id="followBtn">
+                                    Follow
+                                </button>
 
                             </div>
                         </th:block>
@@ -293,20 +332,21 @@
                     <div class="card-body">
                         <form id="cmtForm">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="comment">
+                                <input type="text" class="form-control" id="comment" placeholder="댓글 내용">
                             </div>
-                            <button type="button" class="btn btn-primary" id="newCmtBtn">댓글등록</button>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="commenter" placeholder="작성자">
+                            </div>
+                            <button type="button" class="btn btn-primary" id="newCmtBtn">댓글 등록</button>
                         </form>
                     </div>
-                    <hr/>
+                    <hr />
                     <!-- 댓글 리스트 : printReplyList 함수에서 동적으로 추가 -->
-                    <div class="card-body" id="cmtListContainer">
-
-                    </div>
+                    <div class="card-body" id="cmtListContainer"></div>
                     <!-- 댓글 Pagination -->
-                    <div class="card-body" id="cmtPagination">
+                    <div class="card-body" id="cmtPagination"></div>
 
-                    </div>
+                </div>
                 </div>
             </div>
 
@@ -369,9 +409,9 @@
                                     <label for="reCmter" class="col-form-label">Commenter</label>
                                     <input type="text" class="form-control" id="reCmter">
                                 </div>
-                                <input type="hidden" id="reRefid"/>
-                                <input type="hidden" id="reStep"/>
-                                <input type="hidden" id="reLevel"/>
+                                <input type="hidden" id="reRefid" />
+                                <input type="hidden" id="reStep" />
+                                <input type="hidden" id="reLevel" />
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -961,6 +1001,7 @@
                         $("#commenter").val("");
                     });
                 });
+
 
                 // 댓글 저장 처리 함수
                 function saveComment(data, callbackFn) { // 저장데이터와 성공시 실행할 콜백함수 전달받기
