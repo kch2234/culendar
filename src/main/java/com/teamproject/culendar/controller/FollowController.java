@@ -43,6 +43,24 @@ public class FollowController {
         return new ResponseEntity<>(followerList, HttpStatus.OK);
     }
 
+    // 팔로잉 무한 스크롤을 위한 페이징 처리
+    @GetMapping("/{memberId}/following/{start}")
+    public ResponseEntity<List<FollowDTO>> followingListWithPaging(@PathVariable("memberId") Long memberId, @PathVariable("start") Long start) {
+        log.info("팔로우 리스트 무한 스크롤");
+        log.info("********** FollowController GET /follows/:userid/follow - memberId : {}", memberId);
+        List<FollowDTO> followListWithPaging = followService.getFollowListWithPaging(memberId, start);
+        return new ResponseEntity<>(followListWithPaging, HttpStatus.OK);
+    }
+
+    // 팔로워 무한 스크롤을 위한 페이징 처리
+    @GetMapping("/{memberId}/follower/{start}")
+    public ResponseEntity<List<FollowDTO>> followerListWithPaging(@PathVariable("memberId") Long memberId, @PathVariable("start") Long start) {
+        log.info("팔로워 리스트 무한 스크롤");
+        log.info("********** FollowController GET /follows/:userid/follow - memberId : {}", memberId);
+        List<FollowDTO> followerListWithPaging = followService.getFollowerListWithPaging(memberId, start);
+        return new ResponseEntity<>(followerListWithPaging, HttpStatus.OK);
+    }
+
     // 팔로우 여부 확인
     @GetMapping("/checkFollow/{followId}")
     public ResponseEntity<Boolean> checkFollow(@AuthenticationPrincipal CustomMember customMember, @PathVariable("followId") Long followId) {
