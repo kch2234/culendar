@@ -28,7 +28,6 @@ public class BkMarkController {
         boolean result = bkMarkService.addProgramBkmark(programBkMarkDTO);
 
         if (!result) {
-
             bkMarkService.deleteProgramBkmark(programBkMarkDTO);
             return new ResponseEntity<>("fail", HttpStatus.OK);
         }
