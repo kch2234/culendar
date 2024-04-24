@@ -526,6 +526,8 @@
                 // 북마크 버튼 클릭시 이벤트
                 $('#search-info-box').on('click', '.fa-bookmark', function () {
 
+                    event.preventDefault();
+
                     let data = {
                         memberId: memberId,
                         programId: programId
@@ -542,11 +544,9 @@
                             console.log(result);
 
                             if (result === 'fail') {
-                                alert('북마크에서 삭제 되었습니다.');
                                 checkBkmark();
                                 return;
                             }
-                            alert('북마크에 추가되었습니다.');
                             checkBkmark();
                         },
                         error: function (error) {
@@ -580,6 +580,7 @@
                     // ENUM으로 바꾸기
                     var programType = data.programType;
                     var location = data.location;
+                    programId = data.id;
 
                     if (programType === 'DRAMA') {
                         programType = '연극';

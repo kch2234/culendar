@@ -47,8 +47,29 @@
             </div>
         </div>
 
+        <!--        일정 추가 모달-->
+        <div class="modal" id="addMyCalendar-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">달력 선택</h4>
+                        <div class="hidden-true" th:if="${member != null}">
+
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body" id="addMyCalContainer2">
+                        <div id="addMyCalendarBtnContainer2">
+                            <!--    내 캘린더 목록 및 캘린더 추가 버튼 위치 -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- 메인 컨테이너 영역 -->
-        <div class="w-75 container m-auto mb-5">
+        <div class="w-75 container m-auto mt-5 mb-5">
             <div class="row">
                 <!-- 지도 영역 -->
                 <div class="col-9">
@@ -127,6 +148,15 @@
             imageSize = new kakao.maps.Size(30, 30),
             imageOption = {offset: new kakao.maps.Point(20, 40)};
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+        var memberId = null;
+
+        // 로그인 여부 확인
+        if ([[${member}]] != null) {
+            memberId = [[${member.getMember().id}]];
+        }
+
+        console.log(memberId);
 
         // ********** 페이지 로딩시 실행할 함수들 **********
         getBestProgramList();
@@ -276,6 +306,7 @@
             // ENUM으로 바꾸기
             var programType = data.programType;
             var location = data.location;
+            programId = data.id;
 
             if (programType === 'DRAMA') {
                 programType = '연극';
@@ -328,7 +359,7 @@
             var programDate = data.startDate.substring(0, 10) + ' ~ ' + data.endDate.substring(0, 10);
 
             let html = '';
-            html += '<img src="' + data.thumbnail + '" class="card-img-top" alt="...">';
+            /*html += '<img src="' + data.thumbnail + '" class="card-img-top" alt="...">';
             html += '<div class="card-body">';
             html += '<h5 class="card-title">' + data.title + '</h5>';
             html += '</div>';
@@ -342,11 +373,178 @@
             html += '<div class="col-auto">';
             html += '</div>';
             html += '</div>';
+            html += '</div>';*/
+
+            html += '<img src="' + data.thumbnail + '" class="card-img-top" alt="...">';
+            html += '<div class="card-body">';
+            html += '<a class="card-title fs-5" href=\'/program/' + data.seq + '\'">' + data.title + '</a>';
+            html += '</div>';
+            html += '<ul class="list-group list-group-flush">';
+            html += '<li class="list-group-item">' + programType + '</li>';
+            html += '<li class="list-group-item">' + location + '</li>';
+            html += '<li class="list-group-item">' + programDate + '</li>';
+            html += '</ul>';
+            html += '<div class="card-body container">';
+            html += '<div class="row d-flex justify-content-center">';
+            html += '<div class="col-auto">';
+            html += '<button class="fa-regular fa-bookmark w-75 h-75 fa-2x"></button>';
+            html += '</div>';
+            html += '<div class="col-auto">';
+            html += '<button class="fa-regular fa-clipboard w-75 h-75 fa-2x" type="button" data-bs-toggle="modal" data-bs-target="#addMyCalendar-modal"></button>';
+            html += '</div>';
+            html += '</div>';
             html += '</div>';
 
             $('#search-info-box').html(html);
+            checkBkmark();
+
 
         }
+
+        // 북마크 여부 확인 이벤트
+        function checkBkmark() {
+            console.log("checkBkmark");
+            $.ajax({
+                url: '/bkmark/checkProgramBkmark/' + memberId + '/' + programId,
+                type: 'GET',
+                success: function (data) {
+                    if (data === true) {
+                        console.log(data);
+                        $('.fa-bookmark').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
+                    }
+
+                    if (data === false) {
+                        console.log(data);
+                        $('.fa-bookmark').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
+                    }
+                }
+            });
+        }
+
+        // 북마크 버튼 클릭시 이벤트
+        $('#search-info-box').on('click', '.fa-bookmark', function () {
+
+            event.preventDefault();
+
+            let data = {
+                memberId: memberId,
+                programId: programId
+            };
+
+            console.log(data);
+
+            $.ajax({
+                type: 'POST',
+                url: '/bkmark/addProgramBkmark',
+                data: JSON.stringify(data),
+                contentType: 'application/json; charset=utf-8',
+                success: function (result, status) {
+                    console.log(result);
+
+                    if (result === 'fail') {
+                        checkBkmark();
+                        return;
+                    }
+                    checkBkmark();
+                },
+                error: function (error) {
+                    console.log(error);
+                    alert('북마크 추가에 실패했습니다.');
+                }
+            });
+
+        });
+
+        // 사이드 정보창 일정 아이콘 클릭시 이벤트
+        $('#search-info-box').on('click', '.fa-clipboard', function () {
+
+            // ajax로 내 달력 목록 가져오기
+            $.ajax({
+                url: '/calendar/myCalendarNameList/' + memberId,
+                type: 'GET',
+                success: function (data) {
+                    console.log(data);
+                    let html = '';
+                    data.forEach(function (myCalendar) {
+                        html += '<button class="btn btn-outline-secondary cal-name" data-mycalid="' + myCalendar.id + '">' + myCalendar.name + '</button>';
+                    });
+                    html += '<br><div class="input-group mt-1"><input class="input-group-text" type="text" id="newCalendarName" placeholder="새로운 캘린더 이름"><button id="addNewCalendarBtn" class="btn btn-outline-secondary">추가</button></div>';
+                    $('#addMyCalContainer2').html(html);
+                }
+            });
+        });
+
+        // 사이드 정보창 일정 모달 내에 달력 버튼 클릭시
+        $('#addMyCalContainer2').on('click', '.cal-name', function () {
+            let myCalId = $(this).data('mycalid');
+            console.log(myCalId);
+            console.log(programId);
+            // ajax로 내 달력에 일정 추가 POST방식
+            let data = {
+                calendarId: myCalId,
+                programId: programId
+            };
+
+            console.log(data);
+            $.ajax({
+                type: 'POST',
+                url: '/calendar/addProgramToCalendar',
+                data: JSON.stringify(data),
+                contentType: 'application/json; charset=utf-8',
+                success: function (result, status) {
+                    console.log(result);
+
+                    if (result === 'fail') {
+                        alert('이미 추가된 일정입니다.');
+                        return;
+                    }
+                    alert('일정이 추가되었습니다.');
+                    $('#addMyCalendar-modal').modal('hide');
+                    calendar.refetchEvents();
+                },
+                error: function (error) {
+                    console.log(error);
+                    alert('일정 추가에 실패했습니다.');
+                }
+            });
+
+        });
+
+        // 사이드 정보창 일정 모달 내에 새로운 캘린더 추가 버튼 클릭시
+        $('#addMyCalContainer2').on('click', '#addNewCalendarBtn', function () {
+            let newCalendarName = $('#newCalendarName').val();
+            console.log(newCalendarName);
+            if (newCalendarName === '') {
+                alert('캘린더 이름을 입력해주세요.');
+                return;
+            } else {
+
+                let data = {
+                    memberId: memberId,
+                    name: newCalendarName
+                };
+                $.ajax({
+                    type: 'POST',
+                    url: '/calendar/addNewCalendar',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (result, status) {
+                        console.log(result);
+                        if (result === 'fail') {
+                            alert('이미 존재하는 캘린더 이름입니다.');
+                            return;
+                        }
+                        alert('새로운 캘린더가 추가되었습니다.');
+                        $('#addMyCalendar-modal').modal('hide');
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        alert('캘린더 추가에 실패했습니다.');
+                    }
+                });
+            }
+
+        });
 
         // 작품 타입 가져오기
         function getProgramType(type) {

@@ -48,7 +48,9 @@ public class HomeController {
     }
 
     @GetMapping("/search")
-    public String search() {
+    public String search(@AuthenticationPrincipal CustomMember customMember, Model model) {
+
+        model.addAttribute("member", customMember);
 
         return "search/searchHome";
     }
