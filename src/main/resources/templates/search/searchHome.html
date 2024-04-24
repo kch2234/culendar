@@ -273,7 +273,7 @@
                 html += '<div class="col-3 ml-1 mr-1 eventCardContainer">';
                 html += '<div hidden="hidden" class="eventBoardId">' + eventBoardList[i].id + '</div>';
                 html += '<div>';
-                html += '<img src="' + eventBoardList[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid w-100" alt="..." />';
+                html += '<img src="' + eventBoardList[i].program.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid w-100" alt="..." />';
                 html += '<div class="card-body">';
                 html += '<div class="row mb-2">';
                 var title = eventBoardList[i].title;
@@ -586,6 +586,7 @@
                 navigator.geolocation.getCurrentPosition(function(position) {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
+                    console.log(lat, lng);
                     // 사용자의 현재 위치에 마커 생성
                     userMarker = new kakao.maps.Marker({
                         position: new kakao.maps.LatLng(lat, lng),

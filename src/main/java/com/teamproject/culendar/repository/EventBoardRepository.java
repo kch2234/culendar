@@ -41,9 +41,9 @@ public interface EventBoardRepository extends JpaRepository<EventBoard, Long> {
   @Query("SELECT b FROM EventBoard b " +
     "LEFT JOIN Program p ON b.program.id = p.id " +
     "WHERE p.programType = :programType " +
-    "AND p.location = :location " +
+    "AND p.location = :locationType " +
     "GROUP BY b order by COUNT(b) DESC")
-  List<EventBoard> findBestByProgramTypeAndLocList(@Param("programType") ProgramType programType, @Param("location") Location locationType);
+  List<EventBoard> findBestByProgramTypeAndLocList(@Param("programType") ProgramType programType, @Param("locationType") Location locationType);
 
   // programType 해당하는 인기 모임 조회
   @Query("SELECT b FROM EventBoard b " +
@@ -55,9 +55,9 @@ public interface EventBoardRepository extends JpaRepository<EventBoard, Long> {
   // locationType 해당하는 인기 모임 조회
   @Query("SELECT b FROM EventBoard b " +
     "LEFT JOIN Program p ON b.program.id = p.id " +
-    "WHERE p.location = :location " +
+    "WHERE p.location = :locationType " +
     "GROUP BY b order by COUNT(b) DESC")
-  List<EventBoard> findBestByLocationTypeList(@Param("location") Location locationType);
+  List<EventBoard> findBestByLocationTypeList(@Param("locationType") Location locationType);
 
   // 전체 인기 모임 조회
   @Query("SELECT b FROM EventBoard b " +
