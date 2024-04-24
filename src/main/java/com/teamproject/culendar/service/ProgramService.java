@@ -58,7 +58,7 @@ public class ProgramService {
             return null;
         }
         String titleText = title.text();
-        log.info(titleText);
+//        log.info(titleText);
 
         // 분류 크롤링
         Element programType = doucment.select("#content > div > section.section-view > div > div > div.info-view > div.wrap-info > ul > li.tag.reverse > span").first();
@@ -70,7 +70,7 @@ public class ProgramService {
         if (compareProgramType == null) {
             return null;
         }
-        log.info(programTypeText);
+//        log.info(programTypeText);
 
         // 기간 크롤링
         Element period = doucment.select("#content > div > section.section-view > div > div > div.info-view > div.wrap-info > div > dl:nth-child(1) > dd").first();
@@ -78,7 +78,7 @@ public class ProgramService {
             return null;
         }
         String periodText = period.text();
-        log.info(periodText);
+//        log.info(periodText);
 
         // String to LocalDateTime
         DateTimeFormatter formatterDash = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -95,7 +95,7 @@ public class ProgramService {
         } catch (Exception e) {
             return null;
         }
-        log.info(lastDate[0]);
+//        log.info(lastDate[0]);
         dateInString[0] += " 00:00:00";
         lastDate[0] += " 23:59:59";
         LocalDateTime startDate;
@@ -122,8 +122,8 @@ public class ProgramService {
         if (startDate == null || endDate == null) {
             return null;
         }
-        log.info(startDate.toString());
-        log.info(endDate.toString());
+//        log.info(startDate.toString());
+//        log.info(endDate.toString());
 
         // 시간 크롤링
         String timeText = "";
@@ -132,7 +132,7 @@ public class ProgramService {
             timeText = "정보 없음";
         } else {
             timeText = time.text();
-            log.info(timeText);
+//            log.info(timeText);
         }
 
         // 지역 크롤링
@@ -150,7 +150,7 @@ public class ProgramService {
             return null;
         }
 
-        log.info(locationText);
+//        log.info(locationText);
 
         // x 좌표 크롤링
         Element locationX = doucment.select("#cul_gps_x").first();
@@ -158,7 +158,7 @@ public class ProgramService {
             return null;
         }
         String locationXText = locationX.val();
-        log.info(locationXText);
+//        log.info(locationXText);
 
         // y 좌표 크롤링
         Element locationY = doucment.select("#cul_gps_y").first();
@@ -166,7 +166,7 @@ public class ProgramService {
             return null;
         }
         String locationYText = locationY.val();
-        log.info(locationYText);
+//        log.info(locationYText);
 
         // 이미지 크롤링
         String imageUrl = "";
@@ -175,7 +175,7 @@ public class ProgramService {
             log.info("이미지 없음");
         } else {
             imageUrl = "http://www.culture.go.kr/" + image.attr("src");
-            log.info(imageUrl);
+//            log.info(imageUrl);
         }
 
 
@@ -228,7 +228,7 @@ public class ProgramService {
 
     public void saveProgram(ProgramDTO programDTO) {
         if (FindBySeq(programDTO.getSeq()) != null) {
-            log.info("******** ProgramController POST /program/add - 중복된 seq 값입니다.");
+//            log.info("******** ProgramController POST /program/add - 중복된 seq 값입니다.");
             return;
         }
         ProgramDTO program = getProgram(programDTO.getSeq());
@@ -293,19 +293,5 @@ public class ProgramService {
         return programDTOList;
     }
 
-    /*// programType, location을 받아서 해당하는 가장 인기있는 작품들 리스트를 반환
-    public List<ProgramDTO> getBestProgramLocList(String programType, String locationType) {
-        log.info("******** ProgramService - getBestProgramLocList - programType: {}, location: {}", programType, locationType);
-        ProgramType programTypeENUM = ProgramType.valueOf(programType);
-        Location locationENUM = Location.valueOf(locationType);
-        List<Program> findPrograms = programRepository.findBestProgramsByProgramTypeAndLocation(programTypeENUM, locationENUM);
-        log.info("******** ProgramService - getBestProgramLocList - findPrograms: {},{}", findPrograms.get(0).getProgramType(), findPrograms.get(0).getLocation());
-        if (findPrograms.size() > 4) {
-            findPrograms = findPrograms.subList(0, 4);
-        }
-        List<ProgramDTO> programDTOList = findPrograms.stream()
-                .map(ProgramDTO::new)
-                .collect(Collectors.toList());
-        return programDTOList;
-    }*/
+
 }
