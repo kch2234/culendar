@@ -1,10 +1,7 @@
 package com.teamproject.culendar.dto;
 
 
-import com.teamproject.culendar.domain.enumFiles.Gender;
-import com.teamproject.culendar.domain.enumFiles.Location;
-import com.teamproject.culendar.domain.enumFiles.ProgramType;
-import com.teamproject.culendar.domain.enumFiles.Role;
+import com.teamproject.culendar.domain.enumFiles.*;
 import com.teamproject.culendar.domain.member.Interest;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.domain.member.OpenRange;
@@ -48,6 +45,8 @@ public class MemberForm  {
     // 관심분야
     private List<ProgramType> interestType;
 
+    // 공개범위
+    private OpenRangeType openRangeType;
 
     // form -> Entity
     public Member toEntity() {

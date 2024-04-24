@@ -1,5 +1,6 @@
 package com.teamproject.culendar.service;
 
+import com.teamproject.culendar.domain.enumFiles.Gender;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.*;
 import com.teamproject.culendar.repository.FollowRepository;
@@ -80,15 +81,15 @@ public class MemberService {
     // 회원 정보 설정
     public Long setMember(MemberForm memberForm) {
         String birth = memberForm.getBirth();
-        Member findMember = memberForm.toEntity();
+        Member findMember = memberRepository.findById(memberForm.getId()).orElse(null);
         log.info("********** MemberService Test - findMember : {}", findMember.getBirth());
-        findMember.setPhone(memberForm.getPhone());
+        log.info("********** MemberService Test - findMember : {}", findMember.getGender());
+        findMember.setPassword(passwordEncoder.encode(memberForm.getPassword()));
         findMember.setGender(memberForm.getGender());
         findMember.setPhone(memberForm.getPhone());
         LocalDate date = LocalDate.parse(birth);
         LocalDateTime dateTime = date.atStartOfDay();
         findMember.setBirth(dateTime);
-
         return findMember.getId();
     }
 

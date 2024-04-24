@@ -116,7 +116,8 @@ public class MemberController {
     @PostMapping("/{id}/setting")
     public String settingPro(@PathVariable("id") Long id, MemberForm memberForm) {
         log.info("********** MemberController POST /members/:id/setting - id : {}", id);
-        log.info("********** HomeController POST /members/:id/setting - member Birth : {}", memberForm.getBirth());
+        log.info("********** MemberController POST /members/:id/setting - member Birth : {}", memberForm.getBirth());
+        log.info("********** MemberController POST /members/:id/setting - member Gender : {}", memberForm.getGender());
         Long setId = memberService.setMember(memberForm);
         return "redirect:/";
     }

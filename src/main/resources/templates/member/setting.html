@@ -3,6 +3,27 @@
 <th:block th:replace="~{/layouts/base :: base(~{this::content})}">
     <th:block th:fragment="content">
 
+        <!-- 공개 범위 모달 -->
+        <div class="modal fade" id="openRangeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">범위 선택</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="openRangeModalContainer">
+                        <div class="row">
+                            <div class="col-auto mt-2 mb-2" th:each="orType: ${openRangeType}">
+                                <button type="button" class="btn btn-outline-secondary orTypeBtn"
+                                        th:text="${orType.value}" th:if="${orType.value !='전체공개'}"
+                                        th:data-type="${orType.name()}"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- 회원 설정 영역 -->
         <div class="container mt-5 mb-5" style="width: 35%" id="SettingContainer">
             <form action="" th:action th:object="${member}" method="post">
@@ -101,7 +122,15 @@
                         </div>
                 </div>
             </div>
-            <!-- 공개 범위 설정
+            <!-- 공개 범위 설정 -->
+            <!--<div class="row">
+                <div class="col input-group mb-3">
+                    <span class="input-group-text">팔로잉 목록</span>
+                    <button class="btn btn-outline-secondary" type="button" id="openRangeModalBtn" data-bs-toggle="modal" data-bs-target="#openRangeModal">선택</button>
+                </div>
+                &lt;!&ndash; 공개 범위 결과값 &ndash;&gt;
+                <input type="hidden" th:field="*{openRange}" id="followingRangeValue">
+            </div>
         <div class="row mt-5">
             <div class="col d-flex">
                 <div class="col">
