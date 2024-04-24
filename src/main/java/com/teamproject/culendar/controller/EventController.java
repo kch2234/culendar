@@ -3,6 +3,8 @@ package com.teamproject.culendar.controller;
 import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.EventBoard;
 import com.teamproject.culendar.domain.board.EventMemberList;
+import com.teamproject.culendar.domain.enumFiles.BoardType;
+import com.teamproject.culendar.domain.enumFiles.RatingType;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.domain.program.Program;
 import com.teamproject.culendar.dto.BoardDTO;
@@ -15,11 +17,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController @Slf4j @RequestMapping("/event") @RequiredArgsConstructor public class EventController {
@@ -54,6 +55,18 @@ import java.util.Map;
     }
     log.info("***** EventController /event/applyEventMember - result = success");
     return new ResponseEntity<>("success", HttpStatus.OK);
+  }
+
+  // programType 보내기
+  @ModelAttribute("boardTypes")
+  public BoardType[] boardType() {
+    return BoardType.values();
+  }
+
+  @ModelAttribute("ratingType") // 작품 종류 데이터를 뷰에 전달
+  public RatingType[] ratingTypes() {
+    List<RatingType> ratingTypes = new ArrayList<>();
+    return RatingType.values();
   }
 }
 

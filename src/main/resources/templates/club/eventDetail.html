@@ -110,9 +110,12 @@
                     <!--  모임 상세 정보 영역 하단  -->
                     <div class="col d-flex justify-content-around">
                         <!--  필터링 연령대  -->
-                        <div class="btn btn-outline-secondary" id="filterAgeRange" th:data-min-age="${eventBoard.filterMinAge}" th:data-max-age="${eventBoard.filterMaxAge}"></div>
+                        <div class="btn btn-outline-secondary" id="filterAgeRange"
+                             th:data-min-age="${eventBoard.filterMinAge}"
+                             th:data-max-age="${eventBoard.filterMaxAge}"></div>
                         <!--  필터링 성별  -->
-                        <div class="btn btn-outline-secondary" id="filterGender" th:data-value="${eventBoard.filterGender}"></div>
+                        <div class="btn btn-outline-secondary" id="filterGender"
+                             th:data-value="${eventBoard.filterGender}"></div>
 
                     </div>
                 </div>  <!--  col-auto  -->
@@ -126,19 +129,19 @@
                         <th:block th:if="${member.getId} == ${eventBoard.getMemberDTO().getId()}">
                             <div class="col-3">
                                 <input type="button" class="btn btn-secondary" value="모임확정인원">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title"></h4>
-                                                <button type="button" class="close" data-dismiss="modal">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body" id>
-                                                <!--  TODO 모임 확정 인원 리스트  -->
-                                            </div>
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title"></h4>
+                                            <button type="button" class="close" data-dismiss="modal">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body" id>
+                                            <!--  TODO 모임 확정 인원 리스트  -->
                                         </div>
                                     </div>
+                                </div>
                                 </input>
                             </div>
                         </th:block>  <!--  작성자  -->
@@ -157,9 +160,9 @@
             <!--  게시글 내용  -->
             <div class="row mt-4">
                 <div class="col">
-                    <br /><br />
+                    <br/><br/>
                     <p th:text="${eventBoard.content}"></p>
-                    <br />
+                    <br/>
                 </div>
             </div>
 
@@ -176,8 +179,9 @@
                     <!-- 문장형 평가, 캘린더 등록, 북마크 -->
                     <div class="d-flex flex-row">
 
-                        <div class="col-4">
-                            <div class="badge text-bg-secondary w-100 fs-6" id="AvgRating">
+                        <div class="col-auto">
+                            <div class="badge text-bg-secondary h-100 fs-4 d-flex justify-content-center align-items-center p-1"
+                                 id="AvgRating">
                                 <!--    평균 문장형 평가 위치-->
                             </div>
                         </div>
@@ -191,16 +195,23 @@
                                     <button id="bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>
                                 </div>
                                 <div class="col p-0 fs-4">
-                                    <button class="fa-regular fa-clipboard w-75 h-75"></button>
+                                    <button class="fa-regular fa-clipboard w-75 h-75"
+                                            type="button"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#addMyCalendar-modal"></button>
                                 </div>
                             </th:block>
+
                         </div>
+
                     </div>
 
                     <!-- 작품 제목 -->
                     <div class="">
                         <div class="col">
-                            <div class="fs-3" th:text="${eventBoard.getProgramDTO().getTitle()}"></div>
+                            <a th:href="@{/program/{seq}(seq=${eventBoard.getProgramDTO().seq})}"
+                               class="fs-3"
+                               th:text="${eventBoard.getProgramDTO().getTitle()}"></a>
                         </div>
                     </div>
 
@@ -214,36 +225,41 @@
                     </div>
 
                     <!-- 좋아요 버튼, 내 후기 -->
-                    <div class="d-flex flex-row" id="ratingAndReviewContainer">
+                    <div class="d-flex flex-row justify-content-between" id="ratingAndReviewContainer">
 
                         <th:block sec:authorize="isAuthenticated()">
 
-                            <div class="col-4 fs-6" id="addRating">
+                            <div class="col-auto d-flex justify-content-start align-items-center">
                                 <!--   회원 문장형 평가 위치-->
+                                <button class="btn btn-outline-secondary"
+                                        id="addRating"
+                                        type="button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#addRating-modal"></button>
                             </div>
                             <div class="col"></div>
-                            <!-- TODO : 좋아요, 후기, 체크박스 버튼 -->
-                            <div class="col-2 fs-6">
-                                <div class="badge text-bg-secondary w-100 h-100">내후기</div>
+
+                            <!-- 좋아요, 후기, 체크박스 버튼 -->
+                            <div class="col-3 p-0">
+                                <div class="d-flex justify-content-end align-items-center fs-5 w-100 h-100">내후기</div>
                             </div>
-                            <div class="col-2 fs-6">
-                                <div class="badge text-bg-secondary w-100 h-100">체크박스</div>
+                            <div class="col-2 d-flex justify-content-center align-items-center">
+                                <button type="button" class="fa-regular fa-circle-check fa-2x" id="myReview"
+                                        data-bs-toggle="modal" data-bs-target="#addReview-modal"></button>
                             </div>
 
                         </th:block>
 
-                    </div>  <!--  좋아요 버튼, 내 후기  -->
+                    </div>
 
-                    <!-- TODO 지도 영역 -->
-                    <div class="h-40">
+                    <div style="height: 40%">
                         <div class="col h-100">
-                            <div class="w-100" id="staticMap" style="height:420px;"></div>
+                            <div class="w-100 h-100" id="staticMap"></div>
                         </div>
                     </div>
 
-                </div>  <!--  col 작품 정보 영역  -->
-
-            </div>  <!--  row 작품 정보 카드  -->
+                </div>
+            </div>
 
             <!--  신청 버튼 TODO 모임 신청  -->
             <div class="d-flex col justify-content-center mt-5">
@@ -326,6 +342,7 @@
                 } else {
                     memberId = member.id;
                 }
+                var eventBoardId = [[${eventBoard.id}]]; // 현재 게시글의 id
                 console.log("memberId : " + memberId);
 
                 var programId = [[${eventBoard.getProgramDTO.getId()}]]; // 현재 게시글의 작품 id
@@ -334,6 +351,10 @@
                 kakaoMap() // 카카오 지도 띄우기
                 getAvgRating(); // 평균 평가 가져오기
                 getMyRating(); // 내 평가 가져오기
+                checkEventBkmark(); // todo 게시글 북마크 체크
+                checkProgramBkmark(); // 작품 북마크 체크
+                // 해당 작품 후기 작성 여부 확인 함수
+                getThisProgramReview();
 
                 // ********** 클릭시 이벤트들 **********
 
@@ -343,7 +364,6 @@
                     $('#addRating-modal').modal('hide');
                     $('#addMyCalendar-modal').modal('hide');
                 });
-
 
 
                 $('.btnApplyEventMember').on('click', function () {
@@ -384,17 +404,6 @@
                         }
                     });
 
-                });
-
-
-                // 회원의 문장형 평가 클릭시 모달 띄우기
-                $('#ratingAndReviewContainer').on('click', '#addRating', function () {
-                    let data = {
-                        memberId: memberId,
-                        programId: programId
-                    };
-
-                    $('#addRating-modal').modal('show');
                 });
 
                 // 문장형 평가 모달내에 버튼 클릭시 이벤트
@@ -466,10 +475,10 @@
                             console.log(result);
 
                             if (result === 'fail') {
-                                alert('북마크에서 삭제 되었습니다.');
+                                checkProgramBkmark();
                                 return;
                             }
-                            alert('북마크에 추가되었습니다.');
+                            checkProgramBkmark();
                         },
                         error: function (error) {
                             console.log(error);
@@ -499,6 +508,8 @@
                         }
                     });
                 });
+
+
 
                 // 일정 모달 내에 달력 버튼 클릭시
                 $('#addMyCalContainer').on('click', '.cal-name', function () {
@@ -592,15 +603,14 @@
                         type: 'GET',
                         success: function (data) {
                             console.log(data);
-                            let html = '';
-                            html += '<div class="badge text-bg-secondary w-100 h-100">' + data + '</div>';
-                            $('#addRating').html(html);
+                            $('#addRating').text(data);
                         }
                     });
                 }
 
                 // 성별에 따라 다른 내용을 설정하는 함수
                 setFilterGenderContent();
+
                 function setFilterGenderContent() {
                     let gender = document.getElementById('filterGender').getAttribute('data-value');
                     let content = '';
@@ -659,11 +669,100 @@
                     }
                 }
 
+                // 작품 북마크 여부 확인 이벤트
+                function checkProgramBkmark() {
+                    console.log("checkProgramBkmark");
+                    $.ajax({
+                        url: '/bkmark/checkProgramBkmark/' + memberId + '/' + programId,
+                        type: 'GET',
+                        success: function (data) {
+                            if (data === true) {
+                                console.log(data);
+                                $('#bkMarkBtn').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
+                            }
+
+                            if (data === false) {
+                                console.log(data);
+                                $('#bkMarkBtn').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
+                            }
+                        }
+                    });
+                }
+
+                // 게시글 북마크 여부 확인 함수
+                function checkEventBkmark() {
+
+                    console.log("checkBoardBkmark");
+                    $.ajax({
+                        url: '/bkmark/checkEventBkmark/' + memberId + '/' + boardIdVal,
+                        type: 'GET',
+                        success: function (data) {
+                            if (data === true) {
+                                console.log(data);
+                                $('#boardBkMarkBtn').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
+                            }
+
+                            if (data === false) {
+                                console.log(data);
+                                $('#boardBkMarkBtn').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
+                            }
+                        }
+                    });
+
+                }
+
+                // 해당 작품 후기 작성 여부 확인 함수
+                function getThisProgramReview() {
+
+                    console.log("후기 여부 확인 함수")
+
+                    // 회원 아이디 Long 출력
+                    console.log(memberId);
+
+
+                    if (memberId !== null) {
+
+                        console.log("getThisProgramReview");
+
+                        $.ajax({
+                            url: '/boards/findReview/' + memberId + '/' + programId,
+                            type: 'GET',
+                            success: function (data) {
+                                console.log(data);
+                                if (data === true) {
+                                    console.log(data);
+                                    $('#myReview').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
+                                    // data-bs-target 변경
+                                    $('#myReview').attr('data-bs-target', '#modifyReview-modal');
+
+                                    // 회원 후기 게시글 id 가져오기
+                                    $.ajax({
+                                        url: '/boards/findReviewId/' + memberId + '/' + programId,
+                                        type: 'GET',
+                                        success: function (data) {
+                                            console.log(data);
+                                            $('#reviewModifyBtn').attr('th:href', '@{/boards/{boardId}/modify(boardId=' + data.id + ')}');
+                                        }
+                                    });
+
+                                }
+
+                                if (data === false) {
+                                    console.log(data);
+                                    $('#myReview').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
+                                    // data-bs-target 변경
+                                    $('#myReview').attr('data-bs-target', '#addReview-modal');
+                                }
+                            }
+                        });
+                    }
+                }
+
                 // ********** 카카오 지도 **********
-                function kakaoMap(){
+                function kakaoMap() {
                     var locationX = [[${eventBoard.getProgramDTO.getLocationX()}]];
                     var locationY = [[${eventBoard.getProgramDTO.getLocationY()}]];
-                    var markerPosition  = new kakao.maps.LatLng(locationY, locationX);
+                    var markerPosition = new kakao.maps.LatLng(locationY, locationX);
                     var marker = {
                         position: markerPosition
                     };
