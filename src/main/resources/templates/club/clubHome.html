@@ -15,7 +15,7 @@
                 <div class="row p-4">
                     <div class="col d-flex">
                         <div class="col">
-                            <button class="button col btn btn-secondary dropdown-toggle"
+                            <button class="button col btn btn-outline-secondary dropdown-toggle"
                                     type="button"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false">카테고리
@@ -28,14 +28,14 @@
                                             th:text="${programType.value}"></button>
                                 </li>
                             </ul>
-                            <button type="button" class="col btn btn-warning" id="btnNew">최신순</button>
-                            <button type="button" class="col btn btn-warning" id="btnBest">인기순</button>
+                            <button type="button" class="col btn btn-outline-secondary" id="btnNew">최신순</button>
+                            <button type="button" class="col btn btn-outline-secondary" id="btnBest">인기순</button>
                         </div>
                     </div>
                     <div class="col"></div>
                     <button sec:authorize="isAuthenticated()"
                             type="button"
-                            class="col-auto btn btn-primary"
+                            class="col-auto btn btn-secondary"
                             th:onclick="|location.href='@{/clubs/add}'|">글작성
                     </button>
                 </div>
@@ -126,7 +126,7 @@
             function printPagination(pageDTO, sort, align) {
                 let html = "";
 
-                html += '<span class="col-3 d-flex justify-content-around btn btn-info page-item"';
+                html += '<span class="button col btn btn-outline-secondary dropdown-toggle"';
                 if (pageDTO.prev == false) {
                     html += 'disabled';
                 }
@@ -145,7 +145,7 @@
                     }
                 }
 
-                html += '<span class="col-3 d-flex justify-content-around btn btn-info page-item"';
+                html += '<span class="button col btn btn-outline-secondary dropdown-toggle"';
                 if (pageDTO.next == false) {
                     html += 'disabled';
                 }

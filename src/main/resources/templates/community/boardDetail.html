@@ -138,7 +138,8 @@
 
             <!-- 게시글 제목, 수정 / 삭제 버튼, 북마크 버튼 -->
             <div class="row mt-5 text-center d-flex justify-content-center align-items-center">
-                <div class="col-9 fs-3 overflow-auto d-flex justify-content-center align-items-center"
+                <div class="col-3"></div>
+                <div class="col fs-3 overflow-auto d-flex justify-content-center align-items-center"
                      th:text="${board.title}">
                 </div>
                 <!-- 회원 일 경우에만 북마크 또는 수정, 삭제 버튼 보이기 -->
@@ -289,8 +290,10 @@
                     <!-- TODO 닉네임, 팔로우 버튼 -->
                     <div class="row text-center mb-3 d-flex justify-content-center">
                         <div class="col-auto text-center">
-                            <button type="button" class="btn btn-outline-secondary fs-4 d-inline-block"
-                                 th:text="${board.getMemberDTO().getUsername()}" th:onclick="|location.href='@{/members/{id}(id=${board.getMemberDTO().getId()})}'|">
+                            <button type="button"
+                                    class="btn btn-outline-secondary fs-4 d-inline-block"
+                                    th:text="${board.getMemberDTO().getUsername()}"
+                                    th:onclick="|location.href='@{/members/{id}(id=${board.getMemberDTO().getId()})}'|">
                             </button>
                         </div>
 
@@ -331,13 +334,18 @@
                     <!-- 댓글 작성 폼 -->
                     <div class="card-body">
                         <form id="cmtForm">
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="comment" placeholder="댓글 내용">
+                            <div class="col d-flex mb-2 form-group">
+                                <input type="text"
+                                       class="col form-control"
+                                       id="commenter"
+                                       th:value="${member.username}"
+                                       readonly>
+                                <div class="col"></div>
+                                <button type="button" class="col-2 btn btn-secondary" id="newCmtBtn">등록</button>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="commenter" th:value="${member.username}" readonly>
+                                <textarea type="text" class="form-control" style="resize: vertical;" id="comment" placeholder="댓글 내용"></textarea>
                             </div>
-                            <button type="button" class="btn btn-primary" id="newCmtBtn">댓글 등록</button>
                         </form>
                     </div>
                     <hr />
@@ -347,80 +355,80 @@
                     <div class="card-body" id="cmtPagination"></div>
 
                 </div>
-                </div>
             </div>
+        </div>
 
-            <!-- 답글 수정 모달 추가 -->
-            <div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="modifyModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modifyModalLabel">Comment Modify Modal</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                    <label for="modalCid" class="col-form-label">Comment Id</label>
-                                    <input type="text" class="form-control" id="modalCid" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modalCmt" class="col-form-label">Comment</label>
-                                    <input type="text" class="form-control" id="modalCmt">
-                                </div>
-                                <div class="form-group">
-                                    <label for="modalCmter" class="col-form-label">Commenter</label>
-                                    <input type="text" class="form-control" id="modalCmter">
-                                </div>
-                                <div class="form-group">
-                                    <label for="modalCmtDate" class="col-form-label">Comment Date</label>
-                                    <input type="text" class="form-control" id="modalCmtDate" readonly>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="modalSaveBtn">Save</button>
-                        </div>
+        <!-- 답글 수정 모달 추가 -->
+        <div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="modifyModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modifyModalLabel">Comment Modify Modal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="modalCid" class="col-form-label">Comment Id</label>
+                                <input type="text" class="form-control" id="modalCid" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="modalCmt" class="col-form-label">Comment</label>
+                                <input type="text" class="form-control" id="modalCmt">
+                            </div>
+                            <div class="form-group">
+                                <label for="modalCmter" class="col-form-label">Commenter</label>
+                                <input type="text" class="form-control" id="modalCmter">
+                            </div>
+                            <div class="form-group">
+                                <label for="modalCmtDate" class="col-form-label">Comment Date</label>
+                                <input type="text" class="form-control" id="modalCmtDate" readonly>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="modalSaveBtn">Save</button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- 답글 모달 추가 -->
-            <div class="modal fade" id="reCmtModal" tabindex="-1" aria-labelledby="reCmtModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="reCmtModalLabel">Re-Comment Modal</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                    <label for="reCmt" class="col-form-label">Comment</label>
-                                    <input type="text" class="form-control" id="reCmt">
-                                </div>
-                                <div class="form-group">
-                                    <label for="reCmter" class="col-form-label">Commenter</label>
-                                    <input type="text" class="form-control" id="reCmter">
-                                </div>
-                                <input type="hidden" id="reRefid" />
-                                <input type="hidden" id="reStep" />
-                                <input type="hidden" id="reLevel" />
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="reCmtSaveBtn">Save</button>
-                        </div>
+        <!-- 답글 모달 추가 -->
+        <div class="modal fade" id="reCmtModal" tabindex="-1" aria-labelledby="reCmtModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reCmtModalLabel">Re-Comment Modal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="reCmt" class="col-form-label">Comment</label>
+                                <input type="text" class="form-control" id="reCmt">
+                            </div>
+                            <div class="form-group">
+                                <label for="reCmter" class="col-form-label">Commenter</label>
+                                <input type="text" class="form-control" id="reCmter">
+                            </div>
+                            <input type="hidden" id="reRefid" />
+                            <input type="hidden" id="reStep" />
+                            <input type="hidden" id="reLevel" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="reCmtSaveBtn">Save</button>
                     </div>
                 </div>
             </div>
+        </div>
 
         </div>
 
@@ -922,15 +930,14 @@
                         if (list[i].level > 0) {
                             html += '<img src="/comments/display/arrow.PNG" width="30"/>';
                         }
-                        html += '</div><div class="col mr-2">';
+                        html += '</div><div class="col">';
                         html += '<div class="h5 mb-0 font-weight-bold text-gray-800">' + list[i].comment + '</div>';
-                        html += '<div class="text-xs font-weight-bold text-primary mb-1"> ' + list[i].memberDTO.username + '</div>';  //
-                        html += ' <span class="ml2 text-gray-500"> ' + displayTime(list[i].lastModifiedDate) + ' </span></div></div>';
-                        html += '<div class="col-4 d-flex justify-content-between align-items-baseline">';
-                        html += '<button class="col btn btn-info mr-1 reCmtBtn" data-refid="' + list[i].refId + '" data-step="' + list[i].step + '" data-level="' + list[i].level + '">답글</button>';
-                        html += '<button class="col btn btn-warning mr-1 cmtModifBtn" data-cmtid="' + list[i].id + '">수정</button>';
-                        html += '<button class="col btn btn-danger mr-1 cmtDelBtn" data-cmtid="' + list[i].id + '" >삭제</button>';
-                        html += '</div></div><hr />';
+                        html += '<div class="text-xs font-weight-bold text-primary mb-1"> ' + list[i].memberDTO .username + '</div>';  //
+                        html += ' <span class="ml2 text-gray-500"> ' + displayTime(list[i].lastModifiedDate) + ' </span></div>';
+                        html += '<div class="col-4 d-flex">';
+                        html += '<button class="col btn btn-outline-secondary mr-1 reCmtBtn" data-refid="' + list[i].refId + '" data-step="' + list[i].step + '" data-level="' + list[i].level + '">답글</button>';
+                        html += '<button class="col btn btn-outline-secondary mr-1 cmtDelBtn" data-cmtid="' + list[i].id + '" >삭제</button>';
+                        html += '</div></div></div><hr />';
                     }
                     cmtListDiv.html(html); // 목록 태그 컨테이너 안에 붙히기
                 }
@@ -944,7 +951,7 @@
                     } else {
                         html += '<li class="page-item disabled">';
                     }
-                    html += '<a class="page-link" href="' + (pageDTO.startPage - 1) + '">Previous</a></li>';
+                    html += '<a class="page-link" href="' + (pageDTO.startPage - 1) + '">PREV</a></li>';
                     // * 페이지 번호 반복
                     for (let i = 0; i < pageDTO.pageNumList.length; i++) {
                         if (pageDTO.pageNumList[i] == currPage) {
@@ -960,7 +967,7 @@
                     } else {
                         html += '<li class="page-item disabled">';
                     }
-                    html += '<a class="page-link" href="' + (pageDTO.endPage + 1) + '">Next</a>';
+                    html += '<a class="page-link" href="' + (pageDTO.endPage + 1) + '">NEXT</a>';
                     html += '</li></ul></nav>';
 
                     cmtPaginationDiv.html(html); // 부착!
