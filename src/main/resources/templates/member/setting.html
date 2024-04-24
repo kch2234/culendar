@@ -21,7 +21,7 @@
                             <div class="col">
                                 <div class="input-group input-group-lg justify-content-start">
                                     <span class="input-group-text d-flex justify-content-center align-items-center p-2"
-                                          style="width: 20%">아이디</span>
+                                          style="width: 23%">아이디</span>
                                     <span class="form-control" th:text="*{userid}"></span>
                                 </div>
                             </div>
@@ -31,7 +31,7 @@
                         <div class="col">
                             <div class="input-group input-group-lg">
                                 <label class="input-group-text d-flex justify-content-center align-items-center p-2"
-                                       style="width: 41%" for="checkMale">남성</label>
+                                       style="width: 48%" for="checkMale">남성</label>
                                 <div class="input-group-text">
                                     <input class="form-check-input mt-0" type="radio" th:field="*{gender}" th:value="MALE" id="checkMale">
                                 </div>
@@ -40,7 +40,7 @@
                         <div class="col">
                             <div class="input-group input-group-lg justify-content-end">
                                 <label class="input-group-text d-flex justify-content-center align-items-center p-2"
-                                       style="width: 41%" for="checkFemale">여성</label>
+                                       style="width: 48%" for="checkFemale">여성</label>
                                 <div class="input-group-text">
                                     <input class="form-check-input mt-0" type="radio" th:field="*{gender}" th:value="FEMALE" id="checkFemale">
                                 </div>
@@ -53,7 +53,7 @@
                                 <!-- 비밀번호 입력 -->
                                 <div class="input-group input-group-lg">
                                     <span class="input-group-text d-flex justify-content-center align-items-center p-2"
-                                          style="width: 20%">비밀번호</span>
+                                          style="width: 23%">비밀번호</span>
                                     <input type="password" th:field="*{password}" class="form-control" id="password">
                                 </div>
                                 <!-- 중복체크 결과값 -->
@@ -66,7 +66,7 @@
                                 <!-- 비밀번호 확인 입력 -->
                                 <div class="input-group input-group-lg">
                                     <span class="input-group-text d-flex justify-content-center align-items-center p-2"
-                                          style="width: 20%">비밀번호 확인</span>
+                                          style="width: 23%">비밀번호 확인</span>
                                     <input type="password" class="form-control" id="repeatPassword">
                                 </div>
                                 <!-- 중복체크 결과값 -->
@@ -80,7 +80,7 @@
                                 <div class="input-group input-group-lg">
                                     <input hidden="hidden" th:field="*{phone}" id="phoneNum">
                                     <span class="input-group-text d-flex justify-content-center align-items-center"
-                                          style="width: 20%">전화번호</span>
+                                          style="width: 23%">전화번호</span>
                                     <input type="number" class="form-control" id="phoneNumFirst">
                                     <span class="input-group-text d-flex justify-content-center align-items-center">-</span>
                                     <input type="number" class="form-control" id="phoneNumSecond">
@@ -93,9 +93,9 @@
                         </div>
                         <!-- 생년월일 -->
                         <div class="row">
-                            <div class="col input-group  mb-3">
+                            <div class="col input-group input-group-lg  mb-3">
                                 <span class="input-group-text d-flex input-group-lg justify-content-center align-items-center"
-                                      style="width: 20%">생년월일</span>
+                                      style="width: 23%">생년월일</span>
                                 <input type="date" th:field="*{birth}" max="2012-12-31" min="1940-01-01" class="form-control">
                             </div>
                         </div>
@@ -167,7 +167,6 @@
                     <!-- 취소, 탈퇴 버튼 -->
                     <div class="col input-group input-group-lg">
                         <a href="#" th:onclick="history.go(-1)" class="btn btn-outline-secondary">취소</a>
-                        <a href="#" th:onclick="|location.href='@{/members/{id}/deactivate(id=${member.userid})}'|" class="btn btn-outline-secondary">탈퇴</a>
                     </div>
                     <!-- 저장 버튼 -->
                     <div class="col-auto">
