@@ -152,8 +152,10 @@
         var memberId = null;
 
         // 로그인 여부 확인
-        if ([[${member}]] != null) {
-            memberId = [[${member.getMember().id}]];
+        if (memberId !== 'null') {
+            memberId = Number(memberId); // 숫자 타입으로 변환
+        } else {
+            memberId = null;
         }
 
         console.log(memberId);
