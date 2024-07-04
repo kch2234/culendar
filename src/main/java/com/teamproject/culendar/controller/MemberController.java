@@ -4,27 +4,16 @@ package com.teamproject.culendar.controller;
 import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.OpenRangeType;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
-import com.teamproject.culendar.domain.member.Follow;
-import com.teamproject.culendar.domain.member.Interest;
 import com.teamproject.culendar.domain.member.Member;
-import com.teamproject.culendar.dto.*;
-
-
+import com.teamproject.culendar.dto.InterestForm;
+import com.teamproject.culendar.dto.MemberDTO;
+import com.teamproject.culendar.dto.MemberForm;
 import com.teamproject.culendar.repository.MemberRepository;
-import com.teamproject.culendar.security.domain.CustomMember;
-import com.teamproject.culendar.service.FollowService;
 import com.teamproject.culendar.service.InterestService;
 import com.teamproject.culendar.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/members")
