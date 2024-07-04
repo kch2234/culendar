@@ -60,7 +60,6 @@ public class CommentService {
     Comment comment = commentRepository.findById(commentUpdate.getId()).orElse(null);
     assert comment != null;
     comment.setComment(commentUpdate.getComment());
-    comment.setMember(commentUpdate.getMemberDTO().toEntity());
   }
 
   // 댓글 삭제 : deleteById()

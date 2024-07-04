@@ -10,5 +10,4 @@ import lombok.NoArgsConstructor;
 public class CommentUpdate {
   private Long id;
   private String comment;
-  private MemberDTO memberDTO;
 }
