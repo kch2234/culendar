@@ -469,9 +469,6 @@
                     checkFollow();
                 }
 
-
-
-
                 // ********** 클릭시 이벤트들 **********
 
                 // 문장형 평가 모달내에 버튼 클릭시 이벤트
@@ -985,7 +982,6 @@
                 $("#newCmtBtn").on("click", function (e) {
                     console.log("new comment button clicked!!");
                     let cmtTxt = $("#comment").val(); // 댓글 내용 가져오기
-<!--                    let cmterTxt = $("#commenter").val(); // 댓글 작성자 가져오기-->
                     let data = {
                         comment: cmtTxt,
                         memberId: memberId,
