@@ -9,14 +9,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">분류 선택</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <button class="close" data-dismiss="modal" type="button">&times;</button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-auto mt-2 mb-2" th:each="pType : ${programType}">
-                                <button type="button" class="btn btn-outline-secondary pTypeBtn"
-                                        th:text="${pType.value}" th:if="${pType.value !='기타'}"
-                                        th:data-type="${pType.name()}"></button>
+                                <button class="btn btn-outline-secondary pTypeBtn" th:data-type="${pType.name()}"
+                                        th:if="${pType.value !='기타'}" th:text="${pType.value}"
+                                        type="button"></button>
                             </div>
                         </div>
 
@@ -31,15 +31,15 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">분류 선택</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <button class="close" data-dismiss="modal" type="button">&times;</button>
                     </div>
                     <div class="modal-body container">
 
                         <div class="row">
                             <div class="col-auto mt-2 mb-2" th:each="lType : ${locationType}">
-                                <button type="button" class=" btn btn-outline-secondary lTypeBtn"
-                                        th:text="${lType.value}" th:if="${lType.value !='기타'}"
-                                        th:data-loc="${lType.name()}"></button>
+                                <button class=" btn btn-outline-secondary lTypeBtn" th:data-loc="${lType.name()}"
+                                        th:if="${lType.value !='기타'}" th:text="${lType.value}"
+                                        type="button"></button>
                             </div>
                         </div>
                     </div>
@@ -54,9 +54,10 @@
                     <div class="modal-header">
                         <h4 class="modal-title">달력 선택</h4>
                         <div class="hidden-true" th:if="${member != null}">
-
+                            <div class="hidden-true" id="memberId"
+                                 th:data-memberId="${member.getMember().getId()}"></div>
                         </div>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <button class="close" data-dismiss="modal" type="button">&times;</button>
                     </div>
                     <div class="modal-body" id="addMyCalContainer2">
                         <div id="addMyCalendarBtnContainer2">
@@ -74,7 +75,7 @@
                 <!-- 지도 영역 -->
                 <div class="col-9">
                     <div id="map" style="height:750px;"></div>
-                    <div id="setMap" class="btn btn-outline-secondary">현재 위치로 이동</div>
+                    <div class="btn btn-outline-secondary" id="setMap">현재 위치로 이동</div>
                 </div>
                 <!-- 사이드 검색창 -->
                 <div class="col ml-2 h-100" id="side-search">
@@ -84,11 +85,12 @@
                             <!-- 버튼 비활성화 -->
                             <div class="col-12 p-0 input-group input-group-lg">
 
-                                <button type="submit" id="search-btn"
-                                        class="btn btn-dark fa-solid fa-magnifying-glass"></button>
+                                <button class="btn btn-dark fa-solid fa-magnifying-glass" id="search-btn"
+                                        type="submit"></button>
 
-                                <input type="text" id="search-text" class="p-0 w-75 form-control col dropdown-toggle"
-                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                <input aria-expanded="false" class="p-0 w-75 form-control col dropdown-toggle"
+                                       data-bs-toggle="dropdown"
+                                       id="search-text" type="text">
                                 <ul class="dropdown-menu overflow-scroll" id="searched-list">
                                     <!-- 동적으로 드롭다운 검색 결과 -->
                                 </ul>
@@ -108,19 +110,21 @@
         </div>
 
         <!-- 인기 작품, 모임 영역 -->
-        <div id="favLocaionProgram" class="container">  <!--  좌우 스크롤  -->
+        <div class="container" id="favLocaionProgram">  <!--  좌우 스크롤  -->
             <div class="row mt-5 mb-3">
                 <div class="col-auto">
                     <div class="col fs-3 badge text-bg-secondary">지역별 인기 작품</div>
-                    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#type-modal">분류 선택</button>
-                    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#location-modal">지역 선택</button>
+                    <button class="btn btn-dark" data-target="#type-modal" data-toggle="modal" type="button">분류 선택
+                    </button>
+                    <button class="btn btn-dark" data-target="#location-modal" data-toggle="modal" type="button">지역 선택
+                    </button>
 
                 </div>
             </div>
-                <div class="row mb-5" id="BestProgramContainer"></div>
+            <div class="row mb-5" id="BestProgramContainer"></div>
         </div>
 
-        <div id="favLocationEvent" class="container">  <!--  좌우 스크롤  -->
+        <div class="container" id="favLocationEvent">  <!--  좌우 스크롤  -->
             <div class="row mt-5 mb-3">
                 <div class="col-auto">
                     <div class="fs-3 badge text-bg-secondary">지역별 인기 모임</div>
@@ -131,7 +135,7 @@
     </th:block>
 </th:block>
 <script th:inline="javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         // ********** 변수 선언 **********
 
@@ -148,17 +152,7 @@
             imageSize = new kakao.maps.Size(30, 30),
             imageOption = {offset: new kakao.maps.Point(20, 40)};
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-
-        var memberId = null;
-
-        // 로그인 여부 확인
-        if (memberId !== 'null') {
-            memberId = Number(memberId); // 숫자 타입으로 변환
-        } else {
-            memberId = null;
-        }
-
-        console.log(memberId);
+        var memberId = $('#memberId').data('memberid');
 
         // ********** 페이지 로딩시 실행할 함수들 **********
         getBestProgramList();
@@ -251,8 +245,8 @@
                 html += '</div>';
                 html += '<div class="row">';
                 html += '<div class="col-12">';
-                html += '<div class="fs-5">' + list[i].startDate.substring(0,10) + ' ~ </div>';
-                html += '<div class="fs-5">' + list[i].endDate.substring(0,10) + '</div>';
+                html += '<div class="fs-5">' + list[i].startDate.substring(0, 10) + ' ~ </div>';
+                html += '<div class="fs-5">' + list[i].endDate.substring(0, 10) + '</div>';
                 html += '</div>';
                 html += '</div>';
                 html += '</div>';
@@ -359,7 +353,6 @@
             }
 
             var programDate = data.startDate.substring(0, 10) + ' ~ ' + data.endDate.substring(0, 10);
-
             let html = '';
             /*html += '<img src="' + data.thumbnail + '" class="card-img-top" alt="...">';
             html += '<div class="card-body">';
@@ -386,25 +379,30 @@
             html += '<li class="list-group-item">' + location + '</li>';
             html += '<li class="list-group-item">' + programDate + '</li>';
             html += '</ul>';
-            html += '<div class="card-body container">';
-            html += '<div class="row d-flex justify-content-center">';
-            html += '<div class="col-auto">';
-            html += '<button class="fa-regular fa-bookmark w-75 h-75 fa-2x"></button>';
+            if (memberId !== undefined) {
+                html += '<div class="card-body container">';
+                html += '<div class="row d-flex justify-content-center">';
+                html += '<div class="col-auto">';
+                html += '<button class="fa-regular fa-bookmark w-75 h-75 fa-2x"></button>';
+                html += '</div>';
+                html += '<div class="col-auto">';
+                html += '<button class="fa-regular fa-clipboard w-75 h-75 fa-2x" type="button" data-bs-toggle="modal" data-bs-target="#addMyCalendar-modal"></button>';
+                html += '</div>';
+                html += '</div>';
+            }
             html += '</div>';
-            html += '<div class="col-auto">';
-            html += '<button class="fa-regular fa-clipboard w-75 h-75 fa-2x" type="button" data-bs-toggle="modal" data-bs-target="#addMyCalendar-modal"></button>';
-            html += '</div>';
-            html += '</div>';
-            html += '</div>';
+
 
             $('#search-info-box').html(html);
             checkBkmark();
-
-
         }
 
         // 북마크 여부 확인 이벤트
         function checkBkmark() {
+            if (memberId === undefined) {
+                console.log("memberId = " + memberId);
+                return false;
+            }
             console.log("checkBkmark");
             $.ajax({
                 url: '/bkmark/checkProgramBkmark/' + memberId + '/' + programId,
@@ -425,7 +423,11 @@
 
         // 북마크 버튼 클릭시 이벤트
         $('#search-info-box').on('click', '.fa-bookmark', function () {
-
+            if (memberId === undefined) {
+                console.log("memberId : " + memberId);
+                alert('로그인 후 이용해주세요.');
+                return false;
+            }
             event.preventDefault();
 
             let data = {
@@ -459,7 +461,11 @@
 
         // 사이드 정보창 일정 아이콘 클릭시 이벤트
         $('#search-info-box').on('click', '.fa-clipboard', function () {
-
+            if (memberId === undefined) {
+                console.log("memberId : " + memberId);
+                alert('로그인 후 이용해주세요.');
+                return;
+            }
             // ajax로 내 달력 목록 가져오기
             $.ajax({
                 url: '/calendar/myCalendarNameList/' + memberId,
@@ -514,11 +520,16 @@
 
         // 사이드 정보창 일정 모달 내에 새로운 캘린더 추가 버튼 클릭시
         $('#addMyCalContainer2').on('click', '#addNewCalendarBtn', function () {
+            if (memberId === undefined) {
+                console.log("memberId : " + memberId);
+                alert('로그인 후 이용해주세요.');
+                return;
+            }
             let newCalendarName = $('#newCalendarName').val();
             console.log(newCalendarName);
             if (newCalendarName === '') {
                 alert('캘린더 이름을 입력해주세요.');
-                return;
+
             } else {
 
                 let data = {
@@ -585,7 +596,7 @@
         function getCurrentLocationAndPrograms() {
             console.log("getCurrentLocationAndPrograms 호출!");
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
+                navigator.geolocation.getCurrentPosition(function (position) {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
                     console.log(lat, lng);
@@ -598,10 +609,10 @@
                     });
                     map.setCenter(new kakao.maps.LatLng(lat, lng));
                     map.setLevel(3);
-                    reverseGeocode(lat, lng, function(location) {
+                    reverseGeocode(lat, lng, function (location) {
                         getLocationBestList(location);
                     });
-                }, function(error) {
+                }, function (error) {
                     console.error('Geolocation error:', error);
                     alert('위치 정보를 가져오는 데 실패했습니다.');
                 });
@@ -624,7 +635,7 @@
                 headers: {
                     'Authorization': 'KakaoAK d9cba248832f4faec5a2780994bcebdd' // 발급받은 REST API 키
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response && response.documents && response.documents.length > 0) {
                         const addressInfo = response.documents[0].address;
                         const location = addressInfo.region_1depth_name;
@@ -634,7 +645,7 @@
                         callback(null);
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Geocoding error:', error);
                     callback(null);
                 }
@@ -648,21 +659,23 @@
             $.ajax({
                 url: '/search/locationBestList',
                 type: 'GET',
-                data: { location: location },
-                success: function(data) {
-                    var markers = data.map(function(result) {
+                data: {location: location},
+                success: function (data) {
+                    var markers = data.map(function (result) {
                         var marker = new kakao.maps.Marker({
                             position: new kakao.maps.LatLng(result.locationY, result.locationX),
                             title: result.title
                         });
-                        kakao.maps.event.addListener(marker, 'click', function() {
+                        kakao.maps.event.addListener(marker, 'click', function () {
                             changeSideInfo(result);
                         });
                         return marker;
                     });
                     clusterer.addMarkers(markers);
+
+                    changeSideInfo(data[0]);
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('작품 정보 로드 실패:', error);
                 }
             });
@@ -712,10 +725,10 @@
             console.log(programId);
             if (programId === undefined) {
                 alert('검색 결과를 선택해주세요.');
-                return;
+
             } else if (programId === null) {
                 alert('검색 결과가 없습니다.');
-                return;
+
             } else if (programId !== null) {
                 $.ajax({
                     url: '/program/find/' + programId,
