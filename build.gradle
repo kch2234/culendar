@@ -30,6 +30,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 	implementation 'org.jsoup:jsoup:1.15.3'
 
 	compileOnly 'org.projectlombok:lombok'

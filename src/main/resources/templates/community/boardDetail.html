@@ -344,7 +344,11 @@
                                 <button type="button" class="col-2 btn btn-secondary" id="newCmtBtn">등록</button>
                             </div>
                             <div class="form-group">
-                                <textarea type="text" class="form-control" style="resize: vertical;" id="comment" placeholder="댓글 내용"></textarea>
+                                <textarea type="text"
+                                          class="form-control"
+                                          style="resize: vertical;"
+                                          id="comment"
+                                          placeholder="댓글 내용"></textarea>
                             </div>
                         </form>
                     </div>
@@ -358,7 +362,7 @@
             </div>
         </div>
 
-        <!-- 답글 수정 모달 추가 -->
+        <!-- 댓글 수정 모달 추가 -->
         <div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="modifyModalLabel"
              aria-hidden="true">
             <div class="modal-dialog">
@@ -381,7 +385,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="modalCmter" class="col-form-label">Commenter</label>
-                                <input type="text" class="form-control" id="modalCmter">
+                                <input type="text" class="form-control" id="modalCmter" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="modalCmtDate" class="col-form-label">Comment Date</label>
@@ -932,10 +936,11 @@
                         }
                         html += '</div><div class="col">';
                         html += '<div class="h5 mb-0 font-weight-bold text-gray-800">' + list[i].comment + '</div>';
-                        html += '<div class="text-xs font-weight-bold text-primary mb-1"> ' + list[i].memberDTO .username + '</div>';  //
+                        html += '<div class="text-xs font-weight-bold text-primary mb-1"> ' + list[i].memberDTO.username + '</div>';  //
                         html += ' <span class="ml2 text-gray-500"> ' + displayTime(list[i].lastModifiedDate) + ' </span></div>';
                         html += '<div class="col-4 d-flex">';
-                        html += '<button class="col btn btn-outline-secondary mr-1 reCmtBtn" data-refid="' + list[i].refId + '" data-step="' + list[i].step + '" data-level="' + list[i].level + '">답글</button>';
+<!--                        html += '<button class="col btn btn-outline-secondary mr-1 reCmtBtn" data-refid="' + list[i].refId + '" data-step="' + list[i].step + '" data-level="' + list[i].level + '">답글</button>';-->
+                        html += '<button class="col btn btn-outline-secondary mr-1 cmtModifBtn" data-cmtid="'+ list[i].id +'">수정</button>';
                         html += '<button class="col btn btn-outline-secondary mr-1 cmtDelBtn" data-cmtid="' + list[i].id + '" >삭제</button>';
                         html += '</div></div></div><hr />';
                     }
@@ -1115,7 +1120,7 @@
                     // 모달에 댓글 내용 추가
                     $("#modalCid").val(comment.id);
                     $("#modalCmt").val(comment.comment);
-                    $("#modalCmter").val(comment.commenter);
+                    $("#modalCmter").val(comment.memberDTO.username);
                     $("#modalCmtDate").val(displayTime(comment.lastModifiedDate));
                     $("#modifyModal").modal("show"); // 모달 보여주기
                 }
@@ -1125,11 +1130,9 @@
                     // 수정된 내용들 다 가져와서 수정 요청
                     let cidVal = $("#modalCid").val();
                     let cmtVal = $("#modalCmt").val();
-                    let cmterVal = $("#modalCmter").val();
                     let data = {
                         id: cidVal,
-                        comment: cmtVal,
-                        commenter: cmterVal
+                        comment: cmtVal
                     };
                     $.ajax({
                         type: "patch",
