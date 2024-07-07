@@ -301,6 +301,8 @@
         // submit 버튼 클릭 시 유효성 검사
         $("#saveBtn").click(function () {
 
+            event.preventDefault();
+
             let check = inputcheck();
 
             if(check === true){
