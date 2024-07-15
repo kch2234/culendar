@@ -5,6 +5,7 @@ import com.teamproject.culendar.domain.board.EventBoard;
 import com.teamproject.culendar.domain.board.EventMemberList;
 import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.BoardBkMarkDTO;
+import com.teamproject.culendar.dto.EventBoardDTO;
 import com.teamproject.culendar.dto.MemberDTO;
 import com.teamproject.culendar.repository.BoardRepository;
 import com.teamproject.culendar.repository.EventBoardRepository;
@@ -14,6 +15,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -62,4 +66,20 @@ public class EventService {
     eventRepository.delete(findEventMemberList);
   }
 
+  // 인기 모임 리스트 가져오기
+  public List<EventBoardDTO> bestEventList() {
+    List<EventBoard> eventBoardList = eventRepository.findBestEventList();
+    // 리스트 최대 길이 4로 자르기
+    if (eventBoardList.size() > 4) {
+      eventBoardList = eventBoardList.subList(0, 4);
+    }
+    // List<EventBoard> -> List<EventBoardDTO>
+    List<EventBoardDTO> eventBoardDTOList = eventBoardList.stream()
+            .map(EventBoardDTO::new)
+            .collect(Collectors.toList());
+    // 리스트 길이 출력
+    log.info("** EventService bestEventList - eventBoardDTOList: {}", eventBoardDTOList);
+
+    return eventBoardDTOList;
+  }
 }

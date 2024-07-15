@@ -94,19 +94,16 @@
 
 
         </div>  <!--  인기 작품 영역 END  -->
-        <div name="favMeeting">
-            <div>
-                <div name="heading">인기 모임</div>  <!--  제목  -->
-                <div name="icon-horizon"></div>
+        <div id="favEventBoard" class="container">  <!-- 인기 모임 영역 -->
+            <div class="row mt-5 mb-3">
+                <div class="col-auto">
+                    <div class="fs-3 badge text-bg-secondary">인기 모임</div>
+                </div>
             </div>
-            <div name="cards">
-                <h1>카드 영역</h1>
-                <span name="meetingCard"></span>  <!--  작품 카드  -->
-                <span name="meetingCard"></span>
-                <span name="meetingCard"></span>
-                <span name="meetingCard"></span>
-            </div>
-        </div> <!--  인기 모임 영역  -->
+            <div class="row mb-5" id="BestEventBoardContainer"></div>
+
+
+        </div>  <!--  인기 모임 영역 END  -->
 
 
         <script>
@@ -234,6 +231,7 @@
 
             // ********** 페이지 로드 시 실행 **********
             getBestProgramList();
+            getBestEventBoardList();
 
             // ********** 각종 함수들 **********
             // 인기 작품 리스트 불러오기
@@ -289,6 +287,70 @@
                     html += '</div>';
                 }
                 $('#BestProgramContainer').html(html);
+            }
+            // 인기 모임 리스트 불러오기
+            function getBestEventBoardList() {
+                $.ajax({
+                    type: "get",
+                    url: "/eventBoard/bestEventList",
+                    success: function (result) {
+                        console.log("인기 모임 목록 요청 성공!");
+                        console.log(result);
+
+                        changeBestEventBoardList(result);
+                        // 인기글 목록 화면에 띄우기
+                    },
+                    error: function (e) {
+                        console.log("인기글 목록 요청 실패....");
+                        console.log(e);
+                    },
+                });
+            }
+
+            // 인기 모임 목록 화면에 띄우기
+            function changeBestEventBoardList(result) {
+                var html = '';
+                for (let i = 0; i < result.length; i++) {
+                    html += '<div class="col-3 ml-1 mr-1 eventCardContainer">';
+                    html += '<div hidden="hidden" class="eventBoardId">' + result[i].id + '</div>';
+                    html += '<div>';
+                    html += '<img src="' + result[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid w-100" style="" alt="..." />';
+                    html += '<div class="card-body">';
+                    html += '<div class="row mb-2">';
+                    // 제목 길이가 11자 이상이면 11자로 자르기
+                    var title = result[i].title;
+                    if (title.length > 10) {
+                        title = title.substring(0, 10) + '...';
+                    }
+                    html += '<div class="col-auto card-title fs-4">' + result[i].title + '</div>';
+                    html += '</div>';
+                    var content = result[i].content;
+                    if (content.length > 30) {
+                        content = content.substring(0, 30) + '...';
+                    }
+                    html += '<p class="card-text">' + content + '</p></div></div></div>';
+                }var html = '';
+                for (let i = 0; i < result.length; i++) {
+                    html += '<div class="col-3 ml-1 mr-1 eventCardContainer">';
+                    html += '<div hidden="hidden" class="eventBoardId">' + result[i].id + '</div>';
+                    html += '<div>';
+                    html += '<img src="' + result[i].programDTO.thumbnail + '" class="card-img-top mb-2 img-thumbnail img-fluid w-100" style="" alt="..." />';
+                    html += '<div class="card-body">';
+                    html += '<div class="row mb-2">';
+                    // 제목 길이가 11자 이상이면 11자로 자르기
+                    var title = result[i].title;
+                    if (title.length > 10) {
+                        title = title.substring(0, 10) + '...';
+                    }
+                    html += '<div class="col-auto card-title fs-4">' + result[i].title + '</div>';
+                    html += '</div>';
+                    var content = result[i].content;
+                    if (content.length > 30) {
+                        content = content.substring(0, 30) + '...';
+                    }
+                    html += '<p class="card-text">' + content + '</p></div></div></div>';
+                }
+                    $('#BestEventBoardContainer').html(html);
             }
 
 
