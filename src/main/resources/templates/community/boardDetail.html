@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+<th:block th:replace="~{layouts/base :: base(~{::content})}">
     <th:block th:fragment="content">
 
         <!-- 게시글 상세 페이지 컨테이너 -->

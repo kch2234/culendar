@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<th:block th:replace="~{/layouts/base :: base(~{this::content})}">
+<th:block th:replace="~{layouts/base :: base(~{::content})}">
     <th:block th:fragment="content">
 
         <!--                분류 모달-->
@@ -633,7 +633,7 @@
                     y: lat
                 },
                 headers: {
-                    'Authorization': 'KakaoAK d9cba248832f4faec5a2780994bcebdd' // 발급받은 REST API 키
+                    'Authorization': 'KakaoAK 7fc5f07db0a4cb574481c1093aa7071a' // 발급받은 REST API 키
                 },
                 success: function (response) {
                     if (response && response.documents && response.documents.length > 0) {
