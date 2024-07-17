@@ -592,64 +592,73 @@
             getCurrentLocationAndPrograms();
         }
 
+        /*
+                // 사용자 위치를 주소로 변환 - 사용자 위치기반 인기 작품 가져오기 위해
+                function reverseGeocode(lat, lng, callback) {
+                    console.log("reverseGeocode 호출!");
+                    console.log(lat, lng);
+                    $.ajax({
+                        url: 'https://dapi.kakao.com/v2/local/geo/coord2address.json',
+                        type: 'GET',
+                        data: {
+                            x: lng,
+                            y: lat
+                        },
+                        headers: {
+                            'Authorization': 'KakaoAK 7fc5f07db0a4cb574481c1093aa7071a' // 발급받은 REST API 키
+                        },
+                        success: function (response) {
+                            if (response && response.documents && response.documents.length > 0) {
+                                const addressInfo = response.documents[0].address;
+                                const location = addressInfo.region_1depth_name;
+                                callback(location);
+                            } else {
+                                console.error('No address found for the given coordinates.');
+                                callback(null);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Geocoding error:', error);
+                            callback(null);
+                        }
+                    });
+                }
+        */
+
         // 현재 위치와 인기 작품 가져오기
         function getCurrentLocationAndPrograms() {
             console.log("getCurrentLocationAndPrograms 호출!");
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    console.log(lat, lng);
-                    // 사용자의 현재 위치에 마커 생성
-                    userMarker = new kakao.maps.Marker({
-                        position: new kakao.maps.LatLng(lat, lng),
-                        image: markerImage,
-                        map: map,
-                        title: "현재 위치"
-                    });
-                    map.setCenter(new kakao.maps.LatLng(lat, lng));
-                    map.setLevel(3);
-                    reverseGeocode(lat, lng, function (location) {
-                        getLocationBestList(location);
-                    });
-                }, function (error) {
-                    console.error('Geolocation error:', error);
-                    alert('위치 정보를 가져오는 데 실패했습니다.');
-                });
-            } else {
-                alert('이 브라우저는 위치 추적을 지원하지 않습니다.');
-            }
-        }
-
-        // 사용자 위치를 주소로 변환 - 사용자 위치기반 인기 작품 가져오기 위해
-        function reverseGeocode(lat, lng, callback) {
-            console.log("reverseGeocode 호출!");
+            // if (navigator.geolocation) {
+            //     navigator.geolocation.getCurrentPosition(function (position) {
+            // const lat = position.coords.latitude;
+            const lat = 37.5605672;
+            // const lng = position.coords.longitude;
+            const lng = 126.9433486;
             console.log(lat, lng);
-            $.ajax({
-                url: 'https://dapi.kakao.com/v2/local/geo/coord2address.json',
-                type: 'GET',
-                data: {
-                    x: lng,
-                    y: lat
-                },
-                headers: {
-                    'Authorization': 'KakaoAK 7fc5f07db0a4cb574481c1093aa7071a' // 발급받은 REST API 키
-                },
-                success: function (response) {
-                    if (response && response.documents && response.documents.length > 0) {
-                        const addressInfo = response.documents[0].address;
-                        const location = addressInfo.region_1depth_name;
-                        callback(location);
-                    } else {
-                        console.error('No address found for the given coordinates.');
-                        callback(null);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error('Geocoding error:', error);
-                    callback(null);
-                }
+            // 사용자의 현재 위치에 마커 생성
+            userMarker = new kakao.maps.Marker({
+                position: new kakao.maps.LatLng(lat, lng),
+                image: markerImage,
+                map: map,
+                title: "현재 위치"
             });
+            map.setCenter(new kakao.maps.LatLng(lat, lng));
+            map.setLevel(3);
+            // reverseGeocode(lat, lng, function (location) {
+            kakao.maps.LatLng(lat, lng, function (location) {
+                getLocationBestList(location);
+            });
+            /*
+                },
+            function (error) {
+            console.error('Geolocation error:', error);
+            alert('위치 정보를 가져오는 데 실패했습니다.');
+        });
+    } else {
+        alert('이 브라우저는 위치 추적을 지원하지 않습니다.');
+
+            }
+*/
         }
 
         // 현재 위치 주변의 인기 작품 가져오기
