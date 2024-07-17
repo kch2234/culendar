@@ -183,8 +183,7 @@
                 <div class="row mt-2">
                     <div class="col">
                         <div class="input-group">
-                            <span class="input-group-text d-flex justify-content-center align-items-center p-2"
-                                  style="width: 10%">한줄소개</span>
+                            <span class="input-group-text d-flex justify-content-center align-items-center p-2">한줄소개</span>
                             <input type="text" th:field="*{introduction}" class="form-control" id="introductionInput">
                         </div>
                     </div>
@@ -402,7 +401,7 @@ $(document).ready(function () {
                             // 글자색 토글 변경하기
                             $("#phoneCheckResult").text("이미 사용중인 전화번호입니다.")
                             $('#phoneCheckResult').toggleClass('text-success', false).toggleClass('text-danger', true);
-                            $("#phoneNum").val("0");
+                            $("#phoneNum").val(0);
                         } else {
                             $("#phoneCheckResult").text("사용 가능한 전화번호입니다.")
                             $('#phoneCheckResult').toggleClass('text-danger', false).toggleClass('text-success', true);
