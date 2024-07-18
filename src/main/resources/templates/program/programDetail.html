@@ -75,22 +75,22 @@
         </div>
 
         <!--    문장형 평가 추가 모달-->
-        <div class="modal" id="addRating-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">문장형 평가 추가</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body container" id="addRatingContainer">
-                        <div class="row d-flex justify-content-center mt-2 mb-2" th:each="rating : ${ratingType}">
-                            <button class="col-auto btn btn-outline-secondary" th:text="${rating.getValue()}"
-                                    th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!--        <div class="modal" id="addRating-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--            <div class="modal-dialog modal-dialog-centered">-->
+<!--                <div class="modal-content">-->
+<!--                    <div class="modal-header">-->
+<!--                        <h4 class="modal-title">문장형 평가 추가</h4>-->
+<!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                    </div>-->
+<!--                    <div class="modal-body container" id="addRatingContainer">-->
+<!--                        <div class="row d-flex justify-content-center mt-2 mb-2" th:each="rating : ${ratingType}">-->
+<!--                            <button class="col-auto btn btn-outline-secondary" th:text="${rating.getValue()}"-->
+<!--                                    th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <!-- Todo 비회원 시 오류
 

@@ -9,6 +9,7 @@ import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.dto.*;
 import com.teamproject.culendar.security.domain.CustomMember;
 import com.teamproject.culendar.service.EventBoardService;
+import com.teamproject.culendar.service.EventMemberListService;
 import com.teamproject.culendar.service.ProgramService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ import java.util.List;
 public class ClubController {  // *ClubController == EventBoardController* 모임 페이지 관련 컨트롤러
 
   private final EventBoardService eventBoardService;
+  private final EventMemberListService eventMemberListService;
   private final ProgramService programService;
 
   // 모임 목록 (클럽)
@@ -78,6 +80,8 @@ public class ClubController {  // *ClubController == EventBoardController* 모�
 
     EventBoardDTO eventBoard = eventBoardService.getOneBoard(id);
     model.addAttribute("eventBoard", eventBoard);
+    List<MemberDTO> eventMembers = eventMemberListService.findMembersByEventId(id);
+    model.addAttribute("eventMembers", eventMembers);
 
     if (customMember != null) {
       model.addAttribute("member", customMember.getMember());
@@ -96,7 +100,7 @@ public class ClubController {  // *ClubController == EventBoardController* 모�
   public String delete(@PathVariable("id") Long id) {
     log.info("**** ClubController POST /clubs/:id/delete - id : {}", id);
     eventBoardService.deleteOneBoard(id);
-    return "redirect:clubs/list";
+    return "redirect:/clubs/list";
   }
 
   // 모임 수정

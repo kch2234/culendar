@@ -20,6 +20,8 @@ public interface EventBoardRepository extends JpaRepository<EventBoard, Long> {
   Page<EventBoard> findByTitle(String title, Pageable pageable);
   List<EventBoard> findByMember(String member, Pageable pageable);
 
+  Long findEventBoardIdById(Long id);
+
   // 프로그램타입별 모임 조회
   @Query("SELECT eb FROM EventBoard eb JOIN eb.program p WHERE p.programType = :programType")
   Page<EventBoard> findByProgramType(@Param("programType") ProgramType programType, Pageable pageable);

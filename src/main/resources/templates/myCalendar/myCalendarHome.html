@@ -177,8 +177,8 @@
                 var programId;
                 var memberId = [[${member.id}]];
 
-                console.log(myCalendarList);
-                console.log(userId);
+                console.log("myCalendarList id: ", myCalendarList);
+                console.log("user id: ", userId);
 
                 // ********** 페이지 로딩시 실행할 함수들 **********
 
@@ -420,8 +420,7 @@
                             url: '/program/find/' + programId,
                             type: 'GET',
                             success: function (data) {
-                                console.log(data);
-
+                                console.log("검색 data", data);
                                 changeSideInfo(data);
 
                             },

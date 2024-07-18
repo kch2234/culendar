@@ -32,26 +32,26 @@
             </div>
 
             <!--    문장형 평가 추가 모달-->
-            <div class="modal"
-                 id="addRating-modal"
-                 tabindex="-1"
-                 aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">문장형 평가 추가</h4>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body container" id="addRatingContainer">
-                            <div class="row d-flex justify-content-center mt-2 mb-2" th:each="rating : ${ratingType}">
-                                <button class="col-auto btn btn-outline-secondary" th:text="${rating.getValue()}"
-                                        th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--            <div class="modal"-->
+<!--                 id="addRating-modal"-->
+<!--                 tabindex="-1"-->
+<!--                 aria-labelledby="exampleModalLabel"-->
+<!--                 aria-hidden="true">-->
+<!--                <div class="modal-dialog modal-dialog-centered">-->
+<!--                    <div class="modal-content">-->
+<!--                        <div class="modal-header">-->
+<!--                            <h4 class="modal-title">문장형 평가 추가</h4>-->
+<!--                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                        </div>-->
+<!--                        <div class="modal-body container" id="addRatingContainer">-->
+<!--                            <div class="row d-flex justify-content-center mt-2 mb-2" th:each="rating : ${ratingType}">-->
+<!--                                <button class="col-auto btn btn-outline-secondary" th:text="${rating.getValue()}"-->
+<!--                                        th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
             <!-- 게시글 제목, 수정 / 삭제 버튼, 북마크 버튼 -->
             <div class="row mt-5 text-center align-items-center">
@@ -79,14 +79,14 @@
                         </div>
                     </th:block>
                     <!-- 게시글 작성자가 아닐 경우 북마크 버튼 보이기 -->
-                    <th:block th:if="${member.getId} != ${eventBoard.getMemberDTO().getId()}">
-                        <div class="col-3">
-                            <button id="boardBkMarkBtn"
-                                    type="button"
-                                    class="fa-regular fa-bookmark fa-3x">
-                            </button>
-                        </div>
-                    </th:block>
+<!--                    <th:block th:if="${member.getId} != ${eventBoard.getMemberDTO().getId()}">-->
+<!--                        <div class="col-3">-->
+<!--                            <button id="boardBkMarkBtn"-->
+<!--                                    type="button"-->
+<!--                                    class="fa-regular fa-bookmark fa-3x">-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                    </th:block>-->
 
                 </th:block>
 
@@ -105,7 +105,7 @@
                         <div class="btn btn-outline-secondary"
                              th:text="${eventBoard.getProgramDTO().getLocation().value}"></div>
                         <!--  TODO 확정인원/최대인원  -->
-                        <div class="btn btn-outline-secondary" th:text="${'' + '/' + eventBoard.maxPeople}"></div>
+                        <div class="btn btn-outline-secondary" th:text="${eventMembers.size() + '/' + eventBoard.maxPeople}"></div>
                     </div>
                     <!--  모임 상세 정보 영역 하단  -->
                     <div class="col d-flex justify-content-around">
@@ -126,25 +126,25 @@
                     <th:block sec:authorize="isAuthenticated()">
                         <!-- 게시글 작성자일 경우만 인원관리 버튼 보이기 -->
                         <!--  TODO 게시글 미작성자의 '신청'시 문제 없으나, 게시글 작성자의 '모임확정인원' 버튼 생성 시 레이아웃 망가짐  -->
-                        <th:block th:if="${member.getId} == ${eventBoard.getMemberDTO().getId()}">
-                            <div class="col-3">
-                                <input type="button" class="btn btn-secondary" value="모임확정인원">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title"></h4>
-                                            <button type="button" class="close" data-dismiss="modal">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body" id>
-                                            <!--  TODO 모임 확정 인원 리스트  -->
-                                        </div>
-                                    </div>
-                                </div>
-                                </input>
-                            </div>
-                        </th:block>  <!--  작성자  -->
+<!--                        <th:block th:if="${member.getId} == ${eventBoard.getMemberDTO().getId()}">-->
+<!--                            <div class="col-3">-->
+<!--                                <input type="button" class="btn btn-secondary" value="모임확정인원">-->
+<!--                                <div class="modal-dialog">-->
+<!--                                    <div class="modal-content">-->
+<!--                                        <div class="modal-header">-->
+<!--                                            <h4 class="modal-title"></h4>-->
+<!--                                            <button type="button" class="close" data-dismiss="modal">-->
+<!--                                                <span aria-hidden="true">&times;</span>-->
+<!--                                            </button>-->
+<!--                                        </div>-->
+<!--                                        <div class="modal-body" id>-->
+<!--                                            &lt;!&ndash;  TODO 모임 확정 인원 리스트  &ndash;&gt;-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                </input>-->
+<!--                            </div>-->
+<!--                        </th:block>  &lt;!&ndash;  작성자  &ndash;&gt;-->
                         <!-- 게시글 작성자가 아닐 경우 신청 버튼 보이기 -->
                         <th:block th:if="${member.getId} != ${eventBoard.getMemberDTO().getId()}">
                             <div class="col-3">
@@ -180,10 +180,10 @@
                     <div class="d-flex flex-row">
 
                         <div class="col-auto">
-                            <div class="badge text-bg-secondary h-100 fs-4 d-flex justify-content-center align-items-center p-1"
-                                 id="AvgRating">
-                                <!--    평균 문장형 평가 위치-->
-                            </div>
+<!--                            <div class="badge text-bg-secondary h-100 fs-4 d-flex justify-content-center align-items-center p-1"-->
+<!--                                 id="AvgRating">-->
+<!--                                &lt;!&ndash;    평균 문장형 평가 위치&ndash;&gt;-->
+<!--                            </div>-->
                         </div>
                         <div class="col "></div>
 
@@ -225,32 +225,32 @@
                     </div>
 
                     <!-- 좋아요 버튼, 내 후기 -->
-                    <div class="d-flex flex-row justify-content-between" id="ratingAndReviewContainer">
+<!--                    <div class="d-flex flex-row justify-content-between" id="ratingAndReviewContainer">-->
 
-                        <th:block sec:authorize="isAuthenticated()">
+<!--                        <th:block sec:authorize="isAuthenticated()">-->
 
-                            <div class="col-auto d-flex justify-content-start align-items-center">
-                                <!--   회원 문장형 평가 위치-->
-                                <button class="btn btn-outline-secondary"
-                                        id="addRating"
-                                        type="button"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#addRating-modal"></button>
-                            </div>
-                            <div class="col"></div>
+<!--                            <div class="col-auto d-flex justify-content-start align-items-center">-->
+<!--                                &lt;!&ndash;   회원 문장형 평가 위치&ndash;&gt;-->
+<!--                                <button class="btn btn-outline-secondary"-->
+<!--                                        id="addRating"-->
+<!--                                        type="button"-->
+<!--                                        data-bs-toggle="modal"-->
+<!--                                        data-bs-target="#addRating-modal"></button>-->
+<!--                            </div>-->
+<!--                            <div class="col"></div>-->
 
-                            <!-- 좋아요, 후기, 체크박스 버튼 -->
-                            <div class="col-3 p-0">
-                                <div class="d-flex justify-content-end align-items-center fs-5 w-100 h-100">내후기</div>
-                            </div>
-                            <div class="col-2 d-flex justify-content-center align-items-center">
-                                <button type="button" class="fa-regular fa-circle-check fa-2x" id="myReview"
-                                        data-bs-toggle="modal" data-bs-target="#addReview-modal"></button>
-                            </div>
+<!--                            &lt;!&ndash; 좋아요, 후기, 체크박스 버튼 &ndash;&gt;-->
+<!--                            <div class="col-3 p-0">-->
+<!--                                <div class="d-flex justify-content-end align-items-center fs-5 w-100 h-100">내후기</div>-->
+<!--                            </div>-->
+<!--                            <div class="col-2 d-flex justify-content-center align-items-center">-->
+<!--                                <button type="button" class="fa-regular fa-circle-check fa-2x" id="myReview"-->
+<!--                                        data-bs-toggle="modal" data-bs-target="#addReview-modal"></button>-->
+<!--                            </div>-->
 
-                        </th:block>
+<!--                        </th:block>-->
 
-                    </div>
+<!--                    </div>-->
 
                     <div style="height: 40%">
                         <div class="col h-100">
@@ -349,12 +349,19 @@
 
                 // 페이지 로딩시 시작할 함수들
                 kakaoMap() // 카카오 지도 띄우기
-                getAvgRating(); // 평균 평가 가져오기
-                getMyRating(); // 내 평가 가져오기
+<!--                getAvgRating(); // 평균 평가 가져오기-->
+<!--                getMyRating(); // 내 평가 가져오기-->
                 checkEventBkmark(); // todo 게시글 북마크 체크
                 checkProgramBkmark(); // 작품 북마크 체크
                 // 해당 작품 후기 작성 여부 확인 함수
                 getThisProgramReview();
+
+                let minAge = [[${eventBoard.filterMinAge}]];
+            let maxAge = [[${eventBoard.filterMaxAge}]];
+            console.log("Min Age:", minAge);  // 콘솔에 Min Age 출력
+            console.log("Max Age:", maxAge);  // 콘솔에 Max Age 출력
+
+            setAgeRangeContent(minAge, maxAge);
 
                 // ********** 클릭시 이벤트들 **********
 
@@ -407,59 +414,60 @@
                 });
 
                 // 문장형 평가 모달내에 버튼 클릭시 이벤트
-                $('#addRatingContainer').on('click', 'button', function () {
-                    let rating = $(this).data('rating');
-                    console.log(rating);
-                    let ratingNum = 0;
+<!--                $('#addRatingContainer').on('click', 'button', function () {-->
+<!--                    let rating = $(this).data('rating');-->
+<!--                    console.log(rating);-->
+<!--                    let ratingNum = 0;-->
 
-                    if (rating === 'VERYGOOD') {
-                        ratingNum = 5;
-                    } else if (rating === 'GOOD') {
-                        ratingNum = 4;
-                    } else if (rating === 'NORMAL') {
-                        ratingNum = 3;
-                    } else if (rating === 'BAD') {
-                        ratingNum = 2;
-                    } else if (rating === 'VERYBAD') {
-                        ratingNum = 1;
-                    }
-                    console.log(ratingNum);
+<!--                    if (rating === 'VERYGOOD') {-->
+<!--                        ratingNum = 5;-->
+<!--                    } else if (rating === 'GOOD') {-->
+<!--                        ratingNum = 4;-->
+<!--                    } else if (rating === 'NORMAL') {-->
+<!--                        ratingNum = 3;-->
+<!--                    } else if (rating === 'BAD') {-->
+<!--                        ratingNum = 2;-->
+<!--                    } else if (rating === 'VERYBAD') {-->
+<!--                        ratingNum = 1;-->
+<!--                    }-->
+<!--                    console.log(ratingNum);-->
 
-                    let data = {
-                        memberId: memberId,
-                        programId: programId,
-                        rating: ratingNum
-                    };
+<!--                    let data = {-->
+<!--                        memberId: memberId,-->
+<!--                        programId: programId,-->
+<!--                        rating: ratingNum-->
+<!--                    };-->
 
-                    $.ajax({
-                        type: 'POST',
-                        url: '/rating/addRating',
-                        data: JSON.stringify(data),
-                        contentType: 'application/json; charset=utf-8',
-                        success: function (result, status) {
-                            console.log(result);
-                            $('#addRating-modal').modal('hide');
-                            if (result === 'fail') {
-                                alert('평가가 수정 되었습니다.');
-                                getMyRating();
-                                getAvgRating();
-                                return;
-                            }
-                            alert('평가가 등록되었습니다.');
-                            getMyRating();
-                            getAvgRating();
-                        },
-                        error: function (error) {
-                            console.log(error);
-                            alert('평가 등록에 실패했습니다.');
-                        }
+<!--                    $.ajax({-->
+<!--                        type: 'POST',-->
+<!--                        url: '/rating/addRating',-->
+<!--                        data: JSON.stringify(data),-->
+<!--                        contentType: 'application/json; charset=utf-8',-->
+<!--                        success: function (result, status) {-->
+<!--                            console.log(result);-->
+<!--                            $('#addRating-modal').modal('hide');-->
+<!--                            if (result === 'fail') {-->
+<!--                                alert('평가가 수정 되었습니다.');-->
+<!--                                getMyRating();-->
+<!--                                getAvgRating();-->
+<!--                                return;-->
+<!--                            }-->
+<!--                            alert('평가가 등록되었습니다.');-->
+<!--                            getMyRating();-->
+<!--                            getAvgRating();-->
+<!--                        },-->
+<!--                        error: function (error) {-->
+<!--                            console.log(error);-->
+<!--                            alert('평가 등록에 실패했습니다.');-->
+<!--                        }-->
 
-                    });
+<!--                    });-->
 
-                });
+<!--                });-->
 
                 // 북마크 버튼 클릭시 이벤트
                 $('#addBtnContainer').on('click', '#bkMarkBtn', function () {
+                    console.log("bkMarkBtn Clicked");
 
                     let data = {
                         memberId: memberId,
@@ -585,28 +593,28 @@
 
                 // ********** 각종 함수들 **********
 
-                // 평균 문장형 평가 가져는 함수
-                function getAvgRating() {
-                    $.ajax({
-                        url: '/rating/getAvgRating/' + programId,
-                        type: 'GET',
-                        success: function (data) {
-                            $('#AvgRating').text(data);
-                        }
-                    });
-                }
+<!--                // 평균 문장형 평가 가져는 함수-->
+<!--                function getAvgRating() {-->
+<!--                    $.ajax({-->
+<!--                        url: '/rating/getAvgRating/' + programId,-->
+<!--                        type: 'GET',-->
+<!--                        success: function (data) {-->
+<!--                            $('#AvgRating').text(data);-->
+<!--                        }-->
+<!--                    });-->
+<!--                }-->
 
-                // 회원 문장형 평가 가져오기
-                function getMyRating() {
-                    $.ajax({
-                        url: '/rating/getRating/' + memberId + '/' + programId,
-                        type: 'GET',
-                        success: function (data) {
-                            console.log(data);
-                            $('#addRating').text(data);
-                        }
-                    });
-                }
+<!--                // 회원 문장형 평가 가져오기-->
+<!--                function getMyRating() {-->
+<!--                    $.ajax({-->
+<!--                        url: '/rating/getRating/' + memberId + '/' + programId,-->
+<!--                        type: 'GET',-->
+<!--                        success: function (data) {-->
+<!--                            console.log(data);-->
+<!--                            $('#addRating').text(data);-->
+<!--                        }-->
+<!--                    });-->
+<!--                }-->
 
                 // 성별에 따라 다른 내용을 설정하는 함수
                 setFilterGenderContent();
@@ -632,20 +640,18 @@
 
 
                 // 연령대 필터링에 따른 노출 방식 변환
-                let minAge = [[${eventBoard.filterMinAge}]];
-                let maxAge = [[${eventBoard.filterMaxAge}]];
-                setAgeRangeContent(minAge, maxAge);
+
 
                 function setAgeRangeContent(minAge, maxAge) {
                     let content = '';
-                    if (minAge === 0 && maxAge === 0) {
-                        content = '연령 무관';
-                    } else if (minAge > 0 && maxAge > 0) {
-                        if (maxAge - minAge === 9) {
+                    if (minAge > 0 && maxAge > 0) {
+                        if (maxAge - minAge === 9 && maxAge % 10 !== 0) {
                             content = minAge + '대';
                         } else {
-                            content = minAge + '~' + (minAge + 10) + '대';
+                            content = minAge + '~' + maxAge + '세';
                         }
+                    } else {
+                        content = '연령 무관';
                     }
                     // filterAgeRange 요소에 내용 설정
                     document.getElementById('filterAgeRange').innerText = content;
@@ -677,12 +683,12 @@
                         type: 'GET',
                         success: function (data) {
                             if (data === true) {
-                                console.log(data);
+                                console.log("북마크한 작품: ", data);
                                 $('#bkMarkBtn').toggleClass('fa-regular', false).toggleClass('fa-solid', true);
                             }
 
                             if (data === false) {
-                                console.log(data);
+                                console.log("북마크한 작품: ", data);
                                 $('#bkMarkBtn').toggleClass('fa-regular', true).toggleClass('fa-solid', false);
                             }
                         }
@@ -691,7 +697,6 @@
 
                 // 게시글 북마크 여부 확인 함수
                 function checkEventBkmark() {
-
                     console.log("checkBoardBkmark");
                     $.ajax({
                         url: '/bkmark/checkEventBkmark/' + memberId + '/' + boardIdVal,

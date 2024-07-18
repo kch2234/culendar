@@ -1,10 +1,12 @@
 package com.teamproject.culendar.service;
 
 import com.teamproject.culendar.domain.board.EventBoard;
+import com.teamproject.culendar.domain.board.EventMemberList;
 import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.dto.EventBoardDTO;
 import com.teamproject.culendar.dto.EventBoardForm;
+import com.teamproject.culendar.dto.EventMemberListDTO;
 import com.teamproject.culendar.dto.PageRequestDTO;
 import com.teamproject.culendar.repository.EventBoardRepository;
 import com.teamproject.culendar.repository.MemberRepository;

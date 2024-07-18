@@ -31,14 +31,13 @@ public class EventService {
   // 모임 신청
   @Transactional
   public boolean applyEventMember(EventMemberList eventMemberList) {
-    log.info("***** EventService applyEventMember - eventMemberList : {}", eventMemberList);
 
     // 중복 체크
     long memberId = eventMemberList.getMember().getId();
     long eventBoardId = eventMemberList.getEventBoard().getId();
     log.info("****** EventService applyEventMember - memberId : {}, boardIdVal: {}", memberId, eventBoardId);
     EventMemberList findEventMemberList = eventRepository.findEventMemberListByMemberIdAndEventBoardId(memberId, eventBoardId);
-    log.info("****** EventService applyEventMember - findEventMemberList : {}", findEventMemberList);
+    log.info("****** EventService applyEventMember - 중복 모임 조회 결과(findEventMemberList) : {}", findEventMemberList);
 
     if (findEventMemberList != null) {
       log.info("** 이미 신청한 모임입니다.");

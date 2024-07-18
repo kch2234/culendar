@@ -115,26 +115,26 @@
             </div>
 
             <!--    문장형 평가 추가 모달-->
-            <div class="modal"
-                 id="addRating-modal"
-                 tabindex="-1"
-                 aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">문장형 평가 추가</h4>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body container" id="addRatingContainer">
-                            <div class="row d-flex justify-content-center mt-2 mb-2" th:each="rating : ${ratingType}">
-                                <button class="col-auto btn btn-outline-secondary" th:text="${rating.getValue()}"
-                                        th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--            <div class="modal"-->
+<!--                 id="addRating-modal"-->
+<!--                 tabindex="-1"-->
+<!--                 aria-labelledby="exampleModalLabel"-->
+<!--                 aria-hidden="true">-->
+<!--                <div class="modal-dialog modal-dialog-centered">-->
+<!--                    <div class="modal-content">-->
+<!--                        <div class="modal-header">-->
+<!--                            <h4 class="modal-title">문장형 평가 추가</h4>-->
+<!--                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                        </div>-->
+<!--                        <div class="modal-body container" id="addRatingContainer">-->
+<!--                            <div class="row d-flex justify-content-center mt-2 mb-2" th:each="rating : ${ratingType}">-->
+<!--                                <button class="col-auto btn btn-outline-secondary" th:text="${rating.getValue()}"-->
+<!--                                        th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
             <!-- 게시글 제목, 수정 / 삭제 버튼, 북마크 버튼 -->
             <div class="row mt-5 text-center d-flex justify-content-center align-items-center">
@@ -394,7 +394,6 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="modalSaveBtn">Save</button>
                     </div>
                 </div>
@@ -940,8 +939,10 @@
                         html += ' <span class="ml2 text-gray-500"> ' + displayTime(list[i].lastModifiedDate) + ' </span></div>';
                         html += '<div class="col-4 d-flex">';
 <!--                        html += '<button class="col btn btn-outline-secondary mr-1 reCmtBtn" data-refid="' + list[i].refId + '" data-step="' + list[i].step + '" data-level="' + list[i].level + '">답글</button>';-->
-                        html += '<button class="col btn btn-outline-secondary mr-1 cmtModifBtn" data-cmtid="'+ list[i].id +'">수정</button>';
-                        html += '<button class="col btn btn-outline-secondary mr-1 cmtDelBtn" data-cmtid="' + list[i].id + '" >삭제</button>';
+                        if (memberId === list[i].memberDTO.id) {
+                            html += '<button class="col btn btn-outline-secondary mr-1 cmtModifBtn" data-cmtid="'+ list[i].id +'">수정</button>';
+                            html += '<button class="col btn btn-outline-secondary mr-1 cmtDelBtn" data-cmtid="' + list[i].id + '" >삭제</button>';
+                        }
                         html += '</div></div></div><hr />';
                     }
                     cmtListDiv.html(html); // 목록 태그 컨테이너 안에 붙히기

@@ -2,10 +2,12 @@ package com.teamproject.culendar.service;
 
 import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.BoardBkmark;
+import com.teamproject.culendar.domain.program.Program;
 import com.teamproject.culendar.domain.program.ProgramBkmark;
 import com.teamproject.culendar.dto.BoardBkMarkDTO;
 import com.teamproject.culendar.dto.BoardDTO;
 import com.teamproject.culendar.dto.ProgramBkMarkDTO;
+import com.teamproject.culendar.dto.ProgramDTO;
 import com.teamproject.culendar.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -107,5 +109,19 @@ public class BkMarkService {
             return true;
         }
         return false;
+    }
+
+    // 작품 북마크 최신순으로 무한 스크롤 조회
+    public List<ProgramDTO> findProgramBkmarkByMemberIdWithPaging(Long memberId, Long start) {
+        List<Program> programBkmarkByMemberId = programBkMarkRepository.findProgramBkmarkByMemberIdWithPaging(memberId, start);
+
+        // Program entity -> ProgramDTO 변환
+        List<ProgramDTO> ProgramDTOList = new ArrayList<>();
+        for (Program program : programBkmarkByMemberId) {
+            ProgramDTOList.add(new ProgramDTO(program));
+        }
+        log.info("**** BkmarkService findProgramBkmarkByMemberIdWithPaging - ProgramDTOList : {}", ProgramDTOList);
+
+        return ProgramDTOList;
     }
 }
