@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{layouts/base :: base(~{::content})}">
 
     <th:block th:fragment="content">
 
         <!-- 팔로우 목록 모달 -->
-        <div class="modal fade" id="followList-modal" tabindex="-1" aria-hidden="true">
+        <div aria-hidden="true" class="modal fade" id="followList-modal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content" id="test1">
                     <div class="modal-header" id="test2">
                         <h1 class="modal-title fs-5">내 팔로우 목록</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                     </div>
                     <div class="modal-body container" id="followingListModalBody">
 
@@ -49,12 +49,12 @@
         </div>
 
         <!-- 팔로워 목록 모달 -->
-        <div class="modal fade" id="followerList-modal" tabindex="-1" aria-hidden="true">
+        <div aria-hidden="true" class="modal fade" id="followerList-modal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5">팔로워 목록</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                     </div>
                     <div class="modal-body container" id="followerListModalBody">
 
@@ -92,7 +92,6 @@
         </div>
 
 
-
         <!-- TODO 마이페이지 기능 구현 및 디자인 -->
 
         <!-- 프로필 페이지 영역 -->
@@ -124,8 +123,8 @@
                             <div class="col">
                                 <div class="input-group input-group-lg d-flex justify-content-center align-items-center">
                                     <span class="input-group-text">팔로우</span>
-                                    <button type="button" id="followNum" data-bs-target="#followList-modal"
-                                            data-bs-toggle="modal" class="btn btn-outline-secondary">10명
+                                    <button class="btn btn-outline-secondary" data-bs-target="#followList-modal" data-bs-toggle="modal"
+                                            id="followNum" type="button">10명
                                     </button>
                                 </div>
 
@@ -134,8 +133,8 @@
                             <div class="col">
                                 <div class="input-group input-group-lg d-flex justify-content-center align-items-center">
                                     <span class="input-group-text">팔로워</span>
-                                    <button type="button" id="followerNum" data-bs-target="#followerList-modal"
-                                            data-bs-toggle="modal" class="btn btn-outline-secondary">10명
+                                    <button class="btn btn-outline-secondary" data-bs-target="#followerList-modal" data-bs-toggle="modal"
+                                            id="followerNum" type="button">10명
                                     </button>
                                 </div>
                             </div>
@@ -145,8 +144,8 @@
                                 <th:block th:if="${#authentication.principal.member.id == member.getId()}">
                                     <div class="col-auto">
                                         <div class="input-group input-group-lg">
-                                            <button type="button" class="btn btn-dark"
-                                                    th:onclick="|location.href='@{/members/{id}/edit(id=${member.id})}'|">
+                                            <button class="btn btn-dark" th:onclick="|location.href='@{/members/{id}/edit(id=${member.id})}'|"
+                                                    type="button">
                                                 수정
                                             </button>
                                         </div>
@@ -181,7 +180,8 @@
                     <!-- 동적 제목 -->
                     <div class="col-3">
                         <div class="input-group input-group-lg w-100 h-100">
-                            <span id="activeFilterName" class="btn btn-secondary w-100 h-100 fs-2 d-flex justify-content-center align-items-center">카테고리</span>
+                            <span class="btn btn-secondary w-100 h-100 fs-2 d-flex justify-content-center align-items-center"
+                                  id="activeFilterName">카테고리</span>
                         </div>
                     </div>
 
@@ -190,36 +190,39 @@
                     <!-- 북마크 : 후기, 정보, 작품, 모임 -->
                     <!-- 타임 라인 : 후기, 정보, 작품 -->
                     <div class="col-9">
-<!--                        <div class="row">-->
-<!--                            <div class="col">-->
-<!--                                <button type="button" class="btn btn-outline-secondary w-100 fs-4" id="myBtn">나</button>-->
-<!--                            </div>-->
-<!--                            <div class="col">-->
-<!--                                <button type="button" class="btn btn-outline-secondary w-100 fs-4" id="bkMarkBtn">북마크-->
-<!--                                </button>-->
-<!--                            </div>-->
-<!--                            <div class="col">-->
-<!--                                <button type="button" class="btn btn-outline-secondary w-100 fs-4" id="timeLineBtn">-->
-<!--                                    타임라인-->
-<!--                                </button>-->
-<!--                            </div>-->
-<!--                            <div class="col"></div>-->
-<!--                            <div class="col"></div>-->
-<!--                        </div>-->
+                        <!--                        <div class="row">-->
+                        <!--                            <div class="col">-->
+                        <!--                                <button type="button" class="btn btn-outline-secondary w-100 fs-4" id="myBtn">나</button>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="col">-->
+                        <!--                                <button type="button" class="btn btn-outline-secondary w-100 fs-4" id="bkMarkBtn">북마크-->
+                        <!--                                </button>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="col">-->
+                        <!--                                <button type="button" class="btn btn-outline-secondary w-100 fs-4" id="timeLineBtn">-->
+                        <!--                                    타임라인-->
+                        <!--                                </button>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="col"></div>-->
+                        <!--                            <div class="col"></div>-->
+                        <!--                        </div>-->
 
                         <!-- 세부 동적 필터 -->
                         <div class="row mt-3" id="activeFilterContainer">
                             <div class="col">
-                                <button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myReviewBtn">후기</button>
+                                <button class="btn btn-outline-secondary w-100 fs-6" id="myReviewBtn" type="button">후기
+                                </button>
                             </div>
                             <div class="col">
-                                <button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myInfoBtn">정보</button>
+                                <button class="btn btn-outline-secondary w-100 fs-6" id="myInfoBtn" type="button">정보
+                                </button>
                             </div>
                             <div class="col">
-                                <button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myProgramBtn">작품</button>
+                                <button class="btn btn-outline-secondary w-100 fs-6" id="myProgramBtn" type="button">
+                                    작품
+                                </button>
                             </div>
                         </div>
-
 
 
                     </div>
@@ -227,7 +230,7 @@
             </div>
 
             <!-- 카드 영역 -->
-            <div id="content-area" class="row mt-4 mb-5">
+            <div class="row mt-4 mb-5" id="content-area">
 
                 <div class="col">
 
@@ -710,262 +713,263 @@
         // ********** 메인 필터 클릭시
 
 // 나 버튼 클릭시
-$('#myBtn').on('click', function () {
-    console.log("나 버튼 클릭");
-    let html = '';
-    html += '<div class="col">';
-    html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myReviewBtn">후기</button>';
-    html += '</div>';
-    html += '<div class="col">';
-    html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myInfoBtn">정보</button>';
-    html += '</div>';
-    html += '<div class="col">';
-    html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myProgramBtn">작품</button>';
-    html += '</div>';
-    $('#activeFilterContainer').html(html);
+        $('#myBtn').on('click', function () {
+            console.log("나 버튼 클릭");
+            let html = '';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myReviewBtn">후기</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myInfoBtn">정보</button>';
+            html += '</div>';
+            html += '<div class="col">';
+            html += '<button type="button" class="btn btn-outline-secondary w-100 fs-6" id="myProgramBtn">작품</button>';
+            html += '</div>';
+            $('#activeFilterContainer').html(html);
 
-    $('#myBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
-    $('#bkMarkBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
-    $('#timeLineBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
-});
+            $('#myBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#bkMarkBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#timeLineBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+        });
 
 // 나 버튼 세부 필터 클릭시
 
 // 나 후기 버튼 클릭시
-$('#activeFilterContainer').on('click', '#myReviewBtn', function () {
-    console.log("나 후기 버튼 클릭");
-    $('#myReviewBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
-    $('#myInfoBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
-    $('#myProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
-    $('#activeFilterName').text('후기');
-    $('#content-area').empty();
-    myFilterStart = 0;
-    myFilterLoading = true;
-    myFilterType = 'MYREVIEW';
-    getListWithPaging(myFilterType);
-});
+        $('#activeFilterContainer').on('click', '#myReviewBtn', function () {
+            console.log("나 후기 버튼 클릭");
+            $('#myReviewBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#myInfoBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#activeFilterName').text('후기');
+            $('#content-area').empty();
+            myFilterStart = 0;
+            myFilterLoading = true;
+            myFilterType = 'MYREVIEW';
+            getListWithPaging(myFilterType);
+        });
 
 // 나 정보 버튼 클릭시
-$('#activeFilterContainer').on('click', '#myInfoBtn', function () {
-    console.log("나 정보 버튼 클릭");
-    $('#myReviewBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
-    $('#myInfoBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
-    $('#myProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
-    $('#activeFilterName').text('정보');
-    $('#content-area').empty();
-    myFilterStart = 0;
-    myFilterLoading = true;
-    myFilterType = 'MYINFO';
-    getListWithPaging(myFilterType);
-});
+        $('#activeFilterContainer').on('click', '#myInfoBtn', function () {
+            console.log("나 정보 버튼 클릭");
+            $('#myReviewBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myInfoBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#myProgramBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#activeFilterName').text('정보');
+            $('#content-area').empty();
+            myFilterStart = 0;
+            myFilterLoading = true;
+            myFilterType = 'MYINFO';
+            getListWithPaging(myFilterType);
+        });
 
 // 나 작품 버튼 클릭시
-$('#activeFilterContainer').on('click', '#myProgramBtn', function () {
-    console.log("나 작품 버튼 클릭");
-    $('#myReviewBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
-    $('#myInfoBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
-    $('#myProgramBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
-    $('#activeFilterName').text('작품');
-    $('#content-area').empty();
-    myFilterStart = 0;
-    myFilterLoading = true;
-    myFilterType = 'MYPROGRAM';
-    getListWithPaging(myFilterType);
-});
+        $('#activeFilterContainer').on('click', '#myProgramBtn', function () {
+            console.log("나 작품 버튼 클릭");
+            $('#myReviewBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myInfoBtn').toggleClass('btn-secondary', false).toggleClass('btn-outline-secondary', true);
+            $('#myProgramBtn').toggleClass('btn-outline-secondary', false).toggleClass('btn-secondary', true);
+            $('#activeFilterName').text('작품');
+            $('#content-area').empty();
+            myFilterStart = 0;
+            myFilterLoading = true;
+            myFilterType = 'MYPROGRAM';
+            getListWithPaging(myFilterType);
+        });
 
 // ********** 필터링 관련 ajax 함수 **********
 
 // 내 후기 리스트 무한 스크롤 페이징 가져오기
-function getMyReviewListWithPaging() {
-    if (myFilterLoading) {
-        $.ajax({
-            type: 'GET',
-            url: '/boards/findMyReviewWithPaging/' + memberIdVal + '/' + myFilterStart,
-            success: function (reviews) {
-                console.log("내 후기 리스트 가져오기 성공");
-                console.log(reviews);
+        function getMyReviewListWithPaging() {
+            if (myFilterLoading) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/boards/findMyReviewWithPaging/' + memberIdVal + '/' + myFilterStart,
+                    success: function (reviews) {
+                        console.log("내 후기 리스트 가져오기 성공");
+                        console.log(reviews);
 
-                if (reviews.length === 0) {
-                    console.log("내 후기 리스트가 없습니다.");
-                    myFilterLoading = false;
+                        if (reviews.length === 0) {
+                            console.log("내 후기 리스트가 없습니다.");
+                            myFilterLoading = false;
 
-                    if (myFilterStart === 0) {
-                        printEmptyContentAreaList();
+                            if (myFilterStart === 0) {
+                                printEmptyContentAreaList();
+                            }
+
+                        } else {
+                            // 리스트
+                            myFilterStart += 16;
+                            printBoardsList(reviews);
+
+                        }
+
+                    },
+                    error: function (e) {
+                        console.log("내 후기 리스트 가져오기 실패");
+                        console.log(e);
                     }
-
-                } else {
-                    // 리스트
-                    myFilterStart += 16;
-                    printBoardsList(reviews);
-
-                }
-
-            },
-            error: function (e) {
-                console.log("내 후기 리스트 가져오기 실패");
-                console.log(e);
+                });
             }
-        });
-    }
-}
+        }
 
 // 내 정보 리스트 무한 스크롤 페이징 가져오기
-function getMyInfoListWithPaging() {
-    if (myFilterLoading) {
-        $.ajax({
-            type: 'GET',
-            url: '/boards/findMyInfoWithPaging/' + memberIdVal + '/' + myFilterStart,
-            success: function (infos) {
-                console.log("내 정보 리스트 가져오기 성공");
-                console.log(infos);
+        function getMyInfoListWithPaging() {
+            if (myFilterLoading) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/boards/findMyInfoWithPaging/' + memberIdVal + '/' + myFilterStart,
+                    success: function (infos) {
+                        console.log("내 정보 리스트 가져오기 성공");
+                        console.log(infos);
 
-                if (infos.length === 0) {
-                    console.log("내 정보 리스트가 없습니다.");
-                    myFilterLoading = false;
+                        if (infos.length === 0) {
+                            console.log("내 정보 리스트가 없습니다.");
+                            myFilterLoading = false;
 
-                    if (myFilterStart === 0) {
-                        printEmptyContentAreaList();
+                            if (myFilterStart === 0) {
+                                printEmptyContentAreaList();
+                            }
+
+                        } else {
+                            // 리스트
+                            myFilterStart += 16;
+                            printBoardsList(infos);
+
+                        }
+
+                    },
+                    error: function (e) {
+                        console.log("내 정보 리스트 가져오기 실패");
+                        console.log(e);
                     }
-
-                } else {
-                    // 리스트
-                    myFilterStart += 16;
-                    printBoardsList(infos);
-
-                }
-
-            },
-            error: function (e) {
-                console.log("내 정보 리스트 가져오기 실패");
-                console.log(e);
+                });
             }
-        });
-    }
-}
+        }
 
 // 내 작품 평가 리스트 무한 스크롤 페이징 가져오기
-function getMyProgramListWithPaging() {
-    if (myFilterLoading) {
-        $.ajax({
-            type: 'GET',
-            url: '/rating/findMyRatingWithPaging/' + memberIdVal + '/' + myFilterStart,
-            success: function (ratings) {
-                console.log("내 작품 평가 리스트 가져오기 성공");
-                console.log(ratings);
+        function getMyProgramListWithPaging() {
+            if (myFilterLoading) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/bkmark/findMyProgramWithPaging/' + memberIdVal + '/' + myFilterStart,
+                    success: function (ratings) {
+                        console.log("내 작품 리스트 가져오기 성공");
+                        console.log(ratings);
 
-                if (ratings.length === 0) {
-                    console.log("내 작품 평가 리스트가 없습니다.");
-                    myFilterLoading = false;
+                        if (ratings.length === 0) {
+                            console.log("내 작품 리스트가 없습니다.");
+                            myFilterLoading = false;
 
-                    if (myFilterStart === 0) {
-                        printEmptyContentAreaList();
+                            if (myFilterStart === 0) {
+                                printEmptyContentAreaList();
+                            }
+
+                        } else {
+                            // 리스트
+                            myFilterStart += 16;
+                            printProgramsList(ratings);
+
+                        }
+
+                    },
+                    error: function (e) {
+                        console.log("내 작품 리스트 가져오기 실패");
+                        console.log(e);
                     }
-
-                } else {
-                    // 리스트
-                    myFilterStart += 16;
-                    printProgramsList(ratings);
-
-                }
-
-            },
-            error: function (e) {
-                console.log("내 정보 리스트 가져오기 실패");
-                console.log(e);
+                });
             }
-        });
-    }
-}
+        }
 
 // 내 게시글 리스트 출력하기
-function printBoardsList(boards) {
-    let contentArea = $('#content-area');
-    let html = '';
-    html += '<div class="row mt-5">';
-    for (let i = 0; i < boards.length; i++) {
-        html += '<div class="col-3">';
-        html += '<div class="card">';
-        html += '<img src="' + boards[i].programDTO.thumbnail + '" class="card-img-top">';
-        html += '<div class="card-body">';
-        // 제목 글자수 10글자로 제한
-        let title = boards[i].title;
-        if (title.length > 10) {
-            title = title.substring(0, 10) + '...';
-        }
-        html += '<button class="card-title fs-5 btn btn-outline-secondary" onclick="location.href=\'/boards/' + boards[i].id + '\'">' + title + '</button>';
+        function printBoardsList(boards) {
+            let contentArea = $('#content-area');
+            let html = '';
+            html += '<div class="row mt-5">';
+            for (let i = 0; i < boards.length; i++) {
+                html += '<div class="col-3">';
+                html += '<div class="card">';
+                html += '<img src="' + boards[i].programDTO.thumbnail + '" class="card-img-top">';
+                html += '<div class="card-body">';
+                // 제목 글자수 10글자로 제한
+                let title = boards[i].title;
+                if (title.length > 10) {
+                    title = title.substring(0, 10) + '...';
+                }
+                html += '<button class="card-title fs-5 btn btn-outline-secondary" onclick="location.href=\'/boards/' + boards[i].id + '\'">' + title + '</button>';
 
-        // 내용 글자수 20글자로 제한
-        let content = boards[i].content;
-        if (content.length > 20) {
-            content = content.substring(0, 20) + '...';
+                // 내용 글자수 20글자로 제한
+                let content = boards[i].content;
+                if (content.length > 20) {
+                    content = content.substring(0, 20) + '...';
+                }
+                html += '<p class="card-text">' + content + '</p>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+            }
+            html += '</div>';
+            // 내 후기 리스트 html 추가하기
+            contentArea.append(html);
         }
-        html += '<p class="card-text">' + content + '</p>';
-        html += '</div>';
-        html += '</div>';
-        html += '</div>';
-    }
-    html += '</div>';
-    // 내 후기 리스트 html 추가하기
-    contentArea.append(html);
-}
 
 // 내 작품 리스트 출력하기
-function printProgramsList(ratings) {
-    let contentArea = $('#content-area');
-    let html = '';
-    html += '<div class="row mt-5">';
-    for (let i = 0; i < ratings.length; i++) {
-        html += '<div class="col-3">';
-        html += '<div class="card">';
-        html += '<img src="' + ratings[i].programDTO.thumbnail + '" class="card-img-top">';
-        html += '<div class="card-body">';
-        // 제목 글자수 10글자로 제한
-        let title = ratings[i].programDTO.title;
-        if (title.length > 10) {
-            title = title.substring(0, 10) + '...';
-        }
-        html += '<button class="card-title fs-5 btn btn-outline-secondary" onclick="location.href=\'/programs/' + ratings[i].programDTO.id + '\'">' + title + '</button>';
+        function printProgramsList(ratings) {
+            let contentArea = $('#content-area');
+            let html = '';
+            html += '<div class="row mt-5">';
+            for (let i = 0; i < ratings.length; i++) {
+                html += '<div class="col-3">';
+                html += '<div class="card">';
+                html += '<img src="' + ratings[i].programDTO.thumbnail + '" class="card-img-top">';
+                html += '<div class="card-body">';
+                // 제목 글자수 10글자로 제한
+                let title = ratings[i].programDTO.title;
+                if (title.length > 10) {
+                    title = title.substring(0, 10) + '...';
+                }
+                html += '<button class="card-title fs-5 btn btn-outline-secondary" onclick="location.href=\'/programs/' + ratings[i].programDTO.id + '\'">' + title + '</button>';
 
-        // 내용 글자수 20글자로 제한
-        let content = ratings[i].programDTO.description;
-        if (content.length > 20) {
-            content = content.substring(0, 20) + '...';
+                // 내용 글자수 20글자로 제한
+                let content = ratings[i].programDTO.description;
+                if (content.length > 20) {
+                    content = content.substring(0, 20) + '...';
+                }
+                html += '<p class="card-text">' + content + '</p>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+            }
+            html += '</div>';
+            // 내 작품 리스트 html 추가하기
+            contentArea.append(html);
         }
-        html += '<p class="card-text">' + content + '</p>';
-        html += '</div>';
-        html += '</div>';
-        html += '</div>';
-    }
-    html += '</div>';
-    // 내 작품 리스트 html 추가하기
-    contentArea.append(html);
-}
 
 // 빈 리스트일 경우 출력
-function printEmptyContentAreaList() {
-    let contentArea = $('#content-area');
-    let html = '<div class="row mt-5">';
-    html += '<div class="col text-center">';
-    html += '<p class="text-muted">게시물이 없습니다.</p>';
-    html += '</div>';
-    html += '</div>';
-    contentArea.html(html);
-}
+        function printEmptyContentAreaList() {
+            let contentArea = $('#content-area');
+            let html = '<div class="row mt-5">';
+            html += '<div class="col text-center">';
+            html += '<p class="text-muted">게시물이 없습니다.</p>';
+            html += '</div>';
+            html += '</div>';
+            contentArea.html(html);
+        }
 
 // 필터에 따른 리스트 불러오기
-function getListWithPaging(filterType) {
-    switch (filterType) {
-        case 'MYREVIEW':
-            getMyReviewListWithPaging();
-            break;
-        case 'MYINFO':
-            getMyInfoListWithPaging();
-            break;
-        case 'MYPROGRAM':
-            getMyProgramListWithPaging();
-            break;
-    }
-}
+        function getListWithPaging(filterType) {
+            switch (filterType) {
+                case 'MYREVIEW':
+                    getMyReviewListWithPaging();
+                    break;
+                case 'MYINFO':
+                    getMyInfoListWithPaging();
+                    break;
+                case 'MYPROGRAM':
+                    getMyProgramListWithPaging();
+                    break;
+            }
+        }
+
         // 무한 스크롤 이벤트
         $(document).scroll(function () {
             // 스크롤바의 위치가 문서의 맨 아래쪽에 위치할 경우
@@ -998,9 +1002,6 @@ function getListWithPaging(filterType) {
                 return '평가없음';
             }
         }
-
-
-
 
 
     });
