@@ -34,10 +34,15 @@ public interface EventBoardRepository extends JpaRepository<EventBoard, Long> {
       "ORDER BY COUNT(bb) DESC")
   Page<EventBoard> findOrderByBkMark(Pageable pageable);
 
-  // 프로그램타입별 인기글 조회
-  @Query("SELECT b FROM EventBoard b LEFT JOIN b.program p WHERE p.programType = :programType GROUP BY b ORDER BY COUNT(b) DESC")
+  // 프로그램타입별 인기글 조회 (현재 모임 북마크 기능 숨겨둬서 추후 수정 필요 - 임시로 디비에 북마크 데이터 넣음)
+  @Query("SELECT b " +
+      "FROM EventBoard b " +
+      "LEFT JOIN EventBoardBkmark bb ON b.id = bb.eventBoard.id " +
+      "LEFT JOIN b.program p " +
+      "WHERE p.programType = :programType " +
+      "GROUP BY b " +
+      "ORDER BY COUNT(bb) DESC")
   Page<EventBoard> findOrderByProgramType(@Param("programType") ProgramType programType, Pageable pageable);
-
 
   // programType, locationType 해당하는 인기 모임 조회
   @Query("SELECT b FROM EventBoard b " +

@@ -2,6 +2,8 @@ package com.teamproject.culendar.repository;
 
 import com.teamproject.culendar.domain.program.Program;
 import com.teamproject.culendar.domain.program.ProgramBkmark;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,13 +14,9 @@ public interface ProgramBkMarkRepository extends JpaRepository<ProgramBkmark, Lo
 
     ProgramBkmark findByMemberIdAndProgramId(Long memberId, Long programId);
 
-    // 회원의 북마크 프로그램 최신순으로 무한 스크롤 조회
-    @Query(value = "SELECT p.* FROM program p " +
-        "JOIN program_bkmark pb ON p.id = pb.program_id " +
-        "WHERE pb.member_id = :memberId " +
-        "ORDER BY pb.created_date DESC " +
-        "LIMIT :start, 20", // assuming 20 items per page
-        nativeQuery = true)
-    List<Program> findProgramBkmarkByMemberIdWithPaging(@Param("memberId") Long memberId, @Param("start") Long start);
+    // 회원의 북마크 프로그램 최신순으로 페이저블 조회
+    @Query("SELECT p FROM Program p JOIN ProgramBkmark pb ON p.id = pb.program.id WHERE pb.member.id = :memberId ORDER BY pb.createDate DESC")
+    Page<Program> findProgramBkmarkByMemberIdWithPaging(@Param("memberId") Long memberId, Pageable pageable);
+
 
 }

@@ -22,7 +22,11 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
                         <!-- 등록 작품 연동 해서 후기 작성 -->
-                        <button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${program.getId})}'|">등록</button>
+                        <button type="button"
+                                class="btn btn-secondary"
+                                th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${program.getId})}'|">
+                            등록
+                        </button>
                     </div>
                 </div>
             </div>
@@ -45,7 +49,12 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
                         <!-- 수정 연동 -->
-                        <button type="button" class="btn btn-secondary" id="reviewModifyBtn" th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${program.getId})}'|">수정</button>
+                        <button type="button"
+                                class="btn btn-secondary"
+                                id="reviewModifyBtn"
+                                th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${program.getId})}'|">
+                            수정
+                        </button>
                     </div>
                 </div>
             </div>
@@ -75,136 +84,196 @@
         </div>
 
         <!--    문장형 평가 추가 모달-->
-<!--        <div class="modal" id="addRating-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<!--            <div class="modal-dialog modal-dialog-centered">-->
-<!--                <div class="modal-content">-->
-<!--                    <div class="modal-header">-->
-<!--                        <h4 class="modal-title">문장형 평가 추가</h4>-->
-<!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                    </div>-->
-<!--                    <div class="modal-body container" id="addRatingContainer">-->
-<!--                        <div class="row d-flex justify-content-center mt-2 mb-2" th:each="rating : ${ratingType}">-->
-<!--                            <button class="col-auto btn btn-outline-secondary" th:text="${rating.getValue()}"-->
-<!--                                    th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--        <div class="modal" id="addRating-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+        <!--            <div class="modal-dialog modal-dialog-centered">-->
+        <!--                <div class="modal-content">-->
+        <!--                    <div class="modal-header">-->
+        <!--                        <h4 class="modal-title">문장형 평가 추가</h4>-->
+        <!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+        <!--                    </div>-->
+        <!--                    <div class="modal-body container" id="addRatingContainer">-->
+        <!--                        <div class="row d-flex justify-content-center mt-2 mb-2" th:each="rating : ${ratingType}">-->
+        <!--                            <button class="col-auto btn btn-outline-secondary" th:text="${rating.getValue()}"-->
+        <!--                                    th:data-rating="${rating}" th:if="${rating.value !='평가 없음'}"></button>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
 
-        <!-- Todo 비회원 시 오류
+        <!--        Todo 비회원 시 오류-->
 
-        <!--       작품 상세 페이지 컨테이너   -->
+        <!-- 작품 상세 페이지 컨테이너   -->
         <div class="container mt-5" style="width: 90%">
             <!--        작품 포스터, 정보-->
-            <div class="row">
+            <!--            <div class="row">-->
 
-                <!--    작품 썸네일 이미지-->
-                <div class="col-6">
-                    <div th:if="${program != null}">
-                        <img class="w-100 img-thumbnail rounded" th:src="${program.getThumbnail()}" alt="썸네일 이미지">
-                    </div>
+            <!--                &lt;!&ndash;    작품 썸네일 이미지&ndash;&gt;-->
+            <!--                <div class="col-6">-->
+            <!--                    <div th:if="${program != null}">-->
+            <!--                        <img class="w-100 img-thumbnail rounded" th:src="${program.getThumbnail()}" alt="썸네일 이미지">-->
+            <!--                    </div>-->
+            <!--                </div>-->
+
+            <!--                &lt;!&ndash; 작품 정보  &ndash;&gt;-->
+            <!--                <div class="col ml-2 d-flex flex-column justify-content-between" id="programContainer">-->
+            <!--                    &lt;!&ndash; 문장형 평가, 북마크, 일정 추가 버튼 &ndash;&gt;-->
+            <!--                    <div class="d-flex flex-row" style="height: 10%">-->
+            <!--                        &lt;!&ndash; 평균 문장형 평가 &ndash;&gt;-->
+            <!--                        <div class="col-4">-->
+            <!--                            <div class="badge text-bg-secondary h-100 fs-4 d-flex justify-content-center align-items-center"-->
+            <!--                                 id="AvgRating">-->
+            <!--                                &lt;!&ndash;    평균 문장형 평가 위치&ndash;&gt;-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                        <div class="col"></div>-->
+            <!--                        &lt;!&ndash; 북마크, 캘린더 추가 버튼 &ndash;&gt;-->
+            <!--                        <div class="col-4 row" id="addBtnContainer">-->
+            <!--                            &lt;!&ndash; 회원일 경우에만 북마크, 캘린더 추가 버튼 보이기 &ndash;&gt;-->
+            <!--                            <th:block th:if="${member != null}">-->
+            <!--                                <div class="col p-0 d-flex justify-content-center align-items-center">-->
+            <!--                                    <button id="bkMarkBtn" class="fa-solid fa-bookmark fa-2x"></button>-->
+            <!--                                </div>-->
+            <!--                                <div class="col p-0 d-flex justify-content-center align-items-center">-->
+            <!--                                    <button class="fa-regular fa-clipboard fa-2x" type="button" data-bs-toggle="modal"-->
+            <!--                                            data-bs-target="#addMyCalendar-modal"></button>-->
+
+            <!--                                </div>-->
+            <!--                            </th:block>-->
+            <!--                            &lt;!&ndash; 비회원일 경우에는 북마크, 캘린더 추가 버튼 보이지 않기 &ndash;&gt;-->
+            <!--                            <th:block th:if="${member == null}">-->
+
+            <!--                            </th:block>-->
+
+            <!--                        </div>-->
+            <!--                    </div>-->
+
+            <!--                    &lt;!&ndash; 작품 제목 &ndash;&gt;-->
+            <!--                    <div class="h-25">-->
+            <!--                        <div class="col-12 h-100" th:if="${program != null}">-->
+            <!--                            <div class="fs-2 d-flex justify-content-start align-items-center h-100"-->
+            <!--                                 th:text="${program.getTitle()}"></div>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+
+            <!--                    &lt;!&ndash; 작품 시작일 ~ 종료일 &ndash;&gt;-->
+            <!--                    <div>-->
+            <!--                        <div class="col-10 h-100">-->
+            <!--                            <div class="fs-4"-->
+            <!--                                 th:text="|${#temporals.format(program.getStartDate(), 'yyyy-MM-dd')} ~ ${#temporals.format(program.getEndDate(), 'yyyy-MM-dd')}|"-->
+            <!--                            ></div>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+
+            <!--                    &lt;!&ndash; 회원일 경우 문장형 후기 작성 버튼 및 좋아요, 후기, 체크박스 버튼 &ndash;&gt;-->
+            <!--                    <th:block th:if="${member != null}">-->
+            <!--                        <div class="row" style="height: 10%">-->
+            <!--                            <div class="col-4 d-flex justify-content-start align-items-center">-->
+            <!--                                &lt;!&ndash;   회원 문장형 평가 위치&ndash;&gt;-->
+            <!--                                <button class="btn btn-outline-secondary" id="addRating" type="button"-->
+            <!--                                        data-bs-toggle="modal" data-bs-target="#addRating-modal"></button>-->
+            <!--                            </div>-->
+            <!--                            <div class="col"></div>-->
+            <!--                            <div class="col-3 p-0">-->
+            <!--                                <div class="d-flex justify-content-end align-items-center fs-5 w-100 h-100">내후기</div>-->
+            <!--                            </div>-->
+
+            <!--                            &lt;!&ndash; 내 후기 버튼 &ndash;&gt;-->
+            <!--                            <div class="col-2 d-flex justify-content-center align-items-center">-->
+            <!--                                <button type="button" class="fa-regular fa-circle-check fa-2x" id="myReview"-->
+            <!--                                        data-bs-toggle="modal" data-bs-target="#addReview-modal"></button>-->
+            <!--                            </div>-->
+
+            <!--                        </div>-->
+            <!--                    </th:block>-->
+
+            <!--                    &lt;!&ndash; 지도 API &ndash;&gt;-->
+            <!--                    <div class="h-40">-->
+            <!--                        <div class="col h-100">-->
+            <!--                            <div class="w-100" id="staticMap" style="height:420px;"></div>-->
+            <!--                        </div>-->
+
+            <!--                    </div>-->
+            <!--                </div> &lt;!&ndash; end of 작품 정보 &ndash;&gt;-->
+
+            <!--                &lt;!&ndash; 인기 후기, 인기 일정 모임 &ndash;&gt;-->
+            <!--                <div class="mt-5">-->
+            <!--                    &lt;!&ndash; 인기 후기 &ndash;&gt;-->
+            <!--                    <div class="container mb-5">-->
+
+            <!--                        <div><span class="badge text-bg-secondary fs-4 mb-3">인기 후기</span></div>-->
+
+            <!--                        <div class="row" id="BestReviewListContainer">-->
+
+            <!--                            &lt;!&ndash; 인기글 조회 해서 4개 띄우기 &ndash;&gt;-->
+
+            <!--                        </div>-->
+
+            <!--                    </div>-->
+            <!--                    &lt;!&ndash; todo 인기 일정 모임 &ndash;&gt;-->
+            <!--                    <div>인기 일정 모임</div>-->
+            <!--                </div>-->
+
+            <!--            </div>-->
+            <div class="row mt-4 mb-5">
+
+                <!-- 포스터 영역 -->
+                <div class="col mr-2">
+                    <img class="w-100 img-thumbnail rounded" th:src="${program.getThumbnail()}" alt="썸네일 이미지">
                 </div>
 
-                <!-- 작품 정보  -->
-                <div class="col ml-2 d-flex flex-column justify-content-between" id="programContainer">
-                    <!-- 문장형 평가, 북마크, 일정 추가 버튼 -->
-                    <div class="d-flex flex-row" style="height: 10%">
-                        <!-- 평균 문장형 평가 -->
-                        <div class="col-4">
-                            <div class="badge text-bg-secondary h-100 fs-4 d-flex justify-content-center align-items-center"
-                                 id="AvgRating">
-                                <!--    평균 문장형 평가 위치-->
-                            </div>
+                <!-- 작품 정보 영역 -->
+                <div class="col d-flex flex-column justify-content-between">
+                    <!-- 문장형 평가, 캘린더 등록, 북마크 -->
+                    <div class="d-flex flex-row">
+
+                        <div class="col-auto">
                         </div>
-                        <div class="col"></div>
+                        <div class="col "></div>
+
                         <!-- 북마크, 캘린더 추가 버튼 -->
                         <div class="col-4 row" id="addBtnContainer">
                             <!-- 회원일 경우에만 북마크, 캘린더 추가 버튼 보이기 -->
-                            <th:block th:if="${member != null}">
-                                <div class="col p-0 d-flex justify-content-center align-items-center">
-                                    <button id="bkMarkBtn" class="fa-solid fa-bookmark fa-2x"></button>
+                            <th:block sec:authorize="isAuthenticated()">
+                                <div class="col p-0 fs-4">
+                                    <button id="bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>
                                 </div>
-                                <div class="col p-0 d-flex justify-content-center align-items-center">
-                                    <button class="fa-regular fa-clipboard fa-2x" type="button" data-bs-toggle="modal"
+                                <div class="col p-0 fs-4">
+                                    <button class="fa-regular fa-clipboard w-75 h-75"
+                                            type="button"
+                                            data-bs-toggle="modal"
                                             data-bs-target="#addMyCalendar-modal"></button>
-
                                 </div>
-                            </th:block>
-                            <!-- 비회원일 경우에는 북마크, 캘린더 추가 버튼 보이지 않기 -->
-                            <th:block th:if="${member == null}">
-
                             </th:block>
 
                         </div>
+
                     </div>
 
                     <!-- 작품 제목 -->
-                    <div class="h-25">
-                        <div class="col-12 h-100" th:if="${program != null}">
+                    <div class="">
+                        <div class="col">
                             <div class="fs-2 d-flex justify-content-start align-items-center h-100"
                                  th:text="${program.getTitle()}"></div>
                         </div>
                     </div>
 
-                    <!-- 작품 시작일 ~ 종료일 -->
-                    <div>
+                    <!-- 작품 시작일 -->
+                    <div class="">
                         <div class="col-10 h-100">
-                            <div class="fs-4"
+                            <div class="w-100 fs-5"
                                  th:text="|${#temporals.format(program.getStartDate(), 'yyyy-MM-dd')} ~ ${#temporals.format(program.getEndDate(), 'yyyy-MM-dd')}|"
                             ></div>
                         </div>
                     </div>
 
-                    <!-- 회원일 경우 문장형 후기 작성 버튼 및 좋아요, 후기, 체크박스 버튼 -->
-                    <th:block th:if="${member != null}">
-                        <div class="row" style="height: 10%">
-                            <div class="col-4 d-flex justify-content-start align-items-center">
-                                <!--   회원 문장형 평가 위치-->
-                                <button class="btn btn-outline-secondary" id="addRating" type="button"
-                                        data-bs-toggle="modal" data-bs-target="#addRating-modal"></button>
-                            </div>
-                            <div class="col"></div>
-                            <div class="col-3 p-0">
-                                <div class="d-flex justify-content-end align-items-center fs-5 w-100 h-100">내후기</div>
-                            </div>
-
-                            <!-- 내 후기 버튼 -->
-                            <div class="col-2 d-flex justify-content-center align-items-center">
-                                <button type="button" class="fa-regular fa-circle-check fa-2x" id="myReview"
-                                        data-bs-toggle="modal" data-bs-target="#addReview-modal"></button>
-                            </div>
-
-                        </div>
-                    </th:block>
-
-                    <!-- 지도 API -->
-                    <div class="h-40">
+                    <div style="height: 40%">
                         <div class="col h-100">
-                            <div class="w-100" id="staticMap" style="height:420px;"></div>
+                            <div class="w-100 h-100" id="staticMap"></div>
                         </div>
-
                     </div>
-                </div> <!-- end of 작품 정보 -->
 
-                <!-- 인기 후기, 인기 일정 모임 -->
-                <div class="mt-5">
-                    <!-- 인기 후기 -->
-                    <div class="container mb-5">
-
-                        <div><span class="badge text-bg-secondary fs-4 mb-3">인기 후기</span></div>
-
-                        <div class="row" id="BestReviewListContainer">
-
-                            <!-- 인기글 조회 해서 4개 띄우기 -->
-
-                        </div>
-
-                    </div>
-                    <!-- todo 인기 일정 모임 -->
-                    <div>인기 일정 모임</div>
                 </div>
-
             </div>
 
         </div>

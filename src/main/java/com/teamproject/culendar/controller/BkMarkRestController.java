@@ -6,11 +6,11 @@ import com.teamproject.culendar.dto.ProgramDTO;
 import com.teamproject.culendar.service.BkMarkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -47,13 +47,20 @@ public class BkMarkRestController {
 //    }
 
     // 북마크 작품 최신순으로 무한 스크롤 조회
-    @GetMapping("/findMyProgramWithPaging/{memberId}/{start}")
-    public ResponseEntity<List<ProgramDTO>> findMyProgramWithPaging(@PathVariable("memberId") Long memberId, @PathVariable("start") Long start){
+    @GetMapping("/findMyProgramWithPaging/{memberId}/{page}/{size}")
+    public ResponseEntity<Page<ProgramDTO>> findMyProgramWithPaging(
+        @PathVariable("memberId") Long memberId,
+        @PathVariable("page") int page,
+        @PathVariable("size") int size) {
 
-        List<ProgramDTO> programBkmarkByMemberId = bkMarkService.findProgramBkmarkByMemberIdWithPaging(memberId, start);
+        Page<ProgramDTO> programDTOPage = bkMarkService.findProgramBkmarkByMemberIdWithPaging(memberId, page, size);
 
-        return ResponseEntity.ok().body(programBkmarkByMemberId);
+        return ResponseEntity.ok(programDTOPage);
     }
+
+
+
+
 
 
 }

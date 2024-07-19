@@ -155,9 +155,9 @@
         var memberId = $('#memberId').data('memberid');
 
         // ********** 페이지 로딩시 실행할 함수들 **********
-        getBestProgramList();
-        getBestEventBoardList();
         kakaoMap();
+<!--        getBestProgramList();-->
+<!--        getBestEventBoardList();-->
 
         // 검색창에 값변경시
         $('#search-text').on('keyup', function () {
@@ -576,10 +576,10 @@
 
         // 카카오맵
         function kakaoMap() {
-            console.log("kakaoMap 호출!");
+            console.log("kakaoMap 호출");
             var mapContainer = document.getElementById('map'),
                 mapOption = {
-                    center: new kakao.maps.LatLng(37.566826, 126.9786567),
+                    center: new kakao.maps.LatLng(37.5550, 126.9360),
                     level: 3
                 };
             map = new kakao.maps.Map(mapContainer, mapOption);
@@ -592,7 +592,7 @@
             getCurrentLocationAndPrograms();
         }
 
-        /*
+
                 // 사용자 위치를 주소로 변환 - 사용자 위치기반 인기 작품 가져오기 위해
                 function reverseGeocode(lat, lng, callback) {
                     console.log("reverseGeocode 호출!");
@@ -623,7 +623,7 @@
                         }
                     });
                 }
-        */
+
 
         // 현재 위치와 인기 작품 가져오기
         function getCurrentLocationAndPrograms() {
@@ -631,9 +631,9 @@
             // if (navigator.geolocation) {
             //     navigator.geolocation.getCurrentPosition(function (position) {
             // const lat = position.coords.latitude;
-            const lat = 37.5605672;
+            const lat = 37.5550;
             // const lng = position.coords.longitude;
-            const lng = 126.9433486;
+            const lng = 126.9360;
             console.log(lat, lng);
             // 사용자의 현재 위치에 마커 생성
             userMarker = new kakao.maps.Marker({
@@ -644,8 +644,10 @@
             });
             map.setCenter(new kakao.maps.LatLng(lat, lng));
             map.setLevel(3);
-            // reverseGeocode(lat, lng, function (location) {
-            kakao.maps.LatLng(lat, lng, function (location) {
+            reverseGeocode(lat, lng, function (location) {
+            // kakao.maps.LatLng(lat, lng, function (location) {
+                console.log("lat: " + lat + "lng: " + lng);
+                console.log("location" + location);
                 getLocationBestList(location);
             });
             /*

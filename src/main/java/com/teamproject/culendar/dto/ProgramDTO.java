@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
@@ -49,6 +50,20 @@ public class ProgramDTO {
         this.seq = program.getSeq();
         this.startDate = program.getStartDate();
         this.endDate = program.getEndDate();
+        this.programTime = program.getProgramTime();
+        this.programType = program.getProgramType();
+        this.thumbnail = program.getThumbnail();
+        this.location = program.getLocation();
+        this.locationX = program.getLocationX();
+        this.locationY = program.getLocationY();
+    }
+
+    public ProgramDTO(Program program, Timestamp startDate, Timestamp endDate) {
+        this.id = program.getId();
+        this.title = program.getTitle();
+        this.seq = program.getSeq();
+        this.startDate = startDate.toLocalDateTime();
+        this.endDate = endDate.toLocalDateTime();
         this.programTime = program.getProgramTime();
         this.programType = program.getProgramType();
         this.thumbnail = program.getThumbnail();

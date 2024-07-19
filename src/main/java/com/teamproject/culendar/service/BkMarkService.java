@@ -2,6 +2,8 @@ package com.teamproject.culendar.service;
 
 import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.board.BoardBkmark;
+import com.teamproject.culendar.domain.enumFiles.Location;
+import com.teamproject.culendar.domain.enumFiles.ProgramType;
 import com.teamproject.culendar.domain.program.Program;
 import com.teamproject.culendar.domain.program.ProgramBkmark;
 import com.teamproject.culendar.dto.BoardBkMarkDTO;
@@ -11,10 +13,17 @@ import com.teamproject.culendar.dto.ProgramDTO;
 import com.teamproject.culendar.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -111,17 +120,17 @@ public class BkMarkService {
         return false;
     }
 
-    // 작품 북마크 최신순으로 무한 스크롤 조회
-    public List<ProgramDTO> findProgramBkmarkByMemberIdWithPaging(Long memberId, Long start) {
-        List<Program> programBkmarkByMemberId = programBkMarkRepository.findProgramBkmarkByMemberIdWithPaging(memberId, start);
+    // 작품 북마크 최신순으로 페이저블 조회
+    public Page<ProgramDTO> findProgramBkmarkByMemberIdWithPaging(Long memberId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Program> programPage = programBkMarkRepository.findProgramBkmarkByMemberIdWithPaging(memberId, pageable);
 
-        // Program entity -> ProgramDTO 변환
-        List<ProgramDTO> ProgramDTOList = new ArrayList<>();
-        for (Program program : programBkmarkByMemberId) {
-            ProgramDTOList.add(new ProgramDTO(program));
-        }
-        log.info("**** BkmarkService findProgramBkmarkByMemberIdWithPaging - ProgramDTOList : {}", ProgramDTOList);
+        // Program 엔티티를 ProgramDTO로 변환
+        Page<ProgramDTO> programDTOPage = programPage.map(program -> new ProgramDTO(program));
 
-        return ProgramDTOList;
+        return programDTOPage;
     }
+
+
+
 }
