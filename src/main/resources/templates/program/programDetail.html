@@ -6,13 +6,13 @@
     <th:block th:fragment="content">
 
         <!-- 내후기 등록 모달 -->
-        <div class="modal fade" id="addReview-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
+        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="addReview-modal"
+             tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">등록된 후기가 없습니다.</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                     </div>
                     <div class="modal-body">
 
@@ -20,11 +20,11 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
+                        <button class="btn btn-outline-secondary" data-bs-dismiss="modal" type="button">취소</button>
                         <!-- 등록 작품 연동 해서 후기 작성 -->
-                        <button type="button"
-                                class="btn btn-secondary"
-                                th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${program.getId})}'|">
+                        <button class="btn btn-secondary"
+                                th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${program.getId})}'|"
+                                type="button">
                             등록
                         </button>
                     </div>
@@ -33,13 +33,13 @@
         </div>
 
         <!-- 내후기 수정 모달 -->
-        <div class="modal fade" id="modifyReview-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
+        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="modifyReview-modal"
+             tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5">등록된 후기가 있습니다.</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                     </div>
                     <div class="modal-body">
 
@@ -47,12 +47,12 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
+                        <button class="btn btn-outline-secondary" data-bs-dismiss="modal" type="button">취소</button>
                         <!-- 수정 연동 -->
-                        <button type="button"
-                                class="btn btn-secondary"
+                        <button class="btn btn-secondary"
                                 id="reviewModifyBtn"
-                                th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${program.getId})}'|">
+                                th:onclick="|location.href='@{/boards/addReview/{programId}(programId=${program.getId})}'|"
+                                type="button">
                             수정
                         </button>
                     </div>
@@ -61,17 +61,17 @@
         </div>
 
         <!--        일정 추가 모달-->
-        <div class="modal" id="addMyCalendar-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
+        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal" id="addMyCalendar-modal"
+             tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">달력 선택</h4>
                         <div class="hidden-true" th:if="${member != null}">
-                            <div id="memberId" class="hidden-true"
+                            <div class="hidden-true" id="memberId"
                                  th:data-memberId="${member.getMember().getId()}"></div>
                         </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                     </div>
                     <div class="modal-body" id="addMyCalContainer">
                         <div id="addMyCalendarBtnContainer">
@@ -219,7 +219,7 @@
 
                 <!-- 포스터 영역 -->
                 <div class="col mr-2">
-                    <img class="w-100 img-thumbnail rounded" th:src="${program.getThumbnail()}" alt="썸네일 이미지">
+                    <img alt="썸네일 이미지" class="w-100 img-thumbnail rounded" th:src="${program.getThumbnail()}">
                 </div>
 
                 <!-- 작품 정보 영역 -->
@@ -236,13 +236,13 @@
                             <!-- 회원일 경우에만 북마크, 캘린더 추가 버튼 보이기 -->
                             <th:block sec:authorize="isAuthenticated()">
                                 <div class="col p-0 fs-4">
-                                    <button id="bkMarkBtn" class="fa-regular fa-bookmark w-75 h-75"></button>
+                                    <button class="fa-regular fa-bookmark w-75 h-75" id="bkMarkBtn"></button>
                                 </div>
                                 <div class="col p-0 fs-4">
                                     <button class="fa-regular fa-clipboard w-75 h-75"
-                                            type="button"
+                                            data-bs-target="#addMyCalendar-modal"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#addMyCalendar-modal"></button>
+                                            type="button"></button>
                                 </div>
                             </th:block>
 
@@ -269,7 +269,7 @@
 
                     <div style="height: 40%">
                         <div class="col h-100">
-                            <div class="w-100 h-100" id="staticMap"></div>
+                            <div class="w-100 " id="staticMap" style="height: 20rem;"></div>
                         </div>
                     </div>
 
@@ -455,7 +455,7 @@
                     console.log(newCalendarName);
                     if (newCalendarName === '') {
                         alert('캘린더 이름을 입력해주세요.');
-                        return;
+
                     } else {
 
                         let data = {
@@ -625,7 +625,7 @@
                                         type: 'GET',
                                         success: function (data) {
                                             console.log(data);
-                                           $('#reviewModifyBtn').attr('th:href', '@{/boards/{boardId}/modify(boardId=' + data.id + ')}');
+                                            $('#reviewModifyBtn').attr('th:href', '@{/boards/{boardId}/modify(boardId=' + data.id + ')}');
                                         }
                                     });
 
@@ -643,10 +643,10 @@
                 }
 
                 // ********** 카카오 지도 **********
-                function kakaoMap(){
+                function kakaoMap() {
                     var locationX = [[${program.getLocationX()}]];
                     var locationY = [[${program.getLocationY()}]];
-                    var markerPosition  = new kakao.maps.LatLng(locationY, locationX);
+                    var markerPosition = new kakao.maps.LatLng(locationY, locationX);
                     var marker = {
                         position: markerPosition
                     };
