@@ -53,19 +53,19 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
         "WHERE b.program.id = :programId AND b.boardType = 'REVIEW' AND b.createDate >= CURRENT_DATE - 7 " +
         "GROUP BY b " +
         "ORDER BY COUNT(bb) DESC")
-    List<Board> findBestReviewByBkMark(Long programId);
+    List<Board> findBestReviewByBkMark(@Param("programId")Long programId);
 
     // 회원의 REVIEW 게시글중 해당 프로그램의 리뷰가 있는지 조회
     @Query("SELECT b " +
         "FROM Board b " +
         "WHERE b.member.id = :memberId AND b.program.id = :programId AND b.boardType = 'REVIEW'")
-    Board findProgramReviewByMemberId(Long memberId, Long programId);
+    Board findProgramReviewByMemberId(@Param("memberId")Long memberId, @Param("programId")Long programId);
 
     // 회원의 REVIEW 게시글 최신순으로 무한 스크롤 조회
   @Query(value = "SELECT * FROM board WHERE member_id = ?1 AND board_type = 'REVIEW' ORDER BY create_date DESC LIMIT ?2, 16", nativeQuery = true)
-    List<Board> findProgramReviewByMemberIdWithPaging(Long memberId, Long start);
+    List<Board> findProgramReviewByMemberIdWithPaging(@Param("memberId")Long memberId, @Param("start")Long start);
 
     // 회원의 INFO 게시글 최신순으로 무한 스크롤 조회
     @Query(value = "SELECT * FROM board WHERE member_id = ?1 AND board_type = 'INFO' ORDER BY create_date DESC LIMIT ?2, 16", nativeQuery = true)
-    List<Board> findProgramInfoByMemberIdWithPaging(Long memberId, Long start);
+    List<Board> findProgramInfoByMemberIdWithPaging(@Param("memberId")Long memberId, @Param("start")Long start);
 }

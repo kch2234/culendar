@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface CommentRepository extends JpaRepository<Comment, Long>, CommentCustomRepository {
 
@@ -14,5 +15,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long>, Comment
   @Modifying
   @Transactional
   @Query("UPDATE Comment c SET c.step = c.step + 1 WHERE c.refId = :refId AND c.step >= :step")
-  int updateStep(Long refId, Integer step);
+  int updateStep(@Param("refId") Long refId, @Param("step") Integer step);
 }

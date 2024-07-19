@@ -5,6 +5,7 @@ import com.teamproject.culendar.domain.member.Member;
 import com.teamproject.culendar.dto.FollowDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,11 +17,11 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     // 팔로잉 무한 스크롤을 위한 페이징 처리
     @Query(value = "SELECT * FROM follow WHERE member_id = ?1 ORDER BY create_date DESC LIMIT ?2, 20", nativeQuery = true)
-    List<Follow> findAllByMemberIdWtihPaging(Long memberId, Long start);
+    List<Follow> findAllByMemberIdWtihPaging(@Param("memberId") Long memberId, @Param("start")Long start);
 
     // 팔로워 무한 스크롤을 위한 페이징 처리
     @Query(value = "SELECT * FROM follow WHERE follow_id = ?1 ORDER BY create_date DESC LIMIT ?2, 20", nativeQuery = true)
-    List<Follow> findAllByFollowIdWtihPaging(Long followId, Long start);
+    List<Follow> findAllByFollowIdWtihPaging(@Param("followId")Long followId, @Param("start")Long start);
 
     // 회원을 팔로우 하고 있는 팔로워 리스트 조회
     List<Follow> findAllByFollowId(Long followId);
