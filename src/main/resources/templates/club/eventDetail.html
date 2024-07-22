@@ -302,7 +302,7 @@
 
                         <th:block sec:authorize="isAuthenticated()">
                             <div class="col-auto p-0" th:if="${member.getId} != ${eventBoard.getMemberDTO().getId()}">
-                                <button type="button" class="btn btn-dark btn-outline-secondary fs-6" id="followBtn">
+                                <button type="button" class="btn btn-outline-secondary fs-6" id="followBtn">
                                     Follow
                                 </button>
 
@@ -349,8 +349,8 @@
 
                 // 페이지 로딩시 시작할 함수들
                 kakaoMap() // 카카오 지도 띄우기
-<!--                getAvgRating(); // 평균 평가 가져오기-->
-<!--                getMyRating(); // 내 평가 가져오기-->
+// <!--                getAvgRating(); // 평균 평가 가져오기-->
+// <!--                getMyRating(); // 내 평가 가져오기-->
                 checkEventBkmark(); // todo 게시글 북마크 체크
                 checkProgramBkmark(); // 작품 북마크 체크
                 // 해당 작품 후기 작성 여부 확인 함수
@@ -411,6 +411,37 @@
                         }
                     });
 
+                });
+
+                // 팔로우 버튼 클릭시
+                $('#followBtn').on('click', function () {
+
+                    let data = {
+                        memberId: memberId,
+                        followId: [[${eventBoard.getMemberDTO().getId()}]]
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/follows/follow/' + [[${eventBoard.getMemberDTO().getId()}]],
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (result) {
+                            console.log(result);
+                            if (result === 'unfollow') {
+                                alert('팔로우가 취소되었습니다.');
+                            } else {
+                                alert('팔로우가 추가되었습니다.');
+                            }
+
+                            checkFollow();
+
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            alert('팔로우 추가에 실패했습니다.');
+                        }
+                    });
                 });
 
                 // 문장형 평가 모달내에 버튼 클릭시 이벤트
@@ -761,6 +792,39 @@
                             }
                         });
                     }
+                }
+
+                // 팔로우 여부 확인 함수
+                function checkFollow(){
+                    console.log("checkFollow");
+
+                    // 현재 로그인한 회원과 게시글 작성자가 같은지 확인
+                    if(memberId === [[${eventBoard.getMemberDTO().getId()}]]){
+                        console.log("작성자와 로그인한 회원이 같습니다.");
+                        $('#followBtn').hide();
+                    }
+                    else {
+                        console.log("작성자와 로그인한 회원이 다릅니다.");
+                        $.ajax({
+                            url: '/follows/checkFollow/' + [[${eventBoard.getMemberDTO().getId()}]],
+                            type: 'GET',
+                            success: function (data) {
+                                if (data === true) {
+                                    console.log(data);
+                                    console.log("팔로우 중입니다.");
+                                    $('#followBtn').text('Unfollow');
+                                    $('#followBtn').toggleClass('btn-dark', true).toggleClass('btn-outline-secondary', false);
+                                }
+                                if (data === false) {
+                                    console.log(data);
+                                    console.log("팔로우 중이 아닙니다.");
+                                    $('#followBtn').text('Follow');
+                                    $('#followBtn').toggleClass('btn-dark', false).toggleClass('btn-outline-secondary', true);
+                                }
+                            }
+                        });
+                    }
+
                 }
 
                 // ********** 카카오 지도 **********
