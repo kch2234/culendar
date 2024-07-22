@@ -105,11 +105,14 @@
                                     <input hidden="hidden" id="phoneNum" th:field="*{phone}">
                                     <span class="input-group-text d-flex justify-content-center align-items-center"
                                           style="width: 23%">전화번호</span>
-                                    <input class="form-control" id="phoneNumFirst" type="number">
+                                    <input class="form-control" id="phoneNumFirst" th:value="'0' + ${phonePart1}"
+                                           type="number">
                                     <span class="input-group-text d-flex justify-content-center align-items-center">-</span>
-                                    <input class="form-control" id="phoneNumSecond" type="number">
+                                    <input class="form-control" id="phoneNumSecond" th:value="${phonePart2}"
+                                           type="number">
                                     <span class="input-group-text d-flex justify-content-center align-items-center">-</span>
-                                    <input class="form-control" id="phoneNumThird" type="number">
+                                    <input class="form-control" id="phoneNumThird" th:value="${phonePart3}"
+                                           type="number">
                                 </div>
                                 <!-- 중복체크 결과값 -->
                                 <div class="form-text" id="phoneCheckResult"></div>
@@ -121,7 +124,7 @@
                                 <span class="input-group-text d-flex input-group-lg justify-content-center align-items-center"
                                       style="width: 23%">생년월일</span>
                                 <input class="form-control" max="2012-12-31" min="1940-01-01" th:field="*{birth}"
-                                       type="date">
+                                       th:value="${member.getBirth()}" type="date">
                             </div>
                         </div>
                     </div>

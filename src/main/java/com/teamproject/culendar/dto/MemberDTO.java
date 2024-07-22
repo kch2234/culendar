@@ -4,16 +4,13 @@ import com.teamproject.culendar.domain.enumFiles.Gender;
 import com.teamproject.culendar.domain.enumFiles.Location;
 import com.teamproject.culendar.domain.enumFiles.MemberType;
 import com.teamproject.culendar.domain.enumFiles.Role;
-import com.teamproject.culendar.domain.member.Interest;
 import com.teamproject.culendar.domain.member.Member;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,10 +21,11 @@ public class MemberDTO {
     private String username;
     private String password;
     private Long phone;
-//    @Email(message = "이메일 형식이 아닙니다.")
+    //    @Email(message = "이메일 형식이 아닙니다.")
     private String email;
     //지역 ENUM
     private Location location;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime birth;
     private MemberType memberType;
     private Gender gender;
@@ -40,7 +38,7 @@ public class MemberDTO {
     private LocalDateTime createDate;
 
     // Entity -> DTO
-    public MemberDTO(Member member){
+    public MemberDTO(Member member) {
         this.id = member.getId();
         this.userid = member.getUserid();
         this.username = member.getUsername();
@@ -65,6 +63,16 @@ public class MemberDTO {
         member.setPassword(this.password);
         member.setRole(this.role);
         return member;
+    }
+
+    // 전화번호를 세 부분으로 나누는 메서드
+    public String[] splitPhoneNumber() {
+        String phoneString = String.valueOf(this.phone);
+        String[] phoneParts = new String[3];
+        phoneParts[0] = phoneString.substring(0, 2);
+        phoneParts[1] = phoneString.substring(2, 6);
+        phoneParts[2] = phoneString.substring(6);
+        return phoneParts;
     }
 
 }
