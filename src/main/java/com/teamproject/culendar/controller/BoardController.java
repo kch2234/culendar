@@ -1,19 +1,16 @@
 package com.teamproject.culendar.controller;
 
-import com.teamproject.culendar.domain.board.Board;
 import com.teamproject.culendar.domain.enumFiles.BoardType;
 import com.teamproject.culendar.domain.enumFiles.RatingType;
-import com.teamproject.culendar.domain.member.Member;
-import com.teamproject.culendar.domain.program.Program;
-import com.teamproject.culendar.dto.*;
+import com.teamproject.culendar.dto.BoardDTO;
+import com.teamproject.culendar.dto.BoardForm;
+import com.teamproject.culendar.dto.MemberDTO;
+import com.teamproject.culendar.dto.ProgramDTO;
 import com.teamproject.culendar.security.domain.CustomMember;
 import com.teamproject.culendar.service.BoardService;
 import com.teamproject.culendar.service.ProgramService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,6 +44,7 @@ public class BoardController {
 
         return "community/boardAdd";
     }
+
     @PostMapping("/add")
     public String addPRo(BoardForm boardForm, @AuthenticationPrincipal CustomMember customMember, RedirectAttributes rttr) {
         log.info("**** BoardController POST /boards/add - boardForm : {}", boardForm);
@@ -77,10 +75,10 @@ public class BoardController {
         log.info("***** BoardController GET /boards/detail - customMember : {}", customMember);
         if (customMember != null) {
             model.addAttribute("member", customMember.getMember());
-          log.info("***** BoardController GET /boards/detail - member : {}", customMember.getMember());
-        }
-        else {
+            log.info("***** BoardController GET /boards/detail - member : {}", customMember.getMember());
+        } else {
             model.addAttribute("member", null);
+            return "member/login";
         }
 
         return "community/boardDetail";
@@ -104,6 +102,7 @@ public class BoardController {
         model.addAttribute("board", board);
         return "community/boardModify";
     }
+
     @PostMapping("/{id}/modify")
     public String modifyPro(@PathVariable("id") Long id, BoardForm boardForm) {
         log.info("**** BoardController GET /boards/:id/modify - id : {}", id);
@@ -117,7 +116,7 @@ public class BoardController {
         log.info("***** BoardController GET /boards/addReview");
 
         rttr.addFlashAttribute("reviewProgramId", programId);
-        rttr.addFlashAttribute("fromReviewBtn",true);
+        rttr.addFlashAttribute("fromReviewBtn", true);
 
         return "redirect:/boards/add";
     }
