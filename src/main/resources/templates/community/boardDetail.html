@@ -333,6 +333,7 @@
                     </div>
                     <!-- 댓글 작성 폼 -->
                     <div class="card-body">
+                        <th:block sec:authorize="isAuthenticated()">
                         <form id="cmtForm">
                             <div class="col d-flex mb-2 form-group">
                                 <input type="text"
@@ -351,6 +352,7 @@
                                           placeholder="댓글 내용"></textarea>
                             </div>
                         </form>
+                        </th:block>
                     </div>
                     <hr />
                     <!-- 댓글 리스트 : printReplyList 함수에서 동적으로 추가 -->

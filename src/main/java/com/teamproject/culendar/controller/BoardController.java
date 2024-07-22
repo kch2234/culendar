@@ -78,7 +78,6 @@ public class BoardController {
             log.info("***** BoardController GET /boards/detail - member : {}", customMember.getMember());
         } else {
             model.addAttribute("member", null);
-            return "member/login";
         }
 
         return "community/boardDetail";
