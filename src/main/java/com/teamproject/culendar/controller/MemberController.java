@@ -97,16 +97,12 @@ public class MemberController {
         log.info("********** MemberController GET /members/:id/setting - id : {}", id);
         MemberDTO memberDTO = memberService.findById(id);
         model.addAttribute("member", memberDTO);
-        // 전화번호를 세 부분으로 나누기
-        String[] phoneParts = memberDTO.splitPhoneNumber();
-//        model.addAttribute("phonePart1", "0" + phoneParts[0]);
-        model.addAttribute("phonePart1", phoneParts[0]);
-        model.addAttribute("phonePart2", phoneParts[1]);
-        model.addAttribute("phonePart3", phoneParts[2]);
-
-        // 생년월일 형식 변경
-        /*String formattedBirth = memberDTO.getFormattedBirthDate();
-        model.addAttribute("birth", formattedBirth);*/
+        if (memberDTO.getPhone() != null) {// 전화번호를 세 부분으로 나누기
+            String[] phoneParts = memberDTO.splitPhoneNumber();
+            model.addAttribute("phonePart1", phoneParts[0]);
+            model.addAttribute("phonePart2", phoneParts[1]);
+            model.addAttribute("phonePart3", phoneParts[2]);
+        }
         return "member/setting";
     }
     //    @PreAuthorize("hasRole('MEMBER')")
